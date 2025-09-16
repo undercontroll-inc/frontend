@@ -19,6 +19,54 @@
       "password": "aaa",
       "userType": "COSTUMER",
       "id": 2
+    },
+    {
+      "name": "Lucas",
+      "lastname": "Hernandes",
+      "cpf": "557.397.138-70",
+      "birthdate": "26/03/2006",
+      "address": "Rua silvia 1693",
+      "password": "ishow123",
+      "userType": "COSTUMER",
+      "id": 3
+    }
+  ],
+  "components": [
+    {
+      "name": "Resistor 1kΩ 1/5W",
+      "description": "Resistor de filme de carbono com tolerância de 5%, usado em circuitos eletrônicos gerais.",
+      "brand": "Yageo",
+      "price": 0.1,
+      "supplier": "Mouser Electronics",
+      "category": "Resistores",
+      "id": 2
+    },
+    {
+      "id": 3,
+      "name": "Capacitor Eletrolítico 100µF 25V",
+      "description": "Capacitor eletrolítico de alumínio para filtragem em fontes de alimentação.",
+      "brand": "Nichicon",
+      "price": 0.45,
+      "supplier": "Farnell",
+      "category": "Capacitores"
+    },
+    {
+      "id": 4,
+      "name": "Sensor de Temperatura LM35",
+      "description": "Sensor analógico de temperatura com saída linear proporcional à variação térmica.",
+      "brand": "Texas Instruments",
+      "price": 5.2,
+      "supplier": "Arrow Electronics",
+      "category": "Sensores"
+    },
+    {
+      "id": 5,
+      "name": "Transistor NPN BC547",
+      "description": "Transistor de uso geral NPN para amplificação e chaveamento.",
+      "brand": "ON Semiconductor",
+      "price": 0.25,
+      "supplier": "RS Components",
+      "category": "Transistores"
     }
   ]
 }
