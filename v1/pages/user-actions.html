@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UnderControll JSON Server</title>
+
+    <link rel="stylesheet" href="../styles/index.css">
+    <link rel="stylesheet" href="../styles/user-actions.css">
+    <link rel="stylesheet" href="../styles/global.css">
+</head>
+<body>
+    <main>
+        <div class="container">
+            <h1>Selecione a ação</h1>
+            <input type="text" id="id" placeholder="Digite o id do usuário">
+            <div class="actions">
+                <a href="#" onclick="excluir()">Excluir</a>
+                <a href="#" onclick="mostrar()">Editar</a>
+            </div>
+        </div>
+        <div class="container extra display-none">
+            <input type="text" id="name" placeholder="Nome:">
+            <input type="email" id="email" placeholder="Email:">
+            <input type="tel" id="tel" placeholder="Telefone:">
+            <input type="text" id="cpf" placeholder="CPF:">
+            <input type="text" id="password" placeholder="Senha:">
+            <input type="text" id="userType" placeholder="User Type:">
+            <a href="#" onclick="editar()">Atualizar</a>
+        </div>
+    </main>
+</body>
+</html>
+<script>
+    const id = document.getElementById("id").value;
+    const userType = document.getElementById("userType").value;
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const tel = document.getElementById("tel").value;
+    const cpf = document.getElementById("cpf").value;
+    const password = document.getElementById("password").value;
+
+    async function excluir() {
+        let excluirComponente = await fetch(`http://localhost:3000/users/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+    }
+
+    async function editar() {
+        let id = document.getElementById("id").value;
+        let editarComponente = await fetch(`http://localhost:3000/users/${id}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ name, email, tel, cpf, password, userType }),
+        });
+    }
+
+    function mostrar() {
+        document.querySelector(".extra").classList.toggle("display-none");
+        document.querySelector(".container").classList.toggle("display-none");
+    }
+</script>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Componentes</title>
+
+    <link rel="stylesheet" href="../styles/components.css">
+    <link rel="stylesheet" href="../styles/global.css">
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body>
+    <div class="form-container">
+      <div class="form-group">
+        <label for="id">Id:</label>
+        <input type="text" id="id" />
+      </div>
+      <div class="form-group">
+        <label for="name">Nome:</label>
+        <input type="text" id="name" />
+      </div>
+
+      <div class="form-group">
+        <label for="description">Descrição:</label>
+        <input type="text" id="description" />
+      </div>
+
+      <div class="form-group">
+        <label for="brand">Marca:</label>
+        <input type="text" id="brand" />
+      </div>
+
+      <div class="form-group">
+        <label for="price">Preço:</label>
+        <input type="text" id="price" />
+      </div>
+
+      <div class="form-group">
+        <label for="supplier">Fornecedor:</label>
+        <input type="text" id="supplier" />
+      </div>
+
+      <div class="form-group">
+        <label for="category">Categoria:</label>
+        <input type="text" id="category" />
+      </div>
+
+      <div class="buttons">
+        <button onclick="adicionar()">
+          <i class="fa-solid fa-plus"></i>
+        </button>
+        <button onclick="alterar()">
+          <i class="fa-solid fa-pen"></i>
+        </button>
+        <button onclick="remover()">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+        <button onclick="listar()">
+          <i class="fa-solid fa-list-ul"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="form-container display-none">
+      <i
+        class="fa-solid fa-arrow-left"
+        onclick="listar()"
+        style="cursor: pointer; color: #111;"
+      ></i>
+      <div class="components-container" id="components-container"></div>
+    </div>
+  </body>
+</html>
+<script src="../js/components.js"></script>
