@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="../styles/login.css">
+    <link rel="stylesheet" href="../styles/global.css">
+    
+</head>
+<body>
+    <div class="container">
+      <div class="title">
+        <h1>Bem-vindo(a) de volta!</h1>
+      </div>
+
+      <div class="inputs-container">
+        <div class="input-content">
+          <p>Email</p>
+          <input type="text" placeholder="email" id="email" />
+        </div>
+        <div class="input-content">
+          <p>Senha</p>
+          <input type="password" placeholder="senha" id="password" />
+        </div>
+      </div>
+
+      <button onclick="fazerLogin()">Entrar</button><br /><br />
+    </div>
+
+    <ul id="ul_mensagem"></ul>
+</body>
+</html>
+<script>
+    async function fazerLogin() {
+        let email = document.getElementById("email").value
+        let password = document.getElementById("password").value
+
+        let listarUsuarios = await fetch("http://localhost:3000/users", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+
+        let usuarios = await listarUsuarios.json()
+
+        for (let i = 0; i < usuarios.length; i++) {
+            if (usuarios[i].email == email && usuarios[i].password == password) {
+                ul_mensagem.innerHTML = `<li>Bem vindo, ${usuarios[i].name}!</li><br>`
+                break
+            } else {
+                ul_mensagem.innerHTML = `<li>Nome ou senha incorretos!</li><br>`
+            }
+        }
+
+        window.location.href = "./user-actions.html";
+    }
+</script>
