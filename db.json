@@ -29,6 +29,16 @@
       "password": "ishow123",
       "userType": "COSTUMER",
       "id": 3
+    },
+    {
+      "name": "Pedro",
+      "lastname": "Silva",
+      "cpf": "492.450.758-00",
+      "birthdate": "26/03/2006",
+      "address": "Rua Rodrigo de Castro, 62, Casa",
+      "password": "Pedro2506**",
+      "userType": "COSTUMER",
+      "id": 4
     }
   ],
   "components": [
@@ -67,6 +77,80 @@
       "price": 0.25,
       "supplier": "RS Components",
       "category": "Transistores"
+    }
+  ],
+   "repairs": [
+    {
+      "id": 1,
+      "userId": 4,
+      "deviceType": "Micro-ondas",
+      "brand": "Brastemp",
+      "model": "BMS45CR",
+      "serial": "4587BRST2025",
+      "diagnosis": "Fusível interno queimado",
+      "serviceDone": "Troca do fusível interno",
+      "parts": ["Fusível interno 15A"],
+      "receivedAt": "2025-08-27",
+      "deadline": "2025-09-03",
+      "warranty": "60 dias",
+      "value": 120.0,
+      "notes": "Substituição do fusível e limpeza preventiva",
+      "status": "EM_ANDAMENTO",
+      "updatedAt": "2025-08-30T18:00:00"
+    },
+    {
+      "id": 2,
+      "userId": 4,
+      "deviceType": "Micro-ondas",
+      "brand": "Brastemp",
+      "model": "BMS45CR",
+      "serial": "4587BRST2026",
+      "diagnosis": "Painel não responde",
+      "serviceDone": "Troca da placa de controle",
+      "parts": ["Placa eletrônica modelo X12"],
+      "receivedAt": "2025-07-01",
+      "deadline": "2025-07-10",
+      "warranty": "90 dias",
+      "value": 450.0,
+      "notes": "Cliente relatou falha intermitente antes da pane total",
+      "status": "FINALIZADO",
+      "updatedAt": "2025-07-10T13:37:00"
+    },
+    {
+      "id": 3,
+      "userId": 4,
+      "deviceType": "Geladeira",
+      "brand": "Electrolux",
+      "model": "FrostFree 450L",
+      "serial": "ELX-2025-9981",
+      "diagnosis": "Motor não parte",
+      "serviceDone": "Substituição do compressor",
+      "parts": ["Compressor 1/5HP", "Gás R134a"],
+      "receivedAt": "2025-09-15",
+      "deadline": "2025-09-25",
+      "warranty": "180 dias",
+      "value": 1450.0,
+      "notes": "Troca completa do compressor e recarga de gás",
+      "status": "EM_ANDAMENTO",
+      "updatedAt": "2025-09-20T09:15:00"
+    },
+    {
+      "id": 4,
+      "userId": 4,
+      "deviceType": "Notebook",
+      "brand": "Dell",
+      "model": "Inspiron 15 3000",
+      "serial": "D15-2025-5544",
+      "diagnosis": "Tela não acende",
+      "serviceDone": "Troca do cabo flat do display",
+      "parts": ["Cabo flat display Inspiron"],
+      "receivedAt": "2025-08-05",
+      "deadline": "2025-08-12",
+      "warranty": "90 dias",
+      "value": 380.0,
+      "notes": "Cliente relatou queda antes do problema",
+      "status": "NAO_INICIADO",
+      "updatedAt": "2025-08-12T11:00:00"
     }
   ]
 }

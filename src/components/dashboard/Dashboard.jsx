@@ -21,6 +21,7 @@ const Dashboard = () => {
   const [alert, setAlert] = useState(null);
   
   const { user, logout } = useAuth();
+  console.log('Authenticated user:', user);
 
   useEffect(() => {
     loadComponents();
