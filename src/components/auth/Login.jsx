@@ -81,7 +81,7 @@ const Login = () => {
         setTimeout(() => form.classList.remove('animate-pulse'), 500);
       }
     } catch (error) {
-      toast.error('Erro inesperado. Tente novamente.');
+      toast.error('Erro inesperado: ' + error);
     } finally {
       setLoading(false);
     }

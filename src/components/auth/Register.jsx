@@ -5,7 +5,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useToast } from '../../contexts/ToastContext';
 import Input from '../shared/Input';
 import Button from '../shared/Button';
-import { validateCPF, isValidDate, formatCPF, formatDate } from '../../utils/validation';
+import { validateCPF, isValidDate, formatCPF, formatDate, validatePhoneBR, formatPhoneBR } from '../../utils/validation';
 
 const Register = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -14,6 +14,7 @@ const Register = () => {
     lastname: '',
     cpf: '',
     birthdate: '',
+    phone: '',
     address: '',
     password: '',
     confirmPassword: ''
@@ -35,9 +36,13 @@ const Register = () => {
         if (!/^[a-zA-ZÀ-ÿ\s]+$/.test(value)) return `${name === 'name' ? 'Nome' : 'Sobrenome'} deve conter apenas letras`;
         return '';
       case 'cpf':
-        if (!value) return 'CPF é obrigatório';
-        if (value.length < 14) return 'CPF incompleto';
-        if (!validateCPF(value)) return 'CPF inválido';
+        if (!value) return '';
+        if (value && value.length < 14) return 'CPF incompleto';
+        if (value && !validateCPF(value)) return 'CPF inválido';
+        return '';
+      case 'phone':
+        if (!value.trim()) return 'Telefone é obrigatório';
+        if (!validatePhoneBR(value)) return 'Telefone inválido';
         return '';
       case 'birthdate':
         if (!value) return 'Data de nascimento é obrigatória';
@@ -69,6 +74,8 @@ const Register = () => {
       value = formatCPF(value);
     } else if (name === 'birthdate') {
       value = formatDate(value);
+    } else if (name === 'phone') {
+      value = formatPhoneBR(value);
     }
     
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -88,7 +95,7 @@ const Register = () => {
   const validateCurrentStep = () => {
     const fieldsToValidate = {
       1: ['name', 'lastname', 'cpf', 'birthdate'],
-      2: ['address'],
+      2: ['address', 'phone'],
       3: ['password', 'confirmPassword']
     };
 
@@ -139,8 +146,9 @@ const Register = () => {
       const result = await register({
         name: formData.name.trim(),
         lastname: formData.lastname.trim(),
-        cpf: formData.cpf,
+        cpf: formData.cpf.trim() ? formData.cpf : null,
         birthdate: formData.birthdate,
+        phone: formData.phone.trim(),
         address: formData.address.trim(),
         password: formData.password
       });
@@ -249,14 +257,13 @@ const Register = () => {
               
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <Input
-                  label="CPF *"
+                  label="CPF"
                   name="cpf"
                   placeholder="000.000.000-00"
                   value={formData.cpf}
                   onChange={handleInputChange}
                   error={errors.cpf}
                   maxLength={14}
-                  required
                 />
                 
                 <Input
@@ -291,8 +298,7 @@ const Register = () => {
               </div>
               <p className="text-gray-600">Precisamos do seu endereço para o cadastro</p>
             </div>
-            
-            <div className="pt-4">
+            <div className="pt-4 space-y-6">
               <Input
                 label="Endereço Completo *"
                 name="address"
@@ -303,8 +309,16 @@ const Register = () => {
                 autoComplete="street-address"
                 required
               />
+              <Input
+                label="Telefone *"
+                name="phone"
+                placeholder="(99) 99999-9999"
+                value={formData.phone}
+                onChange={handleInputChange}
+                error={errors.phone}
+                required
+              />
             </div>
-            
             <div className="flex justify-between pt-6">
               <Button onClick={prevStep} variant="outline" size="sm">
                 <ChevronLeft className="h-4 w-4" />

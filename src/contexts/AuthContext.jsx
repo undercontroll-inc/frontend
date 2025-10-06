@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { apiService } from '../services/api';
+import { userService } from '../services/UserService';
 import { getToken, saveToken, removeToken, isLoggedIn } from '../utils/auth';
 
 const AuthContext = createContext(null);
@@ -37,51 +37,50 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (credentials) => {
     try {
-      const users = await apiService.get('/user');
+      const result = await userService.auth(credentials.name, credentials.password);
       
-      const foundUser = users.find(
-        user => user.name === credentials.name && user.password === credentials.password
-      );
-
-      if (foundUser) {
-        const token = `token_${foundUser.id}`;
-        saveToken(token);
-        setUser({ ...foundUser, token });
-        return { success: true, user: foundUser };
+      if (result.success) {
+        // Salvar token se vier do backend
+        if (result.data?.token) {
+          saveToken(result.data.token);
+          setUser(result.data);
+        }
+        return { success: true };
       } else {
-        return { success: false, error: 'Nome de usuário ou senha incorretos!' };
+        return { 
+          success: false, 
+          error: result.error || 'Credenciais inválidas' 
+        };
       }
     } catch (error) {
-      console.error('Login failed:', error);
       return {
         success: false,
-        error: 'Erro ao fazer login. Verifique se o servidor está rodando.'
+        error: 'Erro inesperado ao fazer login'
       };
     }
   };
 
   const register = async (userData) => {
     try {
-      const users = await apiService.get('/user');
-      const cpfExists = users.some(user => user.cpf === userData.cpf);
-
-      if (cpfExists) {
-        return { success: false, error: 'CPF já cadastrado no sistema!' };
-      }
-
       const newUser = {
         ...userData,
         userType: "COSTUMER"
       };
-
-      await apiService.post('/user', newUser);
-
-      return { success: true };
+      
+      const result = await userService.register(newUser);
+      
+      if (result.success) {
+        return { success: true };
+      } else {
+        return {
+          success: false,
+          error: result.error || 'Erro ao criar conta'
+        };
+      }
     } catch (error) {
-      console.error('Registration failed:', error);
       return {
         success: false,
-        error: 'Erro ao criar conta. Verifique se o servidor está rodando.'
+        error: 'Erro inesperado ao criar conta'
       };
     }
   };

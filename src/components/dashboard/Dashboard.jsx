@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Search, Plus, Wrench, LogOut } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
-import { apiService } from '../../services/api';
+import { userService } from '../../services/UserService';
 import ComponentCard from './ComponentCard';
 import ComponentModal from './ComponentModal';
 import Input from '../shared/Input';
@@ -33,7 +33,7 @@ const Dashboard = () => {
   const loadComponents = async () => {
     try {
       setLoading(true);
-      const data = await apiService.get('/components');
+      const data = await userService.get('/components');
       setComponents(data);
       
       // Extract unique categories
@@ -88,11 +88,11 @@ const Dashboard = () => {
     try {
       if (componentId) {
         // Update existing component
-        await apiService.put(`/components/${componentId}`, componentData);
+        await userService.put(`/components/${componentId}`, componentData);
         showAlert('success', 'Componente atualizado com sucesso!');
       } else {
         // Create new component
-        await apiService.post('/components', componentData);
+        await userService.post('/components', componentData);
         showAlert('success', 'Componente criado com sucesso!');
       }
       
@@ -106,7 +106,7 @@ const Dashboard = () => {
 
   const handleDeleteComponent = async (componentId) => {
     try {
-      await apiService.delete(`/components/${componentId}`);
+      await userService.delete(`/components/${componentId}`);
       showAlert('success', 'Componente excluído com sucesso!');
       await loadComponents();
     } catch (error) {
