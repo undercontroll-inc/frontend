@@ -11,7 +11,6 @@ import {
   Briefcase,
   LogOut,
   User,
-  ArrowDown,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
@@ -126,11 +125,11 @@ const ComponentRepair = () => {
   return (
     <div className="flex min-h-screen bg-gray-50">
       {/* Sidebar */}
-      <aside className="w-64 bg-zinc-400 text-white flex flex-col">
+      <aside className="w-64 bg-gray-400 text-white flex flex-col">
         {/* User Info */}
-        <div className="p-6 border-b border-zinc-600">
+        <div className="p-6 border-b border-gray-600">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-zinc-600 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center">
               <User className="h-6 w-6 text-white" />
             </div>
             <div>
@@ -150,21 +149,21 @@ const ComponentRepair = () => {
         <nav className="flex-1 py-4">
           <button
             onClick={() => navigate("/dashboard")}
-            className="w-full flex items-center gap-3 px-6 py-3 text-left hover:bg-zinc-800 hover:text-white transition-colors text-zinc-900"
+            className="w-full flex items-center gap-3 px-6 py-3 text-left hover:bg-gray-800 hover:text-white transition-colors text-gray-900"
           >
             <Home className="h-5 w-5" />
             <span>Início</span>
           </button>
-          <button className="w-full flex items-center gap-3 px-6 py-3 text-left bg-zinc-700 text-white">
+          <button className="w-full flex items-center gap-3 px-6 py-3 text-left bg-slate-900 text-white">
             <Wrench className="h-5 w-5" />
             <span>Consertos</span>
           </button>
           <button
             onClick={() => navigate("/orcamentos")}
-            className="w-full flex items-center gap-3 px-6 py-3 text-left hover:bg-zinc-800 hover:text-white transition-colors text-zinc-900"
+            className="w-full flex items-center gap-3 px-6 py-3 text-left hover:bg-gray-800 hover:text-white transition-colors text-gray-900"
           >
             <Briefcase className="h-5 w-5" />
-            <span>Orçamentos</span>
+            <span>Visita Técnica</span>
           </button>
         </nav>
 
@@ -172,7 +171,7 @@ const ComponentRepair = () => {
         <div className="p-4 border-t border-gray-600">
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-6 py-3 text-left hover:bg-zinc-800 hover:text-white transition-colors rounded text-zinc-900"
+            className="w-full flex items-center gap-3 px-6 py-3 text-left hover:bg-gray-800 hover:text-white transition-colors rounded text-gray-900"
           >
             <LogOut className="h-5 w-5" />
             <span>Encerrar sessão</span>
@@ -184,33 +183,29 @@ const ComponentRepair = () => {
       <div className="flex-1 overflow-y-auto h-screen p-8">
         <div className="max-w-6xl mx-auto px-4 py-6">
           <div className="flex items-center justify-between pb-10">
-            <h1 className="text-3xl font-bold text-zinc-900">Consertos</h1>
+            <h1 className="text-3xl font-bold text-gray-900">Consertos</h1>
             <div className="flex items-center gap-3 w-full max-w-2xl">
               <div className="w-41 relative">
                 <select
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value)}
-                  className="w-full pl-3 pr-10 py-2 border border-gray-600 rounded-lg bg-zinc-700 text-white focus:outline-none focus:ring-2 focus:ring-gray-100   appearance-none cursor-pointer"
+                  className="w-full pl-3 pr-10 py-2 border border-gray-600 rounded-lg bg-slate-900 text-white focus:outline-none focus:ring-2 focus:ring-gray-100   appearance-none cursor-pointer"
                 >
                   <option value="">Status: Todos</option>
                   <option value="EM_ANDAMENTO">Em Andamento</option>
                   <option value="FINALIZADO">Finalizado</option>
                   <option value="NAO_INICIADO">Não Iniciado</option>
                 </select>
-                <ArrowDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white pointer-events-none" />
+                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white pointer-events-none" />
               </div>
               <div className="flex-1">
                 <Input
-                  placeholder="Pesquisar por: Tipo do aparelho, marca, modelo..."
+                  placeholder="Pesquisar por: Tipo do aparelho, marca ou modelo"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   icon={Search}
                 />
               </div>
-              <Button variant="outline" onClick={loadRepairs}>
-                <Calendar className="h-4 w-4" />
-                Atualizar
-              </Button>
             </div>
           </div>
 
@@ -225,10 +220,10 @@ const ComponentRepair = () => {
           {filtered.length === 0 ? (
             <div className="bg-white border border-gray-200 rounded-xl p-12 text-center shadow-sm">
               <Clock className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-zinc-900 mb-2">
+              <h3 className="text-lg font-medium text-gray-900 mb-2">
                 Nenhum conserto encontrado
               </h3>
-              <p className="text-zinc-600 mb-6">
+              <p className="text-gray-600 mb-6">
                 Não há registros de conserto para os filtros selecionados.
               </p>
               <Button onClick={() => setStatusFilter("")} variant="primary">
@@ -243,10 +238,10 @@ const ComponentRepair = () => {
                 return (
                   <div
                     key={r.id}
-                    className="bg-white border border-zinc-300 rounded-xl shadow-md overflow-hidden"
+                    className="bg-white border border-gray-300 rounded-xl shadow-md overflow-hidden"
                   >
                     {/* Cabeçalho do card */}
-                    <div className="flex items-center justify-between p-4 bg-zinc-700 text-white">
+                    <div className="flex items-center justify-between p-4 bg-slate-900 text-white">
                       <div className="flex items-center gap-4">
                         <FileText className="h-5 w-5" />
                         <div className="text-sm font-medium">
@@ -306,14 +301,26 @@ const ComponentRepair = () => {
                             {r.serviceDone || "-"}
                           </div>
                         </div>
-                        <div>
-                          <div className="text-sm text-gray-900 font-bold mb-1">
-                            Prazo do serviço:
+                        {/* Condicional: Se FINALIZADO mostra Data de retirada, senão mostra Valor */}
+                        {r.status === "FINALIZADO" ? (
+                          <div>
+                            <div className="text-sm text-gray-900 font-bold mb-1">
+                              Data de retirada:
+                            </div>
+                            <div className="text-gray-900">
+                              {r.deadline || "-"}
+                            </div>
                           </div>
-                          <div className="text-gray-900">
-                            {r.deadline || "-"}
+                        ) : (
+                          <div>
+                            <div className="text-sm text-gray-900 font-bold mb-1">
+                              Valor:
+                            </div>
+                            <div className="text-gray-900">
+                              {formatCurrency(r.value)}
+                            </div>
                           </div>
-                        </div>
+                        )}
                       </div>
                     )}
 
@@ -400,14 +407,26 @@ const ComponentRepair = () => {
                             </div>
                           </div>
 
-                          <div>
-                            <div className="text-sm text-gray-900 font-bold">
-                              Prazo do serviço:
+                          {/* Condicional: Se FINALIZADO mostra Data de retirada, senão mostra Valor */}
+                          {r.status === "FINALIZADO" ? (
+                            <div>
+                              <div className="text-sm text-gray-900 font-bold">
+                                Data de retirada:
+                              </div>
+                              <div className="text-gray-900">
+                                {r.deadline || "-"}
+                              </div>
                             </div>
-                            <div className="text-gray-900">
-                              {r.deadline || "-"}
+                          ) : (
+                            <div>
+                              <div className="text-sm text-gray-900 font-bold">
+                                Valor:
+                              </div>
+                              <div className="text-gray-900">
+                                {formatCurrency(r.value)}
+                              </div>
                             </div>
-                          </div>
+                          )}
 
                           <div>
                             <div className="text-sm text-gray-900 font-bold">
@@ -418,14 +437,17 @@ const ComponentRepair = () => {
                             </div>
                           </div>
 
-                          <div>
-                            <div className="text-sm text-gray-900 font-bold">
-                              Valor:
+                          {/* Mostra Valor apenas se FINALIZADO (já que foi mostrado acima se não finalizado) */}
+                          {r.status === "FINALIZADO" && (
+                            <div>
+                              <div className="text-sm text-gray-900 font-bold">
+                                Valor:
+                              </div>
+                              <div className="text-gray-900">
+                                {formatCurrency(r.value)}
+                              </div>
                             </div>
-                            <div className="text-gray-900">
-                              {formatCurrency(r.value)}
-                            </div>
-                          </div>
+                          )}
                         </div>
 
                         {/* Coluna 4: Observações (sozinha) */}
