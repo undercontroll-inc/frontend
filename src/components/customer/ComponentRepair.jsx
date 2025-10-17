@@ -14,10 +14,12 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
+import SideBar from "../shared/SideBar";
 import { apiService } from "../../services/api";
 import Loading from "../shared/Loading";
 import Input from "../shared/Input";
 import Button from "../shared/Button";
+import Select from "../shared/Select";
 import Alert from "../shared/Alert";
 
 const statusStyles = {
@@ -63,7 +65,6 @@ const ComponentRepair = () => {
   const [alert, setAlert] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
-  const [expanded, setExpanded] = useState({});
 
   useEffect(() => {
     loadRepairs();
@@ -99,10 +100,6 @@ const ComponentRepair = () => {
     }
   };
 
-  const toggleExpand = (id) => {
-    setExpanded((prev) => ({ ...prev, [id]: !prev[id] }));
-  };
-
   const handleLogout = () => {
     logout();
     navigate("/login");
@@ -112,92 +109,46 @@ const ComponentRepair = () => {
     const term = searchTerm.trim().toLowerCase();
     if (statusFilter && r.status !== statusFilter) return false;
     if (!term) return true;
-    return (
-      (r.deviceType || "").toLowerCase().includes(term) ||
-      (r.brand || "").toLowerCase().includes(term) ||
-      (r.model || "").toLowerCase().includes(term) ||
-      (r.serial || "").toLowerCase().includes(term)
+
+    // Busca nos eletrodomésticos
+    const applianceMatch = r.appliances?.some(
+      (a) =>
+        (a.type || "").toLowerCase().includes(term) ||
+        (a.brand || "").toLowerCase().includes(term) ||
+        (a.model || "").toLowerCase().includes(term) ||
+        (a.serial || "").toLowerCase().includes(term)
     );
+
+    // Busca na descrição do serviço
+    const serviceMatch = (r.serviceDescription || "")
+      .toLowerCase()
+      .includes(term);
+
+    return applianceMatch || serviceMatch;
   });
 
   if (loading) return <Loading text="Carregando consertos..." />;
 
   return (
     <div className="flex min-h-screen bg-gray-50">
-      {/* Sidebar */}
-      <aside className="w-64 bg-gray-400 text-white flex flex-col">
-        {/* User Info */}
-        <div className="p-6 border-b border-gray-600">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center">
-              <User className="h-6 w-6 text-white" />
-            </div>
-            <div>
-              <div className="font-semibold text-gray-900">
-                {user?.name || "Usuário"}
-              </div>
-              <div className="text-sm text-gray-900">
-                {user?.name
-                  ? `${user.name.toLowerCase()}@email.com`
-                  : "email@email.com"}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Navigation Menu */}
-        <nav className="flex-1 py-4">
-          <button
-            onClick={() => navigate("/dashboard")}
-            className="w-full flex items-center gap-3 px-6 py-3 text-left hover:bg-gray-800 hover:text-white transition-colors text-gray-900"
-          >
-            <Home className="h-5 w-5" />
-            <span>Início</span>
-          </button>
-          <button className="w-full flex items-center gap-3 px-6 py-3 text-left bg-slate-900 text-white">
-            <Wrench className="h-5 w-5" />
-            <span>Consertos</span>
-          </button>
-          <button
-            onClick={() => navigate("/orcamentos")}
-            className="w-full flex items-center gap-3 px-6 py-3 text-left hover:bg-gray-800 hover:text-white transition-colors text-gray-900"
-          >
-            <Briefcase className="h-5 w-5" />
-            <span>Visita Técnica</span>
-          </button>
-        </nav>
-
-        {/* Logout Button */}
-        <div className="p-4 border-t border-gray-600">
-          <button
-            onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-6 py-3 text-left hover:bg-gray-800 hover:text-white transition-colors rounded text-gray-900"
-          >
-            <LogOut className="h-5 w-5" />
-            <span>Encerrar sessão</span>
-          </button>
-        </div>
-      </aside>
+      <SideBar active="repairs" />
 
       {/* Main Content */}
-      <div className="flex-1 overflow-y-auto h-screen p-8">
-        <div className="max-w-6xl mx-auto px-4 py-6">
+      <div className="flex-1 overflow-y-auto h-screen p-8 ">
+        <div className="max-w-6xl mx-auto py-2 pl-10">
           <div className="flex items-center justify-between pb-10">
             <h1 className="text-3xl font-bold text-gray-900">Consertos</h1>
             <div className="flex items-center gap-3 w-full max-w-2xl">
-              <div className="w-41 relative">
-                <select
-                  value={statusFilter}
-                  onChange={(e) => setStatusFilter(e.target.value)}
-                  className="w-full pl-3 pr-10 py-2 border border-gray-600 rounded-lg bg-slate-900 text-white focus:outline-none focus:ring-2 focus:ring-gray-100   appearance-none cursor-pointer"
-                >
-                  <option value="">Status: Todos</option>
-                  <option value="EM_ANDAMENTO">Em Andamento</option>
-                  <option value="FINALIZADO">Finalizado</option>
-                  <option value="NAO_INICIADO">Não Iniciado</option>
-                </select>
-                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white pointer-events-none" />
-              </div>
+              <Select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                containerClassName="w-48"
+              >
+                <option value="">Status: Todos</option>
+                <option value="EM_ANDAMENTO">Em Andamento</option>
+                <option value="FINALIZADO">Finalizado</option>
+                <option value="NAO_INICIADO">Não Iniciado</option>
+              </Select>
               <div className="flex-1">
                 <Input
                   placeholder="Pesquisar por: Tipo do aparelho, marca ou modelo"
@@ -206,6 +157,24 @@ const ComponentRepair = () => {
                   icon={Search}
                 />
               </div>
+            </div>
+          </div>
+
+          {/* Aviso/descrição da página */}
+          <div className="pb-6">
+            <div className="bg-gray-300 border border-gray-900 rounded-lg p-4 text-gray-900">
+              <p className="text-sm leading-relaxed text-center">
+                Nesta página você encontra todas as ordens de serviço realizadas
+                em nossa assistência técnica. Aqui é possível acompanhar seus
+                pedidos e verificar o status de cada atendimento.
+              </p>
+              <p className="text-sm mt-2 text-center">
+                <span className="font-bold">Observação:</span> O prazo para
+                retirada dos produtos é de 30 dias. Após esta data será
+                cobrado R$ 1,00 por dia de permanência. Produto não retirado no
+                prazo máximo de 60 dias será desmontado para recuperação das
+                peças aplicadas.
+              </p>
             </div>
           </div>
 
@@ -218,12 +187,12 @@ const ComponentRepair = () => {
           )}
 
           {filtered.length === 0 ? (
-            <div className="bg-white border border-gray-200 rounded-xl p-12 text-center shadow-sm">
+            <div className="bg-white border border-gray-200 rounded-xl p-12 text-center shadow-sm ">
               <Clock className="h-12 w-12 text-gray-400 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-gray-900 mb-2">
                 Nenhum conserto encontrado
               </h3>
-              <p className="text-gray-600 mb-6">
+              <p className="text-gray-600 mb-6 pb-5">
                 Não há registros de conserto para os filtros selecionados.
               </p>
               <Button onClick={() => setStatusFilter("")} variant="primary">
@@ -238,17 +207,17 @@ const ComponentRepair = () => {
                 return (
                   <div
                     key={r.id}
-                    className="bg-white border border-gray-300 rounded-xl shadow-md overflow-hidden"
+                    className="bg-white border border-black-500 rounded-xl shadow-md overflow-hidden"
                   >
                     {/* Cabeçalho do card */}
-                    <div className="flex items-center justify-between p-4 bg-slate-900 text-white">
+                    <div className="flex items-center justify-between p-4 bg-[#041A2D] text-white">
                       <div className="flex items-center gap-4">
                         <FileText className="h-5 w-5" />
                         <div className="text-sm font-medium">
                           Ordem de Serviço:
                         </div>
                         <div className="font-semibold">#{`A${r.id}`}</div>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 pl-40">
                           <span className="text-sm font-medium">Status:</span>
                           <div
                             className={`px-3 py-1 rounded-full text-xs font-medium ${status.bg} ${status.text} ${status.border} flex items-center gap-1`}
@@ -263,46 +232,50 @@ const ComponentRepair = () => {
                           Atualizado em:{" "}
                           {formatUpdatedAt(r.updatedAt || r.updated) || "-"}
                         </div>
-                        <button
-                          onClick={() => toggleExpand(r.id)}
-                          className="p-2 rounded-full hover:bg-gray-700 transition-colors"
-                        >
-                          <ChevronDown
-                            className={`h-5 w-5 transition-transform ${
-                              expanded[r.id] ? "rotate-180" : ""
-                            }`}
-                          />
-                        </button>
                       </div>
                     </div>
 
-                    {/* Visualização compacta (não expandido) */}
-                    {!expanded[r.id] && (
-                      <div className="p-4 bg-gray-300 grid grid-cols-4 gap-4 text-sm">
+                    {/* Visualização compacta */}
+                    <div className="p-3 bg-gray-300 pl-8">
+                      <div
+                        className={`grid ${
+                          r.status === "FINALIZADO"
+                            ? "grid-cols-4 pr-20 "
+                            : "grid-cols-3"
+                        } gap-4 text-sm mb-4`}
+                      >
                         <div>
                           <div className="text-sm text-gray-900 font-bold mb-1">
-                            Tipo do aparelho:
+                            Eletrodomésticos:
+                          </div>
+                          <div className="text-gray-900 whitespace-pre-line">
+                            {r.appliances?.length > 0
+                              ? r.appliances
+                                  .map(
+                                    (a, idx) => `${idx + 1}- ${a.type || "-"}`
+                                  )
+                                  .join("\n")
+                              : "-"}
+                          </div>
+                        </div>
+                        <div>
+                          <div className="text-sm text-gray-900 font-bold mb-1">
+                            Valor Total:
                           </div>
                           <div className="text-gray-900">
-                            {r.deviceType || "-"}
+                            {formatCurrency(r.totalValue)}
                           </div>
                         </div>
                         <div>
                           <div className="text-sm text-gray-900 font-bold mb-1">
-                            Marca:
-                          </div>
-                          <div className="text-gray-900">{r.brand || "-"}</div>
-                        </div>
-                        <div>
-                          <div className="text-sm text-gray-900 font-bold mb-1">
-                            Serviço realizado:
+                            Data de Recebimento:
                           </div>
                           <div className="text-gray-900">
-                            {r.serviceDone || "-"}
+                            {r.receivedAt || "-"}
                           </div>
                         </div>
-                        {/* Condicional: Se FINALIZADO mostra Data de retirada, senão mostra Valor */}
-                        {r.status === "FINALIZADO" ? (
+                        {/* Condicional: Se FINALIZADO mostra Data de retirada */}
+                        {r.status === "FINALIZADO" && (
                           <div>
                             <div className="text-sm text-gray-900 font-bold mb-1">
                               Data de retirada:
@@ -311,158 +284,18 @@ const ComponentRepair = () => {
                               {r.deadline || "-"}
                             </div>
                           </div>
-                        ) : (
-                          <div>
-                            <div className="text-sm text-gray-900 font-bold mb-1">
-                              Valor:
-                            </div>
-                            <div className="text-gray-900">
-                              {formatCurrency(r.value)}
-                            </div>
-                          </div>
                         )}
                       </div>
-                    )}
-
-                    {/* Corpo expandido*/}
-                    {expanded[r.id] && (
-                      <div className="p-6 bg-gray-300 grid grid-cols-1 md:grid-cols-4 gap-6 divide-x divide-gray-900">
-                        {/* Coluna 1: Informações do aparelho */}
-                        <div className="space-y-3 pr-4">
-                          <div>
-                            <div className="text-sm text-gray-900 font-bold">
-                              Tipo do aparelho:
-                            </div>
-                            <div className="text-gray-900">
-                              {r.deviceType || "-"}
-                            </div>
-                          </div>
-
-                          <div>
-                            <div className="text-sm text-gray-900 font-bold">
-                              Marca:
-                            </div>
-                            <div className="text-gray-900">
-                              {r.brand || "-"}
-                            </div>
-                          </div>
-
-                          <div>
-                            <div className="text-sm text-gray-900 font-bold">
-                              Modelo:
-                            </div>
-                            <div className="text-gray-900">
-                              {r.model || "-"}
-                            </div>
-                          </div>
-
-                          <div>
-                            <div className="text-sm text-gray-900 font-bold">
-                              Número de série:
-                            </div>
-                            <div className="text-gray-900">
-                              {r.serial || "-"}
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Coluna 2: Diagnóstico e Serviço */}
-                        <div className="space-y-3 px-4">
-                          <div>
-                            <div className="text-sm text-gray-900 font-bold">
-                              Diagnóstico:
-                            </div>
-                            <div className="text-gray-900 whitespace-pre-wrap">
-                              {r.diagnosis || "-"}
-                            </div>
-                          </div>
-
-                          <div>
-                            <div className="text-sm text-gray-900 font-bold">
-                              Serviço realizado:
-                            </div>
-                            <div className="text-gray-900">
-                              {r.serviceDone || "-"}
-                            </div>
-                          </div>
-
-                          <div>
-                            <div className="text-sm text-gray-900 font-bold">
-                              Peças substituídas:
-                            </div>
-                            <div className="text-gray-900">
-                              {(r.parts && r.parts.join(", ")) || "-"}
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Coluna 3: Datas e Valores */}
-                        <div className="space-y-3 px-4">
-                          <div>
-                            <div className="text-sm text-gray-900 font-bold">
-                              Recebimento:
-                            </div>
-                            <div className="text-gray-900">
-                              {r.receivedAt || "-"}
-                            </div>
-                          </div>
-
-                          {/* Condicional: Se FINALIZADO mostra Data de retirada, senão mostra Valor */}
-                          {r.status === "FINALIZADO" ? (
-                            <div>
-                              <div className="text-sm text-gray-900 font-bold">
-                                Data de retirada:
-                              </div>
-                              <div className="text-gray-900">
-                                {r.deadline || "-"}
-                              </div>
-                            </div>
-                          ) : (
-                            <div>
-                              <div className="text-sm text-gray-900 font-bold">
-                                Valor:
-                              </div>
-                              <div className="text-gray-900">
-                                {formatCurrency(r.value)}
-                              </div>
-                            </div>
-                          )}
-
-                          <div>
-                            <div className="text-sm text-gray-900 font-bold">
-                              Garantia:
-                            </div>
-                            <div className="text-gray-900">
-                              {r.warranty || "-"}
-                            </div>
-                          </div>
-
-                          {/* Mostra Valor apenas se FINALIZADO (já que foi mostrado acima se não finalizado) */}
-                          {r.status === "FINALIZADO" && (
-                            <div>
-                              <div className="text-sm text-gray-900 font-bold">
-                                Valor:
-                              </div>
-                              <div className="text-gray-900">
-                                {formatCurrency(r.value)}
-                              </div>
-                            </div>
-                          )}
-                        </div>
-
-                        {/* Coluna 4: Observações (sozinha) */}
-                        <div className="space-y-3 pl-4">
-                          <div>
-                            <div className="text-sm text-gray-900 font-bold">
-                              Observações:
-                            </div>
-                            <div className="text-gray-900 whitespace-pre-wrap">
-                              {r.notes || "-"}
-                            </div>
-                          </div>
-                        </div>
+                      <div className="flex justify-end text-sm">
+                        <button
+                          type="button"
+                          onClick={() => navigate(`/repairs/${r.id}`)}
+                         className="inline-flex items-center justify-center rounded-md px-4 py-2 h-8 font-medium bg-blue-900 text-white hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-900 focus:ring-offset-2 cursor-pointer"
+                        >
+                          Ver Detalhes da OS
+                        </button>
                       </div>
-                    )}
+                    </div>
                   </div>
                 );
               })}

@@ -8,6 +8,8 @@ import { AuthProvider } from "./contexts/AuthContext";
 import { ToastProvider } from "./contexts/ToastContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ComponentRepair from "./components/customer/ComponentRepair";
+import ComponentDetails from "./components/customer/ComponentDetails";
+import ComponentVisit from "./components/customer/ComponentVisit";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import Dashboard from "./components/dashboard/Dashboard";
@@ -27,7 +29,7 @@ function App() {
             <Route
               path="/dashboard"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute roles={["ADMIN"]}>
                   <Dashboard />
                 </ProtectedRoute>
               }
@@ -37,6 +39,33 @@ function App() {
               element={
                 <ProtectedRoute>
                   <ComponentRepair />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/repairs/:id"
+              element={
+                <ProtectedRoute>
+                  <ComponentDetails />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/visit"
+              element={
+                <ProtectedRoute>
+                  <ComponentVisit />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/orcamentos"
+              element={
+                <ProtectedRoute>
+                  <ComponentVisit />
                 </ProtectedRoute>
               }
             />

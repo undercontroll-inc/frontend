@@ -1,10 +1,14 @@
-import { Edit, Trash2 } from 'lucide-react';
-import Button from '../shared/Button';
-import { formatCurrency } from '../../utils/validation';
+import { Edit, Trash2 } from "lucide-react";
+import Button from "../shared/Button";
+import { formatCurrency } from "../../utils/validation";
 
 const ComponentCard = ({ component, onEdit, onDelete }) => {
   const handleDelete = () => {
-    if (window.confirm(`Tem certeza que deseja excluir o componente "${component.name}"?`)) {
+    if (
+      window.confirm(
+        `Tem certeza que deseja excluir o componente "${component.name}"?`
+      )
+    ) {
       onDelete(component.id);
     }
   };
@@ -14,9 +18,11 @@ const ComponentCard = ({ component, onEdit, onDelete }) => {
       {/* Header */}
       <div className="flex justify-between items-start mb-3">
         <div className="flex-1">
-          <h3 className="font-semibold text-gray-900 text-lg mb-1">{component.name}</h3>
+          <h3 className="font-semibold text-gray-900 text-lg mb-1">
+            {component.name}
+          </h3>
         </div>
-        <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+        <span className="bg-slate-100 text-slate-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
           {component.category}
         </span>
       </div>

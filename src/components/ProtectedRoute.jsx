@@ -1,9 +1,10 @@
-import { Navigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-import Loading from './shared/Loading';
+import { Navigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+import Loading from "./shared/Loading";
 
-const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated, loading } = useAuth();
+// roles: array de userType permitidos (ex.: ['ADMIN'])
+const ProtectedRoute = ({ children, roles }) => {
+  const { isAuthenticated, loading, user } = useAuth();
 
   if (loading) {
     return <Loading text="Verificando autenticação..." />;
@@ -11,6 +12,12 @@ const ProtectedRoute = ({ children }) => {
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
+  }
+
+  if (roles && user && !roles.includes(user.userType)) {
+    // Redireciona baseado no tipo do usuário
+    const fallback = user.userType === "ADMIN" ? "/dashboard" : "/repairs";
+    return <Navigate to={fallback} replace />;
   }
 
   return children;
