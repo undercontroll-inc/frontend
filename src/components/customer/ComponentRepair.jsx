@@ -15,7 +15,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import SideBar from "../shared/SideBar";
-import { apiService } from "../../services/api";
+import RepairService from "../../services/RepairService";
 import Loading from "../shared/Loading";
 import Input from "../shared/Input";
 import Button from "../shared/Button";
@@ -78,12 +78,13 @@ const ComponentRepair = () => {
 
       if (user?.id) {
         try {
-          data = await apiService.get(`/repairs?userId=${user.id}`);
+          data = await RepairService.getAllRepairs(user.id);
         } catch (err) {
-          data = await apiService.get("/repairs");
+          // Fallback: busca todos se falhar buscar por userId
+          data = await RepairService.getAllRepairs();
         }
       } else {
-        data = await apiService.get("/repairs");
+        data = await RepairService.getAllRepairs();
       }
 
       if (!Array.isArray(data)) data = [];
@@ -92,7 +93,7 @@ const ComponentRepair = () => {
       console.error("Erro ao carregar consertos:", error);
       setAlert({
         type: "error",
-        message: "Erro ao carregar consertos. Verifique o servidor.",
+        message: "Erro ao carregar consertos. Verifique se o json-server está rodando.",
       });
     } finally {
       setLoading(false);

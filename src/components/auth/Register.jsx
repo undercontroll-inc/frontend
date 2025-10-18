@@ -27,7 +27,7 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
   const [loadingCep, setLoadingCep] = useState(false);
   const [addressData, setAddressData] = useState(null);
-  
+
   const { register } = useAuth();
   const toast = useToast();
   const navigate = useNavigate();
@@ -76,7 +76,7 @@ const Register = () => {
 
   const handleInputChange = (e) => {
     let { name, value } = e.target;
-    
+
     if (name === 'cpf') {
       value = formatCPF(value);
     } else if (name === 'phone') {
@@ -84,9 +84,9 @@ const Register = () => {
     } else if (name === 'cep') {
       value = formatCEP(value);
     }
-    
+
     setFormData(prev => ({ ...prev, [name]: value }));
-    
+
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }));
     }
@@ -99,16 +99,16 @@ const Register = () => {
 
   const handleCepBlur = async () => {
     const cepValue = formData.cep;
-    
+
     if (!cepValue || cepValue.replace(/\D/g, '').length !== 8) {
       return;
     }
 
     setLoadingCep(true);
-    
+
     try {
       const result = await cepService.getAddressByCep(cepValue);
-      
+
       if (result.success) {
         setAddressData(result.data);
         setErrors(prev => ({ ...prev, cep: '' }));
@@ -233,13 +233,12 @@ const Register = () => {
       <div
         className={`
         flex items-center justify-center w-10 h-10 rounded-full transition-all duration-200
-        ${
-          isCompleted
+        ${isCompleted
             ? "bg-green-600 text-white"
             : isActive
-            ? "bg-slate-900 text-white"
-            : "bg-gray-200 text-gray-500"
-        }
+              ? "bg-slate-900 text-white"
+              : "bg-gray-200 text-gray-500"
+          }
       `}
       >
         {isCompleted ? (
@@ -255,7 +254,7 @@ const Register = () => {
     <div className="flex items-center justify-center mb-4">
       {[1, 2, 3].map((step, index) => (
         <div key={step} className="flex items-center">
-          <StepIndicator 
+          <StepIndicator
             step={step}
             isActive={step === currentStep}
             isCompleted={step < currentStep}
@@ -278,12 +277,12 @@ const Register = () => {
           <div>
             <div className="text-center mb-4">
               <div className="flex items-center justify-center gap-2 mb-1">
-                <User className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
+                <User className="h-4 w-4 sm:h-5 sm:w-5 text-slate-900" />
                 <h2 className="text-base sm:text-lg font-semibold text-gray-900">Informações Pessoais</h2>
               </div>
               <p className="text-xs sm:text-sm text-gray-600">Conte-nos um pouco sobre você</p>
             </div>
-            
+
             <div className="space-y-3 sm:space-y-4 mb-4">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
                 <Input
@@ -308,7 +307,7 @@ const Register = () => {
                   required
                 />
               </div>
-              
+
               <Input
                 label="Email *"
                 name="email"
@@ -320,7 +319,7 @@ const Register = () => {
                 autoComplete="email"
                 required
               />
-              
+
               <Input
                 label="CPF"
                 name="cpf"
@@ -331,7 +330,7 @@ const Register = () => {
                 maxLength={14}
               />
             </div>
-            
+
             <div className="flex justify-end">
               <Button onClick={nextStep} variant="primary" size="sm">
                 Próximo
@@ -346,12 +345,12 @@ const Register = () => {
           <div>
             <div className="text-center mb-4">
               <div className="flex items-center justify-center gap-2 mb-1">
-                <Home className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
+                <Home className="h-4 w-4 sm:h-5 sm:w-5 text-slate-900" />
                 <h2 className="text-base sm:text-lg font-semibold text-gray-900">Endereço e Contato</h2>
               </div>
               <p className="text-xs sm:text-sm text-gray-600">Informe seu endereço e telefone</p>
             </div>
-            
+
             <div className="space-y-3 sm:space-y-4 mb-4">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
                 <Input
@@ -366,7 +365,7 @@ const Register = () => {
                   required
                   disabled={loadingCep}
                 />
-                
+
                 <Input
                   label="Telefone *"
                   name="phone"
@@ -379,7 +378,7 @@ const Register = () => {
               </div>
 
               {loadingCep && (
-                <div className="flex items-center gap-2 text-sm text-blue-600">
+                <div className="flex items-center gap-2 text-sm text-slate-900">
                   <MapPin className="h-4 w-4 animate-pulse" />
                   <span>Buscando endereço...</span>
                 </div>
@@ -388,7 +387,7 @@ const Register = () => {
               {addressData && (
                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-2.5 sm:p-3 space-y-2">
                   <div className="flex items-start gap-2">
-                    <MapPin className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                    <MapPin className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-slate-900 mt-0.5 flex-shrink-0" />
                     <div className="flex-1">
                       <p className="text-xs sm:text-sm font-medium text-gray-900">Endereço encontrado:</p>
                       <p className="text-xs sm:text-sm text-gray-600 mt-0.5">
@@ -398,7 +397,7 @@ const Register = () => {
                       </p>
                     </div>
                   </div>
-                  
+
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-2.5 sm:gap-3 pt-1">
                     <Input
                       label="Número *"
@@ -409,7 +408,7 @@ const Register = () => {
                       error={errors.numero}
                       required
                     />
-                    
+
                     <Input
                       label="Complemento"
                       name="complemento"
@@ -421,7 +420,7 @@ const Register = () => {
                 </div>
               )}
             </div>
-            
+
             <div className="flex justify-between">
               <Button onClick={prevStep} variant="outline" size="sm">
                 <ChevronLeft className="h-4 w-4" />
@@ -440,12 +439,12 @@ const Register = () => {
           <div>
             <div className="text-center mb-4">
               <div className="flex items-center justify-center gap-2 mb-1">
-                <Lock className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
+                <Lock className="h-4 w-4 sm:h-5 sm:w-5 text-slate-900" />
                 <h2 className="text-base sm:text-lg font-semibold text-gray-900">Defina sua Senha</h2>
               </div>
               <p className="text-xs sm:text-sm text-gray-600">Crie uma senha segura para proteger sua conta</p>
             </div>
-            
+
             <div className="mb-4">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
                 <Input
@@ -473,7 +472,7 @@ const Register = () => {
                 />
               </div>
             </div>
-            
+
             <div className="flex justify-between">
               <Button onClick={prevStep} variant="outline" size="sm">
                 <ChevronLeft className="h-4 w-4" />
@@ -503,7 +502,7 @@ const Register = () => {
         <div className="bg-white border border-gray-200 rounded-xl shadow-lg max-h-[calc(100vh-2rem)] flex flex-col overflow-hidden">
           <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-5">
             <div className="text-center mb-4">
-              <h1 className="text-blue-700 text-xl sm:text-2xl font-bold mb-1 flex items-center justify-center gap-2">
+              <h1 className="text-slate-900 text-xl sm:text-2xl font-bold mb-1 flex items-center justify-center gap-2">
                 <UserPlus className="h-5 w-5 sm:h-6 sm:w-6" />
                 Criar Conta
               </h1>
@@ -517,9 +516,9 @@ const Register = () => {
             <div className="text-center mt-4 pt-4 border-t border-gray-100">
               <p className="text-gray-600 text-xs sm:text-sm">
                 Já tem uma conta?{' '}
-                <Link 
-                  to="/login" 
-                  className="text-blue-600 hover:text-blue-700 font-medium transition-colors"
+                <Link
+                  to="/login"
+                  className="text-slate-900 hover:text-slate-700 font-medium transition-colors"
                 >
                   Faça login aqui
                 </Link>
@@ -528,7 +527,7 @@ const Register = () => {
           </div>
         </div>
       </div>
-    </AuthLayout>
+    </div>
   );
 };
 

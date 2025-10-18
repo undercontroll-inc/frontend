@@ -47,6 +47,36 @@ class UserService {
       };
     }
   }
+
+  async getAllUsers() {
+    try {
+      const response = await apiClient.get(BASE_URI);
+      return { 
+        success: true, 
+        data: response.data 
+      };
+    } catch (e) {
+      return { 
+        success: false, 
+        error: getAxiosErrorMessage(e) 
+      };
+    }
+  }
+
+  async getUserById(id) {
+    try {
+      const response = await apiClient.get(`${BASE_URI}/${id}`);
+      return { 
+        success: true, 
+        data: response.data 
+      };
+    } catch (e) {
+      return { 
+        success: false, 
+        error: getAxiosErrorMessage(e) 
+      };
+    }
+  }
 }
 
 export const userService = new UserService();

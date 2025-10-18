@@ -4,7 +4,7 @@ import { ArrowLeft, FileDown } from "lucide-react";
 import SideBar from "../shared/SideBar";
 import Loading from "../shared/Loading";
 import Button from "../shared/Button";
-import { apiService } from "../../services/api";
+import RepairService from "../../services/RepairService";
 
 const formatCurrency = (v) => {
   if (v == null) return "-";
@@ -31,7 +31,7 @@ const ComponentDetails = () => {
   const loadRepairDetails = async () => {
     try {
       setLoading(true);
-      const data = await apiService.get(`/repairs/${id}`);
+      const data = await RepairService.getRepairById(id);
       setRepair(data);
     } catch (error) {
       console.error("Erro ao carregar detalhes:", error);

@@ -1,13 +1,13 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { userService } from '../services/UserService';
-import { getToken, saveToken, removeToken, isLoggedIn } from '../utils/auth';
+import { getToken, saveToken, saveUserData, getUserData, clearAuth, isLoggedIn } from '../utils/auth';
 
 const AuthContext = createContext(null);
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider");
+    throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
 };
@@ -21,33 +21,17 @@ export const AuthProvider = ({ children }) => {
       if (isLoggedIn()) {
         try {
           const token = getToken();
-          if (token) {
-            // Token format used by this demo is `token_<id>` (created at login)
-            // Try to recover the user from the token by extracting the id
-            const match = token.match(/^token_(\d+)$/);
-            if (match) {
-              const userId = Number(match[1]);
-              try {
-                const users = await apiService.get("/user");
-                const foundUser = users.find((u) => Number(u.id) === userId);
-                if (foundUser) {
-                  setUser({ ...foundUser, token });
-                } else {
-                  // Fallback: keep token only if user not found
-                  setUser({ token });
-                }
-              } catch (err) {
-                console.error("Failed to fetch user for token:", err);
-                setUser({ token });
-              }
-            } else {
-              // If token doesn't follow expected format, keep token only
-              setUser({ token });
-            }
+          const userData = getUserData();
+          
+          if (token && userData) {
+            setUser(userData);
+          } else if (token) {
+            // Se tem token mas não tem dados do usuário, limpa tudo
+            clearAuth();
           }
         } catch (error) {
-          console.error("Auth initialization failed:", error);
-          removeToken();
+          console.error('Auth initialization failed:', error);
+          clearAuth();
         }
       }
       setLoading(false);
@@ -60,13 +44,14 @@ export const AuthProvider = ({ children }) => {
     try {
       const result = await userService.auth(credentials.name, credentials.password);
       
-      // Salva o token JWT vindo do backend
       if (result.success) {
         if (result.data?.token) {
+          // O backend retorna duas chaves, uma sendo o token de autenticação e outra os dados basicos do usuario.
           saveToken(result.data.token);
-          setUser(result.data);
+          saveUserData(result.data.user);
+          setUser(result.data.user);
         }
-        return { success: true };
+        return { success: true, user: result.data.user };
       } else {
         return { 
           success: false, 
@@ -107,7 +92,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    removeToken();
+    clearAuth();
     setUser(null);
   };
 
@@ -120,5 +105,9 @@ export const AuthProvider = ({ children }) => {
     isAuthenticated: !!user,
   };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
