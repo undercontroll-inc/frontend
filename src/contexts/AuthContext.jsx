@@ -7,7 +7,7 @@ const AuthContext = createContext(null);
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };
@@ -22,10 +22,31 @@ export const AuthProvider = ({ children }) => {
         try {
           const token = getToken();
           if (token) {
-            setUser({ token });
+            // Token format used by this demo is `token_<id>` (created at login)
+            // Try to recover the user from the token by extracting the id
+            const match = token.match(/^token_(\d+)$/);
+            if (match) {
+              const userId = Number(match[1]);
+              try {
+                const users = await apiService.get("/user");
+                const foundUser = users.find((u) => Number(u.id) === userId);
+                if (foundUser) {
+                  setUser({ ...foundUser, token });
+                } else {
+                  // Fallback: keep token only if user not found
+                  setUser({ token });
+                }
+              } catch (err) {
+                console.error("Failed to fetch user for token:", err);
+                setUser({ token });
+              }
+            } else {
+              // If token doesn't follow expected format, keep token only
+              setUser({ token });
+            }
           }
         } catch (error) {
-          console.error('Auth initialization failed:', error);
+          console.error("Auth initialization failed:", error);
           removeToken();
         }
       }
@@ -99,9 +120,5 @@ export const AuthProvider = ({ children }) => {
     isAuthenticated: !!user,
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

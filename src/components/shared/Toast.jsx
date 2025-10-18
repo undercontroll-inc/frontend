@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { X, CheckCircle, AlertCircle, AlertTriangle, Info } from 'lucide-react';
+import { useEffect, useState } from "react";
+import { X, CheckCircle, AlertCircle, AlertTriangle, Info } from "lucide-react";
 
 const Toast = ({ toast, onRemove }) => {
   const [isVisible, setIsVisible] = useState(false);

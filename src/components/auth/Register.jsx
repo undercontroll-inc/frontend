@@ -70,7 +70,7 @@ const Register = () => {
         if (value !== formData.password) return 'Senhas não coincidem';
         return '';
       default:
-        return '';
+        return "";
     }
   };
 
@@ -88,7 +88,7 @@ const Register = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
     
     if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: '' }));
+      setErrors((prev) => ({ ...prev, [name]: "" }));
     }
 
     if (name === 'password' && formData.confirmPassword) {
@@ -134,7 +134,7 @@ const Register = () => {
     const newErrors = {};
     let isValid = true;
 
-    fields.forEach(field => {
+    fields.forEach((field) => {
       const error = validateField(field, formData[field]);
       if (error) {
         newErrors[field] = error;
@@ -148,9 +148,9 @@ const Register = () => {
     }
 
     setErrors(newErrors);
-    
+
     if (!isValid) {
-      toast.error('Por favor, corrija os erros antes de continuar.');
+      toast.error("Por favor, corrija os erros antes de continuar.");
     }
 
     return isValid;
@@ -166,13 +166,13 @@ const Register = () => {
   const prevStep = () => {
     if (currentStep > 1) {
       setCurrentStep(currentStep - 1);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!validateCurrentStep()) return;
 
     setLoading(true);
@@ -199,20 +199,22 @@ const Register = () => {
       });
 
       if (result.success) {
-        toast.success('Conta criada com sucesso! Redirecionando para o login...');
-        
+        toast.success(
+          "Conta criada com sucesso! Redirecionando para o login..."
+        );
+
         setTimeout(() => {
-          navigate('/login');
+          navigate("/login");
         }, 2000);
       } else {
         toast.error(result.error);
-        
-        if (result.error.includes('CPF')) {
+
+        if (result.error.includes("CPF")) {
           setCurrentStep(1);
         }
       }
     } catch (error) {
-      toast.error('Erro inesperado. Tente novamente.');
+      toast.error("Erro inesperado. Tente novamente.");
     } finally {
       setLoading(false);
     }
@@ -222,22 +224,29 @@ const Register = () => {
     const icons = {
       1: User,
       2: Home,
-      3: Lock
+      3: Lock,
     };
-    
+
     const Icon = icons[step];
-    
+
     return (
-      <div className={`
+      <div
+        className={`
         flex items-center justify-center w-10 h-10 rounded-full transition-all duration-200
-        ${isCompleted 
-          ? 'bg-green-600 text-white' 
-          : isActive 
-            ? 'bg-blue-600 text-white' 
-            : 'bg-gray-200 text-gray-500'
+        ${
+          isCompleted
+            ? "bg-green-600 text-white"
+            : isActive
+            ? "bg-slate-900 text-white"
+            : "bg-gray-200 text-gray-500"
         }
-      `}>
-        {isCompleted ? <CheckCircle className="h-5 w-5" /> : <Icon className="h-5 w-5" />}
+      `}
+      >
+        {isCompleted ? (
+          <CheckCircle className="h-5 w-5" />
+        ) : (
+          <Icon className="h-5 w-5" />
+        )}
       </div>
     );
   };
@@ -287,7 +296,7 @@ const Register = () => {
                   autoComplete="given-name"
                   required
                 />
-                
+
                 <Input
                   label="Sobrenome *"
                   name="lastname"
@@ -331,7 +340,7 @@ const Register = () => {
             </div>
           </div>
         );
-        
+
       case 2:
         return (
           <div>
@@ -425,7 +434,7 @@ const Register = () => {
             </div>
           </div>
         );
-        
+
       case 3:
         return (
           <div>
@@ -450,7 +459,7 @@ const Register = () => {
                   autoComplete="new-password"
                   required
                 />
-                
+
                 <Input
                   label="Confirmar Senha *"
                   name="confirmPassword"
@@ -470,19 +479,19 @@ const Register = () => {
                 <ChevronLeft className="h-4 w-4" />
                 Anterior
               </Button>
-              <Button 
-                onClick={handleSubmit} 
+              <Button
+                onClick={handleSubmit}
                 variant="primary"
                 size="sm"
                 loading={loading}
                 disabled={loading}
               >
-                {loading ? 'Criando conta...' : 'Criar Conta'}
+                {loading ? "Criando conta..." : "Criar Conta"}
               </Button>
             </div>
           </div>
         );
-        
+
       default:
         return null;
     }
@@ -519,7 +528,7 @@ const Register = () => {
           </div>
         </div>
       </div>
-    </div>
+    </AuthLayout>
   );
 };
 

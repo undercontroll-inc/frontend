@@ -1,50 +1,52 @@
-import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { User, Lock, Wrench } from 'lucide-react';
-import { useAuth } from '../../contexts/AuthContext';
-import { useToast } from '../../contexts/ToastContext';
-import Input from '../shared/Input';
-import Button from '../shared/Button';
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { User, Lock, Wrench } from "lucide-react";
+import { useAuth } from "../../contexts/AuthContext";
+import { useToast } from "../../contexts/ToastContext";
+import Input from "../shared/Input";
+import Button from "../shared/Button";
+import AuthLayout from "../shared/AuthLayout";
 
 const Login = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    password: ''
+    name: "",
+    password: "",
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
-  const { login, isAuthenticated } = useAuth();
+  const { login, isAuthenticated, user } = useAuth();
   const toast = useToast();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/dashboard');
+      const dest = user?.userType === "ADMIN" ? "/dashboard" : "/repairs";
+      navigate(dest, { replace: true });
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, user, navigate]);
 
   const validateField = (name, value) => {
     switch (name) {
-      case 'name':
-        if (!value.trim()) return 'Nome é obrigatório';
-        if (value.length < 2) return 'Nome deve ter pelo menos 2 caracteres';
-        return '';
-      case 'password':
-        if (!value) return 'Senha é obrigatória';
-        if (value.length < 3) return 'Senha deve ter pelo menos 3 caracteres';
-        return '';
+      case "name":
+        if (!value.trim()) return "Nome é obrigatório";
+        if (value.length < 2) return "Nome deve ter pelo menos 2 caracteres";
+        return "";
+      case "password":
+        if (!value) return "Senha é obrigatória";
+        if (value.length < 3) return "Senha deve ter pelo menos 3 caracteres";
+        return "";
       default:
-        return '';
+        return "";
     }
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
 
     if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: '' }));
+      setErrors((prev) => ({ ...prev, [name]: "" }));
     }
   };
 
@@ -52,14 +54,14 @@ const Login = () => {
     e.preventDefault();
 
     const newErrors = {};
-    Object.keys(formData).forEach(key => {
+    Object.keys(formData).forEach((key) => {
       const error = validateField(key, formData[key]);
       if (error) newErrors[key] = error;
     });
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
-      toast.error('Por favor, corrija os erros antes de continuar.');
+      toast.error("Por favor, corrija os erros antes de continuar.");
       return;
     }
 
@@ -71,7 +73,9 @@ const Login = () => {
       if (result.success) {
         toast.success(`Bem-vindo, ${result.user.name}!`);
         setTimeout(() => {
-          navigate('/dashboard');
+          const dest =
+            result.user?.userType === "ADMIN" ? "/dashboard" : "/repairs";
+          navigate(dest);
         }, 500);
       } else {
         toast.error("Email ou senhas invalidos");
@@ -161,8 +165,21 @@ const Login = () => {
           </div>
           </div>
         </div>
+      </form>
+
+      {/* Footer */}
+      <div className="text-center mt-auto pt-6 border-t border-gray-100">
+        <p className="text-gray-600 text-sm">
+          Não tem uma conta?{" "}
+          <Link
+            to="/register"
+            className="text-slate-900 hover:text-slate-700 font-medium transition-colors"
+          >
+            Cadastre-se aqui
+          </Link>
+        </p>
       </div>
-    </div>
+    </AuthLayout>
   );
 };
 

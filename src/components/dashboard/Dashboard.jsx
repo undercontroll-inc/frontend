@@ -1,26 +1,29 @@
-import { useState, useEffect } from 'react';
-import { Search, Plus, Wrench, LogOut } from 'lucide-react';
-import { useAuth } from '../../contexts/AuthContext';
-import { userService } from '../../services/UserService';
-import ComponentCard from './ComponentCard';
-import ComponentModal from './ComponentModal';
-import Input from '../shared/Input';
-import Button from '../shared/Button';
-import Loading from '../shared/Loading';
-import Alert from '../shared/Alert';
+import { useState, useEffect } from "react";
+import { Search, Plus, Wrench, LogOut } from "lucide-react";
+import { useAuth } from "../../contexts/AuthContext";
+import { apiService } from "../../services/api";
+import ComponentCard from "./ComponentCard";
+import ComponentModal from "./ComponentModal";
+import Input from "../shared/Input";
+import Button from "../shared/Button";
+import Loading from "../shared/Loading";
+import Alert from "../shared/Alert";
+import PageContainer from "../shared/PageContainer";
+import Card from "../shared/Card";
 
 const Dashboard = () => {
   const [components, setComponents] = useState([]);
   const [filteredComponents, setFilteredComponents] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingComponent, setEditingComponent] = useState(null);
   const [alert, setAlert] = useState(null);
-  
+
   const { user, logout } = useAuth();
+  console.log("Authenticated user:", user);
 
   useEffect(() => {
     loadComponents();
@@ -33,15 +36,18 @@ const Dashboard = () => {
   const loadComponents = async () => {
     try {
       setLoading(true);
-      const data = await userService.get('/components');
+      const data = await apiService.get("/components");
       setComponents(data);
-      
+
       // Extract unique categories
-      const uniqueCategories = [...new Set(data.map(c => c.category))].sort();
+      const uniqueCategories = [...new Set(data.map((c) => c.category))].sort();
       setCategories(uniqueCategories);
     } catch (error) {
-      console.error('Error loading components:', error);
-      showAlert('error', 'Erro ao carregar componentes. Verifique se o servidor está rodando.');
+      console.error("Error loading components:", error);
+      showAlert(
+        "error",
+        "Erro ao carregar componentes. Verifique se o servidor está rodando."
+      );
     } finally {
       setLoading(false);
     }
@@ -53,17 +59,20 @@ const Dashboard = () => {
     // Filter by search term
     if (searchTerm) {
       const searchLower = searchTerm.toLowerCase();
-      filtered = filtered.filter(component =>
-        component.name.toLowerCase().includes(searchLower) ||
-        component.description.toLowerCase().includes(searchLower) ||
-        component.brand.toLowerCase().includes(searchLower) ||
-        component.supplier.toLowerCase().includes(searchLower)
+      filtered = filtered.filter(
+        (component) =>
+          component.name.toLowerCase().includes(searchLower) ||
+          component.description.toLowerCase().includes(searchLower) ||
+          component.brand.toLowerCase().includes(searchLower) ||
+          component.supplier.toLowerCase().includes(searchLower)
       );
     }
 
     // Filter by category
     if (selectedCategory) {
-      filtered = filtered.filter(component => component.category === selectedCategory);
+      filtered = filtered.filter(
+        (component) => component.category === selectedCategory
+      );
     }
 
     setFilteredComponents(filtered);
@@ -88,30 +97,30 @@ const Dashboard = () => {
     try {
       if (componentId) {
         // Update existing component
-        await userService.put(`/components/${componentId}`, componentData);
-        showAlert('success', 'Componente atualizado com sucesso!');
+        await apiService.put(`/components/${componentId}`, componentData);
+        showAlert("success", "Componente atualizado com sucesso!");
       } else {
         // Create new component
-        await userService.post('/components', componentData);
-        showAlert('success', 'Componente criado com sucesso!');
+        await apiService.post("/components", componentData);
+        showAlert("success", "Componente criado com sucesso!");
       }
-      
+
       await loadComponents();
     } catch (error) {
-      console.error('Error saving component:', error);
-      showAlert('error', 'Erro ao salvar componente. Tente novamente.');
+      console.error("Error saving component:", error);
+      showAlert("error", "Erro ao salvar componente. Tente novamente.");
       throw error; // Re-throw to handle in modal
     }
   };
 
   const handleDeleteComponent = async (componentId) => {
     try {
-      await userService.delete(`/components/${componentId}`);
-      showAlert('success', 'Componente excluído com sucesso!');
+      await apiService.delete(`/components/${componentId}`);
+      showAlert("success", "Componente excluído com sucesso!");
       await loadComponents();
     } catch (error) {
-      console.error('Error deleting component:', error);
-      showAlert('error', 'Erro ao excluir componente. Tente novamente.');
+      console.error("Error deleting component:", error);
+      showAlert("error", "Erro ao excluir componente. Tente novamente.");
     }
   };
 
@@ -124,81 +133,86 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 py-6">
-        {/* Header */}
-        <div className="bg-white border border-gray-200 rounded-xl p-6 mb-6 shadow-sm">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-blue-700 text-3xl font-bold mb-2 flex items-center gap-3">
-                <Wrench className="h-8 w-8" />
-                Dashboard de Componentes
-              </h1>
-              <p className="text-gray-600">Sistema de Gerenciamento de Componentes Microeletrônicos</p>
-            </div>
-            <div className="flex items-center gap-4">
-              <span className="text-gray-600">
-                Bem-vindo, <span className="font-medium">{user?.name}</span>
-              </span>
-              <Button variant="outline" onClick={handleLogout}>
-                <LogOut className="h-4 w-4" />
-                Sair
-              </Button>
-            </div>
+    <PageContainer>
+      {/* Header */}
+      <Card className="mb-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-gray-900 text-3xl font-bold mb-2 flex items-center gap-3">
+              <Wrench className="h-8 w-8" />
+              Dashboard de Componentes
+            </h1>
+            <p className="text-gray-600">
+              Sistema de Gerenciamento de Componentes Microeletrônicos
+            </p>
           </div>
-        </div>
-
-        {/* Controls */}
-        <div className="bg-white border border-gray-200 rounded-xl p-6 mb-6 shadow-sm">
-          <div className="flex flex-col md:flex-row gap-4">
-            <div className="flex-1">
-              <Input
-                placeholder="Pesquisar componentes..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                icon={Search}
-              />
-            </div>
-            <div className="w-full md:w-48">
-              <select
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              >
-                <option value="">Todas as categorias</option>
-                {categories.map(category => (
-                  <option key={category} value={category}>{category}</option>
-                ))}
-              </select>
-            </div>
-            <Button onClick={handleCreateComponent} variant="primary">
-              <Plus className="h-4 w-4" />
-              Novo Componente
+          <div className="flex items-center gap-4">
+            <span className="text-gray-600">
+              Bem-vindo, <span className="font-medium">{user?.name}</span>
+            </span>
+            <Button variant="outline" onClick={handleLogout}>
+              <LogOut className="h-4 w-4" />
+              Sair
             </Button>
           </div>
         </div>
+      </Card>
 
-        {/* Alert */}
-        {alert && (
-          <Alert 
-            type={alert.type} 
-            message={alert.message}
-            onClose={() => setAlert(null)}
-          />
-        )}
+      {/* Controls */}
+      <Card className="mb-6">
+        <div className="flex flex-col md:flex-row gap-4">
+          <div className="flex-1">
+            <Input
+              placeholder="Pesquisar componentes..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              icon={Search}
+            />
+          </div>
+          <div className="w-full md:w-48">
+            <select
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-slate-900"
+            >
+              <option value="">Todas as categorias</option>
+              {categories.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
+            </select>
+          </div>
+          <Button onClick={handleCreateComponent} variant="primary">
+            <Plus className="h-4 w-4" />
+            Novo Componente
+          </Button>
+        </div>
+      </Card>
 
-        {/* Components Grid */}
-        {filteredComponents.length === 0 ? (
-          <div className="bg-white border border-gray-200 rounded-xl p-12 text-center shadow-sm">
+      {/* Alert */}
+      {alert && (
+        <Alert
+          type={alert.type}
+          message={alert.message}
+          onClose={() => setAlert(null)}
+        />
+      )}
+
+      {/* Components Grid */}
+      {filteredComponents.length === 0 ? (
+        <Card>
+          <div className="text-center">
             <Wrench className="h-12 w-12 text-gray-400 mx-auto mb-4" />
             <h3 className="text-lg font-medium text-gray-900 mb-2">
-              {components.length === 0 ? 'Nenhum componente cadastrado' : 'Nenhum componente encontrado'}
+              {components.length === 0
+                ? "Nenhum componente cadastrado"
+                : "Nenhum componente encontrado"}
             </h3>
             <p className="text-gray-600 mb-6">
-              {components.length === 0 
-                ? 'Comece criando seu primeiro componente eletrônico'
-                : 'Tente ajustar os filtros de pesquisa'
-              }
+              {components.length === 0
+                ? "Comece criando seu primeiro componente eletrônico"
+                : "Tente ajustar os filtros de pesquisa"}
             </p>
             {components.length === 0 && (
               <Button onClick={handleCreateComponent} variant="primary">
@@ -207,28 +221,28 @@ const Dashboard = () => {
               </Button>
             )}
           </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {filteredComponents.map(component => (
-              <ComponentCard
-                key={component.id}
-                component={component}
-                onEdit={handleEditComponent}
-                onDelete={handleDeleteComponent}
-              />
-            ))}
-          </div>
-        )}
+        </Card>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {filteredComponents.map((component) => (
+            <ComponentCard
+              key={component.id}
+              component={component}
+              onEdit={handleEditComponent}
+              onDelete={handleDeleteComponent}
+            />
+          ))}
+        </div>
+      )}
 
-        {/* Component Modal */}
-        <ComponentModal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          component={editingComponent}
-          onSave={handleSaveComponent}
-        />
-      </div>
-    </div>
+      {/* Component Modal */}
+      <ComponentModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        component={editingComponent}
+        onSave={handleSaveComponent}
+      />
+    </PageContainer>
   );
 };
 
