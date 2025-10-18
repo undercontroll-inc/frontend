@@ -29,6 +29,11 @@
       "password": "ishow123",
       "userType": "COSTUMER",
       "id": 3
+    },
+    {
+      "email": "lucas",
+      "password": "ishow123",
+      "id": 4
     }
   ],
   "components": [

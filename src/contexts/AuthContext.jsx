@@ -39,8 +39,8 @@ export const AuthProvider = ({ children }) => {
     try {
       const result = await userService.auth(credentials.name, credentials.password);
       
+      // Salva o token JWT vindo do backend
       if (result.success) {
-        // Salvar token se vier do backend
         if (result.data?.token) {
           saveToken(result.data.token);
           setUser(result.data);
@@ -61,13 +61,13 @@ export const AuthProvider = ({ children }) => {
   };
 
   const register = async (userData) => {
+    const data = {
+      ...userData,
+      userType: "COSTUMER" // isso aqui não é seguro
+    };
+    
     try {
-      const newUser = {
-        ...userData,
-        userType: "COSTUMER"
-      };
-      
-      const result = await userService.register(newUser);
+      const result = await userService.register(data);
       
       if (result.success) {
         return { success: true };

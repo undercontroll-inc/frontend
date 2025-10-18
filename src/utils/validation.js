@@ -87,3 +87,14 @@ export const formatPhoneBR = (value) => {
   }
   return phone;
 };
+
+export const formatCEP = (value) => {
+  let cep = value.replace(/\D/g, '');
+  cep = cep.replace(/(\d{5})(\d)/, '$1-$2');
+  return cep;
+};
+
+export const validateCEP = (cep) => {
+  const cleanCep = cep.replace(/\D/g, '');
+  return cleanCep.length === 8;
+};

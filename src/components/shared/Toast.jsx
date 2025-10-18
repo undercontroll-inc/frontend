@@ -6,114 +6,100 @@ const Toast = ({ toast, onRemove }) => {
   const [isRemoving, setIsRemoving] = useState(false);
 
   useEffect(() => {
-    setIsVisible(true);
+    const timer = setTimeout(() => setIsVisible(true), 10);
+    return () => clearTimeout(timer);
   }, []);
 
   const handleRemove = () => {
     setIsRemoving(true);
     setTimeout(() => {
       onRemove(toast.id);
-    }, 150);
+    }, 200);
   };
 
-  const getIcon = () => {
-    switch (toast.type) {
-      case 'success':
-        return <CheckCircle className="h-5 w-5 text-green-600" />;
-      case 'error':
-        return <AlertCircle className="h-5 w-5 text-red-600" />;
-      case 'warning':
-        return <AlertTriangle className="h-5 w-5 text-yellow-600" />;
-      case 'info':
-        return <Info className="h-5 w-5 text-blue-600" />;
-      default:
-        return null;
-    }
+  const getVariantStyles = () => {
+    const variants = {
+      success: {
+        container: 'border-green-500/50 bg-white',
+        icon: <CheckCircle className="h-5 w-5 text-green-600" />,
+        iconBg: 'bg-green-50',
+      },
+      error: {
+        container: 'border-red-500/50 bg-white',
+        icon: <AlertCircle className="h-5 w-5 text-red-600" />,
+        iconBg: 'bg-red-50',
+      },
+      warning: {
+        container: 'border-yellow-500/50 bg-white',
+        icon: <AlertTriangle className="h-5 w-5 text-yellow-600" />,
+        iconBg: 'bg-yellow-50',
+      },
+      info: {
+        container: 'border-blue-500/50 bg-white',
+        icon: <Info className="h-5 w-5 text-blue-600" />,
+        iconBg: 'bg-blue-50',
+      },
+      default: {
+        container: 'border-gray-200 bg-white',
+        icon: <Info className="h-5 w-5 text-gray-600" />,
+        iconBg: 'bg-gray-50',
+      },
+    };
+
+    return variants[toast.type] || variants.default;
   };
 
-  const getToastStyles = () => {
-    const baseStyles = "group pointer-events-auto relative flex w-full items-center justify-between space-x-4 overflow-hidden rounded-md border p-6 pr-8 shadow-lg transition-all";
-    
-    switch (toast.type) {
-      case 'success':
-        return `${baseStyles} border-green-200 bg-white text-green-950`;
-      case 'error':
-        return `${baseStyles} border-red-200 bg-white text-red-950`;
-      case 'warning':
-        return `${baseStyles} border-yellow-200 bg-white text-yellow-950`;
-      case 'info':
-        return `${baseStyles} border-blue-200 bg-white text-blue-950`;
-      default:
-        return `${baseStyles} border-gray-200 bg-white text-gray-950`;
-    }
-  };
-
-  const getProgressBarStyles = () => {
-    switch (toast.type) {
-      case 'success':
-        return "bg-green-600";
-      case 'error':
-        return "bg-red-600";
-      case 'warning':
-        return "bg-yellow-600";
-      case 'info':
-        return "bg-blue-600";
-      default:
-        return "bg-gray-600";
-    }
-  };
+  const variant = getVariantStyles();
 
   return (
     <div
       role="status"
       aria-live="polite"
-      className={`max-w-sm w-full rounded-lg bg-white pointer-events-auto shadow-xl border border-gray-200 ring-1 ring-black/5 overflow-hidden transform transition-all duration-300 ease-in-out group hover:shadow-2xl
-        ${isVisible && !isRemoving ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'}
-      `}
-      tabIndex={0}
-    >
-      <div className={getToastStyles() + ' py-4 px-5'}>
-        <div className="flex items-start space-x-4 w-full">
-          <div className="pt-0.5">{getIcon()}</div>
-          <div className="flex-1 items-center min-w-0">
-            {toast.title && (
-              <div className="text-sm font-bold leading-tight mb-0.5">{toast.title}</div>
-            )}
-            {toast.description && (
-              <div className="text-sm text-gray-700 opacity-90">{toast.description}</div>
-            )}
-            {toast.action && (
-              <div className="mt-3">{toast.action}</div>
-            )}
-          </div>
-          <button
-            onClick={handleRemove}
-            aria-label="Close notification"
-            className="ml-2 rounded-md p-1 text-gray-400 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
-          >
-            <X className="h-5 w-5" />
-          </button>
-        </div>
-      </div>
-      {toast.duration > 0 && (
-        <div className="h-1 w-full bg-gray-100">
-          <div
-            className={`h-full ${getProgressBarStyles()} transition-all ease-linear`}
-            style={{
-              animationDuration: `${toast.duration}ms`,
-              animationName: 'progress',
-              animationTimingFunction: 'linear',
-              animationFillMode: 'forwards',
-            }}
-          />
-        </div>
-      )}
-      <style jsx>{`
-        @keyframes progress {
-          from { width: 100%; }
-          to { width: 0%; }
+      className={`
+        group pointer-events-auto relative flex w-full items-center gap-3 overflow-hidden rounded-lg border p-4 pr-6 shadow-lg
+        transition-all duration-200 ease-out
+        ${variant.container}
+        ${isVisible && !isRemoving 
+          ? 'translate-x-0 opacity-100 scale-100' 
+          : 'translate-x-full opacity-0 scale-95'
         }
-      `}</style>
+        hover:shadow-xl
+      `}
+    >
+      <div className={`flex-shrink-0 rounded-md p-2 ${variant.iconBg}`}>
+        {variant.icon}
+      </div>
+
+      <div className="flex-1 min-w-0 space-y-1">
+        {toast.title && (
+          <div className="text-sm font-semibold leading-none tracking-tight text-gray-900">
+            {toast.title}
+          </div>
+        )}
+        {toast.description && (
+          <div className="text-sm leading-relaxed text-gray-600">
+            {toast.description}
+          </div>
+        )}
+        {toast.action && (
+          <div className="mt-2 pt-1">
+            {toast.action}
+          </div>
+        )}
+      </div>
+
+      <button
+        onClick={handleRemove}
+        aria-label="Fechar notificação"
+        className="
+          absolute right-1.5 top-1.5 flex-shrink-0 rounded-md p-1 
+          text-gray-400 hover:text-gray-600
+          opacity-0 transition-all group-hover:opacity-100
+          focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2
+        "
+      >
+        <X className="h-4 w-4" />
+      </button>
     </div>
   );
 };
