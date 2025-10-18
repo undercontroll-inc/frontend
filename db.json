@@ -31,13 +31,8 @@
       "id": 3
     },
     {
-      "name": "Pedro",
-      "lastname": "Silva",
-      "cpf": "492.450.758-00",
-      "birthdate": "26/03/2006",
-      "address": "Rua Rodrigo de Castro, 62, Casa",
-      "password": "Pedro2506**",
-      "userType": "ADMIN",
+      "email": "lucas",
+      "password": "ishow123",
       "id": 4
     }
   ],

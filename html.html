@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <input type="text" id="inputEmail">
+  <input type="text" id="inputSenha">
+  <button onclick="login()">Login</button>
+</body>
+
+</html>
+
+<script>
+  async function login() {
+    const email = inputEmail.value;
+    const senha = inputSenha.value;
+
+    try {
+
+      const response = await fetch("http://localhost:8080/v1/api/users/auth", {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: {
+          email,
+          senha
+        },
+      });
+
+      console.log(response);
+
+    } catch (err) {
+      console.log(err);
+    }
+  }
+</script>
