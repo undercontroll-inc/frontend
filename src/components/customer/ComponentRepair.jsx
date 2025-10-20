@@ -163,7 +163,7 @@ const ComponentRepair = () => {
 
           {/* Aviso/descrição da página */}
           <div className="pb-6">
-            <div className="bg-gray-300 border border-gray-900 rounded-lg p-4 text-gray-900">
+            <div className="border border-gray-900 rounded-lg p-4 text-gray-900">
               <p className="text-sm leading-relaxed text-center">
                 Nesta página você encontra todas as ordens de serviço realizadas
                 em nossa assistência técnica. Aqui é possível acompanhar seus
