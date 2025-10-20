@@ -1,19 +1,26 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { User, Home, Lock, CheckCircle, ChevronRight, ChevronLeft, UserPlus, MapPin, Mail } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useToast } from '../../contexts/ToastContext';
 import Input from '../shared/Input';
 import Button from '../shared/Button';
+import GoogleButton from '../shared/GoogleButton';
+import GoogleAuthService from '../../services/GoogleAuthService';
 import { validateCPF, formatCPF, validatePhoneBR, formatPhoneBR, formatCEP, validateCEP, validateEmail } from '../../utils/validation';
 import { cepService } from '../../services/CepService';
 
 const Register = () => {
+  const location = useLocation();
+  const googleData = location.state?.googleData;
+  const fromGoogle = location.state?.fromGoogle || false;
+
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
-    name: '',
-    lastname: '',
-    email: '',
+    name: googleData?.name || '',
+    lastname: googleData?.lastname || '',
+    email: googleData?.email || '',
+    avatar_url: googleData?.photoURL || null,
     cpf: '',
     cep: '',
     numero: '',
@@ -25,6 +32,7 @@ const Register = () => {
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const [loadingCep, setLoadingCep] = useState(false);
   const [addressData, setAddressData] = useState(null);
 
@@ -123,6 +131,36 @@ const Register = () => {
     }
   };
 
+  const handleGoogleSignup = async () => {
+    setGoogleLoading(true);
+    try {
+      const userData = await GoogleAuthService.signInWithGoogle();
+      
+      // Preenche o formulário com os dados do Google
+      setFormData(prev => ({
+        ...prev,
+        name: userData.name.split(" ")[0] || "",
+        lastname: userData.name.split(" ").slice(1).join(" ") || "",
+        email: userData.email,
+        avatar_url: userData.photoURL || null,
+      }));
+      
+      // Limpa erros dos campos preenchidos
+      setErrors(prev => ({
+        ...prev,
+        name: "",
+        lastname: "",
+        email: "",
+      }));
+      
+      toast.success("Dados do Google carregados! Complete seu cadastro.");
+    } catch (error) {
+      toast.error(error.message || "Erro ao fazer login com Google");
+    } finally {
+      setGoogleLoading(false);
+    }
+  };
+
   const validateCurrentStep = () => {
     const fieldsToValidate = {
       1: ['name', 'lastname', 'email', 'cpf'],
@@ -191,6 +229,7 @@ const Register = () => {
         name: formData.name.trim(),
         lastname: formData.lastname.trim(),
         email: formData.email.trim(),
+        avatar_url: formData.avatar_url || null,
         cpf: formData.cpf.trim() ? formData.cpf : null,
         phone: formData.phone.trim(),
         address: fullAddress,
@@ -200,12 +239,20 @@ const Register = () => {
 
       if (result.success) {
         toast.success(
-          "Conta criada com sucesso! Redirecionando para o login..."
+          result.autoLogin 
+            ? "Conta criada com sucesso! Bem-vindo!" 
+            : "Conta criada com sucesso!"
         );
 
         setTimeout(() => {
-          navigate("/login");
-        }, 2000);
+          if (result.autoLogin) {
+            // Se login automático funcionou, redireciona para repairs
+            navigate("/repairs");
+          } else {
+            // Se não, vai para o login
+            navigate("/login");
+          }
+        }, 1500);
       } else {
         toast.error(result.error);
 
@@ -283,7 +330,50 @@ const Register = () => {
               <p className="text-xs sm:text-sm text-gray-600">Conte-nos um pouco sobre você</p>
             </div>
 
+            {/* Badge indicando dados do Google */}
+            {fromGoogle && (
+              <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg flex items-start gap-3">
+                {formData.avatar_url ? (
+                  <img 
+                    src={formData.avatar_url} 
+                    alt="Avatar do Google" 
+                    className="h-10 w-10 rounded-full flex-shrink-0 border-2 border-blue-300"
+                  />
+                ) : (
+                  <svg className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                  </svg>
+                )}
+                <div className="flex-1">
+                  <p className="text-xs font-medium text-blue-900">Dados carregados do Google</p>
+                  <p className="text-xs text-blue-700 mt-0.5">
+                    Seus dados foram preenchidos automaticamente{formData.avatar_url && ' (incluindo foto de perfil)'}. Complete as informações restantes.
+                  </p>
+                </div>
+              </div>
+            )}
+
             <div className="space-y-3 sm:space-y-4 mb-4">
+              {/* Google Button - apenas se não veio do Google */}
+              {!fromGoogle && (
+                <>
+                  <GoogleButton
+                    onClick={handleGoogleSignup}
+                    loading={googleLoading}
+                    text="Cadastrar com Google"
+                  />
+                  
+                  <div className="relative my-4">
+                    <div className="absolute inset-0 flex items-center">
+                      <div className="w-full border-t border-gray-200"></div>
+                    </div>
+                    <div className="relative flex justify-center text-xs">
+                      <span className="px-3 bg-white text-gray-500">ou preencha manualmente</span>
+                    </div>
+                  </div>
+                </>
+              )}
+
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
                 <Input
                   label="Nome *"
@@ -293,6 +383,8 @@ const Register = () => {
                   onChange={handleInputChange}
                   error={errors.name}
                   autoComplete="given-name"
+                  disabled={fromGoogle}
+                  className={fromGoogle ? "bg-gray-50" : ""}
                   required
                 />
 
@@ -304,6 +396,8 @@ const Register = () => {
                   onChange={handleInputChange}
                   error={errors.lastname}
                   autoComplete="family-name"
+                  disabled={fromGoogle}
+                  className={fromGoogle ? "bg-gray-50" : ""}
                   required
                 />
               </div>
@@ -317,6 +411,8 @@ const Register = () => {
                 onChange={handleInputChange}
                 error={errors.email}
                 autoComplete="email"
+                disabled={fromGoogle}
+                className={fromGoogle ? "bg-gray-50" : ""}
                 required
               />
 

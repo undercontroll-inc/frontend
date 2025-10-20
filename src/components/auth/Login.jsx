@@ -5,7 +5,8 @@ import { useAuth } from "../../contexts/AuthContext";
 import { useToast } from "../../contexts/ToastContext";
 import Input from "../shared/Input";
 import Button from "../shared/Button";
-import AuthLayout from "../shared/AuthLayout";
+import GoogleButton from "../shared/GoogleButton";
+import GoogleAuthService from "../../services/GoogleAuthService";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -14,6 +15,7 @@ const Login = () => {
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
 
   const { login, isAuthenticated, user } = useAuth();
   const toast = useToast();
@@ -47,6 +49,33 @@ const Login = () => {
 
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }));
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    setGoogleLoading(true);
+    try {
+      const userData = await GoogleAuthService.signInWithGoogle();
+      
+      // Redireciona para o registro com os dados do Google
+      navigate("/register", {
+        state: {
+          fromGoogle: true,
+          googleData: {
+            name: userData.name.split(" ")[0] || "",
+            lastname: userData.name.split(" ").slice(1).join(" ") || "",
+            email: userData.email,
+            photoURL: userData.photoURL,
+            uid: userData.uid,
+          },
+        },
+      });
+      
+      toast.success("Dados do Google carregados! Complete seu cadastro.");
+    } catch (error) {
+      toast.error(error.message || "Erro ao fazer login com Google");
+    } finally {
+      setGoogleLoading(false);
     }
   };
 
@@ -145,11 +174,28 @@ const Login = () => {
                   size="sm"
                   className="w-full"
                   loading={loading}
-                  disabled={loading}
+                  disabled={loading || googleLoading}
                 >
                   {loading ? 'Entrando...' : 'Entrar'}
                 </Button>
               </div>
+
+              {/* Divisor */}
+              <div className="relative my-6">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-gray-200"></div>
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="px-4 bg-white text-gray-500">ou</span>
+                </div>
+              </div>
+
+              {/* Botão Google */}
+              <GoogleButton
+                onClick={handleGoogleLogin}
+                loading={googleLoading}
+                text="Continuar com Google"
+              />
             </form>
 
             <div className="text-center mt-6 pt-6 border-t border-gray-100">

@@ -76,7 +76,28 @@ export const AuthProvider = ({ children }) => {
       const result = await userService.register(data);
       
       if (result.success) {
-        return { success: true };
+        // Após registro bem-sucedido, faz login automático
+        const loginResult = await login({
+          name: userData.name,
+          password: userData.password
+        });
+        
+        // Se o usuário veio do Google, atualiza o avatar_url no userData salvo
+        if (userData.avatar_url && loginResult.success) {
+          const currentUserData = getUserData();
+          const updatedUserData = {
+            ...currentUserData,
+            avatar_url: userData.avatar_url
+          };
+          saveUserData(updatedUserData);
+          setUser(updatedUserData);
+        }
+        
+        return { 
+          success: true, 
+          autoLogin: loginResult.success,
+          user: loginResult.user 
+        };
       } else {
         return {
           success: false,
