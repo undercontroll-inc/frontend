@@ -12,7 +12,7 @@ const FAQItem = ({ question, answer }) => {
       onClick={() => setIsOpen(!isOpen)}
     >
       <div className="faq-question flex items-center justify-between">
-        <h3 className="text-lg font-semibold">{question}</h3>
+        <h3 className="text-lg">{question}</h3>
         <ChevronDown
           className={`arrow transition-transform duration-300 ${
             isOpen ? "rotate-180" : ""

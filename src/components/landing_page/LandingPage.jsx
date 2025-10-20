@@ -53,8 +53,8 @@ export const LandingPage = () => {
           <p className="text-xl mb-8">
             Reparos rápidos e confiáveis para todos os seus dispositivos
           </p>
-          <button className="bg-[#2C9BDC] text-white px-6 py-3 mt-8 rounded-lg text-lg">
-            Solicitar um Reparo
+          <button className="bg-[#0B4BCC] text-white px-6 py-3 mt-8 rounded-lg text-lg">
+            Agende uma visita agora!
           </button>
         </section>
         <section
