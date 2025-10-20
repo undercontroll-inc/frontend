@@ -14,6 +14,7 @@ import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import Dashboard from "./components/dashboard/Dashboard";
 import Toaster from "./components/shared/Toaster";
+import { LandingPage } from "./components/landing_page/LandingPage";
 
 function App() {
   return (
@@ -21,7 +22,7 @@ function App() {
       <ToastProvider>
         <Router>
           <Routes>
-            <Route path="/" element={<Navigate to="/login" replace />} />
+            <Route path="/" element={<LandingPage />} />
 
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
