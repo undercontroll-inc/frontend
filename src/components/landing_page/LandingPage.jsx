@@ -147,45 +147,50 @@ export const LandingPage = () => {
         </section>
         <section
           id="contact"
-          className="flex justify-center items-center p-16 bg-[#041A2D] text-white w-full"
+          className="flex flex-col justify-center items-center p-20 gap-4 bg-[#041A2D] text-white w-full"
         >
-          <div className="contact-container flex gap-30">
-            <div className="bg-gray-200 p-8 w-80 rounded-lg mr-16">
-              <h2 className="font-bold mb-6 text-lg text-center text-[#041A2D]">
-                Visite nossa loja e faça um orçamento gratuito!
-              </h2>
-              <p className="text-md text-black">Nossos contatos:</p>
-              <div className="buttons flex flex-col items-center justify-center gap-3 mt-4">
-                <button className="rounded-md px-3 h-12 w-full bg-green-400 shadow-md shadow-gray-400">
-                  <i className="fa-brands fa-whatsapp mr-2 text-xl"></i>
-                  Agendar pelo Whatsapp
-                </button>
-                <p className="text-black font-semibold">Ou</p>
-                <button className="rounded-md px-3 h-12 w-full bg-[#0B4BCC] shadow-md shadow-gray-400">
-                  <i className="fa-solid fa-phone mr-2 text-lg"></i>
-                  Ligar agora (11) 2341-7100{" "}
-                </button>
+          <h2 className="self-start text-3xl mb-12 font-semibold ml-10">Nossos contatos</h2>
+          <div className="main-content flex">
+            <div className="contact-container flex gap-30">
+              <div className="bg-gray-200 p-8 w-80 rounded-lg mr-16">
+                <h2 className="font-bold mb-6 text-lg text-center text-[#041A2D]">
+                  Visite nossa loja e faça um orçamento gratuito!
+                </h2>
+                <p className="text-md text-black">Nossos contatos:</p>
+                <div className="buttons flex flex-col items-center justify-center gap-3 mt-4">
+                  <button className="rounded-md px-3 h-12 w-full bg-green-400 shadow-md shadow-gray-400">
+                    <i className="fa-brands fa-whatsapp mr-2 text-xl"></i>
+                    Agendar pelo Whatsapp
+                  </button>
+                  <p className="text-black font-semibold">Ou</p>
+                  <button className="rounded-md px-3 h-12 w-full bg-[#0B4BCC] shadow-md shadow-gray-400">
+                    <i className="fa-solid fa-phone mr-2 text-lg"></i>
+                    Ligar agora (11) 2341-7100{" "}
+                  </button>
+                </div>
               </div>
-            </div>
-            <div className="bg-gray-200 p-8 rounded-lg w-fit text-black">
-              <h2 className="font-bold text-lg mb-1">Endereço</h2>
-              <p className="text-md mb-6">
-                Av. Zelina, 505 - Vila Zelina, São Paulo - SP, 03143-000
-              </p>
+              <div className="bg-gray-200 p-8 rounded-lg w-fit text-black">
+                <h2 className="font-bold text-lg mb-1">Endereço</h2>
+                <p className="text-md mb-6">
+                  Av. Zelina, 505 - Vila Zelina, São Paulo - SP, 03143-000
+                </p>
 
-              <h2 className="text-lg font-bold mt-16">Horário de Funcionamento</h2>
-              <div className="flex flex-col gap-2 mt-3 text-md">
-                <div className="flex gap-8">
-                  <ul className="font-medium flex flex-col gap-1">
-                    <li>Segunda à Sexta</li>
-                    <li>Sábado</li>
-                    <li>Domingo</li>
-                  </ul>
-                  <ul className="flex flex-col gap-1">
-                    <li>09:00 - 17:00</li>
-                    <li>09:00 - 12:00</li>
-                    <li>Fechado</li>
-                  </ul>
+                <h2 className="text-lg font-bold mt-16">
+                  Horário de Funcionamento
+                </h2>
+                <div className="flex flex-col gap-2 mt-3 text-md">
+                  <div className="flex gap-8">
+                    <ul className="font-medium flex flex-col gap-1">
+                      <li>Segunda à Sexta</li>
+                      <li>Sábado</li>
+                      <li>Domingo</li>
+                    </ul>
+                    <ul className="flex flex-col gap-1">
+                      <li>09:00 - 17:00</li>
+                      <li>09:00 - 12:00</li>
+                      <li>Fechado</li>
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>
