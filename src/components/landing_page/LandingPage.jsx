@@ -1,6 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { ChevronDown } from "lucide-react";
+import FAQItem from "./FAQItem";
 
 export const LandingPage = () => {
+
+  useEffect(() => {
+    const faqItems = document.querySelectorAll(".faq-item");
+    faqItems.forEach((item) => {
+      item.addEventListener("click", () => {
+        item.classList.toggle("active");
+      });
+    });
+  }, []);
+
   return (
     <div>
       <header className="header flex items-center justify-around p-4 bg-[#0E1D2A]">
@@ -122,7 +134,8 @@ export const LandingPage = () => {
                   Whatsapp <i className="fa-solid fa-phone ml-4 text-lg"></i>
                 </button>
                 <button className="border-4 rounded-md py-1 w-full">
-                  Telefone <i className="fa-brands fa-whatsapp ml-4 text-xl "></i>
+                  Telefone{" "}
+                  <i className="fa-brands fa-whatsapp ml-4 text-xl "></i>
                 </button>
                 <p>Ou</p>
                 <button className="border-4 rounded-md py-1 w-full font-bold">
@@ -166,6 +179,47 @@ export const LandingPage = () => {
             </div>
           </div>
         </section>
+        <section id="faq" className="faq-section p-16 bg-gray-200 px-40">
+          <h2 className="text-3xl font-bold mb-6">Perguntas Frequentes</h2>
+          <div className="accordion mb-8">
+            <FAQItem question="Como posso realizar um orçamento? O orçamento possui custo?" answer="Resposta 1" />
+            <FAQItem question="Quais tipos de eletrodomésticos e marcas vocês atendem?" answer="Resposta 1" />
+            <FAQItem question="Vocês trabalham com o conserto de geladeiras e fogões (linha branca)?" answer="Resposta 1" />
+            <FAQItem question="Existe garantia para os serviços realizados?" answer="Resposta 1" />
+            <FAQItem question="Consigo acompanhar o andamento do conserto do meu eletrodoméstico?" answer="Resposta 1" />
+          </div>
+        </section>
+        <footer className="footer-section bg-[#0E1D2A] text-white p-16 flex justify-around">
+          <div className="footer ">
+            <div className="flex flex-col items-center">
+              <img src="https://placehold.co/80x70" alt="" />
+              <div className="icons flex gap-2 my-3 text-xl">
+                <i className="fa-brands fa-facebook-f"></i>
+                <i className="fa-brands fa-instagram"></i>
+                <i className="fa-brands fa-whatsapp"></i>
+              </div>
+              <p className="font-semibold text-sm">Agende já uma visita</p>
+            </div>
+          </div>
+          <div>
+            <h2 className="font-bold text-md">Contato</h2>
+            <p><u>Telefone</u>: (11) 2222-3333</p>
+            <p><u>Whatsapp</u>: (11) 99999-9999</p>
+            <p><u>Email</u>: 5W2M1@example.com</p>
+            
+            <h2 className="font-bold mt-5">Endereço</h2>
+            <p>Av. Zelina, 505 - Vila Zelina, São Paulo - SP, 03143-000</p>
+          </div>
+          <div>
+            <ul className="flex flex-col gap-1 text-base">
+              <li><a href="#">Início</a></li>
+              <li><a href="#">Quem somos?</a></li>
+              <li><a href="#">Missão, visão, valores</a></li>
+              <li><a href="#">Mais informações</a></li>
+              <li><a href="#">FAQ</a></li>
+            </ul>
+          </div>
+        </footer>
       </main>
     </div>
   );
