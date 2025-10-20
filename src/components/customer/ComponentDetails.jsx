@@ -99,92 +99,91 @@ const ComponentDetails = () => {
       <SideBar active="repairs" />
 
       {/* Main Content */}
-      <div className="flex-1 overflow-y-auto h-screen p-8 pl-18 pt-4">
-        <div className="max-w-6xl mx-auto py-3">
+      <div className="flex-1 overflow-y-auto h-screen">
+        <div className="max-w-5xl mx-auto px-6 py-8">
           {/* Header com botões */}
-          <div className="flex items-center justify-between mb-6 pb-5">
-            <Button onClick={handleBack} size="md" className="gap-2">
+          <div className="flex items-center justify-between mb-6">
+            <Button onClick={handleBack} size="sm" className="gap-2">
               <ArrowLeft className="h-4 w-4" />
               Voltar
             </Button>
             <Button
               onClick={handleExportPDF}
               variant="outline"
-              size="md"
+              size="sm"
               className="gap-2"
             >
               <FileDown className="h-4 w-4" />
-              Exportar para PDF
+              Exportar PDF
             </Button>
           </div>
 
           {/* Card principal */}
-          <div className="bg-white rounded-xl shadow-md overflow-hidden">
+          <div className="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-300">
             {/* Cabeçalho */}
-            <div className="bg-[#041A2D] text-white p-6">
+            <div className="bg-[#041A2D] text-white px-4 py-3">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <div className="text-lg font-semibold">
-                    Ordem de Serviço: #{`A${repair.id}`}
+                <div className="flex items-center gap-3">
+                  <div className="text-base font-semibold">
+                    OS: #{`A${repair.id}`}
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-sm">Status:</span>
+                    <span className="text-xs">Status:</span>
                     <div
-                      className={`px-3 py-1 rounded-full text-xs font-medium bg-transparent border ${getStatusColor()}`}
+                      className={`px-2.5 py-1 rounded-full text-xs font-medium bg-transparent border ${getStatusColor()}`}
                     >
                       {getStatusLabel()}
                     </div>
                   </div>
                 </div>
-                <div className="text-sm">
-                  Atualizado em: {formatUpdatedAt(repair.updatedAt) || "-"}
+                <div className="text-xs text-gray-100">
+                  Atualizado: {formatUpdatedAt(repair.updatedAt) || "-"}
                 </div>
               </div>
             </div>
 
             {/* Conteúdo */}
-            <div className="p-6 bg-gray-400 ">
-              {/* Seção: Eletrodomésticos + caixas de informações ao lado */}
+            <div className="p-6 bg-gray-50">{/* Seção: Eletrodomésticos + caixas de informações ao lado */}
               <div className="mb-6">
-                <h3 className="text-base font-bold text-gray-900 mb-3 pb-2 pl-1">
+                <h3 className="text-sm font-bold text-gray-900 mb-3 uppercase tracking-wide">
                   Eletrodomésticos
                 </h3>
                 {repair.appliances && repair.appliances.length > 0 ? (
-                  <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr]">
+                  <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6">
                     {/* Tabela de eletrodomésticos (esquerda) */}
-                    <div className="pr-10 pb-5">
-                      <div className="overflow-x-auto rounded-lg border border-black ">
+                    <div>
+                      <div className="overflow-x-auto rounded-lg border border-gray-300 shadow-sm">
                         <table className="w-full">
-                          <thead className="bg-[#041A2D] text-white text-sm font-semibold ">
+                          <thead className="bg-[#041A2D] text-white text-xs font-semibold">
                             <tr>
-                              <th className="text-left p-3">Eletrodoméstico</th>
-                              <th className="text-left p-3">Marca / Modelo</th>
-                              <th className="text-left p-3">Voltagem</th>
-                              <th className="text-left p-3">Número de Série</th>
-                              <th className="text-left p-3">Mão de Obra</th>
+                              <th className="text-left px-3 py-2">Eletrodoméstico</th>
+                              <th className="text-left px-3 py-2">Marca / Modelo</th>
+                              <th className="text-left px-3 py-2">Voltagem</th>
+                              <th className="text-left px-3 py-2">Nº Série</th>
+                              <th className="text-left px-3 py-2">Mão de Obra</th>
                             </tr>
                           </thead>
                           <tbody>
                             {repair.appliances.map((appliance, idx) => (
                               <tr
                                 key={idx}
-                                className="bg-white border-b border-gray-300 text-sm"
+                                className="bg-white border-b border-gray-200 text-xs hover:bg-gray-50 transition-colors"
                               >
-                                <td className="p-3 text-gray-900">
+                                <td className="px-3 py-2 text-gray-900">
                                   {appliance.type || "-"}
                                 </td>
-                                <td className="p-3 text-gray-900">
+                                <td className="px-3 py-2 text-gray-900">
                                   {appliance.brand && appliance.model
                                     ? `${appliance.brand} ${appliance.model}`
                                     : "-"}
                                 </td>
-                                <td className="p-3 text-gray-900">
+                                <td className="px-3 py-2 text-gray-900">
                                   {appliance.voltage || "-"}
                                 </td>
-                                <td className="p-3 text-gray-900">
+                                <td className="px-3 py-2 text-gray-900">
                                   {appliance.serial || "-"}
                                 </td>
-                                <td className="p-3 text-gray-900">
+                                <td className="px-3 py-2 text-gray-900 font-medium">
                                   {idx === 0
                                     ? formatCurrency(repair.laborValue)
                                     : "-"}
@@ -193,11 +192,11 @@ const ComponentDetails = () => {
                             ))}
                           </tbody>
                           <tfoot>
-                            <tr className="bg-blue-800 text-white font-bold text-sm ">
-                              <td className="p-3" colSpan={4}>
+                            <tr className="bg-[#041A2D] text-white font-bold text-xs">
+                              <td className="px-3 py-2" colSpan={4}>
                                 Total
                               </td>
-                              <td className="p-3">
+                              <td className="px-3 py-2">
                                 {formatCurrency(repair.laborValue)}
                               </td>
                             </tr>
@@ -207,53 +206,53 @@ const ComponentDetails = () => {
                     </div>
 
                     {/* Caixas (direita) */}
-                    <div className="space-y-4 ">
+                    <div className="space-y-3">
                       {/* Linha de cima: 3 caixas */}
-                      <div className="grid grid-cols-3 gap-4">
+                      <div className="grid grid-cols-3 gap-2">
                         <div>
-                          <div className="text-xs font-bold text-gray-900  pb-1 text-center ">
-                            Data Recebimento
+                          <div className="text-[10px] font-bold text-gray-700 mb-1 uppercase tracking-wide text-center">
+                            Recebimento
                           </div>
-                          <div className="bg-white rounded-lg px-3 py-2 text-gray-900 text-center">
+                          <div className="bg-white rounded-md border border-gray-200 px-2 py-1.5 text-gray-900 text-xs text-center shadow-sm">
                             {repair.receivedAt || "-"}
                           </div>
                         </div>
                         <div>
-                          <div className="text-xs font-bold text-gray-900 mb-1 pb-1 text-center">
-                            Data Retirada
+                          <div className="text-[10px] font-bold text-gray-700 mb-1 uppercase tracking-wide text-center">
+                            Retirada
                           </div>
-                          <div className="bg-white rounded-lg px-3 py-2 text-gray-900 text-center">
+                          <div className="bg-white rounded-md border border-gray-200 px-2 py-1.5 text-gray-900 text-xs text-center shadow-sm">
                             {repair.status === "FINALIZADO"
                               ? repair.deadline || "-"
                               : "-"}
                           </div>
                         </div>
                         <div>
-                          <div className="text-xs font-bold text-gray-900  pb-1 text-center">
+                          <div className="text-[10px] font-bold text-gray-700 mb-1 uppercase tracking-wide text-center">
                             Garantia
                           </div>
-                          <div className="bg-white rounded-lg px-3 py-2 text-gray-900 text-center">
+                          <div className="bg-white rounded-md border border-gray-200 px-2 py-1.5 text-gray-900 text-xs text-center shadow-sm">
                             {repair.warranty || "-"}
                           </div>
                         </div>
                       </div>
                       {/* Linha de baixo: 2 caixas */}
-                      <div className="grid grid-cols-2 gap-4">
+                      <div className="grid grid-cols-2 gap-2">
                         <div>
-                          <div className="text-xs font-bold text-gray-900 mb-1 pb-1 text-center pt-3">
+                          <div className="text-[10px] font-bold text-gray-700 mb-1 uppercase tracking-wide text-center">
                             Desconto
                           </div>
-                          <div className="bg-white rounded-lg px-3 py-2 text-gray-900 text-center">
+                          <div className="bg-white rounded-md border border-gray-200 px-2 py-1.5 text-gray-900 text-xs text-center shadow-sm">
                             {repair.discount && repair.discount > 0
                               ? formatCurrency(repair.discount)
                               : "-"}
                           </div>
                         </div>
                         <div>
-                          <div className="text-xs font-bold text-gray-900 mb-1  pb-1 pt-3 text-center">
+                          <div className="text-[10px] font-bold text-gray-700 mb-1 uppercase tracking-wide text-center">
                             Valor Total
                           </div>
-                          <div className="bg-white rounded-lg px-3 py-2 text-gray-900 text-base font-bold text-center">
+                          <div className="bg-white rounded-md border border-gray-200 px-2 py-1.5 text-gray-900 text-sm font-bold text-center shadow-sm">
                             {formatCurrency(repair.totalValue)}
                           </div>
                         </div>
@@ -269,54 +268,54 @@ const ComponentDetails = () => {
 
               {/* Seção: Peças + Observações do Cliente ao lado */}
               <div className="mb-6">
-                <h3 className="text-base font-bold text-gray-900 mb-3 pl-1 pb-2">
+                <h3 className="text-sm font-bold text-gray-900 mb-3 uppercase tracking-wide">
                   Peças
                 </h3>
                 {repair.parts && repair.parts.length > 0 ? (
-                  <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-14">
+                  <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6">
                     {/* Tabela de peças (esquerda) */}
-                    <div className="overflow-x-auto rounded-lg border border-black">
+                    <div className="overflow-x-auto rounded-lg border border-gray-300 shadow-sm">
                       <table className="w-full">
-                        <thead className="bg-[#041A2D] text-white text-sm font-semibold">
+                        <thead className="bg-[#041A2D] text-white text-xs font-semibold">
                           <tr>
-                            <th className="text-left p-3">Peças</th>
-                            <th className="text-left p-3">Quantidade</th>
-                            <th className="text-left p-3">Valor Unitário</th>
-                            <th className="text-left p-3">Valor Somado</th>
+                            <th className="text-left px-3 py-2">Peças</th>
+                            <th className="text-left px-3 py-2">Quantidade</th>
+                            <th className="text-left px-3 py-2">Valor Unitário</th>
+                            <th className="text-left px-3 py-2">Valor Somado</th>
                           </tr>
                         </thead>
                         <tbody>
                           {repair.parts.map((part, idx) => (
                             <tr
                               key={idx}
-                              className="bg-white border-b border-gray-300 text-sm"
+                              className="bg-white border-b border-gray-200 text-xs hover:bg-gray-50 transition-colors"
                             >
-                              <td className="p-3 text-gray-900">
+                              <td className="px-3 py-2 text-gray-900">
                                 {part.name || "-"}
                               </td>
-                              <td className="p-3 text-gray-900">
+                              <td className="px-3 py-2 text-gray-900">
                                 {part.quantity || 0}
                               </td>
-                              <td className="p-3 text-gray-900">
+                              <td className="px-3 py-2 text-gray-900">
                                 {formatCurrency(part.unitValue)}
                               </td>
-                              <td className="p-3 text-gray-900">
+                              <td className="px-3 py-2 text-gray-900 font-medium">
                                 {formatCurrency(part.totalValue)}
                               </td>
                             </tr>
                           ))}
                         </tbody>
                         <tfoot>
-                          <tr className="bg-blue-800  text-white font-bold text-sm">
-                            <td className="p-3">Total</td>
-                            <td className="p-3">
+                          <tr className="bg-[#041A2D] text-white font-bold text-xs">
+                            <td className="px-3 py-2">Total</td>
+                            <td className="px-3 py-2">
                               {repair.parts.reduce(
                                 (sum, p) => sum + (p.quantity || 0),
                                 0
                               )}
                             </td>
-                            <td className="p-3">-</td>
-                            <td className="p-3">
+                            <td className="px-3 py-2">-</td>
+                            <td className="px-3 py-2">
                               {formatCurrency(repair.partsTotal)}
                             </td>
                           </tr>
@@ -324,28 +323,26 @@ const ComponentDetails = () => {
                       </table>
                     </div>
                     {/* Observações do Cliente (direita) */}
-                    <div className="space-y-3">
-                      <div className="text-base font-bold text-gray-900 pl-1 ">
+                    <div className="space-y-2">
+                      <div className="text-sm font-bold text-gray-900 uppercase tracking-wide">
                         Observações do Cliente
                       </div>
                       {repair.appliances && repair.appliances.length > 0 ? (
                         repair.appliances.map((ap, idx) => (
-                          <div className="pt-2">
-                            <div key={idx} className="bg-white rounded-lg p-4 ">
-                              <div className="text-sm font-bold text-gray-900 mb-1">
-                                {`Item ${idx + 1} - ${ap.type || "Aparelho"}`}
-                              </div>
-                              <div className="text-gray-900 text-sm whitespace-pre-wrap">
-                                {ap.customerNote &&
-                                ap.customerNote.trim().length > 0
-                                  ? ap.customerNote
-                                  : "-"}
-                              </div>
+                          <div key={idx} className="bg-white rounded-md border border-gray-200 p-3 shadow-sm">
+                            <div className="text-xs font-bold text-gray-900 mb-1.5">
+                              {`Item ${idx + 1} - ${ap.type || "Aparelho"}`}
+                            </div>
+                            <div className="text-gray-700 text-xs whitespace-pre-wrap">
+                              {ap.customerNote &&
+                              ap.customerNote.trim().length > 0
+                                ? ap.customerNote
+                                : "-"}
                             </div>
                           </div>
                         ))
                       ) : (
-                        <div className="bg-white rounded-lg p-4 text-sm text-gray-700">
+                        <div className="bg-white rounded-md border border-gray-200 p-3 text-xs text-gray-700 shadow-sm">
                           Nenhuma observação cadastrada
                         </div>
                       )}
@@ -364,11 +361,11 @@ const ComponentDetails = () => {
               ) &&
                 repair.notes && (
                   <div className="mb-6">
-                    <div className="bg-white rounded-lg p-10  ">
-                      <div className="text-sm font-bold text-gray-900 mb-2">
-                        Observações do Cliente:
+                    <div className="bg-white rounded-md border border-gray-200 p-4 shadow-sm">
+                      <div className="text-xs font-bold text-gray-900 mb-2 uppercase tracking-wide">
+                        Observações do Cliente
                       </div>
-                      <div className="text-gray-900 text-sm whitespace-pre-wrap ">
+                      <div className="text-gray-700 text-xs whitespace-pre-wrap">
                         {repair.notes}
                       </div>
                     </div>
@@ -377,12 +374,12 @@ const ComponentDetails = () => {
 
               {/* Observações Técnicas (se houver serviceDescription) */}
               {repair.serviceDescription && (
-                <div className="mt-6 pt-5 pr-101 ">
-                  <div className="bg-white rounded-lg p-4 ">
-                    <div className="text-sm font-bold text-gray-900 mb-2">
-                      Observações Técnicas:
+                <div className="mb-6">
+                  <div className="bg-white rounded-md border border-gray-200 p-4 shadow-sm">
+                    <div className="text-xs font-bold text-gray-900 mb-2 uppercase tracking-wide">
+                      Observações Técnicas
                     </div>
-                    <div className="text-gray-900 text-sm whitespace-pre-wrap">
+                    <div className="text-gray-700 text-xs whitespace-pre-wrap">
                       {repair.serviceDescription}
                     </div>
                   </div>

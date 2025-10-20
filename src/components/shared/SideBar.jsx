@@ -131,7 +131,7 @@ const SideBar = ({ active = "repairs" }) => {
                   group w-full flex items-center ${isOpen ? 'gap-3' : 'justify-center'} p-3 rounded-lg text-sm font-medium
                   transition-all duration-200 ease-in-out
                   ${isActive
-                    ? `${isAdmin ? "bg-[#ba4610]" : "bg-[#041a2d]"} text-white shadow-md`
+                    ? `${isAdmin ? "bg-[#ba4610]" : "bg-[#0037a7]"} text-white shadow-md`
                     : `hover:bg-[#000f1d]`
                   }
                 `}
