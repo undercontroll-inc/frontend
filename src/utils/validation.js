@@ -69,3 +69,32 @@ export const formatDate = (value) => {
   date = date.replace(/(\d{2})(\d)/, '$1/$2');
   return date;
 };
+
+export const validatePhoneBR = (phone) => {
+  // Aceita formatos: (99) 99999-9999 ou 99999-9999 ou 99999999999
+  const regex = /^(\(?\d{2}\)?\s?)?(\d{4,5})[- ]?(\d{4})$/;
+  return regex.test(phone);
+};
+
+export const formatPhoneBR = (value) => {
+  let phone = value.replace(/\D/g, '');
+  if (phone.length <= 10) {
+    // (99) 9999-9999
+    phone = phone.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
+  } else {
+    // (99) 99999-9999
+    phone = phone.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+  }
+  return phone;
+};
+
+export const formatCEP = (value) => {
+  let cep = value.replace(/\D/g, '');
+  cep = cep.replace(/(\d{5})(\d)/, '$1-$2');
+  return cep;
+};
+
+export const validateCEP = (cep) => {
+  const cleanCep = cep.replace(/\D/g, '');
+  return cleanCep.length === 8;
+};

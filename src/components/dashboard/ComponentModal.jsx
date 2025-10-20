@@ -1,17 +1,17 @@
-import { useState, useEffect } from 'react';
-import { X, Save } from 'lucide-react';
-import Input from '../shared/Input';
-import Button from '../shared/Button';
-import { isEmpty, isPositiveNumber } from '../../utils/validation';
+import { useState, useEffect } from "react";
+import { X, Save } from "lucide-react";
+import Input from "../shared/Input";
+import Button from "../shared/Button";
+import { isEmpty, isPositiveNumber } from "../../utils/validation";
 
 const ComponentModal = ({ isOpen, onClose, component, onSave }) => {
   const [formData, setFormData] = useState({
-    name: '',
-    description: '',
-    brand: '',
-    price: '',
-    supplier: '',
-    category: ''
+    name: "",
+    description: "",
+    brand: "",
+    price: "",
+    supplier: "",
+    category: "",
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
@@ -21,21 +21,21 @@ const ComponentModal = ({ isOpen, onClose, component, onSave }) => {
   useEffect(() => {
     if (component) {
       setFormData({
-        name: component.name || '',
-        description: component.description || '',
-        brand: component.brand || '',
-        price: component.price?.toString() || '',
-        supplier: component.supplier || '',
-        category: component.category || ''
+        name: component.name || "",
+        description: component.description || "",
+        brand: component.brand || "",
+        price: component.price?.toString() || "",
+        supplier: component.supplier || "",
+        category: component.category || "",
       });
     } else {
       setFormData({
-        name: '',
-        description: '',
-        brand: '',
-        price: '',
-        supplier: '',
-        category: ''
+        name: "",
+        description: "",
+        brand: "",
+        price: "",
+        supplier: "",
+        category: "",
       });
     }
     setErrors({});
@@ -43,27 +43,28 @@ const ComponentModal = ({ isOpen, onClose, component, onSave }) => {
 
   const validateField = (name, value) => {
     switch (name) {
-      case 'name':
-      case 'description':
-      case 'brand':
-      case 'supplier':
-      case 'category':
-        return isEmpty(value) ? 'Este campo é obrigatório' : '';
-      case 'price':
-        if (isEmpty(value)) return 'Preço é obrigatório';
-        if (!isPositiveNumber(value)) return 'O preço deve ser um número positivo';
-        return '';
+      case "name":
+      case "description":
+      case "brand":
+      case "supplier":
+      case "category":
+        return isEmpty(value) ? "Este campo é obrigatório" : "";
+      case "price":
+        if (isEmpty(value)) return "Preço é obrigatório";
+        if (!isPositiveNumber(value))
+          return "O preço deve ser um número positivo";
+        return "";
       default:
-        return '';
+        return "";
     }
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
 
     if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: '' }));
+      setErrors((prev) => ({ ...prev, [name]: "" }));
     }
   };
 
@@ -71,7 +72,7 @@ const ComponentModal = ({ isOpen, onClose, component, onSave }) => {
     e.preventDefault();
 
     const newErrors = {};
-    Object.keys(formData).forEach(key => {
+    Object.keys(formData).forEach((key) => {
       const error = validateField(key, formData[key]);
       if (error) newErrors[key] = error;
     });
@@ -86,13 +87,13 @@ const ComponentModal = ({ isOpen, onClose, component, onSave }) => {
     try {
       const componentData = {
         ...formData,
-        price: parseFloat(formData.price)
+        price: parseFloat(formData.price),
       };
 
       await onSave(componentData, component?.id);
       onClose();
     } catch (error) {
-      console.error('Error saving component:', error);
+      console.error("Error saving component:", error);
     } finally {
       setLoading(false);
     }
@@ -111,7 +112,7 @@ const ComponentModal = ({ isOpen, onClose, component, onSave }) => {
       <div className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <h2 className="text-xl font-semibold text-gray-900">
-            {isEditing ? 'Editar Componente' : 'Novo Componente'}
+            {isEditing ? "Editar Componente" : "Novo Componente"}
           </h2>
           <button
             onClick={handleClose}
@@ -145,9 +146,10 @@ const ComponentModal = ({ isOpen, onClose, component, onSave }) => {
               className={`
                 w-full px-5 py-4 border rounded-lg bg-white text-gray-900 placeholder-gray-500
                 focus:outline-none focus:ring-2 focus:ring-offset-1 transition-all duration-200 text-base
-                ${errors.description
-                  ? 'border-red-300 focus:border-red-500 focus:ring-red-200'
-                  : 'border-gray-300 focus:border-blue-500 focus:ring-blue-200'
+                ${
+                  errors.description
+                    ? "border-red-300 focus:border-red-500 focus:ring-red-200"
+                    : "border-gray-300 focus:border-slate-500 focus:ring-slate-200"
                 }
               `}
               placeholder="Descreva o componente"
@@ -221,7 +223,7 @@ const ComponentModal = ({ isOpen, onClose, component, onSave }) => {
               className="flex-1"
             >
               <Save className="h-4 w-4" />
-              {loading ? 'Salvando...' : 'Salvar'}
+              {loading ? "Salvando..." : "Salvar"}
             </Button>
           </div>
         </form>

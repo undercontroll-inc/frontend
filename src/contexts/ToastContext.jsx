@@ -89,7 +89,6 @@ export const ToastProvider = ({ children }) => {
       error,
       warning,
       info,
-      // Keep the main toast function for custom toasts
       default: toast,
     },
   };
