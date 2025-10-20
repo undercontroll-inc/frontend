@@ -158,12 +158,12 @@ export const LandingPage = () => {
                 </h2>
                 <p className="text-md text-black">Nossos contatos:</p>
                 <div className="buttons flex flex-col items-center justify-center gap-3 mt-4">
-                  <button className="rounded-md px-3 h-12 w-full bg-green-400 shadow-md shadow-gray-400">
+                  <button className="rounded-md px-3 h-12 w-full bg-green-400 shadow-md shadow-gray-400 cursor-pointer">
                     <i className="fa-brands fa-whatsapp mr-2 text-xl"></i>
                     Agendar pelo Whatsapp
                   </button>
                   <p className="text-black font-semibold">Ou</p>
-                  <button className="rounded-md px-3 h-12 w-full bg-[#0B4BCC] shadow-md shadow-gray-400">
+                  <button className="rounded-md px-3 h-12 w-full bg-[#0B4BCC] shadow-md shadow-gray-400 cursor-pointer">
                     <i className="fa-solid fa-phone mr-2 text-lg"></i>
                     Ligar agora (11) 2341-7100{" "}
                   </button>
