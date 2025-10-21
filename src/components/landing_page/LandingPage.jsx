@@ -20,21 +20,21 @@ export const LandingPage = () => {
 
   return (
     <div>
-      <header className="header flex items-center justify-around p-4 bg-[#041A2D]">
+      <header className="header flex items-center justify-around p-4 bg-[#041A2D] fixed w-full top-0 z-10">
         <img src={Logo} alt="" />
         <nav className="nav text-white">
           <ul className="flex items-center gap-24">
             <li>
-              <a href="#about">Quem somos</a>
+              <a href="#about" className="link-underline-animation">Quem somos</a>
             </li>
             <li>
-              <a href="#services">Nossos Serviços</a>
+              <a href="#services" className="link-underline-animation">Nossos Serviços</a>
             </li>
             <li>
-              <a href="#contact">Contato</a>
+              <a href="#contact" className="link-underline-animation">Contato</a>
             </li>
             <li>
-              <a href="#faq">Perguntas Frequentes</a>
+              <a href="#faq" className="link-underline-animation">Perguntas Frequentes</a>
             </li>
           </ul>
         </nav>

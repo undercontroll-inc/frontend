@@ -68,4 +68,19 @@ h6 {
   overflow: hidden;
 }
 
+@layer utilities {
+  .link-underline-animation {
+    @apply relative text-inherit no-underline;
+  }
+
+  .link-underline-animation::after {
+    @apply absolute bottom-0 left-0 h-0.5 bg-current content-[''] transition-all duration-300 ease-out;
+    width: 0;
+  }
+
+  .link-underline-animation:hover::after {
+    @apply w-full;
+  }
+}
+
 
