@@ -7,6 +7,8 @@ const ComponentVisit = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    document.title = "Dashboard - Visita";
+
     const t = setTimeout(() => setLoading(false), 200);
     return () => clearTimeout(t);
   }, []);
@@ -100,7 +102,7 @@ const ComponentVisit = () => {
               </div>
             </div>
 
- {/*            <div className="p-6 sm:p-8">
+            {/*            <div className="p-6 sm:p-8">
               <div className="flex items-center gap-2 mb-4">
                 <div className="p-2 bg-[#041A2D]/10 rounded-lg">
                   <Wrench className="h-5 w-5 text-[#041A2D]" />
@@ -156,7 +158,7 @@ const ComponentVisit = () => {
             </div>
           </div>
 
-{/*           <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 sm:p-5">
+          {/*           <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 sm:p-5">
             <div className="flex gap-3">
               <div className="flex-shrink-0">
                 <div className="w-8 h-8 rounded-full bg-amber-500 flex items-center justify-center">

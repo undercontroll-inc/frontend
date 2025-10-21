@@ -7,6 +7,8 @@ import Input from "../shared/Input";
 import Button from "../shared/Button";
 import GoogleButton from "../shared/GoogleButton";
 import GoogleAuthService from "../../services/GoogleAuthService";
+import { userService } from "../../services/UserService";
+import { saveToken, saveUserData } from "../../utils/auth";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -27,6 +29,10 @@ const Login = () => {
       navigate(dest, { replace: true });
     }
   }, [isAuthenticated, user, navigate]);
+
+  useEffect(() => {
+    document.title = "Irmãos Pelluci - Login";
+  }, []);
 
   const validateField = (name, value) => {
     switch (name) {
@@ -57,29 +63,48 @@ const Login = () => {
     try {
       const userData = await GoogleAuthService.signInWithGoogle();
       
-      // Redireciona para o registro com os dados do Google
-      navigate("/register", {
-        state: {
-          fromGoogle: true,
-          googleData: {
-            name: userData.name.split(" ")[0] || "",
-            lastname: userData.name.split(" ").slice(1).join(" ") || "",
-            email: userData.email,
-            photoURL: userData.photoURL,
-            uid: userData.uid,
-          },
-        },
-      });
+      // Tenta fazer login no backend com o token do Google
+      const backendResult = await userService.googleAuth(userData.email, userData.idToken);
       
-      toast.success("Dados do Google carregados! Complete seu cadastro.");
+      if (backendResult.success) {
+        // Usuário já existe no backend, salva os dados e redireciona
+        if (backendResult.data.token) {
+          saveToken(backendResult.data.token);
+          const userDataToSave = {
+            ...backendResult.data.user,
+            avatar_url: backendResult.data.user.avatar_url || userData.photoURL
+          };
+          saveUserData(userDataToSave);
+        }
+        
+        toast.success(`Bem-vindo de volta, ${backendResult.data.user.name}!`);
+        setTimeout(() => {
+          navigate("/repairs");
+        }, 500);
+      } else {
+        // Usuário não existe no backend, redireciona para registro
+        navigate("/register", {
+          state: {
+            fromGoogle: true,
+            googleData: {
+              name: userData.name.split(" ")[0] || "",
+              lastname: userData.name.split(" ").slice(1).join(" ") || "",
+              email: userData.email,
+              photoURL: userData.photoURL,
+              uid: userData.uid,
+              idToken: userData.idToken,
+            },
+          },
+        });
+        
+        toast.success("Dados do Google carregados! Complete seu cadastro.");
+      }
     } catch (error) {
       toast.error(error.message || "Erro ao fazer login com Google");
     } finally {
       setGoogleLoading(false);
     }
-  };
-
-  const handleSubmit = async (e) => {
+  };  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const newErrors = {};

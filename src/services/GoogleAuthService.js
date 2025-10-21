@@ -7,7 +7,8 @@ class GoogleAuthService {
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
 
-      console.log(user);
+      // Obtém o ID Token do Firebase/Google
+      const idToken = await user.getIdToken();
 
       return {
         uid: user.uid,
@@ -15,6 +16,7 @@ class GoogleAuthService {
         email: user.email || "",
         photoURL: user.photoURL || "",
         emailVerified: user.emailVerified,
+        idToken: idToken, // Token OAuth do Google
       };
     } catch (error) {
       console.error("Erro ao fazer login com Google:", error);

@@ -21,6 +21,10 @@ const ComponentRepair = () => {
   const [statusFilter, setStatusFilter] = useState("");
 
   useEffect(() => {
+    document.title = "Dashboard - Reparos";
+  }, []);
+
+  useEffect(() => {
     loadRepairs();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);

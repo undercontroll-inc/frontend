@@ -7,6 +7,8 @@ import Input from '../shared/Input';
 import Button from '../shared/Button';
 import GoogleButton from '../shared/GoogleButton';
 import GoogleAuthService from '../../services/GoogleAuthService';
+import { userService } from '../../services/UserService';
+import { saveToken, saveUserData } from '../../utils/auth';
 import { validateCPF, formatCPF, validatePhoneBR, formatPhoneBR, formatCEP, validateCEP, validateEmail } from '../../utils/validation';
 import { cepService } from '../../services/CepService';
 
@@ -40,6 +42,10 @@ const Register = () => {
   const toast = useToast();
   const navigate = useNavigate();
   const totalSteps = 3;
+
+  useEffect(() => {
+    document.title = "Irmãos Pelluci - Cadastro";
+  }, []);
 
   const validateField = (name, value) => {
     switch (name) {
@@ -136,32 +142,50 @@ const Register = () => {
     try {
       const userData = await GoogleAuthService.signInWithGoogle();
       
-      // Preenche o formulário com os dados do Google
-      setFormData(prev => ({
-        ...prev,
-        name: userData.name.split(" ")[0] || "",
-        lastname: userData.name.split(" ").slice(1).join(" ") || "",
-        email: userData.email,
-        avatar_url: userData.photoURL || null,
-      }));
+      // Tenta fazer login no backend com o token do Google
+      const backendResult = await userService.googleAuth(userData.email, userData.idToken);
       
-      // Limpa erros dos campos preenchidos
-      setErrors(prev => ({
-        ...prev,
-        name: "",
-        lastname: "",
-        email: "",
-      }));
-      
-      toast.success("Dados do Google carregados! Complete seu cadastro.");
+      if (backendResult.success) {
+        // Usuário já existe no backend, faz login e redireciona
+        if (backendResult.data.token) {
+          saveToken(backendResult.data.token);
+          const userDataToSave = {
+            ...backendResult.data.user,
+            avatar_url: backendResult.data.user.avatar_url || userData.photoURL
+          };
+          saveUserData(userDataToSave);
+        }
+        
+        toast.success(`Bem-vindo de volta, ${backendResult.data.user.name}!`);
+        setTimeout(() => {
+          navigate("/repairs");
+        }, 500);
+      } else {
+        // Usuário não existe no backend, preenche formulário
+        setFormData(prev => ({
+          ...prev,
+          name: userData.name.split(" ")[0] || "",
+          lastname: userData.name.split(" ").slice(1).join(" ") || "",
+          email: userData.email,
+          avatar_url: userData.photoURL || null,
+        }));
+        
+        // Limpa erros dos campos preenchidos
+        setErrors(prev => ({
+          ...prev,
+          name: "",
+          lastname: "",
+          email: "",
+        }));
+        
+        toast.success("Dados do Google carregados! Complete seu cadastro.");
+      }
     } catch (error) {
       toast.error(error.message || "Erro ao fazer login com Google");
     } finally {
       setGoogleLoading(false);
     }
-  };
-
-  const validateCurrentStep = () => {
+  };  const validateCurrentStep = () => {
     const fieldsToValidate = {
       1: ['name', 'lastname', 'email', 'cpf'],
       2: ['cep', 'numero', 'phone'],
@@ -239,8 +263,8 @@ const Register = () => {
 
       if (result.success) {
         toast.success(
-          result.autoLogin 
-            ? "Conta criada com sucesso! Bem-vindo!" 
+          result.autoLogin
+            ? "Conta criada com sucesso! Bem-vindo!"
             : "Conta criada com sucesso!"
         );
 
@@ -334,9 +358,9 @@ const Register = () => {
             {fromGoogle && (
               <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg flex items-start gap-3">
                 {formData.avatar_url ? (
-                  <img 
-                    src={formData.avatar_url} 
-                    alt="Avatar do Google" 
+                  <img
+                    src={formData.avatar_url}
+                    alt="Avatar do Google"
                     className="h-10 w-10 rounded-full flex-shrink-0 border-2 border-blue-300"
                   />
                 ) : (
@@ -362,7 +386,7 @@ const Register = () => {
                     loading={googleLoading}
                     text="Cadastrar com Google"
                   />
-                  
+
                   <div className="relative my-4">
                     <div className="absolute inset-0 flex items-center">
                       <div className="w-full border-t border-gray-200"></div>

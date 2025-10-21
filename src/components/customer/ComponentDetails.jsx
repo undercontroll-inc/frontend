@@ -27,7 +27,9 @@ const ComponentDetails = () => {
     loadRepairDetails();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
-
+  useEffect(() => {
+    document.title = "Dashboard - Detalhes";
+  }, []);
   const loadRepairDetails = async () => {
     try {
       setLoading(true);
@@ -335,7 +337,7 @@ const ComponentDetails = () => {
                             </div>
                             <div className="text-gray-700 text-xs whitespace-pre-wrap">
                               {ap.customerNote &&
-                              ap.customerNote.trim().length > 0
+                                ap.customerNote.trim().length > 0
                                 ? ap.customerNote
                                 : "-"}
                             </div>

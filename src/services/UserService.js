@@ -22,6 +22,26 @@ class UserService {
     }
   }
 
+  async googleAuth(email, token) {
+    try {
+      const response = await apiClient.post(BASE_URI + "/auth/google", {
+        email: email,
+        token: token,
+      });
+      
+      return { 
+        success: true, 
+        data: response.data 
+      };
+    } catch (e) {
+      return { 
+        success: false, 
+        error: getAxiosErrorMessage(e),
+        statusCode: e.response?.status
+      };
+    }
+  }
+
   async register(user) {
     try {
       const response = await apiClient.post(BASE_URI, {
