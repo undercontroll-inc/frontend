@@ -1,5 +1,9 @@
 @import 'tailwindcss';
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
@@ -62,6 +66,21 @@ h6 {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+@layer utilities {
+  .link-underline-animation {
+    @apply relative text-inherit no-underline;
+  }
+
+  .link-underline-animation::after {
+    @apply absolute bottom-0 left-0 h-0.5 bg-current content-[''] transition-all duration-300 ease-out;
+    width: 0;
+  }
+
+  .link-underline-animation:hover::after {
+    @apply w-full;
+  }
 }
 
 
