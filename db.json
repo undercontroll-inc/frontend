@@ -1,39 +1,160 @@
 {
   "user": [
     {
-      "name": "nicolas",
-      "lastname": "sampaio",
-      "address": "cotia",
-      "cpf": "123456",
-      "birthdate": "11/09/2005",
-      "password": "aaaa",
+      "name": "Felipe Dias",
+      "lastname": "Dias",
+      "email": "felipe.dias@email.com",
+      "phone": "11969731824",
+      "address": "Rua Ezequiel Costa - Vila Zelina 12306-80 - n° 214",
+      "cpf": "18077823XXX",
+      "birthdate": "10/02/2021",
+      "password": "senha123",
       "userType": "COSTUMER",
+      "hasWhatsapp": true,
+      "createdAt": "10/02/2021",
       "id": 1
     },
     {
-      "name": "nicolas",
-      "lastname": "sampaio",
-      "address": "cotia",
-      "cpf": "123456",
-      "birthdate": "11/09/2005",
-      "password": "aaa",
+      "name": "Eliana Guedes",
+      "lastname": "Guedes",
+      "email": "eliana.guedes@email.com",
+      "phone": "11993454476",
+      "address": "Rua das Flores, 456 - São Paulo",
+      "cpf": "45678912345",
+      "birthdate": "15/05/1985",
+      "password": "senha123",
       "userType": "COSTUMER",
+      "hasWhatsapp": true,
+      "createdAt": "15/03/2020",
       "id": 2
     },
     {
-      "name": "Lucas",
-      "lastname": "Hernandes",
-      "cpf": "557.397.138-70",
-      "birthdate": "26/03/2006",
-      "address": "Rua silvia 1693",
-      "password": "ishow123",
+      "name": "Maria José",
+      "lastname": "Silva",
+      "phone": "11995634376",
+      "cpf": "55739713870",
+      "birthdate": "26/03/1980",
+      "address": "Av. Principal 789",
+      "password": "senha123",
       "userType": "COSTUMER",
+      "hasWhatsapp": false,
+      "createdAt": "20/01/2022",
       "id": 3
     },
     {
-      "email": "lucas",
-      "password": "ishow123",
+      "name": "José Freitas",
+      "lastname": "Freitas",
+      "email": "jose.freitas2012@email.com",
+      "phone": "11921095376",
+      "cpf": "78945612378",
+      "address": "Rua São João, 321",
+      "password": "senha123",
+      "userType": "COSTUMER",
+      "hasWhatsapp": true,
+      "createdAt": "05/06/2021",
       "id": 4
+    },
+    {
+      "name": "Sebastião Neto",
+      "lastname": "Neto",
+      "phone": "11969738976",
+      "cpf": "32165498712",
+      "address": "Av. Paulista 1000",
+      "password": "senha123",
+      "userType": "COSTUMER",
+      "hasWhatsapp": true,
+      "createdAt": "12/08/2019",
+      "id": 5
+    },
+    {
+      "name": "Fernando Gomes",
+      "lastname": "Gomes",
+      "email": "fernando.gomes@email.com",
+      "phone": "11968734376",
+      "cpf": "65432198765",
+      "address": "Rua das Acácias, 555",
+      "password": "senha123",
+      "userType": "COSTUMER",
+      "hasWhatsapp": true,
+      "createdAt": "18/11/2020",
+      "id": 6
+    },
+    {
+      "name": "João Pedro Lima",
+      "lastname": "Lima",
+      "email": "jp.lima@email.com",
+      "phone": "11968734376",
+      "cpf": "98765432198",
+      "address": "Rua dos Pinheiros 888",
+      "password": "senha123",
+      "userType": "COSTUMER",
+      "hasWhatsapp": false,
+      "createdAt": "25/04/2022",
+      "id": 7
+    },
+    {
+      "name": "Wellington Matos",
+      "lastname": "Matos",
+      "phone": "11968734376",
+      "cpf": "14725836912",
+      "address": "Av. Brasil 2000",
+      "password": "senha123",
+      "userType": "COSTUMER",
+      "hasWhatsapp": true,
+      "createdAt": "30/07/2021",
+      "id": 8
+    },
+    {
+      "name": "Fernanda Pereira",
+      "lastname": "Pereira",
+      "email": "fernanda.pereira@email.com",
+      "phone": "11968734376",
+      "cpf": "36925814736",
+      "address": "Rua Augusta 1234",
+      "password": "senha123",
+      "userType": "COSTUMER",
+      "hasWhatsapp": true,
+      "createdAt": "08/09/2020",
+      "id": 9
+    },
+    {
+      "name": "Joana Cruz",
+      "lastname": "Cruz",
+      "email": "joana.cruz@email.com",
+      "phone": "11968734376",
+      "cpf": "75395182654",
+      "address": "Rua Oscar Freire 567",
+      "password": "senha123",
+      "userType": "COSTUMER",
+      "hasWhatsapp": false,
+      "createdAt": "14/02/2021",
+      "id": 10
+    },
+    {
+      "name": "Carlos Oliveira",
+      "lastname": "Oliveira",
+      "email": "carlos.oliveira@email.com",
+      "phone": "11968734376",
+      "cpf": "95175382641",
+      "address": "Av. Faria Lima 3000",
+      "password": "senha123",
+      "userType": "COSTUMER",
+      "hasWhatsapp": true,
+      "createdAt": "22/12/2019",
+      "id": 11
+    },
+    {
+      "id": "5a8f",
+      "name": "mathias tonetti",
+      "phone": "11977967486",
+      "email": "mathias.zocca@sptech.school",
+      "cpf": "45044141801",
+      "cep": "03546-020",
+      "address": "Rua Luís Ferreira Gil, 80",
+      "addressNumber": "80",
+      "hasWhatsapp": true,
+      "userType": "COSTUMER",
+      "password": "senha123"
     }
   ],
   "components": [
@@ -86,7 +207,7 @@
   "repairs": [
     {
       "id": 1921,
-      "userId": 4,
+      "userId": 1,
       "appliances": [
         {
           "type": "Micro-ondas",
@@ -147,44 +268,77 @@
       "serviceDescription": "Reparo em micro-ondas sem aquecimento — substituição de fusível, diodo e magnetron.\nReparo em cafeteira Dolce Gusto que não bombeava água — substituição de bomba e termostato, além de limpeza interna.",
       "notes": "Ambos os aparelhos foram testados e apresentam funcionamento normal.\nCliente orientado sobre limpeza periódica da cafeteira e uso de tomada exclusiva para o micro-ondas.",
       "status": "EM_ANDAMENTO",
-      "updatedAt": "2025-10-30T18:00:00"
+      "updatedAt": "2025-10-10T13:37:00"
     },
     {
       "id": 1906,
-      "userId": 4,
+      "userId": 1,
       "appliances": [
         {
-          "type": "Notebook",
-          "brand": "Dell",
-          "model": "Inspiron 15 3000",
-          "voltage": "Bivolt",
+          "type": "Cafeteira",
+          "brand": "Dolce Gusto",
+          "model": "Genio S Plus",
+          "voltage": "127 V",
           "serial": "D15-2025-5544",
-          "customerNote": "Cliente relatou queda antes do problema."
+          "customerNote": "A cafeteira não está aquecendo."
         }
       ],
       "parts": [
         {
-          "name": "Cabo flat display Inspiron",
+          "name": "Resistência elétrica",
           "quantity": 1,
-          "unitValue": 250,
-          "totalValue": 250
+          "unitValue": 80,
+          "totalValue": 80
         }
       ],
-      "partsTotal": 250,
-      "laborValue": 130,
+      "partsTotal": 80,
+      "laborValue": 50,
       "discount": 0,
-      "totalValue": 380,
-      "receivedAt": "05/08/2025",
-      "deadline": "12/08/2025",
+      "totalValue": 130,
+      "receivedAt": "07/07/2025",
+      "deadline": "10/07/2025",
       "warranty": "90 dias",
-      "serviceDescription": "Troca do cabo flat do display",
-      "notes": "Cliente relatou queda antes do problema",
+      "serviceDescription": "Troca da resistência",
+      "notes": "Testado e funcionando",
       "status": "FINALIZADO",
-      "updatedAt": "2025-08-12T11:00:00"
+      "updatedAt": "2025-07-07T13:37:00"
+    },
+    {
+      "id": 1887,
+      "userId": 1,
+      "appliances": [
+        {
+          "type": "Ferro de Passar",
+          "brand": "Walita",
+          "model": "Perfect Care",
+          "voltage": "127 V",
+          "serial": "WA-PC-2024",
+          "customerNote": "Não aquece mais."
+        }
+      ],
+      "parts": [
+        {
+          "name": "Termostato",
+          "quantity": 1,
+          "unitValue": 45,
+          "totalValue": 45
+        }
+      ],
+      "partsTotal": 45,
+      "laborValue": 35,
+      "discount": 0,
+      "totalValue": 80,
+      "receivedAt": "21/01/2025",
+      "deadline": "25/01/2025",
+      "warranty": "90 dias",
+      "serviceDescription": "Substituição do termostato",
+      "notes": "Ferro funcionando perfeitamente",
+      "status": "FINALIZADO",
+      "updatedAt": "2025-01-21T13:37:00"
     },
     {
       "id": 1935,
-      "userId": 4,
+      "userId": 2,
       "appliances": [
         {
           "type": "Geladeira",
