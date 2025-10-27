@@ -38,7 +38,7 @@ const Register = () => {
   const [loadingCep, setLoadingCep] = useState(false);
   const [addressData, setAddressData] = useState(null);
 
-  const { register } = useAuth();
+  const { register, updateUser } = useAuth();
   const toast = useToast();
   const navigate = useNavigate();
   const totalSteps = 3;
@@ -141,24 +141,27 @@ const Register = () => {
     setGoogleLoading(true);
     try {
       const userData = await GoogleAuthService.signInWithGoogle();
-      
+
       // Tenta fazer login no backend com o token do Google
       const backendResult = await userService.googleAuth(userData.email, userData.idToken);
-      
+
       if (backendResult.success) {
         // Usuário já existe no backend, faz login e redireciona
-        if (backendResult.data.token) {
-          saveToken(backendResult.data.token);
-          const userDataToSave = {
-            ...backendResult.data.user,
-            avatar_url: backendResult.data.user.avatar_url || userData.photoURL
-          };
-          saveUserData(userDataToSave);
-        }
+        const userDataToSave = {
+          ...backendResult.data.user,
+          avatar_url: backendResult.data.user.avatar_url || userData.photoURL
+        };
         
+        // Salva token e dados do usuário
+        saveToken(backendResult.data.token);
+        saveUserData(userDataToSave);
+        
+        // Atualiza o contexto de autenticação
+        updateUser(userDataToSave);
+
         toast.success(`Bem-vindo de volta, ${backendResult.data.user.name}!`);
         setTimeout(() => {
-          navigate("/repairs");
+          navigate("/repairs", { replace: true });
         }, 500);
       } else {
         // Usuário não existe no backend, preenche formulário
@@ -169,7 +172,7 @@ const Register = () => {
           email: userData.email,
           avatar_url: userData.photoURL || null,
         }));
-        
+
         // Limpa erros dos campos preenchidos
         setErrors(prev => ({
           ...prev,
@@ -177,7 +180,7 @@ const Register = () => {
           lastname: "",
           email: "",
         }));
-        
+
         toast.success("Dados do Google carregados! Complete seu cadastro.");
       }
     } catch (error) {
@@ -185,7 +188,7 @@ const Register = () => {
     } finally {
       setGoogleLoading(false);
     }
-  };  const validateCurrentStep = () => {
+  }; const validateCurrentStep = () => {
     const fieldsToValidate = {
       1: ['name', 'lastname', 'email', 'cpf'],
       2: ['cep', 'numero', 'phone'],

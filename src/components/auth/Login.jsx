@@ -19,7 +19,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
 
-  const { login, isAuthenticated, user } = useAuth();
+  const { login, isAuthenticated, user, updateUser } = useAuth();
   const toast = useToast();
   const navigate = useNavigate();
 
@@ -67,19 +67,24 @@ const Login = () => {
       const backendResult = await userService.googleAuth(userData.email, userData.idToken);
       
       if (backendResult.success) {
-        // Usuário já existe no backend, salva os dados e redireciona
-        if (backendResult.data.token) {
-          saveToken(backendResult.data.token);
-          const userDataToSave = {
-            ...backendResult.data.user,
-            avatar_url: backendResult.data.user.avatar_url || userData.photoURL
-          };
-          saveUserData(userDataToSave);
-        }
+        // Usuário já existe no backend, faz login usando o contexto
+        const userDataToSave = {
+          ...backendResult.data.user,
+          avatar_url: backendResult.data.user.avatar_url || userData.photoURL
+        };
+        
+        // Salva token e dados do usuário
+        saveToken(backendResult.data.token);
+        saveUserData(userDataToSave);
+        
+        // Atualiza o contexto de autenticação
+        updateUser(userDataToSave);
         
         toast.success(`Bem-vindo de volta, ${backendResult.data.user.name}!`);
+        
+        // Redireciona para repairs após um curto delay
         setTimeout(() => {
-          navigate("/repairs");
+          navigate("/repairs", { replace: true });
         }, 500);
       } else {
         // Usuário não existe no backend, redireciona para registro
