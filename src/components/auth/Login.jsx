@@ -5,7 +5,10 @@ import { useAuth } from "../../contexts/AuthContext";
 import { useToast } from "../../contexts/ToastContext";
 import Input from "../shared/Input";
 import Button from "../shared/Button";
-import AuthLayout from "../shared/AuthLayout";
+import GoogleButton from "../shared/GoogleButton";
+import GoogleAuthService from "../../services/GoogleAuthService";
+import { userService } from "../../services/UserService";
+import { saveToken, saveUserData } from "../../utils/auth";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -14,8 +17,9 @@ const Login = () => {
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
 
-  const { login, isAuthenticated, user } = useAuth();
+  const { login, isAuthenticated, user, updateUser } = useAuth();
   const toast = useToast();
   const navigate = useNavigate();
 
@@ -25,6 +29,10 @@ const Login = () => {
       navigate(dest, { replace: true });
     }
   }, [isAuthenticated, user, navigate]);
+
+  useEffect(() => {
+    document.title = "Irmãos Pelluci - Login";
+  }, []);
 
   const validateField = (name, value) => {
     switch (name) {
@@ -50,7 +58,58 @@ const Login = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleGoogleLogin = async () => {
+    setGoogleLoading(true);
+    try {
+      const userData = await GoogleAuthService.signInWithGoogle();
+      
+      // Tenta fazer login no backend com o token do Google
+      const backendResult = await userService.googleAuth(userData.email, userData.idToken);
+      
+      if (backendResult.success) {
+        // Usuário já existe no backend, faz login usando o contexto
+        const userDataToSave = {
+          ...backendResult.data.user,
+          avatar_url: backendResult.data.user.avatar_url || userData.photoURL
+        };
+        
+        // Salva token e dados do usuário
+        saveToken(backendResult.data.token);
+        saveUserData(userDataToSave);
+        
+        // Atualiza o contexto de autenticação
+        updateUser(userDataToSave);
+        
+        toast.success(`Bem-vindo de volta, ${backendResult.data.user.name}!`);
+        
+        // Redireciona para repairs após um curto delay
+        setTimeout(() => {
+          navigate("/repairs", { replace: true });
+        }, 500);
+      } else {
+        // Usuário não existe no backend, redireciona para registro
+        navigate("/register", {
+          state: {
+            fromGoogle: true,
+            googleData: {
+              name: userData.name.split(" ")[0] || "",
+              lastname: userData.name.split(" ").slice(1).join(" ") || "",
+              email: userData.email,
+              photoURL: userData.photoURL,
+              uid: userData.uid,
+              idToken: userData.idToken,
+            },
+          },
+        });
+        
+        toast.success("Dados do Google carregados! Complete seu cadastro.");
+      }
+    } catch (error) {
+      toast.error(error.message || "Erro ao fazer login com Google");
+    } finally {
+      setGoogleLoading(false);
+    }
+  };  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const newErrors = {};
@@ -145,11 +204,28 @@ const Login = () => {
                   size="sm"
                   className="w-full"
                   loading={loading}
-                  disabled={loading}
+                  disabled={loading || googleLoading}
                 >
                   {loading ? 'Entrando...' : 'Entrar'}
                 </Button>
               </div>
+
+              {/* Divisor */}
+              <div className="relative my-6">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-gray-200"></div>
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="px-4 bg-white text-gray-500">ou</span>
+                </div>
+              </div>
+
+              {/* Botão Google */}
+              <GoogleButton
+                onClick={handleGoogleLogin}
+                loading={googleLoading}
+                text="Continuar com Google"
+              />
             </form>
 
             <div className="text-center mt-6 pt-6 border-t border-gray-100">

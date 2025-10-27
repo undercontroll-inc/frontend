@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
         try {
           const token = getToken();
           const userData = getUserData();
-          
+
           if (token && userData) {
             setUser(userData);
           } else if (token) {
@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (credentials) => {
     try {
       const result = await userService.auth(credentials.name, credentials.password);
-      
+
       if (result.success) {
         if (result.data?.token) {
           // O backend retorna duas chaves, uma sendo o token de autenticação e outra os dados basicos do usuario.
@@ -53,9 +53,9 @@ export const AuthProvider = ({ children }) => {
         }
         return { success: true, user: result.data.user };
       } else {
-        return { 
-          success: false, 
-          error: result.error || 'Credenciais inválidas' 
+        return {
+          success: false,
+          error: result.error || 'Credenciais inválidas'
         };
       }
     } catch (error) {
@@ -71,12 +71,33 @@ export const AuthProvider = ({ children }) => {
       ...userData,
       userType: "COSTUMER" // isso aqui não é seguro
     };
-    
+
     try {
       const result = await userService.register(data);
-      
+
       if (result.success) {
-        return { success: true };
+        // Após registro bem-sucedido, faz login automático
+        const loginResult = await login({
+          name: userData.email,
+          password: userData.password
+        });
+
+        // Se o usuário veio do Google, atualiza o avatar_url no userData salvo
+        if (userData.avatar_url && loginResult.success) {
+          const currentUserData = getUserData();
+          const updatedUserData = {
+            ...currentUserData,
+            avatar_url: userData.avatar_url
+          };
+          saveUserData(updatedUserData);
+          setUser(updatedUserData);
+        }
+
+        return {
+          success: true,
+          autoLogin: loginResult.success,
+          user: loginResult.user
+        };
       } else {
         return {
           success: false,
@@ -96,12 +117,17 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
+  const updateUser = (userData) => {
+    setUser(userData);
+  };
+
   const value = {
     user,
     loading,
     login,
     register,
     logout,
+    updateUser,
     isAuthenticated: !!user,
   };
 
