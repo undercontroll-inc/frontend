@@ -73,6 +73,12 @@ const SideBar = ({ active = "repairs" }) => {
         path: "/my-repairs",
       },
       {
+        id: "calendar",
+        label: "Calendário",
+        icon: Calendar,
+        path: "/calendar",
+      },
+      {
         id: "visita",
         label: "Visita Técnica",
         icon: Calendar,
