@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { User, Lock, Wrench } from "lucide-react";
+import { User, Lock } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
 import { useToast } from "../../contexts/ToastContext";
 import Input from "../shared/Input";
@@ -18,6 +18,7 @@ const Login = () => {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
+  // Single image (no carousel)
 
   const { login, isAuthenticated, user, updateUser } = useAuth();
   const toast = useToast();
@@ -33,6 +34,8 @@ const Login = () => {
   useEffect(() => {
     document.title = "Irmãos Pelluci - Login";
   }, []);
+
+  const heroImage = "/images/microondas 6.jpg"; // imagem única do painel esquerdo
 
   const validateField = (name, value) => {
     switch (name) {
@@ -62,26 +65,29 @@ const Login = () => {
     setGoogleLoading(true);
     try {
       const userData = await GoogleAuthService.signInWithGoogle();
-      
+
       // Tenta fazer login no backend com o token do Google
-      const backendResult = await userService.googleAuth(userData.email, userData.idToken);
-      
+      const backendResult = await userService.googleAuth(
+        userData.email,
+        userData.idToken
+      );
+
       if (backendResult.success) {
         // Usuário já existe no backend, faz login usando o contexto
         const userDataToSave = {
           ...backendResult.data.user,
-          avatar_url: backendResult.data.user.avatar_url || userData.photoURL
+          avatar_url: backendResult.data.user.avatar_url || userData.photoURL,
         };
-        
+
         // Salva token e dados do usuário
         saveToken(backendResult.data.token);
         saveUserData(userDataToSave);
-        
+
         // Atualiza o contexto de autenticação
         updateUser(userDataToSave);
-        
+
         toast.success(`Bem-vindo de volta, ${backendResult.data.user.name}!`);
-        
+
         // Redireciona para repairs após um curto delay
         setTimeout(() => {
           navigate("/repairs", { replace: true });
@@ -101,7 +107,7 @@ const Login = () => {
             },
           },
         });
-        
+
         toast.success("Dados do Google carregados! Complete seu cadastro.");
       }
     } catch (error) {
@@ -109,7 +115,8 @@ const Login = () => {
     } finally {
       setGoogleLoading(false);
     }
-  };  const handleSubmit = async (e) => {
+  };
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const newErrors = {};
@@ -138,35 +145,53 @@ const Login = () => {
         }, 500);
       } else {
         toast.error("Email ou senhas invalidos");
-        const form = document.querySelector('form');
-        form.classList.add('animate-pulse');
-        setTimeout(() => form.classList.remove('animate-pulse'), 500);
+        const form = document.querySelector("form");
+        form.classList.add("animate-pulse");
+        setTimeout(() => form.classList.remove("animate-pulse"), 500);
       }
     } catch (error) {
-      toast.error('Erro inesperado: ' + error);
+      toast.error("Erro inesperado: " + error);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen w-full bg-gray-50 flex items-center justify-center p-3 sm:p-4">
-      <div className="max-w-md w-full my-4">
-        <div className="bg-white border border-gray-200 rounded-xl shadow-lg max-h-[calc(100vh-2rem)] flex flex-col overflow-hidden">
-          <div className="flex-1 overflow-y-auto px-6 sm:px-8 py-6 sm:py-8">
-            <div className="text-center mb-6">
-              <h1 className="text-slate-900 text-xl sm:text-2xl font-bold mb-2 flex items-center justify-center gap-2">
-                <Wrench className="h-6 w-6 sm:h-7 sm:w-7" />
-                Entrar
+    <div className="min-h-screen w-full bg-gray-100 flex items-center justify-center p-4">
+      <div className="w-full max-w-6xl bg-white rounded-3xl shadow-xl overflow-hidden">
+        <div className="grid grid-cols-1 md:grid-cols-2">
+          {/* Painel de imagem (esquerda) */}
+          <div className="relative h-full w-full">
+            <img
+              src={heroImage}
+              alt="Login Hero"
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+            {/* Overlay suave */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent" />
+          </div>
+
+          {/* Formulário (direita) */}
+          <div className="px-6 sm:px-10 py-8 md:py-12">
+            <div className="mb-8 text-center">
+              <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 flex items-center justify-center gap-3 text-center">
+                <span>Bem-vindo de volta</span>
+                <span role="img" aria-label="Waving Hand">
+                  👋
+                </span>
               </h1>
-              <p className="text-sm sm:text-base text-gray-600">Acesse sua conta</p>
+              <p className="text-gray-600 mt-2 text-center">
+                Insira seus dados para entrar.
+              </p>
             </div>
 
-            <form className='space-y-4' onSubmit={handleSubmit}>
+            <form className="space-y-5" onSubmit={handleSubmit}>
               <div>
                 <div className="flex items-center gap-2 mb-2">
                   <User className="h-4 w-4 text-gray-500" />
-                  <span className="text-sm font-medium text-gray-700">Usuário</span>
+                  <span className="text-sm font-medium text-gray-700">
+                    Usuário
+                  </span>
                 </div>
                 <Input
                   name="name"
@@ -183,7 +208,9 @@ const Login = () => {
               <div>
                 <div className="flex items-center gap-2 mb-2">
                   <Lock className="h-4 w-4 text-gray-500" />
-                  <span className="text-sm font-medium text-gray-700">Senha</span>
+                  <span className="text-sm font-medium text-gray-700">
+                    Senha
+                  </span>
                 </div>
                 <Input
                   name="password"
@@ -206,31 +233,30 @@ const Login = () => {
                   loading={loading}
                   disabled={loading || googleLoading}
                 >
-                  {loading ? 'Entrando...' : 'Entrar'}
+                  {loading ? "Entrando..." : "Entrar"}
                 </Button>
               </div>
 
               {/* Divisor */}
-              <div className="relative my-6">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-200"></div>
-                </div>
-                <div className="relative flex justify-center text-sm">
-                  <span className="px-4 bg-white text-gray-500">ou</span>
-                </div>
+              <div className="flex items-center gap-4">
+                <div className="h-px bg-gray-200 flex-1" />
+                <span className="text-xs text-gray-500">ou</span>
+                <div className="h-px bg-gray-200 flex-1" />
               </div>
 
-              {/* Botão Google */}
-              <GoogleButton
-                onClick={handleGoogleLogin}
-                loading={googleLoading}
-                text="Continuar com Google"
-              />
+              {/* Botão Google abaixo do Entrar */}
+              <div className="pt-1">
+                <GoogleButton
+                  onClick={handleGoogleLogin}
+                  loading={googleLoading}
+                  text="Continuar com Google"
+                />
+              </div>
             </form>
 
-            <div className="text-center mt-6 pt-6 border-t border-gray-100">
+            <div className="text-center mt-8">
               <p className="text-gray-600 text-sm">
-                Não tem uma conta?{' '}
+                Não tem uma conta?{" "}
                 <Link
                   to="/register"
                   className="text-slate-900 hover:text-slate-700 font-medium transition-colors"
