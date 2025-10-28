@@ -70,7 +70,7 @@ const SideBar = ({ active = "repairs" }) => {
         id: "repairs",
         label: "Consertos",
         icon: Wrench,
-        path: "/repairs",
+        path: "/my-repairs",
       },
       {
         id: "calendar",
