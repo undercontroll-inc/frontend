@@ -83,6 +83,118 @@
       "id": 6
     }
   ],
+  "storage": [
+    {
+      "id": "a1b2",
+      "item": "Resistores para ferro de solda",
+      "brand": "Prico",
+      "category": "Eletrônicos",
+      "quantity": 100,
+      "price": "R$ 5,50",
+      "supplier": "TecnoMicro",
+      "description": "Resistência compatível com ferro de solda 54V"
+    },
+    {
+      "id": "c3d4",
+      "item": "Peça de longa 3",
+      "brand": "Multimoda",
+      "category": "Elétrica",
+      "quantity": 80,
+      "price": "R$ 9,00",
+      "supplier": "EletroMaster",
+      "description": "Cabo de força padrão 3 pinos de 1M"
+    },
+    {
+      "id": "e5f6",
+      "item": "Termostato térmico 220V",
+      "brand": "Prico",
+      "category": "Elétrica",
+      "quantity": 40,
+      "price": "R$ 22,00",
+      "supplier": "TecnoMicro",
+      "description": "Termostato térmico 220V para cafeteira Mondial"
+    },
+    {
+      "id": "g7h8",
+      "item": "Fogão térmico 10A resistências",
+      "brand": "Turbo",
+      "category": "Elétrica",
+      "quantity": 12,
+      "price": "R$ 3,00",
+      "supplier": "Casa do Eletro",
+      "description": "Usado em liquidificadores e termos de geladeira médio"
+    },
+    {
+      "id": "i9j0",
+      "item": "Chave Phillips",
+      "brand": "Tramontino",
+      "category": "Ferramentas",
+      "quantity": 32,
+      "price": "R$ 14,50",
+      "supplier": "Ferragens Silva",
+      "description": "Chave de fenda padrão com ponta cruzada médio"
+    },
+    {
+      "id": "k1l2",
+      "item": "Pasta Térmica",
+      "brand": "Elgin",
+      "category": "Informática",
+      "quantity": 16,
+      "price": "R$ 3,00",
+      "supplier": "ManuCorner",
+      "description": "Utilizado para manutenção de computadores e placas em geral"
+    },
+    {
+      "id": "m3n4",
+      "item": "Resistência para ferro de solda",
+      "brand": "Arno",
+      "category": "Peças de Reposição",
+      "quantity": 25,
+      "price": "R$ 16,00",
+      "supplier": "DistroNitro",
+      "description": "Resistência compatível com ferro de solda Arno 54V"
+    },
+    {
+      "id": "o5p6",
+      "item": "Termostato para cafeteira",
+      "brand": "Prico",
+      "category": "Peças de Reposição",
+      "quantity": 40,
+      "price": "R$ 22,00",
+      "supplier": "TecnoMicro",
+      "description": "Termostato térmico 220V para cafeteira Mondial"
+    },
+    {
+      "id": "q7r8",
+      "item": "Cabo de força 3 pinos",
+      "brand": "Multimoda",
+      "category": "Elétrica",
+      "quantity": 80,
+      "price": "R$ 9,00",
+      "supplier": "EletroMaster",
+      "description": "Cabo de força padrão 3 pinos de 1M"
+    },
+    {
+      "id": "s9t0",
+      "item": "Fogão Térmico 220V",
+      "brand": "Turbo",
+      "category": "Elétrica",
+      "quantity": 12,
+      "price": "R$ 3,00",
+      "supplier": "Casa do Eletro",
+      "description": "Usado em liquidificadores e termos de parede"
+    },
+    {
+      "id": "u1v2",
+      "item": "Chave Phillips",
+      "brand": "Tramontino",
+      "category": "Ferramentas",
+      "quantity": 32,
+      "price": "R$ 14,50",
+      "supplier": "Ferragens Silva",
+      "description": "Chave de fenda padrão com ponta cruzada"
+    }
+  ],
   "repairs": [
     {
       "id": 1921,

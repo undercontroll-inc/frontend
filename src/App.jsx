@@ -15,6 +15,7 @@ import Register from "./components/auth/Register";
 import Dashboard from "./components/dashboard/Dashboard";
 import Toaster from "./components/shared/Toaster";
 import { LandingPage } from "./components/landing_page/LandingPage";
+import { Estoque } from "./components/admin/Estoque";
 
 function App() {
   return (
@@ -67,6 +68,15 @@ function App() {
               element={
                 <ProtectedRoute>
                   <ComponentVisit />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/storage"
+              element={
+                <ProtectedRoute>
+                  <Estoque />
                 </ProtectedRoute>
               }
             />
