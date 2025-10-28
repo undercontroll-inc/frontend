@@ -155,6 +155,19 @@
       "hasWhatsapp": true,
       "userType": "COSTUMER",
       "password": "senha123"
+    },
+    {
+      "name": "Lucas Hernandes",
+      "phone": "11988310069",
+      "email": "aa@gmail.com",
+      "cpf": "",
+      "cep": "1231321123",
+      "address": "",
+      "addressNumber": "190",
+      "hasWhatsapp": true,
+      "userType": "COSTUMER",
+      "password": "senha123",
+      "id": 12
     }
   ],
   "components": [
@@ -374,6 +387,33 @@
       "notes": "Cliente relatou ruído intermitente ao ligar.",
       "status": "NAO_INICIADO",
       "updatedAt": "2025-10-15T16:30:00"
+    },
+    {
+      "userId": 12,
+      "appliances": [
+        {
+          "type": "Ferro de Passar",
+          "brand": "aaa",
+          "model": "",
+          "voltage": "Bivolt",
+          "serial": "123",
+          "customerNote": "",
+          "laborValue": "11,10"
+        }
+      ],
+      "parts": [],
+      "partsTotal": 0,
+      "laborValue": 0,
+      "discount": 0,
+      "totalValue": 0,
+      "receivedAt": "2025-10-16",
+      "deadline": "2025-11-01",
+      "warranty": "12",
+      "serviceDescription": "",
+      "notes": "",
+      "status": "NAO_INICIADO",
+      "updatedAt": "2025-10-28T18:55:38.728Z",
+      "id": 1936
     }
   ]
 }

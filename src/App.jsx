@@ -18,99 +18,104 @@ import { RepairPage } from "./components/admin/RepairPage";
 import { ClientsPage } from "./components/admin/ClientsPage";
 import Toaster from "./components/shared/Toaster";
 import { LandingPage } from "./components/landing_page/LandingPage";
+import { ThemeProvider } from "./components/shared/ThemeProvider";
+import { ThemeDebug } from "./components/shared/ThemeDebug";
 
 function App() {
   return (
-    <AuthProvider>
-      <ToastProvider>
-        <Router>
-          <Routes>
-            <Route path="/" element={<LandingPage />} />
+    <ThemeProvider>
+{/*       <ThemeDebug />
+ */}    <AuthProvider>
+        <ToastProvider>
+          <Router>
+            <Routes>
+              <Route path="/" element={<LandingPage />} />
 
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
 
-            <Route
-              path="/dashboard"
-              element={
-                <ProtectedRoute roles={["ADMINISTRATOR"]}>
-                  <Dashboard />
-                </ProtectedRoute>
-              }
-            />
-            
-            {/* Rota /repairs para ADMINISTRATOR - Admin RepairPage */}
-            <Route
-              path="/repairs"
-              element={
-                <ProtectedRoute roles={["ADMINISTRATOR"]}>
-                  <RepairPage />
-                </ProtectedRoute>
-              }
-            />
+              <Route
+                path="/dashboard"
+                element={
+                  <ProtectedRoute roles={["ADMINISTRATOR"]}>
+                    <Dashboard />
+                  </ProtectedRoute>
+                }
+              />
 
-            {/* Rota /clients para ADMINISTRATOR - ClientsPage */}
-            <Route
-              path="/clients"
-              element={
-                <ProtectedRoute roles={["ADMINISTRATOR"]}>
-                  <ClientsPage />
-                </ProtectedRoute>
-              }
-            />
+              {/* Rota /repairs para ADMINISTRATOR - Admin RepairPage */}
+              <Route
+                path="/repairs"
+                element={
+                  <ProtectedRoute roles={["ADMINISTRATOR"]}>
+                    <RepairPage />
+                  </ProtectedRoute>
+                }
+              />
 
-            {/* Rota /my-repairs para COSTUMER - ComponentRepair */}
-            <Route
-              path="/my-repairs"
-              element={
-                <ProtectedRoute roles={["COSTUMER"]}>
-                  <ComponentRepair />
-                </ProtectedRoute>
-              }
-            />
+              {/* Rota /clients para ADMINISTRATOR - ClientsPage */}
+              <Route
+                path="/clients"
+                element={
+                  <ProtectedRoute roles={["ADMINISTRATOR"]}>
+                    <ClientsPage />
+                  </ProtectedRoute>
+                }
+              />
 
-            <Route
-              path="/repairs/:id"
-              element={
-                <ProtectedRoute>
-                  <ComponentDetails />
-                </ProtectedRoute>
-              }
-            />
+              {/* Rota /my-repairs para COSTUMER - ComponentRepair */}
+              <Route
+                path="/my-repairs"
+                element={
+                  <ProtectedRoute roles={["COSTUMER"]}>
+                    <ComponentRepair />
+                  </ProtectedRoute>
+                }
+              />
 
-            <Route
-              path="/visit"
-              element={
-                <ProtectedRoute>
-                  <ComponentVisit />
-                </ProtectedRoute>
-              }
-            />
+              <Route
+                path="/repairs/:id"
+                element={
+                  <ProtectedRoute>
+                    <ComponentDetails />
+                  </ProtectedRoute>
+                }
+              />
 
-            <Route
-              path="/orcamentos"
-              element={
-                <ProtectedRoute>
-                  <ComponentVisit />
-                </ProtectedRoute>
-              }
-            />
+              <Route
+                path="/visit"
+                element={
+                  <ProtectedRoute>
+                    <ComponentVisit />
+                  </ProtectedRoute>
+                }
+              />
 
-            <Route
-              path="/calendar"
-              element={
-                <ProtectedRoute>
-                  <Calendar />
-                </ProtectedRoute>
-              }
-            />
+              <Route
+                path="/orcamentos"
+                element={
+                  <ProtectedRoute>
+                    <ComponentVisit />
+                  </ProtectedRoute>
+                }
+              />
 
-            <Route path="*" element={<Navigate to="/login" replace />} />
-          </Routes>
-          <Toaster />
-        </Router>
-      </ToastProvider>
-    </AuthProvider>
+              <Route
+                path="/calendar"
+                element={
+                  <ProtectedRoute>
+                    <Calendar />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route path="*" element={<Navigate to="/login" replace />} />
+            </Routes>
+            <Toaster />
+          </Router>
+        </ToastProvider>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 

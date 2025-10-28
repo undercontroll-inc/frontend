@@ -29,14 +29,14 @@ export const RepairDetailSheet = ({ isOpen, onClose, repair }) => {
 
   const getStatusBadge = (status) => {
     const statusConfig = {
-      'EM_ANDAMENTO': { label: 'Em Andamento', icon: '⚙️' },
-      'NAO_INICIADO': { label: 'Não Iniciado', icon: '⏸️' },
-      'FINALIZADO': { label: 'Finalizado', icon: '✅' },
-      'CANCELADO': { label: 'Cancelado', icon: '❌' },
-      'Em Andamento': { label: 'Em Andamento', icon: '⚙️' },
-      'Pendente': { label: 'Pendente', icon: '⏸️' },
-      'Concluído': { label: 'Concluído', icon: '✅' },
-      'Cancelado': { label: 'Cancelado', icon: '❌' }
+      'EM_ANDAMENTO': { label: 'Em Andamento', },
+      'NAO_INICIADO': { label: 'Não Iniciado',  },
+      'FINALIZADO': { label: 'Finalizado',  },
+      'CANCELADO': { label: 'Cancelado',  },
+      'Em Andamento': { label: 'Em Andamento',  },
+      'Pendente': { label: 'Pendente',  },
+      'Concluído': { label: 'Concluído',  },
+      'Cancelado': { label: 'Cancelado',  }
     };
     return statusConfig[status] || { label: status, icon: '📋' };
   };
@@ -89,7 +89,6 @@ export const RepairDetailSheet = ({ isOpen, onClose, repair }) => {
         {/* Status Badge */}
         <div className="mb-6">
           <div className="inline-flex items-center gap-2 px-3 py-2 bg-blue-50 text-blue-700 rounded-lg">
-            <span>{statusBadge.icon}</span>
             <span className="font-medium">{statusBadge.label}</span>
           </div>
         </div>

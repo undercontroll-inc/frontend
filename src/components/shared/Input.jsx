@@ -21,15 +21,19 @@ const Input = forwardRef(
 
     const inputClasses = `
     w-full px-5 py-4 h-10
-    border rounded-lg bg-white text-gray-900 placeholder-gray-500
+    border rounded-lg 
+    bg-white dark:bg-gray-800 
+    text-gray-900 dark:text-gray-100 
+    placeholder-gray-500 dark:placeholder-gray-400
     focus:outline-none focus:ring-2 focus:ring-offset-1
+    dark:focus:ring-offset-gray-900
     transition-all duration-200 text-base
     ${
       error
-        ? "border-red-300 focus:border-red-500 focus:ring-red-200"
+        ? "border-red-300 dark:border-red-800 focus:border-red-500 focus:ring-red-200 dark:focus:ring-red-900"
         : success
-        ? "border-green-300 focus:border-green-500 focus:ring-green-200"
-        : "border-gray-300 focus:border-slate-500 focus:ring-slate-200"
+        ? "border-green-300 dark:border-green-800 focus:border-green-500 focus:ring-green-200 dark:focus:ring-green-900"
+        : "border-gray-300 dark:border-gray-600 focus:border-slate-500 dark:focus:border-slate-400 focus:ring-slate-200 dark:focus:ring-slate-800"
     }
     ${isPassword ? "pr-14" : "pr-5"}
     ${className}

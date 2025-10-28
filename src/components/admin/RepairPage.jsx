@@ -146,7 +146,7 @@ export function RepairPage() {
   }
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-gray-50 ">
       <SideBar />
       
       <div className="flex-1">
