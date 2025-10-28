@@ -18,6 +18,7 @@ import { RepairPage } from "./components/admin/RepairPage";
 import { ClientsPage } from "./components/admin/ClientsPage";
 import Toaster from "./components/shared/Toaster";
 import { LandingPage } from "./components/landing_page/LandingPage";
+import { Estoque } from "./components/admin/Estoque";
 import { ThemeProvider } from "./components/shared/ThemeProvider";
 import { ThemeDebug } from "./components/shared/ThemeDebug";
 
@@ -73,6 +74,21 @@ function App() {
                 }
               />
 
+            <Route
+              path="/storage"
+              element={
+                <ProtectedRoute>
+                  <Estoque />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route path="*" element={<Navigate to="/login" replace />} />
+          </Routes>
+          <Toaster />
+        </Router>
+      </ToastProvider>
+    </AuthProvider>
               <Route
                 path="/repairs/:id"
                 element={
