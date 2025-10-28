@@ -13,6 +13,8 @@ import ComponentVisit from "./components/customer/ComponentVisit";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import Dashboard from "./components/dashboard/Dashboard";
+import { RepairPage } from "./components/admin/RepairPage";
+import { ClientsPage } from "./components/admin/ClientsPage";
 import Toaster from "./components/shared/Toaster";
 import { LandingPage } from "./components/landing_page/LandingPage";
 
@@ -30,15 +32,37 @@ function App() {
             <Route
               path="/dashboard"
               element={
-                <ProtectedRoute roles={["ADMIN"]}>
+                <ProtectedRoute roles={["ADMINISTRATOR"]}>
                   <Dashboard />
                 </ProtectedRoute>
               }
             />
+            
+            {/* Rota /repairs para ADMINISTRATOR - Admin RepairPage */}
             <Route
               path="/repairs"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute roles={["ADMINISTRATOR"]}>
+                  <RepairPage />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Rota /clients para ADMINISTRATOR - ClientsPage */}
+            <Route
+              path="/clients"
+              element={
+                <ProtectedRoute roles={["ADMINISTRATOR"]}>
+                  <ClientsPage />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Rota /my-repairs para COSTUMER - ComponentRepair */}
+            <Route
+              path="/my-repairs"
+              element={
+                <ProtectedRoute roles={["COSTUMER"]}>
                   <ComponentRepair />
                 </ProtectedRoute>
               }

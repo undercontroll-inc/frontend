@@ -15,7 +15,7 @@ const ProtectedRoute = ({ children, roles }) => {
   }
 
   if (roles && user && !roles.includes(user.userType)) {
-    const fallback = user.userType === "ADMINISTRATOR" ? "/dashboard" : "/repairs";
+    const fallback = user.userType === "ADMINISTRATOR" ? "/repairs" : "/my-repairs";
     return <Navigate to={fallback} replace />;
   }
 
