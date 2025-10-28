@@ -26,7 +26,7 @@ function App() {
   return (
     <ThemeProvider>
 {/*       <ThemeDebug />
- */}    <AuthProvider>
+ */}      <AuthProvider>
         <ToastProvider>
           <Router>
             <Routes>
@@ -74,21 +74,6 @@ function App() {
                 }
               />
 
-            <Route
-              path="/storage"
-              element={
-                <ProtectedRoute>
-                  <Estoque />
-                </ProtectedRoute>
-              }
-            />
-
-            <Route path="*" element={<Navigate to="/login" replace />} />
-          </Routes>
-          <Toaster />
-        </Router>
-      </ToastProvider>
-    </AuthProvider>
               <Route
                 path="/repairs/:id"
                 element={
@@ -121,6 +106,15 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <Calendar />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/storage"
+                element={
+                  <ProtectedRoute>
+                    <Estoque />
                   </ProtectedRoute>
                 }
               />

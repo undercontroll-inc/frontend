@@ -41,12 +41,12 @@ const SideBar = ({ active = "repairs" }) => {
         icon: Calendar,
         path: "/calendar"
       },
-      {
+/*       {
         id: "dashboard",
         label: "Dashboard",
         icon: ChartBar,
         path: "/clients"
-      }
+      } */
     ]
     : [
       {
@@ -55,12 +55,12 @@ const SideBar = ({ active = "repairs" }) => {
         icon: Wrench,
         path: "/my-repairs",
       },
-      {
+/*       {
         id: "calendar",
         label: "Calendário",
         icon: Calendar,
         path: "/calendar",
-      },
+      }, */
       {
         id: "visita",
         label: "Visita Técnica",
