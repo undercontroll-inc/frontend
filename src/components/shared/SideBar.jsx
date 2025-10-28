@@ -1,8 +1,10 @@
-import { LogOut, Wrench, User, ChevronRight, Calendar, ChevronLeft, Package, Users, ChartBar } from "lucide-react";
+import { Wrench, ChevronRight, Calendar, ChevronLeft, Package, Users, ChartBar } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import Tooltip from "./Tooltip";
+import UserDropdown from "./UserDropdown";
 import { useState, useEffect } from "react";
+import Foto from "../../../public/images/logo_pelluci.jpg";
 
 const SideBar = ({ active = "repairs" }) => {
   const { user, logout } = useAuth();
@@ -12,25 +14,6 @@ const SideBar = ({ active = "repairs" }) => {
     return saved !== null ? saved === 'true' : true;
   });
   const isAdmin = user.userType === "ADMINISTRATOR";
-
-
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-  };
-
-  // Atalho Ctrl+S para toggle
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.ctrlKey && e.key === 's') {
-        e.preventDefault();
-        handleToggleSidebar();
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen]);
 
   const menuItems = isAdmin
     ? [
@@ -70,7 +53,13 @@ const SideBar = ({ active = "repairs" }) => {
         id: "repairs",
         label: "Consertos",
         icon: Wrench,
-        path: "/repairs",
+        path: "/my-repairs",
+      },
+      {
+        id: "calendar",
+        label: "Calendário",
+        icon: Calendar,
+        path: "/calendar",
       },
       {
         id: "visita",
@@ -79,6 +68,19 @@ const SideBar = ({ active = "repairs" }) => {
         path: "/visit",
       },
     ];
+
+  // Atalho Ctrl+S para toggle
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.ctrlKey && e.key === 's') {
+        e.preventDefault();
+        handleToggleSidebar();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen]);
 
   const handleToggleSidebar = () => {
     setIsOpen(prev => {
@@ -90,32 +92,31 @@ const SideBar = ({ active = "repairs" }) => {
 
   return (
     <div className="flex relative">
-      <aside className={`${isOpen ? 'w-64' : 'w-20'} text-white border-r bg-[#041a2d] border-gray-200 flex flex-col shadow-sm transition-all duration-300 ease-in-out relative`}>
-        <div className={`p-5 border-b border-gray-100 ${!isOpen && 'px-3'}`}>
-          <div className={`flex items-center ${isOpen ? 'gap-3' : 'justify-center'}`}>
-            <div className="relative flex-shrink-0">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#041A2D] to-[#062E4F] flex items-center justify-center ring-2 ring-gray-100">
-                <User className="h-4 w-4 text-white" />
-              </div>
+      <aside className={`${isOpen ? 'w-56' : 'w-16'} text-white border-r bg-[#0a1929] dark:bg-gray-950 border-gray-800 dark:border-gray-800 flex flex-col shadow-lg dark:shadow-gray-900/50 transition-all duration-300 ease-in-out relative`}>
+        <div className={`p-4 border-b border-gray-800 ${!isOpen && 'px-2'}`}>
+          <div className={`flex items-center ${isOpen ? 'gap-2' : 'justify-center'}`}>
+            <div className="">
+              <img
+              width={50}
+              height={50}
+              src={Foto} 
+              className="rounded-md"
+              />
             </div>
             {isOpen && (
-              <div className="flex-1 text-white min-w-0">
-                <div className="font-semibold truncate text-sm">
-                  {user?.name || "Usuário"}
-                </div>
-                <div className="text-xs text-gray-500 truncate">
-                  {user?.email || (user?.name ? `${user.name.toLowerCase()}@email.com` : "email@email.com")}
-                </div>
+              <div className="flex-1">
+                <div className="font-bold text-base text-white">Pelluci</div>
+                <div className="text-xs text-gray-400">Sistema OS</div>
               </div>
             )}
           </div>
         </div>
 
-        <nav className="flex-1 p-3 flex flex-col space-y-1">
+        <nav className="flex-1 p-2 flex flex-col space-y-1 overflow-y-auto">
           {isOpen && (
-            <div className="px-3 mb-2">
-              <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
-                Menu
+            <div className="px-3 py-2">
+              <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                Navegação
               </h2>
             </div>
           )}
@@ -128,22 +129,17 @@ const SideBar = ({ active = "repairs" }) => {
                 key={item.id}
                 onClick={() => navigate(item.path)}
                 className={`
-                  group w-full flex items-center ${isOpen ? 'gap-3' : 'justify-center'} p-3 rounded-lg text-sm font-medium
+                  group w-full flex items-center ${isOpen ? 'gap-3 px-3' : 'justify-center px-2'} py-2 rounded-md text-sm font-medium
                   transition-all duration-200 ease-in-out
                   ${isActive
-                    ? `${isAdmin ? "bg-[#ba4610]" : "bg-[#0037a7]"} text-white shadow-md`
-                    : `hover:bg-[#000f1d]`
+                    ? `${isAdmin ? "bg-[#ba4610]" : "bg-[#0B4BCC]"} text-white`
+                    : `text-gray-400 hover:bg-[#1e293b] hover:text-white`
                   }
                 `}
               >
-                <Icon className={`h-4 w-4 flex-shrink-0 transition-transform duration-200 ${isActive ? "" : "group-hover:scale-110"}`} />
+                <Icon className={`h-4 w-4 flex-shrink-0 ${isActive ? "" : "group-hover:scale-110 transition-transform duration-200"}`} />
                 {isOpen && (
-                  <>
-                    <span className="flex-1 text-left">{item.label}</span>
-                    {isActive && (
-                      <ChevronRight className="h-4 w-4 opacity-70" />
-                    )}
-                  </>
+                  <span className="flex-1 text-left text-sm">{item.label}</span>
                 )}
               </button>
             );
@@ -160,33 +156,8 @@ const SideBar = ({ active = "repairs" }) => {
           })}
         </nav>
 
-        <div className="p-3 border-t border-gray-800 bg-[#041a2d]">
-          {isOpen ? (
-            <button
-              onClick={handleLogout}
-              className="
-                group w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
-                 hover:bg-[#000f1d] hover:text-red-600
-                transition-all duration-200 ease-in-out
-              "
-            >
-              <LogOut className="h-4 w-4 transition-transform duration-200 group-hover:scale-110" />
-              <span className="flex-1 text-left">Sair</span>
-            </button>
-          ) : (
-            <Tooltip content="Sair" side="right">
-              <button
-                onClick={handleLogout}
-                className="
-                  group w-full flex items-center justify-center py-2.5 rounded-lg text-sm font-medium
-                  hover:bg-[#000f1d]  hover:text-red-600
-                  transition-all duration-200 ease-in-out
-                "
-              >
-                <LogOut className="h-4 w-4 transition-transform duration-200 group-hover:scale-110" />
-              </button>
-            </Tooltip>
-          )}
+        <div className="p-2 border-t border-gray-800">
+          <UserDropdown isOpen={isOpen} />
         </div>
       </aside>
 

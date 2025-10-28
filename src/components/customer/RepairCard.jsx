@@ -42,8 +42,8 @@ const RepairCard = ({ repair }) => {
   const status = statusStyles[repair.status] || statusStyles["NAO_INICIADO"];
 
   return (
-    <div className="bg-white border border-gray-300 rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
-      <div className="flex items-center justify-between px-4 py-3 bg-[#041A2D] text-white">
+    <div className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-sm dark:shadow-gray-900/50 overflow-hidden hover:shadow-md dark:hover:shadow-gray-900/70 transition-all duration-200">
+      <div className="flex items-center justify-between px-4 py-3 bg-[#041A2D] dark:bg-gray-900 text-white">
         <div className="flex items-center gap-3">
           <FileText className="h-4 w-4" />
           <span className="text-sm font-medium">OS:</span>
@@ -58,7 +58,7 @@ const RepairCard = ({ repair }) => {
             </div>
           </div>
         </div>
-        <div className="text-sm text-gray-100">
+        <div className="text-sm text-gray-100 dark:text-gray-300">
           Atualizado: {formatUpdatedAt(repair.updatedAt || repair.updated) || "-"}
         </div>
       </div>
@@ -66,10 +66,10 @@ const RepairCard = ({ repair }) => {
       <div className="p-4">
         <div className={`grid ${repair.status === "FINALIZADO" ? "grid-cols-4" : "grid-cols-3"} gap-4 text-sm mb-4`}>
           <div>
-            <div className="text-xs text-gray-500 font-semibold mb-1.5 uppercase tracking-wide">
+            <div className="text-xs text-gray-500 dark:text-gray-400 font-semibold mb-1.5 uppercase tracking-wide">
               Eletrodomésticos
             </div>
-            <div className="text-gray-900 text-sm whitespace-pre-line">
+            <div className="text-gray-900 dark:text-gray-100 text-sm whitespace-pre-line">
               {repair.appliances?.length > 0
                 ? repair.appliances
                     .map((a, idx) => `${idx + 1}. ${a.type || "-"}`)
@@ -78,40 +78,40 @@ const RepairCard = ({ repair }) => {
             </div>
           </div>
           <div>
-            <div className="text-xs text-gray-500 font-semibold mb-1.5 uppercase tracking-wide">
+            <div className="text-xs text-gray-500 dark:text-gray-400 font-semibold mb-1.5 uppercase tracking-wide">
               Valor Total
             </div>
-            <div className="text-gray-900 text-sm font-medium">
+            <div className="text-gray-900 dark:text-gray-100 text-sm font-medium">
               {formatCurrency(repair.totalValue)}
             </div>
           </div>
           <div>
-            <div className="text-xs text-gray-500 font-semibold mb-1.5 uppercase tracking-wide">
+            <div className="text-xs text-gray-500 dark:text-gray-400 font-semibold mb-1.5 uppercase tracking-wide">
               Recebimento
             </div>
-            <div className="text-gray-900 text-sm">
+            <div className="text-gray-900 dark:text-gray-100 text-sm">
               {repair.receivedAt || "-"}
             </div>
           </div>
           {repair.status === "FINALIZADO" && (
             <div>
-              <div className="text-xs text-gray-500 font-semibold mb-1.5 uppercase tracking-wide">
+              <div className="text-xs text-gray-500 dark:text-gray-400 font-semibold mb-1.5 uppercase tracking-wide">
                 Retirada
               </div>
-              <div className="text-gray-900 text-sm">
+              <div className="text-gray-900 dark:text-gray-100 text-sm">
                 {repair.deadline || "-"}
               </div>
             </div>
           )}
         </div>
 
-        <div className="flex justify-end pt-2 border-t border-gray-100 ">
+        <div className="flex justify-end pt-2 border-t border-gray-100 dark:border-gray-700">
           <button
-            className="rounded-md p-2 text-white bg-[#0037a7] hover:cursor-pointer"
+            className="rounded-md p-2 text-white bg-[#0037a7] dark:bg-blue-600 hover:bg-[#002d8a] dark:hover:bg-blue-700 hover:cursor-pointer transition-colors duration-200"
             onClick={() => navigate(`/repairs/${repair.id}`)}
           >
             Ver Detalhes
-          </button  >
+          </button>
         </div>
       </div>
     </div>
