@@ -13,6 +13,7 @@ import ComponentVisit from "./components/customer/ComponentVisit";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import Dashboard from "./components/dashboard/Dashboard";
+import Calendar from "./components/admin/Calendar";
 import Toaster from "./components/shared/Toaster";
 import { LandingPage } from "./components/landing_page/LandingPage";
 
@@ -67,6 +68,15 @@ function App() {
               element={
                 <ProtectedRoute>
                   <ComponentVisit />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/calendar"
+              element={
+                <ProtectedRoute>
+                  <Calendar />
                 </ProtectedRoute>
               }
             />
