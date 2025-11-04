@@ -110,7 +110,7 @@ export const LandingPage = () => {
 
           <div className="relative z-10 text-center px-4 max-w-4xl animate-fade-in">
 
-            <h1 className="text-5xl w-full sm:text-6xl lg:text-7xl font-bold mb-6 text-white drop-shadow-2xl">
+            <h1 className="text-5xl w-full sm:text-6xl lg:text-6xl font-bold mb-10 text-white drop-shadow-2xl">
               Bem-vindo à Comercial Irmãos Pelluci {" "}
             </h1>
             <p className="text-xl sm:text-2xl mb-10 text-white/95 drop-shadow-lg font-light">
@@ -122,7 +122,7 @@ export const LandingPage = () => {
                   .getElementById("contact")
                   .scrollIntoView({ behavior: "smooth" })
               }
-              className="bg-gradient-to-r from-[#0B4BCC] to-[#0B4BCC] hover:from-[#0a3fa0] hover:to-[#0a3fa0] text-white px-8 py-4 mt-8 rounded-xl text-lg font-semibold shadow-2xl hover:shadow-blue-500/50 transition-all duration-300 hover:scale-105 border border-white/20"
+              className="bg-gradient-to-r from-[#0B4BCC] to-[#0B4BCC] hover:from-[#0a3fa0] hover:to-[#0a3fa0] text-white px-8 py-4 mt-2 rounded-xl text-lg font-semibold shadow-2xl hover: transition-all duration-300 cursor-pointer hover:scale-105 border border-white/20"
             >
               Agende uma visita agora!
             </button>
@@ -306,8 +306,8 @@ export const LandingPage = () => {
 
           <div className="main-content flex flex-col lg:flex-row gap-8 w-full max-w-6xl relative z-10">
             <div className="contact-container flex flex-col lg:flex-row gap-8 w-full">
-              <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-8 rounded-2xl shadow-2xl border border-gray-200 flex-1">
-                <h2 className="font-bold mb-6 text-xl text-center text-[#041A2D]">
+              <div className="bg-gradient-to-br from-gray-50 to-gray-100 px-8 pt-12 rounded-2xl shadow-2xl border border-gray-200 flex-1">
+                <h2 className="font-bold mb-12 text-xl text-center text-[#041A2D]">
                   Visite nossa loja e faça um orçamento gratuito!
                 </h2>
                 <p className="text-base text-gray-800 font-semibold mb-4">
@@ -430,7 +430,7 @@ export const LandingPage = () => {
                 <img
                   src={Logo}
                   alt=""
-                  className="h-16 mb-4 rounded-lg shadow-lg"
+                  className="h-20 mb-4 rounded-lg shadow-lg"
                 />
                 <div className="flex gap-4 my-4">
                   <a
@@ -553,6 +553,7 @@ export const LandingPage = () => {
                 © 2025 Comercial Irmãos Pelluci. Todos os direitos reservados.
               </p>
             </div>
+            {/* aside removed: social icons moved back into footer left column */}
           </div>
         </footer>
       </main>
