@@ -1,9 +1,12 @@
 import { jsonServer } from '../providers/json-server';
+import { apiClient } from "../providers/api";
 
 class ComponentService {
   async getAllComponents() {
     try {
-      const response = await jsonServer.get('/components');
+      const response = await apiClient.get('/components');
+      // Se a API responder 204 No Content, retornar array vazio para seguir o padrão REST
+      if (response.status === 204 || !response.data) return [];
       return response.data;
     } catch (error) {
       console.error('Erro ao buscar componentes:', error);
@@ -22,7 +25,7 @@ class ComponentService {
 
   async createComponent(componentData) {
     try {
-      const response = await jsonServer.post('/components', componentData);
+      const response = await apiClient.post('/components', componentData);
       return response.data;
     } catch (error) {
       console.error('Erro ao criar componente:', error);

@@ -3,18 +3,28 @@ import { X, Search, Plus } from 'lucide-react';
 import Input from '../shared/Input';
 import Button from '../shared/Button';
 import Select from '../shared/Select';
-import ClientModal from './ClientModal';
+import { CalendarTimePicker } from '../shared/CalendarTimePicker';
 import ClientService from '../../services/ClientService';
+import ComponentService from '../../services/ComponentService';
 import { useToast } from '../../contexts/ToastContext';
+import { useNavigate } from 'react-router-dom';
 
 export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
   const { toast } = useToast();
+  const navigate = useNavigate();
+
   const [selectedClient, setSelectedClient] = useState(null);
   const [clientSearch, setClientSearch] = useState('');
   const [clients, setClients] = useState([]);
   const [filteredClients, setFilteredClients] = useState([]);
   const [showClientSuggestions, setShowClientSuggestions] = useState(false);
-  const [isClientModalOpen, setIsClientModalOpen] = useState(false);
+  
+  // Estados para componentes/peças
+  const [availableComponents, setAvailableComponents] = useState([]);
+  const [componentSearch, setComponentSearch] = useState('');
+  const [filteredComponents, setFilteredComponents] = useState([]);
+  const [showComponentSuggestions, setShowComponentSuggestions] = useState(false);
+  const [currentPartIndex, setCurrentPartIndex] = useState(null);
 
   const [appliances, setAppliances] = useState([
     {
@@ -29,10 +39,10 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
 
   const [parts, setParts] = useState([
     {
-      name: '',
+      id: '',
+      componentName: '',
       quantity: '',
-      unitValue: '',
-      totalValue: 0
+      price: 0
     }
   ]);
 
@@ -41,9 +51,11 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
     deadline: '',
     warranty: '',
     discount: '',
-    laborValue: '',
     clientObservation: '',
-    technicalObservation: ''
+    technicalObservation: '',
+    nf: '',
+    returnGuarantee: false,
+    fabricGuarantee: false
   });
 
   const [errors, setErrors] = useState({});
@@ -52,6 +64,7 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
       loadClients();
+      loadComponents();
     } else {
       document.body.style.overflow = 'unset';
     }
@@ -64,11 +77,16 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
   useEffect(() => {
     if (clientSearch.trim()) {
       const query = clientSearch.toLowerCase();
-      const filtered = clients.filter(client => 
-        client.name?.toLowerCase().includes(query) ||
-        client.cpf?.includes(query) ||
-        client.phone?.includes(query)
-      );
+      const filtered = clients.filter(client => {
+        const fullName = `${client.name || ''} ${client.lastName || ''}`.toLowerCase();
+        const phoneDigits = client.phone?.replace(/\D/g, '') || '';
+        const cpfDigits = client.cpf?.replace(/\D/g, '') || '';
+        const searchDigits = query.replace(/\D/g, '');
+        
+        return fullName.includes(query) ||
+               phoneDigits.includes(searchDigits) ||
+               (cpfDigits && cpfDigits.includes(searchDigits));
+      });
       setFilteredClients(filtered);
       setShowClientSuggestions(true);
     } else {
@@ -76,6 +94,22 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
       setShowClientSuggestions(false);
     }
   }, [clientSearch, clients]);
+
+  useEffect(() => {
+    if (componentSearch.trim() && currentPartIndex !== null) {
+      const query = componentSearch.toLowerCase();
+      const filtered = availableComponents.filter(component => 
+        component.name?.toLowerCase().includes(query) ||
+        component.description?.toLowerCase().includes(query) ||
+        component.code?.toLowerCase().includes(query)
+      );
+      setFilteredComponents(filtered);
+      setShowComponentSuggestions(true);
+    } else {
+      setFilteredComponents([]);
+      setShowComponentSuggestions(false);
+    }
+  }, [componentSearch, availableComponents, currentPartIndex]);
 
   const loadClients = async () => {
     try {
@@ -87,9 +121,21 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
     }
   };
 
+  const loadComponents = async () => {
+    try {
+      const data = await ComponentService.getAllComponents();
+      setAvailableComponents(Array.isArray(data) ? data : []);
+    } catch (error) {
+      console.error('Erro ao carregar componentes:', error);
+      toast.error('Erro ao carregar lista de componentes');
+    }
+  };
+
   const handleClientSelect = (client) => {
     setSelectedClient(client);
-    setClientSearch(`${client.name} - CPF: ${formatCPF(client.cpf)}`);
+    const fullName = `${client.name} ${client.lastName}`;
+    const cpfPart = client.cpf ? ` - CPF: ${formatCPF(client.cpf)}` : '';
+    setClientSearch(`${fullName}${cpfPart}`);
     setShowClientSuggestions(false);
   };
 
@@ -145,23 +191,50 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
   const handlePartChange = (index, field, value) => {
     const updated = [...parts];
     updated[index][field] = value;
-
-    // Calcula o valor total automaticamente
-    if (field === 'quantity' || field === 'unitValue') {
-      const quantity = field === 'quantity' ? parseFloat(value) || 0 : parseFloat(updated[index].quantity) || 0;
-      const unitValue = field === 'unitValue' ? parseFloat(value) || 0 : parseFloat(updated[index].unitValue) || 0;
-      updated[index].totalValue = quantity * unitValue;
-    }
-
     setParts(updated);
+  };
+
+  const handleComponentSelect = (component, index) => {
+    const updated = [...parts];
+    updated[index].id = component.id;
+    updated[index].componentName = component.item || component.name || '';
+    updated[index].price = component.price || 0;
+    
+    setParts(updated);
+    setComponentSearch('');
+    setShowComponentSuggestions(false);
+    setCurrentPartIndex(null);
+  };
+
+  const handlePartSearchFocus = (index) => {
+    setCurrentPartIndex(index);
+    const currentPart = parts[index];
+    if (currentPart.componentName) {
+      setComponentSearch(currentPart.componentName);
+      setShowComponentSuggestions(true);
+    }
+  };
+
+  const handlePartSearchChange = (index, value) => {
+    setCurrentPartIndex(index);
+    setComponentSearch(value);
+    
+    // Se limpar o campo, limpa também o componente selecionado
+    if (!value.trim()) {
+      const updated = [...parts];
+      updated[index].id = '';
+      updated[index].componentName = '';
+      updated[index].price = 0;
+      setParts(updated);
+    }
   };
 
   const addPart = () => {
     setParts([...parts, {
-      name: '',
+      id: '',
+      componentName: '',
       quantity: '',
-      unitValue: '',
-      totalValue: 0
+      price: 0
     }]);
   };
 
@@ -172,10 +245,11 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
   };
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    const { name, type, value, checked } = e.target;
+    const newValue = type === 'checkbox' ? checked : value;
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: newValue
     }));
 
     if (errors[name]) {
@@ -184,16 +258,10 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
   };
 
   const calculateTotals = () => {
-    const partsTotal = parts.reduce((sum, part) => sum + (parseFloat(part.totalValue) || 0), 0);
-    const laborValue = parseFloat(formData.laborValue) || 0;
     const discount = parseFloat(formData.discount) || 0;
-    const totalValue = partsTotal + laborValue - discount;
 
     return {
-      partsTotal,
-      laborValue,
       discount,
-      totalValue
     };
   };
 
@@ -229,16 +297,35 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
 
     const orderData = {
       userId: selectedClient.id,
-      appliances: appliances.filter(app => app.type.trim()),
-      parts: parts.filter(part => part.name.trim()),
-      ...totals,
-      receivedAt: formData.receivedAt,
-      deadline: formData.deadline,
-      warranty: formData.warranty,
+      appliances: appliances
+        .filter(app => app.type.trim())
+        .map(app => ({
+          type: app.type,
+          brand: app.brand || '',
+          model: app.model || '',
+          voltage: app.voltage,
+          serial: app.serial || '',
+          customerNote: app.customerNote || '',
+          // laborValue é opcional - só inclui se preenchido
+          ...(app.laborValue ? { laborValue: parseFloat(app.laborValue) } : {})
+        })),
+      parts: parts
+        .filter(part => part.id && part.quantity)
+        .map(part => ({
+          id: parseInt(part.id, 10),
+          quantity: parseInt(part.quantity, 10)
+        })),
+      discount: totals.discount || 0,
+      receivedAt: formData.receivedAt || new Date().toLocaleDateString('pt-BR'),
+      ...(formData.deadline ? { deadline: formData.deadline } : {}),
       serviceDescription: formData.clientObservation,
       notes: formData.technicalObservation,
-      status: 'NAO_INICIADO',
-      updatedAt: new Date().toISOString()
+      // optional fiscal note
+      ...(formData.nf ? { nf: formData.nf } : {}),
+      // guarantees
+      returnGuarantee: !!formData.returnGuarantee,
+      fabricGuarantee: !!formData.fabricGuarantee,
+      status: 'NAO_INICIADO'
     };
 
     onSave(orderData);
@@ -254,6 +341,9 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
     setSelectedClient(null);
     setClientSearch('');
     setShowClientSuggestions(false);
+    setComponentSearch('');
+    setShowComponentSuggestions(false);
+    setCurrentPartIndex(null);
     setAppliances([{
       type: '',
       brand: '',
@@ -263,19 +353,21 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
       customerNote: ''
     }]);
     setParts([{
-      name: '',
+      id: '',
+      componentName: '',
       quantity: '',
-      unitValue: '',
-      totalValue: 0
+      price: 0
     }]);
     setFormData({
       receivedAt: '',
       deadline: '',
       warranty: '',
       discount: '',
-      laborValue: '',
       clientObservation: '',
-      technicalObservation: ''
+      technicalObservation: '',
+      nf: '',
+      returnGuarantee: false,
+      fabricGuarantee: false
     });
     setErrors({});
   };
@@ -283,25 +375,6 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
   const handleBackdropClick = (e) => {
     if (e.target === e.currentTarget) {
       handleClose();
-    }
-  };
-
-  const handleSaveNewClient = async (clientData) => {
-    try {
-      const newClient = await ClientService.createClient({
-        ...clientData,
-        password: 'senha123',
-        userType: 'COSTUMER',
-        createdAt: new Date().toLocaleDateString('pt-BR')
-      });
-      
-      toast.success('Cliente cadastrado com sucesso!');
-      await loadClients();
-      handleClientSelect(newClient);
-      setIsClientModalOpen(false);
-    } catch (error) {
-      console.error('Erro ao cadastrar cliente:', error);
-      toast.error('Erro ao cadastrar cliente');
     }
   };
 
@@ -318,10 +391,10 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
       />
 
       {/* Modal */}
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div className="bg-white rounded-lg shadow-xl w-full max-w-6xl max-h-[95vh] overflow-hidden flex flex-col animate-modal-in">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
+        <div className="bg-white rounded-lg shadow-xl w-full max-w-6xl my-8 flex flex-col animate-modal-in" style={{ maxHeight: 'calc(100vh - 4rem)' }}>
           {/* Header */}
-          <div className="flex items-center justify-between px-6 py-4 bg-[#041A2D] text-white">
+          <div className="flex items-center justify-between px-6 py-4 bg-[#041A2D] text-white flex-shrink-0">
             <h2 className="text-xl font-semibold">Nova Ordem de Serviço</h2>
             <button
               onClick={handleClose}
@@ -332,7 +405,7 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
           </div>
 
           {/* Content */}
-          <div className="flex-1 overflow-y-auto p-6">
+          <div className="flex-1 overflow-y-auto p-6" style={{ scrollbarGutter: 'stable' }}>
             {/* Dados do Cliente */}
             <div className="bg-gray-50 rounded-lg p-6 mb-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Dados do Cliente</h3>
@@ -342,7 +415,7 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
                   <div className="relative">
                     <Input
                       type="text"
-                      placeholder="Pesquisar por nome ou CPF"
+                      placeholder="Pesquisar por nome, CPF ou telefone"
                       value={clientSearch}
                       onChange={(e) => setClientSearch(e.target.value)}
                       onFocus={() => clientSearch && setShowClientSuggestions(true)}
@@ -359,11 +432,15 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
                           key={client.id}
                           type="button"
                           onClick={() => handleClientSelect(client)}
-                          className="w-full text-left px-4 py-3 hover:bg-gray-50 border-b border-gray-100 last:border-b-0 transition-colors"
+                          className="w-full text-left px-4 py-3 hover:bg-blue-50 border-b border-gray-100 last:border-b-0 transition-colors"
                         >
-                          <div className="font-medium text-gray-900">{client.name}</div>
+                          <div className="font-medium text-gray-900">
+                            {client.name} {client.lastName}
+                          </div>
                           <div className="text-sm text-gray-500">
-                            CPF: {formatCPF(client.cpf)} | Tel: {formatPhone(client.phone)}
+                            {client.cpf && `CPF: ${formatCPF(client.cpf)} | `}
+                            Tel: {formatPhone(client.phone)}
+                            {client.email && ` | ${client.email}`}
                           </div>
                         </button>
                       ))}
@@ -374,7 +451,7 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
                 <Button
                   type="button"
                   variant="primary"
-                  onClick={() => setIsClientModalOpen(true)}
+                  onClick={() => navigate("/clients")}
                   className="whitespace-nowrap"
                 >
                   <Plus className="h-5 w-5" />
@@ -386,12 +463,12 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
               {selectedClient && (
                 <div className="grid grid-cols-4 gap-4 p-4 bg-white rounded-lg border border-gray-200">
                   <div>
-                    <label className="block text-xs font-medium text-gray-500 mb-1">Nome</label>
-                    <div className="text-sm text-gray-900">{selectedClient.name}</div>
+                    <label className="block text-xs font-medium text-gray-500 mb-1">Nome Completo</label>
+                    <div className="text-sm text-gray-900">{selectedClient.name} {selectedClient.lastName}</div>
                   </div>
                   <div>
                     <label className="block text-xs font-medium text-gray-500 mb-1">CPF</label>
-                    <div className="text-sm text-gray-900">{formatCPF(selectedClient.cpf)}</div>
+                    <div className="text-sm text-gray-900">{selectedClient.cpf ? formatCPF(selectedClient.cpf) : 'Não informado'}</div>
                   </div>
                   <div>
                     <label className="block text-xs font-medium text-gray-500 mb-1">Telefone</label>
@@ -417,81 +494,111 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
                   </label>
                 </div>
 
-                <div className="space-y-3">
+                <div className="space-y-4">
                   {appliances.map((appliance, index) => (
                     <div key={index} className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                      <div className="grid grid-cols-5 gap-3 mb-3">
-                        <Select
-                          value={appliance.type}
-                          onChange={(e) => handleApplianceChange(index, 'type', e.target.value)}
-                        >
-                          <option value="">Selecione o Eletrodoméstico</option>
-                          <option value="Geladeira">Geladeira</option>
-                          <option value="Micro-ondas">Micro-ondas</option>
-                          <option value="Cafeteira">Cafeteira</option>
-                          <option value="Liquidificador">Liquidificador</option>
-                          <option value="Ferro de Passar">Ferro de Passar</option>
-                          <option value="Ar Condicionado">Ar Condicionado</option>
-                          <option value="Máquina de Lavar">Máquina de Lavar</option>
-                          <option value="Fogão">Fogão</option>
-                          <option value="Ventilador">Ventilador</option>
-                          <option value="Outro">Outro</option>
-                        </Select>
-
-                        <Input
-                          type="text"
-                          placeholder="Insira a marca e o modelo"
-                          value={`${appliance.brand} ${appliance.model}`.trim()}
-                          onChange={(e) => {
-                            const [brand, ...modelParts] = e.target.value.split(' ');
-                            handleApplianceChange(index, 'brand', brand || '');
-                            handleApplianceChange(index, 'model', modelParts.join(' '));
-                          }}
-                        />
-
-                        <Select
-                          value={appliance.voltage}
-                          onChange={(e) => handleApplianceChange(index, 'voltage', e.target.value)}
-                        >
-                          <option value="127 V">127 V</option>
-                          <option value="220 V">220 V</option>
-                          <option value="Bivolt">Bivolt</option>
-                        </Select>
-
-                        <Input
-                          type="text"
-                          placeholder="Insira o nº da Série"
-                          value={appliance.serial}
-                          onChange={(e) => handleApplianceChange(index, 'serial', e.target.value)}
-                        />
-
-                        <Input
-                          type="text"
-                          placeholder="Insira o valor"
-                          value={appliance.laborValue || ''}
-                          onChange={(e) => handleApplianceChange(index, 'laborValue', e.target.value)}
-                        />
-                      </div>
-
-                      <div className="flex items-start gap-3">
-                        <div className="flex-1">
-                          <Input
-                            type="text"
-                            placeholder="Observação do cliente sobre esse eletrodoméstico"
-                            value={appliance.customerNote}
-                            onChange={(e) => handleApplianceChange(index, 'customerNote', e.target.value)}
-                          />
-                        </div>
+                      <div className="flex items-start justify-between mb-3">
+                        <h4 className="text-sm font-medium text-gray-700">Eletrodoméstico {index + 1}</h4>
                         {appliances.length > 1 && (
                           <Button
                             type="button"
                             variant="outline"
                             onClick={() => removeAppliance(index)}
-                            className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                            className="text-red-600 hover:text-red-700 hover:bg-red-50 text-xs px-2 py-1"
                           >
                             Remover
                           </Button>
                         )}
+                      </div>
+
+                      {/* Primeira linha: Tipo, Marca, Modelo */}
+                      <div className="grid grid-cols-3 gap-3 mb-3">
+                        <div>
+                          <label className="block text-xs font-medium text-gray-600 mb-1">Tipo *</label>
+                          <Select
+                            value={appliance.type}
+                            onChange={(e) => handleApplianceChange(index, 'type', e.target.value)}
+                          >
+                            <option value="">Selecione</option>
+                            <option value="Geladeira">Geladeira</option>
+                            <option value="Micro-ondas">Micro-ondas</option>
+                            <option value="Cafeteira">Cafeteira</option>
+                            <option value="Liquidificador">Liquidificador</option>
+                            <option value="Ferro de Passar">Ferro de Passar</option>
+                            <option value="Ar Condicionado">Ar Condicionado</option>
+                            <option value="Máquina de Lavar">Máquina de Lavar</option>
+                            <option value="Fogão">Fogão</option>
+                            <option value="Ventilador">Ventilador</option>
+                            <option value="Outro">Outro</option>
+                          </Select>
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-medium text-gray-600 mb-1">Marca</label>
+                          <Input
+                            type="text"
+                            placeholder="Ex: Brastemp"
+                            value={appliance.brand || ''}
+                            onChange={(e) => handleApplianceChange(index, 'brand', e.target.value)}
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-medium text-gray-600 mb-1">Modelo</label>
+                          <Input
+                            type="text"
+                            placeholder="Ex: BRM45"
+                            value={appliance.model || ''}
+                            onChange={(e) => handleApplianceChange(index, 'model', e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Segunda linha: Voltagem, Nº Série, Valor Mão-de-obra */}
+                      <div className="grid grid-cols-3 gap-3 mb-3">
+                        <div>
+                          <label className="block text-xs font-medium text-gray-600 mb-1">Voltagem</label>
+                          <Select
+                            value={appliance.voltage}
+                            onChange={(e) => handleApplianceChange(index, 'voltage', e.target.value)}
+                          >
+                            <option value="127 V">127 V</option>
+                            <option value="220 V">220 V</option>
+                            <option value="Bivolt">Bivolt</option>
+                          </Select>
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-medium text-gray-600 mb-1">Nº de Série</label>
+                          <Input
+                            type="text"
+                            placeholder="Ex: ABC123456"
+                            value={appliance.serial || ''}
+                            onChange={(e) => handleApplianceChange(index, 'serial', e.target.value)}
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-medium text-gray-600 mb-1">Valor Mão-de-obra (R$) - Opcional</label>
+                          <Input
+                            type="number"
+                            step="0.01"
+                            placeholder="0.00"
+                            value={appliance.laborValue || ''}
+                            onChange={(e) => handleApplianceChange(index, 'laborValue', e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Terceira linha: Observação do cliente */}
+                      <div>
+                        <label className="block text-xs font-medium text-gray-600 mb-1">Observação do Cliente</label>
+                        <Input
+                          type="text"
+                          placeholder="Descreva o problema relatado pelo cliente"
+                          value={appliance.customerNote || ''}
+                          onChange={(e) => handleApplianceChange(index, 'customerNote', e.target.value)}
+                        />
                       </div>
                     </div>
                   ))}
@@ -510,112 +617,138 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
 
               {/* Peças */}
               <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-3">Peças</label>
-
-                <div className="overflow-x-auto">
-                  <table className="w-full border border-gray-200 rounded-lg">
-                    <thead className="bg-[#041A2D] text-white">
-                      <tr>
-                        <th className="px-4 py-3 text-left text-sm font-semibold">Peças</th>
-                        <th className="px-4 py-3 text-left text-sm font-semibold">Quantidade</th>
-                        <th className="px-4 py-3 text-left text-sm font-semibold">Valor Unitário</th>
-                        <th className="px-4 py-3 text-left text-sm font-semibold">Valor Somado</th>
-                        <th className="px-4 py-3 text-center text-sm font-semibold w-32">Ações</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {parts.map((part, index) => (
-                        <tr key={index} className="border-b border-gray-200">
-                          <td className="px-4 py-3">
-                            <div className="relative">
-                              <Input
-                                type="text"
-                                placeholder="Pesquise a peça desejada"
-                                value={part.name}
-                                onChange={(e) => handlePartChange(index, 'name', e.target.value)}
-                                className="pl-8"
-                              />
-                              <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                            </div>
-                          </td>
-                          <td className="px-4 py-3">
-                            <Input
-                              type="number"
-                              placeholder="Insira a quantidade"
-                              value={part.quantity}
-                              onChange={(e) => handlePartChange(index, 'quantity', e.target.value)}
-                            />
-                          </td>
-                          <td className="px-4 py-3">
-                            <Input
-                              type="number"
-                              step="0.01"
-                              placeholder="R$ 0,00"
-                              value={part.unitValue}
-                              onChange={(e) => handlePartChange(index, 'unitValue', e.target.value)}
-                            />
-                          </td>
-                          <td className="px-4 py-3">
-                            <div className="text-sm text-gray-900 font-medium bg-gray-50 px-3 py-2 rounded">
-                              R$ {part.totalValue.toFixed(2)}
-                            </div>
-                          </td>
-                          <td className="px-4 py-3 text-center">
-                            {parts.length > 1 && (
-                              <Button
-                                type="button"
-                                variant="outline"
-                                onClick={() => removePart(index)}
-                                className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                              >
-                                Remover
-                              </Button>
-                            )}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                <div className="flex items-center justify-between mb-3">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Peças do Estoque
+                  </label>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={addPart}
+                    className="text-xs px-3 py-1.5"
+                  >
+                    <Plus className="h-3 w-3" />
+                    Adicionar peça
+                  </Button>
                 </div>
 
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={addPart}
-                  className="mt-3"
-                >
-                  <Plus className="h-4 w-4" />
-                  Adicionar
-                </Button>
+                <div className="space-y-3">
+                  {parts.map((part, index) => (
+                    <div key={index} className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                      <div className="flex items-start justify-between mb-3">
+                        <h4 className="text-sm font-medium text-gray-700">Peça {index + 1}</h4>
+                        {parts.length > 1 && (
+                          <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => removePart(index)}
+                            className="text-red-600 hover:text-red-700 hover:bg-red-50 text-xs px-2 py-1"
+                          >
+                            Remover
+                          </Button>
+                        )}
+                      </div>
+
+                      <div className="grid grid-cols-4 gap-3">
+                        {/* Campo de busca do componente */}
+                        <div className="col-span-2 relative">
+                          <label className="block text-xs font-medium text-gray-600 mb-1">Componente *</label>
+                          <div className="relative">
+                            <Input
+                              type="text"
+                              placeholder="Pesquise o componente"
+                              value={part.componentName || (currentPartIndex === index ? componentSearch : '')}
+                              onChange={(e) => handlePartSearchChange(index, e.target.value)}
+                              onFocus={() => handlePartSearchFocus(index)}
+                              className="pl-8"
+                            />
+                            <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                          </div>
+                          
+                          {/* Suggestions Dropdown - Agora com z-index mais alto */}
+                          {showComponentSuggestions && currentPartIndex === index && filteredComponents.length > 0 && (
+                            <div className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-xl max-h-48 overflow-y-auto">
+                              {filteredComponents.map((component) => (
+                                <button
+                                  key={component.id}
+                                  type="button"
+                                  onClick={() => handleComponentSelect(component, index)}
+                                  className="w-full text-left px-3 py-2 hover:bg-blue-50 border-b border-gray-100 last:border-b-0 transition-colors"
+                                >
+                                  <div className="font-medium text-sm text-gray-900">{component.name}</div>
+                                  <div className="text-xs text-gray-500 mt-0.5">
+                                    {component.code && `Cód: ${component.code} | `}
+                                    R$ {(component.price || 0).toFixed(2)} | 
+                                    Estoque: {component.quantity || 0} un.
+                                  </div>
+                                </button>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Quantidade */}
+                        <div>
+                          <label className="block text-xs font-medium text-gray-600 mb-1">Quantidade *</label>
+                          <Input
+                            type="number"
+                            min="1"
+                            placeholder="Qtd"
+                            value={part.quantity}
+                            onChange={(e) => handlePartChange(index, 'quantity', e.target.value)}
+                            disabled={!part.id}
+                            className={!part.id ? 'bg-gray-100 cursor-not-allowed' : ''}
+                          />
+                          {!part.id && (
+                            <p className="text-xs text-gray-500 mt-1">Selecione um componente primeiro</p>
+                          )}
+                        </div>
+
+                        {/* Valor Unitário - Display only */}
+                        <div>
+                          <label className="block text-xs font-medium text-gray-600 mb-1">Valor Unit.</label>
+                          <div className="text-sm text-gray-900 font-medium bg-white px-3 py-2 rounded border border-gray-200 h-[42px] flex items-center">
+                            R$ {(part.price || 0).toFixed(2)}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Total da peça - destaque */}
+                      {part.id && part.quantity && (
+                        <div className="mt-3 pt-3 border-t border-gray-200">
+                          <div className="flex justify-between items-center">
+                            <span className="text-sm text-gray-600">Subtotal desta peça:</span>
+                            <span className="text-base font-semibold text-gray-900">
+                              R$ {(((part.price || 0) * (parseFloat(part.quantity) || 0)) || 0).toFixed(2)}
+                            </span>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
               </div>
 
               {/* Datas e Valores */}
-              <div className="grid grid-cols-3 gap-4 mb-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Data de Recebimento *
-                  </label>
-                  <Input
-                    type="date"
-                    name="receivedAt"
-                    value={formData.receivedAt}
-                    onChange={handleInputChange}
-                    error={errors.receivedAt}
-                  />
-                </div>
+              <div className="grid grid-cols-2 gap-4 mb-4">
+                <CalendarTimePicker
+                  label="Data e Hora de Recebimento"
+                  value={formData.receivedAt}
+                  onChange={(value) => setFormData(prev => ({ ...prev, receivedAt: value }))}
+                  required
+                  error={errors.receivedAt}
+                  placeholder="Selecione a data de recebimento"
+                />
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Data de Retirada
-                  </label>
-                  <Input
-                    type="date"
-                    name="deadline"
-                    value={formData.deadline}
-                    onChange={handleInputChange}
-                  />
-                </div>
+                <CalendarTimePicker
+                  label="Data e Hora de Retirada"
+                  value={formData.deadline}
+                  onChange={(value) => setFormData(prev => ({ ...prev, deadline: value }))}
+                  placeholder="Selecione a data de retirada (opcional)"
+                />
+              </div>
 
+              <div className="grid grid-cols-2 gap-4 mb-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Garantia
@@ -628,50 +761,22 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
                     onChange={handleInputChange}
                   />
                 </div>
-              </div>
 
-              <div className="grid grid-cols-2 gap-4 mb-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Desconto
+                    Desconto (Opcional)
                   </label>
                   <Input
                     type="number"
                     step="0.01"
                     name="discount"
-                    placeholder="Insira o valor do desconto"
+                    placeholder="Insira o valor do desconto (opcional)"
                     value={formData.discount}
                     onChange={handleInputChange}
                   />
                 </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Mão-de-Obra Total
-                  </label>
-                  <Input
-                    type="number"
-                    step="0.01"
-                    name="laborValue"
-                    placeholder="Insira o valor da mão-de-obra"
-                    value={formData.laborValue}
-                    onChange={handleInputChange}
-                  />
-                </div>
               </div>
 
-              {/* Valor Total */}
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-lg font-semibold text-gray-900">Valor Total:</span>
-                  <span className="text-2xl font-bold text-blue-600">
-                    R$ {totals.totalValue.toFixed(2)}
-                  </span>
-                </div>
-                <div className="mt-2 text-sm text-gray-600">
-                  Peças: R$ {totals.partsTotal.toFixed(2)} + Mão-de-obra: R$ {totals.laborValue.toFixed(2)} - Desconto: R$ {totals.discount.toFixed(2)}
-                </div>
-              </div>
 
               {/* Observações */}
               <div className="grid grid-cols-2 gap-4">
@@ -703,11 +808,49 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
                   />
                 </div>
               </div>
+
+              {/* NF e Garantias */}
+              <div className="mt-4 grid grid-cols-3 gap-4 items-end">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Nota Fiscal (opcional)</label>
+                  <Input
+                    type="text"
+                    name="nf"
+                    placeholder="Número da nota fiscal"
+                    value={formData.nf}
+                    onChange={handleInputChange}
+                  />
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <input
+                    id="returnGuarantee"
+                    name="returnGuarantee"
+                    type="checkbox"
+                    checked={formData.returnGuarantee}
+                    onChange={handleInputChange}
+                    className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+                  />
+                  <label htmlFor="returnGuarantee" className="text-sm text-gray-700">Garantia de Retorno</label>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <input
+                    id="fabricGuarantee"
+                    name="fabricGuarantee"
+                    type="checkbox"
+                    checked={formData.fabricGuarantee}
+                    onChange={handleInputChange}
+                    className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+                  />
+                  <label htmlFor="fabricGuarantee" className="text-sm text-gray-700">Garantia de Fábrica</label>
+                </div>
+              </div>
             </div>
           </div>
 
           {/* Footer */}
-          <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-200 bg-gray-50">
+          <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-200 bg-gray-50 flex-shrink-0">
             <Button
               type="button"
               variant="outline"
@@ -727,13 +870,6 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
         </div>
       </div>
 
-      {/* Client Modal */}
-      <ClientModal
-        isOpen={isClientModalOpen}
-        onClose={() => setIsClientModalOpen(false)}
-        onSave={handleSaveNewClient}
-      />
-
       <style>{`
         @keyframes modal-in {
           from {
@@ -747,6 +883,22 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
         }
         .animate-modal-in {
           animation: modal-in 0.2s ease-out;
+        }
+        
+        /* Custom scrollbar for modal content */
+        .overflow-y-auto::-webkit-scrollbar {
+          width: 8px;
+        }
+        .overflow-y-auto::-webkit-scrollbar-track {
+          background: #f1f1f1;
+          border-radius: 10px;
+        }
+        .overflow-y-auto::-webkit-scrollbar-thumb {
+          background: #888;
+          border-radius: 10px;
+        }
+        .overflow-y-auto::-webkit-scrollbar-thumb:hover {
+          background: #555;
         }
       `}</style>
     </>

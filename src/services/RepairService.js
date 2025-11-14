@@ -1,10 +1,11 @@
 import { jsonServer } from '../providers/json-server';
+import { apiClient } from "../providers/api";
 
 class RepairService {
   async getAllRepairs(userId = null) {
     try {
-      const url = userId ? `/repairs?userId=${userId}` : '/repairs';
-      const response = await jsonServer.get(url);
+      const url = userId ? `/orders?userId=${userId}` : '/orders';
+      const response = await apiClient.get(url);
       return response.data;
     } catch (error) {
       console.error('Erro ao buscar repairs:', error);
@@ -24,7 +25,7 @@ class RepairService {
 
   async createRepair(repairData) {
     try {
-      const response = await jsonServer.post('/repairs', repairData);
+      const response = await apiClient.post('/orders', repairData);
       return response.data;
     } catch (error) {
       console.error('Erro ao criar repair:', error);

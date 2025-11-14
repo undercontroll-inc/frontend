@@ -6,13 +6,16 @@ import Button from '../shared/Button';
 export const ClientModal = ({ isOpen, onClose, onSave, client = null }) => {
   const [formData, setFormData] = useState({
     name: '',
+    lastName: '',
     phone: '',
     email: '',
     cpf: '',
-    cep: '',
+    CEP: '',
     address: '',
     addressNumber: '',
-    hasWhatsapp: true
+    password: '',
+    avatarUrl: '',
+    userType: 'CUSTOMER'
   });
 
   const [errors, setErrors] = useState({});
@@ -33,13 +36,16 @@ export const ClientModal = ({ isOpen, onClose, onSave, client = null }) => {
     if (client) {
       setFormData({
         name: client.name || '',
+        lastName: client.lastName || '',
         phone: client.phone || '',
         email: client.email || '',
         cpf: client.cpf || '',
-        cep: client.cep || '',
+        CEP: client.CEP || '',
         address: client.address || '',
         addressNumber: client.addressNumber || '',
-        hasWhatsapp: client.hasWhatsapp !== false
+        password: '',
+        avatarUrl: client.avatarUrl || '',
+        userType: client.userType || 'CUSTOMER'
       });
     } else {
       resetForm();
@@ -49,13 +55,16 @@ export const ClientModal = ({ isOpen, onClose, onSave, client = null }) => {
   const resetForm = () => {
     setFormData({
       name: '',
+      lastName: '',
       phone: '',
       email: '',
       cpf: '',
-      cep: '',
+      CEP: '',
       address: '',
       addressNumber: '',
-      hasWhatsapp: true
+      password: '',
+      avatarUrl: '',
+      userType: 'CUSTOMER'
     });
     setErrors({});
   };
@@ -77,15 +86,19 @@ export const ClientModal = ({ isOpen, onClose, onSave, client = null }) => {
     const newErrors = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = 'Nome completo é obrigatório';
+      newErrors.name = 'Nome é obrigatório';
+    }
+
+    if (!formData.lastName.trim()) {
+      newErrors.lastName = 'Sobrenome é obrigatório';
     }
 
     if (!formData.phone.trim()) {
       newErrors.phone = 'Telefone é obrigatório';
     }
 
-    if (!formData.cep.trim()) {
-      newErrors.cep = 'CEP é obrigatório';
+    if (!formData.CEP.trim()) {
+      newErrors.CEP = 'CEP é obrigatório';
     }
 
     if (!formData.addressNumber.trim()) {
@@ -103,7 +116,21 @@ export const ClientModal = ({ isOpen, onClose, onSave, client = null }) => {
       return;
     }
 
-    onSave(formData);
+    // Preparar dados para envio com todos os campos necessários
+    const dataToSend = {
+      name: formData.name,
+      lastName: formData.lastName,
+      email: formData.email,
+      phone: formData.phone,
+      password: formData.password || "",
+      address: formData.address,
+      cpf: formData.cpf,
+      avatarUrl: formData.avatarUrl || "",
+      userType: formData.userType,
+      CEP: formData.CEP
+    };
+
+    onSave(dataToSend);
     handleClose();
   };
 
@@ -148,21 +175,38 @@ export const ClientModal = ({ isOpen, onClose, onSave, client = null }) => {
           <div className="flex-1 overflow-y-auto p-6">
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
-                {/* Nome Completo */}
+                {/* Nome */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Nome Completo*
+                    Nome*
                   </label>
                   <Input
                     type="text"
                     name="name"
-                    placeholder="Insira o nome completo"
+                    placeholder="Insira o nome"
                     value={formData.name}
                     onChange={handleChange}
                     error={errors.name}
                   />
                 </div>
 
+                {/* Sobrenome */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Sobrenome*
+                  </label>
+                  <Input
+                    type="text"
+                    name="lastName"
+                    placeholder="Insira o sobrenome"
+                    value={formData.lastName}
+                    onChange={handleChange}
+                    error={errors.lastName}
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
                 {/* Celular/Telefone */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -177,9 +221,7 @@ export const ClientModal = ({ isOpen, onClose, onSave, client = null }) => {
                     error={errors.phone}
                   />
                 </div>
-              </div>
 
-              <div className="grid grid-cols-2 gap-4">
                 {/* E-mail */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -194,7 +236,9 @@ export const ClientModal = ({ isOpen, onClose, onSave, client = null }) => {
                     error={errors.email}
                   />
                 </div>
+              </div>
 
+              <div className="grid grid-cols-2 gap-4">
                 {/* CPF */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -219,11 +263,11 @@ export const ClientModal = ({ isOpen, onClose, onSave, client = null }) => {
                   </label>
                   <Input
                     type="text"
-                    name="cep"
+                    name="CEP"
                     placeholder="Insira o CEP"
-                    value={formData.cep}
+                    value={formData.CEP}
                     onChange={handleChange}
-                    error={errors.cep}
+                    error={errors.CEP}
                   />
                 </div>
 
@@ -256,21 +300,6 @@ export const ClientModal = ({ isOpen, onClose, onSave, client = null }) => {
                   onChange={handleChange}
                   error={errors.addressNumber}
                 />
-              </div>
-
-              {/* Possui Whatsapp */}
-              <div className="flex items-center gap-3">
-                <input
-                  type="checkbox"
-                  id="hasWhatsapp"
-                  name="hasWhatsapp"
-                  checked={formData.hasWhatsapp}
-                  onChange={handleChange}
-                  className="w-5 h-5 text-[#041A2D] bg-white border-gray-300 rounded focus:ring-[#041A2D] focus:ring-2"
-                />
-                <label htmlFor="hasWhatsapp" className="text-sm font-medium text-gray-700">
-                  Possui Whatsapp?
-                </label>
               </div>
             </form>
           </div>

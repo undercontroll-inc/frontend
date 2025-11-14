@@ -65,7 +65,7 @@ export function ClientsPage() {
   const loadClientRepairs = async (clientId) => {
     try {
       setLoadingRepairs(true);
-      const data = await RepairService.getAllRepairs(clientId);
+      const { data } = await RepairService.getAllRepairs(clientId);
       setClientRepairs(data || []);
     } catch (error) {
       console.error('Erro ao carregar histórico:', error);
@@ -233,13 +233,12 @@ export function ClientsPage() {
                       <th className="px-6 py-4 text-left text-sm font-semibold">Nome</th>
                       <th className="px-6 py-4 text-left text-sm font-semibold">Celular/Telefone</th>
                       <th className="px-6 py-4 text-left text-sm font-semibold">E-mail</th>
-                      <th className="px-6 py-4 text-center text-sm font-semibold">Whatsapp?</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200">
                     {filteredClients.length === 0 ? (
                       <tr>
-                        <td colSpan="4" className="px-6 py-8 text-center text-gray-500">
+                        <td colSpan="3" className="px-6 py-8 text-center text-gray-500">
                           Nenhum cliente encontrado
                         </td>
                       </tr>
@@ -262,13 +261,6 @@ export function ClientsPage() {
                           </td>
                           <td className="px-6 py-4 text-sm text-gray-900">
                             {client.email || '-'}
-                          </td>
-                          <td className="px-6 py-4 text-center">
-                            {client.hasWhatsapp !== false ? (
-                              <CheckCircle className="h-5 w-5 text-green-600 mx-auto" />
-                            ) : (
-                              <XCircle className="h-5 w-5 text-red-600 mx-auto" />
-                            )}
                           </td>
                         </tr>
                       ))
@@ -316,13 +308,6 @@ export function ClientsPage() {
                   <h3 className="text-sm font-semibold text-gray-700 mb-2">CPF</h3>
                   <p className="text-base font-medium text-gray-900">
                     {formatCPF(selectedClient.cpf) || 'Não informado'}
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className="text-sm font-semibold text-gray-700 mb-2">Possui Whatsapp?</h3>
-                  <p className="text-base font-medium text-gray-900">
-                    {selectedClient.hasWhatsapp !== false ? 'Sim' : 'Não'}
                   </p>
                 </div>
 

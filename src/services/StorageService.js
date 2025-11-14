@@ -1,9 +1,10 @@
 import { jsonServer } from "../providers/json-server";
+import { apiClient } from "../providers/api";
 
 export class StorageService {
   static async getAll() {
     try {
-      const response = await jsonServer.get("/storage");
+      const response = await apiClient.get("/components");
       return response.data;
     } catch (error) {
       console.error("Error fetching storage items:", error);
@@ -23,7 +24,7 @@ export class StorageService {
 
   static async create(itemData) {
     try {
-      const response = await jsonServer.post("/storage", itemData);
+      const response = await apiClient.post("/components", itemData);
       return response.data;
     } catch (error) {
       console.error("Error creating storage item:", error);

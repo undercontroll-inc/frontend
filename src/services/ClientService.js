@@ -1,9 +1,10 @@
 import { jsonServer } from '../providers/json-server';
+import { apiClient } from '../providers/api'; 
 
 class ClientService {
   async getAllClients() {
     try {
-      const response = await jsonServer.get('/user?userType=COSTUMER');
+      const response = await apiClient.get('/users/customers');
       return response.data;
     } catch (error) {
       console.error('Erro ao buscar clientes:', error);
@@ -13,7 +14,7 @@ class ClientService {
 
   async getClientById(id) {
     try {
-      const response = await jsonServer.get(`/user/${id}`);
+      const response = await apiClient.get(`/users/customers/${id}`);
       return response.data;
     } catch (error) {
       console.error(`Erro ao buscar cliente ${id}:`, error);
@@ -33,7 +34,7 @@ class ClientService {
 
   async createClient(clientData) {
     try {
-      const response = await jsonServer.post('/user', {
+      const response = await apiClient.post('/users', {
         ...clientData,
         userType: 'COSTUMER'
       });

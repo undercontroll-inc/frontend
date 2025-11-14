@@ -45,8 +45,10 @@ export function RepairPage() {
   const loadRepairs = async () => {
     try {
       setLoading(true);
-      const data = await RepairService.getAllRepairs();
+      const { data } = await RepairService.getAllRepairs();
       
+      console.log(data);
+
       // Busca os nomes dos clientes
       const repairsWithClients = await Promise.all(
         data.map(async (repair) => {
@@ -269,6 +271,7 @@ export function RepairPage() {
         isOpen={isSheetOpen}
         onClose={handleCloseSheet}
         repair={selectedRepair}
+        onUpdate={loadRepairs}
       />
 
       {/* Modal de Criar OS */}

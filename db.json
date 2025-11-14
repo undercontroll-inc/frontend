@@ -12,7 +12,7 @@
       "userType": "COSTUMER",
       "hasWhatsapp": true,
       "createdAt": "10/02/2021",
-      "id": 1
+      "id": "1"
     },
     {
       "name": "Eliana Guedes",
@@ -26,7 +26,7 @@
       "userType": "COSTUMER",
       "hasWhatsapp": true,
       "createdAt": "15/03/2020",
-      "id": 2
+      "id": "2"
     },
     {
       "name": "Maria José",
@@ -39,7 +39,7 @@
       "userType": "COSTUMER",
       "hasWhatsapp": false,
       "createdAt": "20/01/2022",
-      "id": 3
+      "id": "3"
     },
     {
       "name": "José Freitas",
@@ -52,7 +52,7 @@
       "userType": "COSTUMER",
       "hasWhatsapp": true,
       "createdAt": "05/06/2021",
-      "id": 4
+      "id": "4"
     },
     {
       "name": "Sebastião Neto",
@@ -64,7 +64,7 @@
       "userType": "COSTUMER",
       "hasWhatsapp": true,
       "createdAt": "12/08/2019",
-      "id": 5
+      "id": "5"
     },
     {
       "name": "Fernando Gomes",
@@ -77,7 +77,7 @@
       "userType": "COSTUMER",
       "hasWhatsapp": true,
       "createdAt": "18/11/2020",
-      "id": 6
+      "id": "6"
     },
     {
       "name": "João Pedro Lima",
@@ -90,7 +90,7 @@
       "userType": "COSTUMER",
       "hasWhatsapp": false,
       "createdAt": "25/04/2022",
-      "id": 7
+      "id": "7"
     },
     {
       "name": "Wellington Matos",
@@ -102,7 +102,7 @@
       "userType": "COSTUMER",
       "hasWhatsapp": true,
       "createdAt": "30/07/2021",
-      "id": 8
+      "id": "8"
     },
     {
       "name": "Fernanda Pereira",
@@ -115,7 +115,7 @@
       "userType": "COSTUMER",
       "hasWhatsapp": true,
       "createdAt": "08/09/2020",
-      "id": 9
+      "id": "9"
     },
     {
       "name": "Joana Cruz",
@@ -128,7 +128,7 @@
       "userType": "COSTUMER",
       "hasWhatsapp": false,
       "createdAt": "14/02/2021",
-      "id": 10
+      "id": "10"
     },
     {
       "name": "Carlos Oliveira",
@@ -141,7 +141,7 @@
       "userType": "COSTUMER",
       "hasWhatsapp": true,
       "createdAt": "22/12/2019",
-      "id": 11
+      "id": "11"
     },
     {
       "id": "5a8f",
@@ -167,7 +167,7 @@
       "hasWhatsapp": true,
       "userType": "COSTUMER",
       "password": "senha123",
-      "id": 12
+      "id": "12"
     }
   ],
   "components": [
@@ -178,10 +178,10 @@
       "price": 0.1,
       "supplier": "Mouser Electronics",
       "category": "Resistores",
-      "id": 2
+      "id": "2"
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "Capacitor Eletrolítico 100µF 25V",
       "description": "Capacitor eletrolítico de alumínio para filtragem em fontes de alimentação.",
       "brand": "Nichicon",
@@ -190,7 +190,7 @@
       "category": "Capacitores"
     },
     {
-      "id": 4,
+      "id": "4",
       "name": "Sensor de Temperatura LM35",
       "description": "Sensor analógico de temperatura com saída linear proporcional à variação térmica.",
       "brand": "Texas Instruments",
@@ -199,7 +199,7 @@
       "category": "Sensores"
     },
     {
-      "id": 5,
+      "id": "5",
       "name": "Transistor NPN BC547",
       "description": "Transistor de uso geral NPN para amplificação e chaveamento.",
       "brand": "ON Semiconductor",
@@ -214,7 +214,7 @@
       "price": 25,
       "supplier": "lucas",
       "category": "lucas",
-      "id": 6
+      "id": "6"
     }
   ],
   "storage": [
@@ -327,11 +327,21 @@
       "price": "R$ 14,50",
       "supplier": "Ferragens Silva",
       "description": "Chave de fenda padrão com ponta cruzada"
+    },
+    {
+      "id": "4023",
+      "item": "Item",
+      "brand": "Marca",
+      "category": "Informática",
+      "quantity": 12,
+      "price": "R$ 190.90",
+      "supplier": "Fornecedor",
+      "description": "Descrilao"
     }
   ],
   "repairs": [
     {
-      "id": 1921,
+      "id": "1921",
       "userId": 1,
       "appliances": [
         {
@@ -371,12 +381,6 @@
           "totalValue": 185
         },
         {
-          "name": "Bomba de água (cafeteira)",
-          "quantity": 1,
-          "unitValue": 95,
-          "totalValue": 95
-        },
-        {
           "name": "Termostato (cafeteira)",
           "quantity": 1,
           "unitValue": 38,
@@ -392,11 +396,11 @@
       "warranty": "90 dias",
       "serviceDescription": "Reparo em micro-ondas sem aquecimento — substituição de fusível, diodo e magnetron.\nReparo em cafeteira Dolce Gusto que não bombeava água — substituição de bomba e termostato, além de limpeza interna.",
       "notes": "Ambos os aparelhos foram testados e apresentam funcionamento normal.\nCliente orientado sobre limpeza periódica da cafeteira e uso de tomada exclusiva para o micro-ondas.",
-      "status": "EM_ANDAMENTO",
+      "status": "FINALIZADO",
       "updatedAt": "2025-10-10T13:37:00"
     },
     {
-      "id": 1906,
+      "id": "1906",
       "userId": 1,
       "appliances": [
         {
@@ -429,7 +433,7 @@
       "updatedAt": "2025-07-07T13:37:00"
     },
     {
-      "id": 1887,
+      "id": "1887",
       "userId": 1,
       "appliances": [
         {
@@ -462,7 +466,7 @@
       "updatedAt": "2025-01-21T13:37:00"
     },
     {
-      "id": 1935,
+      "id": "1935",
       "userId": 2,
       "appliances": [
         {
@@ -525,7 +529,7 @@
       "notes": "",
       "status": "NAO_INICIADO",
       "updatedAt": "2025-10-28T18:55:38.728Z",
-      "id": 1936
+      "id": "1936"
     }
   ]
 }

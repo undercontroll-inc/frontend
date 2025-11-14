@@ -293,16 +293,16 @@ const ComponentDetails = () => {
                               className="bg-white border-b border-gray-200 text-xs hover:bg-gray-50 transition-colors"
                             >
                               <td className="px-3 py-2 text-gray-900">
-                                {part.name || "-"}
+                                {part.item || part.name || "-"}
                               </td>
                               <td className="px-3 py-2 text-gray-900">
                                 {part.quantity || 0}
                               </td>
                               <td className="px-3 py-2 text-gray-900">
-                                {formatCurrency(part.unitValue)}
+                                {formatCurrency(part.price)}
                               </td>
                               <td className="px-3 py-2 text-gray-900 font-medium">
-                                {formatCurrency(part.totalValue)}
+                                {formatCurrency(((part.price || 0) * (part.quantity || 0)) || 0)}
                               </td>
                             </tr>
                           ))}

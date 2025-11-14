@@ -91,16 +91,10 @@ const ItemModal = ({ isOpen, onClose, item, onSave }) => {
     setLoading(true);
 
     try {
-      // Formatar o preço com R$ se não tiver
-      let formattedPrice = formData.price.trim();
-      if (!formattedPrice.startsWith('R$')) {
-        formattedPrice = `R$ ${formattedPrice}`;
-      }
-
       const itemData = {
         ...formData,
         quantity: parseInt(formData.quantity),
-        price: formattedPrice,
+        price: parseFloat(formData.price),
       };
 
       await onSave(itemData, item?.id);
@@ -217,10 +211,13 @@ const ItemModal = ({ isOpen, onClose, item, onSave }) => {
               <Input
                 label="Preço (R$) *"
                 name="price"
+                type="number"
+                step="0.01"
+                min="0"
                 value={formData.price}
                 onChange={handleInputChange}
                 error={errors.price}
-                placeholder="Insira o preço"
+                placeholder="0.00"
                 required
               />
             </div>

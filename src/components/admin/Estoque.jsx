@@ -29,10 +29,11 @@ export function Estoque() {
         try {
             setLoading(true);
             const data = await StorageService.getAll();
-            setItems(data);
+            setItems(Array.isArray(data) ? data : []);
         } catch (error) {
             toast.error("Erro ao carregar itens do estoque");
             console.error(error);
+            setItems([]);
         } finally {
             setLoading(false);
         }
@@ -97,6 +98,10 @@ export function Estoque() {
         setSupplierFilter("");
     };
 
+    // Extrair marcas e fornecedores únicos dos itens
+    const uniqueBrands = [...new Set(items.map(item => item.brand).filter(Boolean))].sort();
+    const uniqueSuppliers = [...new Set(items.map(item => item.supplier).filter(Boolean))].sort();
+
     if (loading) {
         return (
             <div className="flex min-h-screen bg-gray-50">
@@ -159,12 +164,9 @@ export function Estoque() {
                             onChange={(e) => setBrandFilter(e.target.value)}
                         >
                             <option value="">Todas as marcas</option>
-                            <option value="Prico">Prico</option>
-                            <option value="Multimoda">Multimoda</option>
-                            <option value="Turbo">Turbo</option>
-                            <option value="Tramontino">Tramontino</option>
-                            <option value="Elgin">Elgin</option>
-                            <option value="Arno">Arno</option>
+                            {uniqueBrands.map(brand => (
+                                <option key={brand} value={brand}>{brand}</option>
+                            ))}
                         </Select>
 
                         {/* Supplier Filter */}
@@ -173,12 +175,9 @@ export function Estoque() {
                             onChange={(e) => setSupplierFilter(e.target.value)}
                         >
                             <option value="">Todos os fornecedores</option>
-                            <option value="TecnoMicro">TecnoMicro</option>
-                            <option value="EletroMaster">EletroMaster</option>
-                            <option value="Casa do Eletro">Casa do Eletro</option>
-                            <option value="Ferragens Silva">Ferragens Silva</option>
-                            <option value="ManuCorner">ManuCorner</option>
-                            <option value="DistroNitro">DistroNitro</option>
+                            {uniqueSuppliers.map(supplier => (
+                                <option key={supplier} value={supplier}>{supplier}</option>
+                            ))}
                         </Select>
                     </div>
 

@@ -118,15 +118,6 @@ export const ClientDetailSheet = ({ isOpen, onClose, client }) => {
           </div>
         </SheetSection>
 
-        {/* WhatsApp */}
-        <SheetSection title="Possui Whatsapp?">
-          <div className="bg-gray-50 rounded-lg p-4">
-            <p className="text-base font-medium text-gray-900">
-              {client.hasWhatsapp !== false ? 'Sim' : 'Não'}
-            </p>
-          </div>
-        </SheetSection>
-
         {/* Endereço */}
         <SheetSection title="Endereço">
           <div className="bg-gray-50 rounded-lg p-4">
