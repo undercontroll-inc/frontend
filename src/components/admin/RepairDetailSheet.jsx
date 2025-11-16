@@ -29,16 +29,18 @@ export const RepairDetailSheet = ({ isOpen, onClose, repair, onUpdate }) => {
 
   const getStatusBadge = (status) => {
     const statusConfig = {
-      'EM_ANDAMENTO': { label: 'Em Andamento', },
-      'NAO_INICIADO': { label: 'Não Iniciado',  },
-      'FINALIZADO': { label: 'Finalizado',  },
-      'CANCELADO': { label: 'Cancelado',  },
-      'Em Andamento': { label: 'Em Andamento',  },
-      'Pendente': { label: 'Pendente',  },
-      'Concluído': { label: 'Concluído',  },
-      'Cancelado': { label: 'Cancelado',  }
+      'PENDING': { label: 'Pendente' },
+      'COMPLETED': { label: 'Concluído' },
+      'EM_ANDAMENTO': { label: 'Em Andamento' },
+      'NAO_INICIADO': { label: 'Não Iniciado' },
+      'FINALIZADO': { label: 'Finalizado' },
+      'CANCELADO': { label: 'Cancelado' },
+      'Em Andamento': { label: 'Em Andamento' },
+      'Pendente': { label: 'Pendente' },
+      'Concluído': { label: 'Concluído' },
+      'Cancelado': { label: 'Cancelado' }
     };
-    return statusConfig[status] || { label: status, icon: '📋' };
+    return statusConfig[status] || { label: status };
   };
 
   const renderAppliances = () => {
@@ -96,9 +98,10 @@ export const RepairDetailSheet = ({ isOpen, onClose, repair, onUpdate }) => {
         {/* Status Badge */}
         <div className="mb-6">
           <div className={`inline-flex items-center gap-2 px-3 py-2 rounded-lg font-medium ${
-            repair.status === 'FINALIZADO' ? 'bg-green-100 text-green-800' :
+            repair.status === 'COMPLETED' || repair.status === 'FINALIZADO' ? 'bg-green-100 text-green-800' :
             repair.status === 'EM_ANDAMENTO' ? 'bg-blue-100 text-blue-800' :
             repair.status === 'CANCELADO' ? 'bg-red-100 text-red-800' :
+            repair.status === 'PENDING' || repair.status === 'NAO_INICIADO' ? 'bg-yellow-100 text-yellow-800' :
             'bg-gray-100 text-gray-800'
           }`}>
             <span>{statusBadge.label}</span>
@@ -144,7 +147,7 @@ export const RepairDetailSheet = ({ isOpen, onClose, repair, onUpdate }) => {
             <SheetItem label="Email" value={repair.clientEmail || 'Não informado'} className="border-0" />
             <SheetItem 
               label="CPF" 
-              value={repair.clientCPF ? formatCPF(repair.clientCPF) : 'Não informado'} 
+              value={repair.clientCpf ? formatCPF(repair.clientCpf) : 'Não informado'} 
               className="border-0" 
             />
             <SheetItem 
@@ -195,10 +198,10 @@ export const RepairDetailSheet = ({ isOpen, onClose, repair, onUpdate }) => {
                   className="border-0" 
                 />
               )}
-              {repair.laborValue && (
+              {repair.laborTotal && (
                 <SheetItem 
                   label="Mão de obra" 
-                  value={`R$ ${repair.laborValue.toFixed(2).replace('.', ',')}`} 
+                  value={`R$ ${repair.laborTotal.toFixed(2).replace('.', ',')}`} 
                   className="border-0" 
                 />
               )}

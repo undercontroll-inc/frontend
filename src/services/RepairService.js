@@ -45,7 +45,7 @@ class RepairService {
 
   async patchRepair(id, partialData) {
     try {
-      const response = await jsonServer.patch(`/repairs/${id}`, partialData);
+      const response = await apiClient.patch(`/orders/${id}`, partialData);
       return response.data;
     } catch (error) {
       console.error(`Erro ao atualizar parcialmente repair ${id}:`, error);
@@ -58,6 +58,15 @@ class RepairService {
       await jsonServer.delete(`/repairs/${id}`);
     } catch (error) {
       console.error(`Erro ao deletar repair ${id}:`, error);
+      throw error;
+    }
+  }
+
+  async deleteOrderItem(id) {
+    try {
+      await apiClient.delete(`/order-items/${id}`);
+    } catch (error) {
+      console.error(`Erro ao deletar order-item ${id}:`, error);
       throw error;
     }
   }

@@ -1,25 +1,48 @@
 import { useState, useEffect } from 'react';
-import { X, Edit2, Save, Trash2 } from 'lucide-react';
+import { X, Edit2, Save, Trash2, Plus } from 'lucide-react';
 import Button from '../shared/Button';
 import Select from '../shared/Select';
+import Input from '../shared/Input';
 import RepairService from '../../services/RepairService';
+import ComponentService from '../../services/ComponentService';
 import { useToast } from '../../contexts/ToastContext';
 
 export const OrderDetailModal = ({ isOpen, onClose, repair, client, onUpdate }) => {
-  const { toast } = useToast();
+  const toast = useToast();
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [availableComponents, setAvailableComponents] = useState([]);
+  const [showComponentSelector, setShowComponentSelector] = useState(false);
   
   // Estados para edição
   const [editedRepair, setEditedRepair] = useState(null);
+  const [removedItemIds, setRemovedItemIds] = useState([]);
+
+  // Busca componentes (peças) disponíveis quando o modal abre em modo de edição
+  useEffect(() => {
+    if (isOpen && isEditing) {
+      loadAvailableComponents();
+    }
+  }, [isOpen, isEditing]);
+
+  const loadAvailableComponents = async () => {
+    try {
+      const components = await ComponentService.getAllComponents();
+      setAvailableComponents(components || []);
+    } catch (error) {
+      console.error('Erro ao carregar componentes:', error);
+      toast.error('Erro ao carregar peças disponíveis');
+    }
+  };
 
   // Atualiza os dados quando o repair mudar
   useEffect(() => {
     if (repair) {
       setEditedRepair({
         ...repair,
-        appliances: Array.isArray(repair.appliances) ? [...repair.appliances] : [],
-        parts: Array.isArray(repair.parts) ? [...repair.parts] : []
+        appliances: Array.isArray(repair.appliances) ? repair.appliances.map(a => ({ ...a })) : [],
+        parts: Array.isArray(repair.parts) ? repair.parts.map(p => ({ ...p })) : [],
+        serviceDescription: repair.serviceDescription || repair.notes || ''
       });
     }
   }, [repair]);
@@ -27,10 +50,12 @@ export const OrderDetailModal = ({ isOpen, onClose, repair, client, onUpdate }) 
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
+      setRemovedItemIds([]); // Limpa lista de itens removidos ao abrir
     } else {
       document.body.style.overflow = 'unset';
       // Reseta o modo de edição ao fechar
       setIsEditing(false);
+      setRemovedItemIds([]);
     }
 
     return () => {
@@ -48,35 +73,151 @@ export const OrderDetailModal = ({ isOpen, onClose, repair, client, onUpdate }) 
     setEditedRepair(prev => ({ ...prev, status: newStatus }));
   };
 
-  const handleRemoveAppliance = (index) => {
+  const handleApplianceChange = (index, field, value) => {
     setEditedRepair(prev => ({
       ...prev,
-      appliances: prev.appliances.filter((_, i) => i !== index)
+      appliances: prev.appliances.map((app, i) => 
+        i === index ? { ...app, [field]: value } : app
+      )
+    }));
+  };
+
+  const handleRemoveAppliance = (index) => {
+    setEditedRepair(prev => {
+      const applianceToRemove = prev.appliances[index];
+      console.log('Removendo appliance:', applianceToRemove);
+      
+      // Se o item tem ID, adiciona à lista de removidos para deletar depois
+      if (applianceToRemove?.id) {
+        console.log('Adicionando ID à lista de removidos:', applianceToRemove.id);
+        setRemovedItemIds(prevIds => {
+          const newIds = [...prevIds, applianceToRemove.id];
+          console.log('Lista atualizada de IDs removidos:', newIds);
+          return newIds;
+        });
+      } else {
+        console.log('Appliance sem ID (novo item), não será deletado');
+      }
+      
+      return {
+        ...prev,
+        appliances: prev.appliances.filter((_, i) => i !== index)
+      };
+    });
+  };
+
+  const handlePartChange = (index, value) => {
+    setEditedRepair(prev => ({
+      ...prev,
+      parts: prev.parts.map((part, i) => 
+        i === index ? { ...part, quantity: Number(value) || 1 } : part
+      )
     }));
   };
 
   const handleRemovePart = (index) => {
     setEditedRepair(prev => ({
       ...prev,
-      parts: prev.parts.filter((_, i) => i !== index)
+      parts: prev.parts.map((part, i) => 
+        i === index ? { ...part, quantity: 0, _removed: true } : part
+      )
     }));
+  };
+
+  const handleAddAppliance = () => {
+    setEditedRepair(prev => ({
+      ...prev,
+      appliances: [...prev.appliances, { 
+        id: null, 
+        type: '', 
+        brand: '', 
+        model: '', 
+        volt: '', 
+        series: '', 
+        customerNote: '',
+        laborValue: 0
+      }]
+    }));
+  };
+
+  const handleAddComponentToParts = (componentId) => {
+    const component = availableComponents.find(c => c.id === parseInt(componentId));
+    if (!component) return;
+
+    // Verifica se a peça já foi adicionada
+    const alreadyAdded = editedRepair.parts.some(p => p.componentId === component.id);
+    if (alreadyAdded) {
+      toast.error('Esta peça já foi adicionada ao pedido');
+      return;
+    }
+
+    setEditedRepair(prev => ({
+      ...prev,
+      parts: [...prev.parts, { 
+        id: null,
+        componentId: component.id,
+        item: component.name || component.type || '',
+        quantity: 1,
+        price: component.price || 0
+      }]
+    }));
+    
+    setShowComponentSelector(false);
+    toast.success('Peça adicionada ao pedido');
+  };
+
+  const handleServiceDescriptionChange = (value) => {
+    setEditedRepair(prev => ({ ...prev, serviceDescription: value }));
   };
 
   const handleSave = async () => {
     try {
       setIsSaving(true);
       
-      // Prepara os dados para envio
+      // Primeiro, deleta os itens removidos (apenas IDs válidos)
+      const validRemovedIds = removedItemIds.filter(id => id && id !== null);
+      console.log('IDs a serem removidos:', validRemovedIds);
+      
+      if (validRemovedIds.length > 0) {
+        console.log('Deletando items:', validRemovedIds);
+        const deletePromises = validRemovedIds.map(itemId => 
+          RepairService.deleteOrderItem(itemId)
+        );
+        await Promise.all(deletePromises);
+        console.log('Items deletados com sucesso');
+      }
+      
+      // Prepara os dados para envio com IDs
       const dataToUpdate = {
         status: editedRepair.status,
-        appliances: editedRepair.appliances,
+        appliances: editedRepair.appliances.map(app => ({
+          id: app.id || null,
+          type: app.type,
+          brand: app.brand,
+          model: app.model,
+          volt: app.volt,
+          series: app.series,
+          customerNote: app.customerNote,
+          laborValue: Number(app.laborValue) || 0
+        })),
         parts: editedRepair.parts
+          .filter(part => part.id || part.componentId) // Remove partes sem ID válido
+          .map(part => ({
+            id: part.id || part.componentId || null,
+            quantity: part._removed ? 0 : (Number(part.quantity) || 1)
+          })),
+        serviceDescription: editedRepair.serviceDescription
       };
+      
+      console.log('Dados a serem enviados no PATCH:', JSON.stringify(dataToUpdate, null, 2));
 
+      // Depois, atualiza a ordem
       await RepairService.patchRepair(repair.id, dataToUpdate);
       
       toast.success('Ordem de serviço atualizada com sucesso!');
       setIsEditing(false);
+      setShowComponentSelector(false);
+      setRemovedItemIds([]); // Limpa lista de removidos após sucesso
       
       // Atualiza a lista na página principal
       if (onUpdate) {
@@ -99,8 +240,9 @@ export const OrderDetailModal = ({ isOpen, onClose, repair, client, onUpdate }) 
     // Restaura os dados originais
     setEditedRepair({
       ...repair,
-      appliances: Array.isArray(repair.appliances) ? [...repair.appliances] : [],
-      parts: Array.isArray(repair.parts) ? [...repair.parts] : []
+      appliances: Array.isArray(repair.appliances) ? repair.appliances.map(a => ({ ...a })) : [],
+      parts: Array.isArray(repair.parts) ? repair.parts.map(p => ({ ...p })) : [],
+      serviceDescription: repair.serviceDescription || repair.notes || ''
     });
     setIsEditing(false);
   };
@@ -197,19 +339,20 @@ export const OrderDetailModal = ({ isOpen, onClose, repair, client, onUpdate }) 
                   onChange={(e) => handleStatusChange(e.target.value)}
                   className="max-w-xs"
                 >
-                  <option value="NAO_INICIADO">Não Iniciado</option>
-                  <option value="EM_ANDAMENTO">Em Andamento</option>
-                  <option value="FINALIZADO">Finalizado</option>
-                  <option value="CANCELADO">Cancelado</option>
+                  <option value="PENDING">Pendente</option>
+                  <option value="COMPLETED">Concluído</option>
                 </Select>
               ) : (
                 <span className={`inline-flex items-center px-3 py-2 rounded-lg font-medium ${
-                  editedRepair.status === 'FINALIZADO' ? 'bg-green-100 text-green-800' :
+                  editedRepair.status === 'COMPLETED' || editedRepair.status === 'FINALIZADO' ? 'bg-green-100 text-green-800' :
                   editedRepair.status === 'EM_ANDAMENTO' ? 'bg-blue-100 text-blue-800' :
                   editedRepair.status === 'CANCELADO' ? 'bg-red-100 text-red-800' :
+                  editedRepair.status === 'PENDING' || editedRepair.status === 'NAO_INICIADO' ? 'bg-yellow-100 text-yellow-800' :
                   'bg-gray-100 text-gray-800'
                 }`}>
-                  {editedRepair.status === 'NAO_INICIADO' ? 'Não Iniciado' :
+                  {editedRepair.status === 'PENDING' ? 'Pendente' :
+                   editedRepair.status === 'COMPLETED' ? 'Concluído' :
+                   editedRepair.status === 'NAO_INICIADO' ? 'Não Iniciado' :
                    editedRepair.status === 'EM_ANDAMENTO' ? 'Em Andamento' :
                    editedRepair.status === 'FINALIZADO' ? 'Finalizado' :
                    editedRepair.status === 'CANCELADO' ? 'Cancelado' : editedRepair.status}
@@ -254,16 +397,29 @@ export const OrderDetailModal = ({ isOpen, onClose, repair, client, onUpdate }) 
 
               {/* Eletrodomésticos */}
               <div className="mb-4">
-                <h4 className="text-sm font-semibold text-gray-700 mb-2">Eletrodomésticos</h4>
+                <div className="flex items-center justify-between mb-2">
+                  <h4 className="text-sm font-semibold text-gray-700">Eletrodomésticos</h4>
+                  {isEditing && (
+                    <button
+                      onClick={handleAddAppliance}
+                      className="text-blue-600 hover:text-blue-800 flex items-center gap-1 text-sm font-medium"
+                    >
+                      <Plus className="h-4 w-4" />
+                      Adicionar Eletrodoméstico
+                    </button>
+                  )}
+                </div>
+
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="bg-[#041A2D] text-white">
                         {isEditing && <th className="px-4 py-2 text-center font-semibold w-12">Ação</th>}
-                        <th className="px-4 py-2 text-left font-semibold">Eletrodoméstico</th>
-                        <th className="px-4 py-2 text-left font-semibold">Marca / Modelo</th>
+                        <th className="px-4 py-2 text-left font-semibold">Tipo</th>
+                        <th className="px-4 py-2 text-left font-semibold">Marca</th>
+                        <th className="px-4 py-2 text-left font-semibold">Modelo</th>
                         <th className="px-4 py-2 text-left font-semibold">Voltagem</th>
-                        <th className="px-4 py-2 text-left font-semibold">Número de Série</th>
+                        <th className="px-4 py-2 text-left font-semibold">Nº Série</th>
                         <th className="px-4 py-2 text-left font-semibold">Mão-de-Obra</th>
                       </tr>
                     </thead>
@@ -282,22 +438,101 @@ export const OrderDetailModal = ({ isOpen, onClose, repair, client, onUpdate }) 
                                 </button>
                               </td>
                             )}
-                            <td className="px-4 py-2">{appliance.type || 'N/A'}</td>
-                            <td className="px-4 py-2">
-                              {appliance.brand && appliance.model 
-                                ? `${appliance.brand} ${appliance.model}`
-                                : appliance.brand || appliance.model || 'N/A'}
+                            <td className="px-2 py-2">
+                              {isEditing ? (
+                                <Select
+                                  value={appliance.type || ''}
+                                  onChange={(e) => handleApplianceChange(index, 'type', e.target.value)}
+                                  className="w-full text-sm"
+                                >
+                                  <option value="">Selecione</option>
+                                  <option value="Geladeira">Geladeira</option>
+                                  <option value="Micro-ondas">Micro-ondas</option>
+                                  <option value="Cafeteira">Cafeteira</option>
+                                  <option value="Liquidificador">Liquidificador</option>
+                                  <option value="Ferro de Passar">Ferro de Passar</option>
+                                  <option value="Ar Condicionado">Ar Condicionado</option>
+                                  <option value="Máquina de Lavar">Máquina de Lavar</option>
+                                  <option value="Fogão">Fogão</option>
+                                  <option value="Ventilador">Ventilador</option>
+                                  <option value="Outro">Outro</option>
+                                </Select>
+                              ) : (
+                                appliance.type || 'N/A'
+                              )}
                             </td>
-                            <td className="px-4 py-2">{appliance.voltage || 'N/A'}</td>
-                            <td className="px-4 py-2">{appliance.serial || 'N/A'}</td>
-                            <td className="px-4 py-2">
-                              {index === 0 ? formatCurrency(laborValue / (editedRepair.appliances.length || 1)) : ''}
+                            <td className="px-2 py-2">
+                              {isEditing ? (
+                                <Input
+                                  type="text"
+                                  value={appliance.brand || ''}
+                                  onChange={(e) => handleApplianceChange(index, 'brand', e.target.value)}
+                                  className="w-full text-sm"
+                                  placeholder="Marca"
+                                />
+                              ) : (
+                                appliance.brand || 'N/A'
+                              )}
+                            </td>
+                            <td className="px-2 py-2">
+                              {isEditing ? (
+                                <Input
+                                  type="text"
+                                  value={appliance.model || ''}
+                                  onChange={(e) => handleApplianceChange(index, 'model', e.target.value)}
+                                  className="w-full text-sm"
+                                  placeholder="Modelo"
+                                />
+                              ) : (
+                                appliance.model || 'N/A'
+                              )}
+                            </td>
+                            <td className="px-2 py-2">
+                              {isEditing ? (
+                                <Input
+                                  type="text"
+                                  value={appliance.volt || ''}
+                                  onChange={(e) => handleApplianceChange(index, 'volt', e.target.value)}
+                                  className="w-full text-sm"
+                                  placeholder="Voltagem"
+                                />
+                              ) : (
+                                appliance.volt || 'N/A'
+                              )}
+                            </td>
+                            <td className="px-2 py-2">
+                              {isEditing ? (
+                                <Input
+                                  type="text"
+                                  value={appliance.series || ''}
+                                  onChange={(e) => handleApplianceChange(index, 'series', e.target.value)}
+                                  className="w-full text-sm"
+                                  placeholder="Nº Série"
+                                />
+                              ) : (
+                                appliance.series || 'N/A'
+                              )}
+                            </td>
+                            <td className="px-2 py-2">
+                              {isEditing ? (
+                                <Input
+                                  type="number"
+                                  min="0"
+                                  step="0.01"
+                                  value={appliance.laborValue || 0}
+                                  onChange={(e) => handleApplianceChange(index, 'laborValue', e.target.value)}
+                                  className="w-28 text-sm"
+                                  placeholder="0.00"
+                                />
+                              ) : (
+                                formatCurrency(appliance.laborValue || 0)
+                              )}
                             </td>
                           </tr>
                         ))
                       ) : (
                         <tr className="bg-gray-50">
-                          <td colSpan={isEditing ? "6" : "5"} className="px-4 py-2 text-center text-gray-500">
+                          <td colSpan={isEditing ? "8" : "7"} className="px-4 py-2 text-center text-gray-500">
                             Nenhum eletrodoméstico registrado
                           </td>
                         </tr>
@@ -308,55 +543,104 @@ export const OrderDetailModal = ({ isOpen, onClose, repair, client, onUpdate }) 
                 {/* Valor Total Mão de Obra */}
                 <div className="flex justify-end mt-2">
                   <div className="bg-blue-600 text-white px-4 py-2 rounded font-semibold text-sm">
-                    Total: {formatCurrency(laborValue)}
+                    Total Mão-de-Obra: {formatCurrency(editedRepair.appliances.reduce((sum, app) => sum + (Number(app.laborValue) || 0), 0))}
                   </div>
                 </div>
               </div>
 
               {/* Peças */}
               <div className="mb-4">
-                <h4 className="text-sm font-semibold text-gray-700 mb-2">Peças</h4>
+                <div className="flex items-center justify-between mb-2">
+                  <h4 className="text-sm font-semibold text-gray-700">Peças</h4>
+                  {isEditing && (
+                    <button
+                      onClick={() => setShowComponentSelector(!showComponentSelector)}
+                      className="text-blue-600 hover:text-blue-800 flex items-center gap-1 text-sm font-medium"
+                    >
+                      <Plus className="h-4 w-4" />
+                      Adicionar Peça do Sistema
+                    </button>
+                  )}
+                </div>
+
+                {/* Seletor de Peças */}
+                {isEditing && showComponentSelector && (
+                  <div className="mb-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Selecione uma peça do sistema:
+                    </label>
+                    <div className="flex gap-2">
+                      <Select
+                        onChange={(e) => e.target.value && handleAddComponentToParts(e.target.value)}
+                        className="flex-1"
+                        defaultValue=""
+                      >
+                        <option value="">Selecione uma peça...</option>
+                        {availableComponents.map((component) => (
+                          <option key={component.id} value={component.id}>
+                            {component.item || component.type} - R$ {(component.price || 0).toFixed(2)}
+                          </option>
+                        ))}
+                      </Select>
+                      <button
+                        onClick={() => setShowComponentSelector(false)}
+                        className="px-3 py-2 text-gray-600 hover:text-gray-800"
+                      >
+                        <X className="h-5 w-5" />
+                      </button>
+                    </div>
+                  </div>
+                )}
+
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="bg-[#041A2D] text-white">
                         {isEditing && <th className="px-4 py-2 text-center font-semibold w-12">Ação</th>}
-                        <th className="px-4 py-2 text-left font-semibold w-12">Q</th>
-                        <th className="px-4 py-2 text-left font-semibold">Peças</th>
+                        <th className="px-4 py-2 text-left font-semibold">Nome da Peça</th>
                         <th className="px-4 py-2 text-left font-semibold">Quantidade</th>
                         <th className="px-4 py-2 text-left font-semibold">Valor Unitário</th>
-                        <th className="px-4 py-2 text-left font-semibold">Valor Somado</th>
+                        <th className="px-4 py-2 text-left font-semibold">Valor Total</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
                       {editedRepair.parts && Array.isArray(editedRepair.parts) && editedRepair.parts.length > 0 ? (
                         editedRepair.parts.map((part, index) => (
-                          <tr key={index} className="bg-white">
-                            {isEditing && (
-                              <td className="px-4 py-2 text-center">
-                                <button
-                                  onClick={() => handleRemovePart(index)}
-                                  className="text-red-600 hover:text-red-800 p-1 rounded hover:bg-red-50 transition-colors"
-                                  title="Remover peça"
-                                >
-                                  <Trash2 className="h-4 w-4" />
-                                </button>
+                          !part._removed && (
+                            <tr key={index} className="bg-white">
+                              {isEditing && (
+                                <td className="px-4 py-2 text-center">
+                                  <button
+                                    onClick={() => handleRemovePart(index)}
+                                    className="text-red-600 hover:text-red-800 p-1 rounded hover:bg-red-50 transition-colors"
+                                    title="Remover peça"
+                                  >
+                                    <Trash2 className="h-4 w-4" />
+                                  </button>
+                                </td>
+                              )}
+                              <td className="px-2 py-2">{part.item || part.name || 'N/A'}</td>
+                              <td className="px-2 py-2">
+                                {isEditing ? (
+                                  <Input
+                                    type="number"
+                                    min="1"
+                                    value={part.quantity || 1}
+                                    onChange={(e) => handlePartChange(index, e.target.value)}
+                                    className="w-20 text-sm"
+                                  />
+                                ) : (
+                                  part.quantity || 1
+                                )}
                               </td>
-                            )}
-                            <td className="px-4 py-2">
-                              <div className="w-6 h-6 bg-gray-200 rounded flex items-center justify-center text-xs">
-                                Q
-                              </div>
-                            </td>
-                            <td className="px-4 py-2">{part.item || part.name || 'N/A'}</td>
-                            <td className="px-4 py-2">{part.quantity || 1}</td>
-                            <td className="px-4 py-2">{formatCurrency(part.price || 0)}</td>
-                            <td className="px-4 py-2">{formatCurrency(((part.price || 0) * (part.quantity || 0)) || 0)}</td>
-                          </tr>
+                              <td className="px-2 py-2">{formatCurrency(part.price || 0)}</td>
+                              <td className="px-2 py-2">{formatCurrency(((part.price || 0) * (part.quantity || 1)))}</td>
+                            </tr>
+                          )
                         ))
                       ) : (
                         <tr className="bg-white">
-                          <td colSpan={isEditing ? "6" : "5"} className="px-4 py-2 text-center text-gray-500">
+                          <td colSpan={isEditing ? "5" : "4"} className="px-4 py-2 text-center text-gray-500">
                             Nenhuma peça registrada
                           </td>
                         </tr>
@@ -365,11 +649,12 @@ export const OrderDetailModal = ({ isOpen, onClose, repair, client, onUpdate }) 
                       {editedRepair.parts && editedRepair.parts.length > 0 && (
                         <tr className="bg-blue-600 text-white font-semibold">
                           {isEditing && <td className="px-4 py-2"></td>}
-                          <td className="px-4 py-2"></td>
                           <td className="px-4 py-2">Total</td>
-                          <td className="px-4 py-2">{editedRepair.parts.reduce((sum, part) => sum + (part.quantity || 1), 0)}</td>
+                          <td className="px-4 py-2">{editedRepair.parts.reduce((sum, part) => sum + (Number(part.quantity) || 1), 0)}</td>
                           <td className="px-4 py-2">-</td>
-                          <td className="px-4 py-2">{formatCurrency(partsTotal)}</td>
+                          <td className="px-4 py-2">
+                            {formatCurrency(editedRepair.parts.reduce((sum, part) => sum + ((part.price || 0) * (part.quantity || 1)), 0))}
+                          </td>
                         </tr>
                       )}
                     </tbody>
@@ -446,20 +731,30 @@ export const OrderDetailModal = ({ isOpen, onClose, repair, client, onUpdate }) 
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-white rounded-lg p-4">
                 <h4 className="text-sm font-semibold text-gray-700 mb-2">
-                  Observações do Cliente
+                  Observações do Cliente por Item
                 </h4>
                 <div className="space-y-2 text-sm">
-                  {repair.appliances && Array.isArray(repair.appliances) ? (
-                    repair.appliances.map((appliance, index) => (
-                      appliance.customerNote && (
-                        <div key={index} className="bg-gray-50 p-2 rounded">
-                          <p className="font-medium text-gray-900">Item {index + 1} - {appliance.type}</p>
-                          <p className="text-gray-700">{appliance.customerNote}</p>
-                        </div>
-                      )
+                  {editedRepair.appliances && Array.isArray(editedRepair.appliances) && editedRepair.appliances.length > 0 ? (
+                    editedRepair.appliances.map((appliance, index) => (
+                      <div key={index} className="bg-gray-50 p-2 rounded">
+                        <p className="font-medium text-gray-900 mb-1">
+                          Item {index + 1} - {appliance.type || 'Sem tipo'}
+                        </p>
+                        {isEditing ? (
+                          <textarea
+                            value={appliance.customerNote || ''}
+                            onChange={(e) => handleApplianceChange(index, 'customerNote', e.target.value)}
+                            className="w-full px-3 py-2 border border-gray-300 rounded text-sm resize-none"
+                            rows="2"
+                            placeholder="Observação do cliente..."
+                          />
+                        ) : (
+                          <p className="text-gray-700">{appliance.observation || 'Sem observação'}</p>
+                        )}
+                      </div>
                     ))
                   ) : (
-                    <p className="text-gray-500 italic">Nenhuma observação do cliente</p>
+                    <p className="text-gray-500 italic">Nenhum item com observação</p>
                   )}
                 </div>
               </div>
@@ -468,9 +763,19 @@ export const OrderDetailModal = ({ isOpen, onClose, repair, client, onUpdate }) 
                 <h4 className="text-sm font-semibold text-gray-700 mb-2">
                   Observações Técnicas (opcional)
                 </h4>
-                <div className="bg-gray-50 p-3 rounded text-sm text-gray-700 min-h-[100px]">
-                  {repair.serviceDescription || repair.notes || 'Nenhuma observação técnica registrada'}
-                </div>
+                {isEditing ? (
+                  <textarea
+                    value={editedRepair.serviceDescription || ''}
+                    onChange={(e) => handleServiceDescriptionChange(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded text-sm resize-none"
+                    rows="6"
+                    placeholder="Digite as observações técnicas aqui..."
+                  />
+                ) : (
+                  <div className="bg-gray-50 p-3 rounded text-sm text-gray-700 min-h-[100px]">
+                    {editedRepair.serviceDescription || 'Nenhuma observação técnica registrada'}
+                  </div>
+                )}
               </div>
             </div>
           </div>

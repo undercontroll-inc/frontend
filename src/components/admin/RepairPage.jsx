@@ -4,7 +4,6 @@ import { Search, Plus } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useToast } from '../../contexts/ToastContext';
 import RepairService from '../../services/RepairService';
-import ClientService from '../../services/ClientService';
 import PageContainer from '../shared/PageContainer';
 import Select from '../shared/Select';
 import Input from '../shared/Input';
@@ -49,21 +48,14 @@ export function RepairPage() {
       
       console.log(data);
 
-      // Busca os nomes dos clientes
-      const repairsWithClients = await Promise.all(
-        data.map(async (repair) => {
-          if (repair.userId) {
-            try {
-              const client = await ClientService.getClientById(repair.userId);
-              return { ...repair, clientName: client.name };
-            } catch (error) {
-              console.error(`Erro ao buscar cliente ${repair.userId}:`, error);
-              return { ...repair, clientName: 'N/A' };
-            }
-          }
-          return { ...repair, clientName: 'N/A' };
-        })
-      );
+      // Extrai os dados do cliente que já vêm na resposta
+      const repairsWithClients = data.map((repair) => ({
+        ...repair,
+        clientName: repair.user?.name || 'N/A',
+        clientEmail: repair.user?.email || '',
+        clientCpf: repair.user?.cpf || '',
+        clientPhone: repair.user?.phone || ''
+      }));
       
       setRepairs(repairsWithClients);
     } catch (error) {
@@ -105,14 +97,8 @@ export function RepairPage() {
 
   const getStatusLabel = (status) => {
     const statusMap = {
-      'EM_ANDAMENTO': 'Em Andamento',
-      'NAO_INICIADO': 'Não Iniciado',
-      'FINALIZADO': 'Finalizado',
-      'CANCELADO': 'Cancelado',
-      'Em Andamento': 'Em Andamento',
-      'Pendente': 'Pendente',
-      'Concluído': 'Concluído',
-      'Cancelado': 'Cancelado'
+      'PENDING': 'Pendente',
+      'COMPLETED': 'Concluído',
     };
     return statusMap[status] || status;
   };
