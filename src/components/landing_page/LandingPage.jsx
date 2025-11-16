@@ -55,7 +55,7 @@ export const LandingPage = () => {
             <li>
               <a
                 href="#about"
-                className="link-underline-animation hover:text-[#BA4610] transition-colors duration-300 font-medium"
+                className="link-underline-animation transition-colors duration-300 font-medium"
               >
                 Quem somos
               </a>
@@ -63,7 +63,7 @@ export const LandingPage = () => {
             <li>
               <a
                 href="#services"
-                className="link-underline-animation hover:text-[#BA4610] transition-colors duration-300 font-medium"
+                className="link-underline-animation transition-colors duration-300 font-medium"
               >
                 Nossos Serviços
               </a>
@@ -71,7 +71,7 @@ export const LandingPage = () => {
             <li>
               <a
                 href="#contact"
-                className="link-underline-animation hover:text-[#BA4610] transition-colors duration-300 font-medium"
+                className="link-underline-animation transition-colors duration-300 font-medium"
               >
                 Contato
               </a>
@@ -79,7 +79,7 @@ export const LandingPage = () => {
             <li>
               <a
                 href="#faq"
-                className="link-underline-animation hover:text-[#BA4610] transition-colors duration-300 font-medium"
+                className="link-underline-animation transition-colors duration-300 font-medium"
               >
                 Perguntas Frequentes
               </a>
@@ -169,21 +169,21 @@ export const LandingPage = () => {
 
             {/* Stats */}
             <div className="grid grid-cols-3 gap-6 mt-6">
-              <div className="bg-white/10 backdrop-blur-sm p-4 rounded-xl border border-white/20">
+              <div className="bg-white/10 backdrop-blur-sm p-4 rounded-xl border border-white/20 text-center">
                 <div className="text-3xl font-bold">37+</div>
                 <div className="text-sm text-gray-300">Anos de história</div>
               </div>
-              <div className="bg-white/10 backdrop-blur-sm p-4 rounded-xl border border-white/20">
+              <div className="bg-white/10 backdrop-blur-sm p-4 rounded-xl border border-white/20 text-center">
                 <div className="text-3xl font-bold">3</div>
                 <div className="text-sm text-gray-300">Gerações</div>
               </div>
-              <div className="bg-white/10 backdrop-blur-sm p-4 rounded-xl border border-white/20">
-                <div className="text-3xl font-bold ">1000+</div>
+              <div className="bg-white/10 backdrop-blur-sm p-4 rounded-xl border border-white/20 text-center">
+                <div className="text-3xl font-bold">1000+</div>
                 <div className="text-sm text-gray-300">Clientes satisfeitos</div>
               </div>
-
             </div>
           </div>
+      
           <div className="image-content lg:w-1/2 relative z-10">
             <div className="relative group">
               <div className="absolute inset-0 bg-gradient-to-br from-[#0B4BCC]/30 to-[#BA4610]/30 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-300"></div>
@@ -206,7 +206,7 @@ export const LandingPage = () => {
           </div>
 
           <div className="relative z-10">
-            <h2 className="text-4xl sm:text-5xl font-bold mb-6 bg-gradient-to-r from-[#041A2D] to-[#BA4610] bg-clip-text text-transparent">
+            <h2 className="text-4xl sm:text-5xl font-bold mb-6 bg-gradient-to-r from-[#041A2D] to-[#BA4610] bg-clip-text text-transparent leading-tight pb-1">
               Nossos Serviços
             </h2>
           </div>
@@ -243,7 +243,7 @@ export const LandingPage = () => {
                 Conserto de eletrodomésticos
               </h3>
               <p className="text-gray-600 text-sm">
-                Reparo especializado com garantia e qualidade
+                Realizamos reparos especializados em diversos tipos de eletrodomésticos com garantia de serviço, peças originais e qualidade comprovada.
               </p>
             </div>
 
@@ -255,7 +255,7 @@ export const LandingPage = () => {
                 Venda de peças originais
               </h3>
               <p className="text-gray-600 text-sm">
-                Peças e acessórios de qualidade garantida
+                Comercializamos peças e acessórios originais das principais marcas do mercado, garantindo durabilidade e o melhor desempenho para seu aparelho.
               </p>
             </div>
 
@@ -267,7 +267,7 @@ export const LandingPage = () => {
                 Assistência Técnica
               </h3>
               <p className="text-gray-600 text-sm">
-                <b className="text-[#BA4610]">aspiradores</b>,{" "}
+                <b className="text-[#BA4610]">Aspiradores</b>,{" "}
                 <b className="text-[#BA4610]">secadores de cabelo</b>,{" "}
                 <b className="text-[#BA4610]">ferros de passar</b>,{" "}
                 <b className="text-[#BA4610]">liquidificadores</b>,{" "}
@@ -282,8 +282,8 @@ export const LandingPage = () => {
 
           <div className="flex justify-center mt-8 relative z-10">
             <div className="bg-gradient-to-r from-[#041A2D] to-[#041A2D]/90 text-white px-8 py-6 rounded-2xl shadow-2xl border border-white/10">
-              <p className="text-xl sm:text-2xl font-bold text-center">
-                Desde 1987, confiança e qualidade em cada reparo
+              <p className="text-lg sm:text-xl font-bold text-center">
+                Desde 1987, confiança e qualidade em cada reparo!
               </p>
             </div>
           </div>
@@ -306,11 +306,11 @@ export const LandingPage = () => {
 
           <div className="main-content flex flex-col lg:flex-row gap-8 w-full max-w-6xl relative z-10">
             <div className="contact-container flex flex-col lg:flex-row gap-8 w-full">
-              <div className="bg-gradient-to-br from-gray-50 to-gray-100 px-8 pt-12 rounded-2xl shadow-2xl border border-gray-200 flex-1">
-                <h2 className="font-bold mb-12 text-xl text-center text-[#041A2D]">
+              <div className="bg-gradient-to-br from-gray-50 to-gray-100 px-8 py-10 rounded-2xl shadow-2xl border border-gray-200 flex-1">
+                <h2 className="font-bold mt-3 mb-10 text-xl text-center text-[#041A2D]">
                   Visite nossa loja e faça um orçamento gratuito!
                 </h2>
-                <p className="text-base text-gray-800 font-semibold mb-4">
+                <p className="text-[18px] text-gray-800 font-semibold mb-8">
                   Nossos contatos:
                 </p>
                 <div className="buttons flex flex-col items-center justify-center gap-4">
@@ -318,7 +318,7 @@ export const LandingPage = () => {
                     <i className="fa-brands fa-whatsapp text-xl"></i>
                     Agendar pelo Whatsapp
                   </button>
-                  <div className="flex items-center gap-3 my-2">
+                  <div className="flex items-center gap-3 my-1">
                     <div className="h-px bg-gray-400 flex-1"></div>
                     <span className="text-gray-700 font-semibold text-sm">
                       Ou
@@ -401,23 +401,23 @@ export const LandingPage = () => {
             <div className="accordion space-y-4">
               <FAQItem
                 question="Como posso realizar um orçamento? O orçamento possui custo?"
-                answer="Resposta 1"
+                answer={<>Você pode solicitar um orçamento <span className="text-[#BA4610] font-semibold">gratuito</span> entrando em contato conosco pelo <span className="text-[#BA4610] font-semibold">WhatsApp</span>, <span className="text-[#BA4610] font-semibold">telefone</span> ou visitando nossa <span className="text-[#BA4610] font-semibold">loja</span>. Nossa equipe fará uma avaliação inicial <span className="text-[#BA4610] font-semibold">sem custos</span> e apresentará o valor do serviço antes de iniciar qualquer reparo.</>}
               />
               <FAQItem
                 question="Quais tipos de eletrodomésticos e marcas vocês atendem?"
-                answer="Resposta 1"
+                answer={<>Atendemos uma ampla variedade de eletrodomésticos, incluindo <span className="text-[#BA4610] font-semibold">aspiradores</span>, <span className="text-[#BA4610] font-semibold">secadores de cabelo</span>, <span className="text-[#BA4610] font-semibold">ferros de passar</span>, <span className="text-[#BA4610] font-semibold">liquidificadores</span>, <span className="text-[#BA4610] font-semibold">chapinhas</span>, <span className="text-[#BA4610] font-semibold">micro-ondas</span>, <span className="text-[#BA4610] font-semibold">máquinas de café</span>, <span className="text-[#BA4610] font-semibold">ventiladores</span> e <span className="text-[#BA4610] font-semibold">batedeiras</span>. Trabalhamos com as <span className="text-[#BA4610] font-semibold">principais marcas</span> do mercado e utilizamos <span className="text-[#BA4610] font-semibold">peças originais</span> para garantir a qualidade.</>}
               />
               <FAQItem
                 question="Vocês trabalham com o conserto de geladeiras e fogões (linha branca)?"
-                answer="Resposta 1"
+                answer={<>Nossa especialidade são <span className="text-[#BA4610] font-semibold">eletrodomésticos de pequeno porte</span> e uso doméstico. Por esse motivo, <span className="text-[#BA4610] font-semibold">não realizamos serviços</span> para linha branca, como geladeiras, fogões e máquinas de lavar.</>}
               />
               <FAQItem
                 question="Existe garantia para os serviços realizados?"
-                answer="Resposta 1"
+                answer={<><span className="text-[#BA4610] font-semibold">Sim!</span> Todos os nossos serviços possuem <span className="text-[#BA4610] font-semibold">garantia</span>. O prazo varia de acordo com o tipo de reparo realizado e será informado no momento da prestação do serviço. Trabalhamos apenas com <span className="text-[#BA4610] font-semibold">peças originais</span> para assegurar a <span className="text-[#BA4610] font-semibold">durabilidade</span> e <span className="text-[#BA4610] font-semibold">qualidade</span> do reparo.</>}
               />
               <FAQItem
                 question="Consigo acompanhar o andamento do conserto do meu eletrodoméstico?"
-                answer="Resposta 1"
+                answer={<><span className="text-[#BA4610] font-semibold">Sim!</span> Você pode acompanhar o andamento do conserto <span className="text-[#BA4610] font-semibold">diretamente em nosso site</span>, após realizar um simples <span className="text-[#BA4610] font-semibold">cadastro</span>. Caso tenha alguma dúvida ou precise de mais informações durante o processo, entre em contato pelos nossos <span className="text-[#BA4610] font-semibold">meios de comunicação</span>.</>}
               />
             </div>
           </div>
@@ -426,36 +426,38 @@ export const LandingPage = () => {
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-8">
               {/* Logo e Redes Sociais */}
-              <div className="flex flex-col items-center md:items-start">
-                <img
-                  src={Logo}
-                  alt=""
-                  className="h-20 mb-4 rounded-lg shadow-lg"
-                />
-                <div className="flex gap-4 my-4">
-                  <a
-                    href="#"
-                    className="bg-white/10 hover:bg-[#0B4BCC] p-3 rounded-full transition-all duration-300 hover:scale-110 backdrop-blur-sm border border-white/20"
-                  >
-                    <i className="fa-brands fa-facebook-f text-lg"></i>
-                  </a>
-                  <a
-                    href="#"
-                    className="bg-white/10 hover:bg-[#BA4610] p-3 rounded-full transition-all duration-300 hover:scale-110 backdrop-blur-sm border border-white/20"
-                  >
-                    <i className="fa-brands fa-instagram text-lg"></i>
-                  </a>
-                  <a
-                    onClick={handleWhatsAppClick}
-                    href="#"
-                    className="bg-white/10 hover:bg-green-500 p-3 rounded-full transition-all duration-300 hover:scale-110 backdrop-blur-sm border border-white/20"
-                  >
-                    <i className="fa-brands fa-whatsapp text-lg"></i>
-                  </a>
+              <div className="flex flex-col items-center justify-center md:items-start">
+                <div className="flex flex-col items-center">
+                  <img
+                    src={Logo}
+                    alt=""
+                    className="h-36 rounded-lg shadow-lg justify-self-center"
+                  />
+                  <div className="flex gap-4 my-4">
+                    <a
+                      href="#"
+                      className="bg-white/10 hover:bg-[#0B4BCC] p-3 rounded-full transition-all duration-300 hover:scale-110 backdrop-blur-sm border border-white/20"
+                    >
+                      <i className="fa-brands fa-facebook-f text-lg"></i>
+                    </a>
+                    <a
+                      href="#"
+                      className="bg-white/10 hover:bg-[#CF21A4] p-3 rounded-full transition-all duration-300 hover:scale-110 backdrop-blur-sm border border-white/20"
+                    >
+                      <i className="fa-brands fa-instagram text-lg"></i>
+                    </a>
+                    <a
+                      onClick={handleWhatsAppClick}
+                      href="#"
+                      className="bg-white/10 hover:bg-green-500 p-3 rounded-full transition-all duration-300 hover:scale-110 backdrop-blur-sm border border-white/20"
+                    >
+                      <i className="fa-brands fa-whatsapp text-lg"></i>
+                    </a>
+                  </div>
+                  <p className="font-semibold text-sm text-gray-300 mt-4">
+                    Agende já uma visita
+                  </p>
                 </div>
-                <p className="font-semibold text-sm text-gray-300">
-                  Agende já uma visita
-                </p>
               </div>
 
               {/* Contato */}
@@ -507,7 +509,7 @@ export const LandingPage = () => {
                   <li>
                     <a
                       href="#"
-                      className="hover:text-[#BA4610] transition-colors hover:translate-x-1 inline-block duration-300"
+                      className="hover:font-bold hover:text-base transition-all hover:translate-x-1 inline-block duration-300"
                     >
                       → Início
                     </a>
@@ -515,7 +517,7 @@ export const LandingPage = () => {
                   <li>
                     <a
                       href="#about"
-                      className="hover:text-[#BA4610] transition-colors hover:translate-x-1 inline-block duration-300"
+                      className="hover:font-bold hover:text-base transition-all hover:translate-x-1 inline-block duration-300"
                     >
                       → Quem somos?
                     </a>
@@ -523,7 +525,7 @@ export const LandingPage = () => {
                   <li>
                     <a
                       href="#services"
-                      className="hover:text-[#BA4610] transition-colors hover:translate-x-1 inline-block duration-300"
+                      className="hover:font-bold hover:text-base transition-all hover:translate-x-1 inline-block duration-300"
                     >
                       → Serviços
                     </a>
@@ -531,7 +533,7 @@ export const LandingPage = () => {
                   <li>
                     <a
                       href="#contact"
-                      className="hover:text-[#BA4610] transition-colors hover:translate-x-1 inline-block duration-300"
+                      className="hover:font-bold hover:text-base transition-all hover:translate-x-1 inline-block duration-300"
                     >
                       → Contatos
                     </a>
@@ -539,7 +541,7 @@ export const LandingPage = () => {
                   <li>
                     <a
                       href="#faq"
-                      className="hover:text-[#BA4610] transition-colors hover:translate-x-1 inline-block duration-300"
+                      className="hover:font-bold hover:text-base transition-all hover:translate-x-1 inline-block duration-300"
                     >
                       → FAQ
                     </a>

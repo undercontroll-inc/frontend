@@ -9,6 +9,7 @@ const Input = forwardRef(
       placeholder,
       error,
       success,
+      optional = false,
       className = "",
       ...props
     },
@@ -24,7 +25,7 @@ const Input = forwardRef(
     border rounded-lg 
     bg-white dark:bg-gray-800 
     text-gray-900 dark:text-gray-100 
-    placeholder-gray-500 dark:placeholder-gray-400
+    placeholder-gray-500 dark:placeholder-gray-400 placeholder:text-sm
     focus:outline-none focus:ring-2 focus:ring-offset-1
     dark:focus:ring-offset-gray-900
     transition-all duration-200 text-base
@@ -42,8 +43,11 @@ const Input = forwardRef(
     return (
       <div>
         {label && (
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-md font-medium text-gray-700 mb-2">
             {label}
+            {optional && (
+              <span className="text-[11px] font-normal text-gray-800 ml-1">(opcional)</span>
+            )}
           </label>
         )}
 
@@ -59,7 +63,7 @@ const Input = forwardRef(
           {isPassword && (
             <button
               type="button"
-              className="absolute inset-y-0 right-0 pr-4 flex items-center hover:bg-gray-50 rounded-r-lg transition-colors"
+              className="absolute inset-y-0 right-0 pr-4 flex items-center cursor-pointer rounded-r-lg transition-colors"
               onClick={() => setShowPassword(!showPassword)}
             >
               {showPassword ? (

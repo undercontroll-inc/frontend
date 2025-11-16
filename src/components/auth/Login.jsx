@@ -6,6 +6,7 @@ import { useToast } from "../../contexts/ToastContext";
 import Input from "../shared/Input";
 import Button from "../shared/Button";
 import GoogleButton from "../shared/GoogleButton";
+import ComeBack from "../shared/ComeBack";
 import GoogleAuthService from "../../services/GoogleAuthService";
 import { userService } from "../../services/UserService";
 import { saveToken, saveUserData } from "../../utils/auth";
@@ -157,11 +158,20 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gray-100 flex items-center justify-center p-4">
+    <div className="min-h-screen w-full bg-[#041a2dfa] flex items-center justify-center p-4">
       <div className="w-full max-w-6xl bg-white rounded-3xl shadow-xl overflow-hidden">
         <div className="grid grid-cols-1 md:grid-cols-2">
           {/* Painel de imagem (esquerda) */}
           <div className="relative h-full w-full">
+            {/* Botão Voltar */}
+            <div className="absolute top-6 left-6 z-10">
+              <ComeBack 
+                variant="primary" 
+                className="hover:bg-[#041a2dfa]" 
+                to="/" 
+              />
+            </div>
+            
             <img
               src={heroImage}
               alt="Login Hero"
@@ -181,15 +191,15 @@ const Login = () => {
                 </span>
               </h1>
               <p className="text-gray-600 mt-2 text-center">
-                Insira seus dados para entrar.
+                Insira seus dados para entrar
               </p>
             </div>
 
             <form className="space-y-5" onSubmit={handleSubmit}>
               <div>
                 <div className="flex items-center gap-2 mb-2">
-                  <User className="h-4 w-4 text-gray-500" />
-                  <span className="text-sm font-medium text-gray-700">
+                  <User className="text-gray-700 mb-2" />
+                  <span className="block text-md font-medium text-gray-700 mb-1">
                     Usuário
                   </span>
                 </div>
@@ -207,8 +217,8 @@ const Login = () => {
 
               <div>
                 <div className="flex items-center gap-2 mb-2">
-                  <Lock className="h-4 w-4 text-gray-500" />
-                  <span className="text-sm font-medium text-gray-700">
+                  <Lock className="w-auto h-5 text-gray-700 mb-2" />
+                  <span className="block text-md font-medium text-gray-700 mb-1">
                     Senha
                   </span>
                 </div>
@@ -240,7 +250,7 @@ const Login = () => {
               {/* Divisor */}
               <div className="flex items-center gap-4">
                 <div className="h-px bg-gray-200 flex-1" />
-                <span className="text-xs text-gray-500">ou</span>
+                <span className="text-sm text-gray-500">ou</span>
                 <div className="h-px bg-gray-200 flex-1" />
               </div>
 
