@@ -16,7 +16,7 @@ const GoogleButton = ({ onClick, loading = false, text = "Continuar com Google" 
         bg-white text-gray-700 font-medium text-sm
         transition-all duration-200
         ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-50 hover:border-gray-400 hover:shadow-sm'}
-        focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
+        focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 cursor-pointer
       `}
     >
       {loading ? (

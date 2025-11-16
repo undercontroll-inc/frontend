@@ -6,6 +6,7 @@ import { useToast } from '../../contexts/ToastContext';
 import Input from '../shared/Input';
 import Button from '../shared/Button';
 import GoogleButton from '../shared/GoogleButton';
+import ComeBack from '../shared/ComeBack';
 import GoogleAuthService from '../../services/GoogleAuthService';
 import { userService } from '../../services/UserService';
 import { saveToken, saveUserData } from '../../utils/auth';
@@ -151,11 +152,11 @@ const Register = () => {
           ...backendResult.data.user,
           avatar_url: backendResult.data.user.avatar_url || userData.photoURL
         };
-        
+
         // Salva token e dados do usuário
         saveToken(backendResult.data.token);
         saveUserData(userDataToSave);
-        
+
         // Atualiza o contexto de autenticação
         updateUser(userDataToSave);
 
@@ -325,7 +326,7 @@ const Register = () => {
   };
 
   const StepProgress = () => (
-    <div className="flex items-center justify-center mb-4">
+    <div className="flex items-center justify-center mb-2.5">
       {[1, 2, 3].map((step, index) => (
         <div key={step} className="flex items-center">
           <StepIndicator
@@ -349,25 +350,25 @@ const Register = () => {
       case 1:
         return (
           <div>
-            <div className="text-center mb-4">
-              <div className="flex items-center justify-center gap-2 mb-1">
-                <User className="h-4 w-4 sm:h-5 sm:w-5 text-slate-900" />
-                <h2 className="text-base sm:text-lg font-semibold text-gray-900">Informações Pessoais</h2>
+            <div className="text-center mb-2">
+              <div className="flex items-center justify-center gap-2 mb-4 mt-6">
+                <User className="h-5 w-5 text-slate-900" />
+                <h2 className="text-base font-semibold text-gray-900">Informações Pessoais</h2>
               </div>
-              <p className="text-xs sm:text-sm text-gray-600">Conte-nos um pouco sobre você</p>
+              {/* <p className="text-xs text-gray-600">Preencha os dados para criar sua conta</p> */}
             </div>
 
             {/* Badge indicando dados do Google */}
             {fromGoogle && (
-              <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg flex items-start gap-3">
+              <div className="mb-2 p-2 bg-blue-50 border border-blue-200 rounded-lg flex items-start gap-2">
                 {formData.avatar_url ? (
                   <img
                     src={formData.avatar_url}
                     alt="Avatar do Google"
-                    className="h-10 w-10 rounded-full flex-shrink-0 border-2 border-blue-300"
+                    className="h-7 w-7 rounded-full flex-shrink-0 border-2 border-blue-300"
                   />
                 ) : (
-                  <svg className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="h-4 w-4 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
                   </svg>
                 )}
@@ -380,7 +381,7 @@ const Register = () => {
               </div>
             )}
 
-            <div className="space-y-3 sm:space-y-4 mb-4">
+            <div className="space-y-2.5 mb-2.5">
               {/* Google Button - apenas se não veio do Google */}
               {!fromGoogle && (
                 <>
@@ -390,18 +391,18 @@ const Register = () => {
                     text="Cadastrar com Google"
                   />
 
-                  <div className="relative my-4">
+                  <div className="relative my-2 mt-4">
                     <div className="absolute inset-0 flex items-center">
                       <div className="w-full border-t border-gray-200"></div>
                     </div>
                     <div className="relative flex justify-center text-xs">
-                      <span className="px-3 bg-white text-gray-500">ou preencha manualmente</span>
+                      <span className="px-3 bg-white text-gray-500 text-xs">ou preencha manualmente</span>
                     </div>
                   </div>
                 </>
               )}
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-2.5 mt-4">
                 <Input
                   label="Nome *"
                   name="name"
@@ -433,7 +434,7 @@ const Register = () => {
                 label="Email *"
                 name="email"
                 type="email"
-                placeholder="seu@email.com"
+                placeholder="exemplo@email.com"
                 value={formData.email}
                 onChange={handleInputChange}
                 error={errors.email}
@@ -451,10 +452,11 @@ const Register = () => {
                 onChange={handleInputChange}
                 error={errors.cpf}
                 maxLength={14}
+                optional
               />
             </div>
 
-            <div className="flex justify-end">
+            <div className="flex justify-end mt-6">
               <Button onClick={nextStep} variant="primary" size="sm">
                 Próximo
                 <ChevronRight className="h-4 w-4" />
@@ -466,16 +468,15 @@ const Register = () => {
       case 2:
         return (
           <div>
-            <div className="text-center mb-4">
-              <div className="flex items-center justify-center gap-2 mb-1">
-                <Home className="h-4 w-4 sm:h-5 sm:w-5 text-slate-900" />
-                <h2 className="text-base sm:text-lg font-semibold text-gray-900">Endereço e Contato</h2>
+            <div className="text-center mb-2">
+              <div className="flex items-center justify-center gap-2 mb-4 mt-6">
+                <Home className="h-5 w-5 text-slate-900" />
+                <h2 className="text-base font-semibold text-gray-900">Endereço e Contato</h2>
               </div>
-              <p className="text-xs sm:text-sm text-gray-600">Informe seu endereço e telefone</p>
             </div>
 
-            <div className="space-y-3 sm:space-y-4 mb-4">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
+            <div className="space-y-2.5 mb-2.5 mt-4">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-2.5">
                 <Input
                   label="CEP *"
                   name="cep"
@@ -500,51 +501,63 @@ const Register = () => {
                 />
               </div>
 
-              {loadingCep && (
-                <div className="flex items-center gap-2 text-sm text-slate-900">
-                  <MapPin className="h-4 w-4 animate-pulse" />
-                  <span>Buscando endereço...</span>
-                </div>
-              )}
+              {/* Container de endereço sempre visível */}
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-2 space-y-2">
+                {loadingCep ? (
+                  <div className="flex items-center gap-2 text-sm text-slate-900 py-2">
+                    <MapPin className="h-4 w-4 animate-pulse" />
+                    <span>Buscando endereço...</span>
+                  </div>
+                ) : addressData ? (
+                  <>
+                    <div className="flex items-start gap-2">
+                      <MapPin className="h-4 w-4 text-slate-900 mt-0.5 flex-shrink-0" />
+                      <div className="flex-1">
+                        <p className="text-xs font-medium text-gray-900">Endereço encontrado:</p>
+                        <p className="text-xs text-gray-600 mt-0.5">
+                          {addressData.logradouro}, {addressData.bairro}
+                          <br />
+                          {addressData.localidade} - {addressData.uf}
+                        </p>
+                      </div>
+                    </div>
 
-              {addressData && (
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-2.5 sm:p-3 space-y-2">
-                  <div className="flex items-start gap-2">
-                    <MapPin className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-slate-900 mt-0.5 flex-shrink-0" />
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-2.5 pt-1">
+                      <Input
+                        label="Número *"
+                        name="numero"
+                        placeholder="123"
+                        value={formData.numero}
+                        onChange={handleInputChange}
+                        error={errors.numero}
+                        required
+                      />
+
+                      <Input
+                        label="Complemento"
+                        name="complemento"
+                        placeholder="Apto, Bloco, etc"
+                        value={formData.complemento}
+                        onChange={handleInputChange}
+                        optional
+                      />
+                    </div>
+                  </>
+                ) : (
+                  <div className="flex items-start gap-2 py-2">
+                    <MapPin className="h-4 w-4 text-gray-400 mt-0.5 flex-shrink-0" />
                     <div className="flex-1">
-                      <p className="text-xs sm:text-sm font-medium text-gray-900">Endereço encontrado:</p>
-                      <p className="text-xs sm:text-sm text-gray-600 mt-0.5">
-                        {addressData.logradouro}, {addressData.bairro}
-                        <br />
-                        {addressData.localidade} - {addressData.uf}
+                      <p className="text-xs font-medium text-gray-500">Aguardando CEP</p>
+                      <p className="text-xs text-gray-400 mt-0.5">
+                        Digite um CEP válido para buscar o endereço automaticamente
                       </p>
                     </div>
                   </div>
-
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-2.5 sm:gap-3 pt-1">
-                    <Input
-                      label="Número *"
-                      name="numero"
-                      placeholder="123"
-                      value={formData.numero}
-                      onChange={handleInputChange}
-                      error={errors.numero}
-                      required
-                    />
-
-                    <Input
-                      label="Complemento"
-                      name="complemento"
-                      placeholder="Apto, Bloco, etc"
-                      value={formData.complemento}
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
 
-            <div className="flex justify-between">
+            <div className="flex justify-between mt-6">
               <Button onClick={prevStep} variant="outline" size="sm">
                 <ChevronLeft className="h-4 w-4" />
                 Anterior
@@ -560,43 +573,48 @@ const Register = () => {
       case 3:
         return (
           <div>
-            <div className="text-center mb-4">
-              <div className="flex items-center justify-center gap-2 mb-1">
-                <Lock className="h-4 w-4 sm:h-5 sm:w-5 text-slate-900" />
-                <h2 className="text-base sm:text-lg font-semibold text-gray-900">Defina sua Senha</h2>
-              </div>
-              <p className="text-xs sm:text-sm text-gray-600">Crie uma senha segura para proteger sua conta</p>
-            </div>
-
-            <div className="mb-4">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
-                <Input
-                  label="Senha *"
-                  name="password"
-                  type="password"
-                  placeholder="Mínimo 6 caracteres"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  error={errors.password}
-                  autoComplete="new-password"
-                  required
-                />
-
-                <Input
-                  label="Confirmar Senha *"
-                  name="confirmPassword"
-                  type="password"
-                  placeholder="Digite a senha novamente"
-                  value={formData.confirmPassword}
-                  onChange={handleInputChange}
-                  error={errors.confirmPassword}
-                  autoComplete="new-password"
-                  required
-                />
+            <div className="text-center mb-2">
+              <div className="flex items-center justify-center gap-2 mb-4 mt-6">
+                <Lock className="h-5 w-5 text-slate-900" />
+                <h2 className="text-base font-semibold text-gray-900">Defina sua Senha</h2>
               </div>
             </div>
 
-            <div className="flex justify-between">
+            {/* Dica de senha */}
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mt-3">
+                <p className="text-xs text-gray-700">
+                  <span className="font-medium text-slate-900">💡 Aviso:</span> Escolha uma senha com pelo menos <span className="font-medium text-slate-900">6 caracteres</span> para proteger sua conta!
+                </p>
+              </div>
+
+            <div className="space-y-2.5 mb-2.5 mt-4">
+              <Input
+                label="Senha *"
+                name="password"
+                type="password"
+                placeholder="Digite sua senha"
+                value={formData.password}
+                onChange={handleInputChange}
+                error={errors.password}
+                autoComplete="new-password"
+                required
+              />
+
+              <Input
+                label="Confirmar Senha *"
+                name="confirmPassword"
+                type="password"
+                placeholder="Repita sua senha"
+                value={formData.confirmPassword}
+                onChange={handleInputChange}
+                error={errors.confirmPassword}
+                autoComplete="new-password"
+                required
+              />
+
+            </div>
+
+            <div className="flex justify-between mt-6">
               <Button onClick={prevStep} variant="outline" size="sm">
                 <ChevronLeft className="h-4 w-4" />
                 Anterior
@@ -620,24 +638,34 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-3 sm:p-4">
-      <div className="w-full max-w-lg my-4">
-        <div className="bg-white border border-gray-200 rounded-xl shadow-lg max-h-[calc(100vh-2rem)] flex flex-col overflow-hidden">
-          <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-5">
-            <div className="text-center mb-4">
-              <h1 className="text-slate-900 text-xl sm:text-2xl font-bold mb-1 flex items-center justify-center gap-2">
-                <UserPlus className="h-5 w-5 sm:h-6 sm:w-6" />
-                Criar Conta
+    <div className="min-h-screen w-full bg-[#041a2dfa] flex items-center justify-center p-4 relative">
+      {/* Botão Voltar */}
+      <div className="absolute top-10 left-12 z-10">
+        <ComeBack 
+          variant="light" 
+          className="hover:bg-gray-200" 
+          to="/" 
+        />
+      </div>
+
+      <div className="w-full max-w-lg bg-white rounded-3xl shadow-xl overflow-hidden">
+        <div className="px-6 sm:px-10 py-5 overflow-y-auto max-h-[calc(100vh-4rem)]">
+          <div className="text-center mb-4">
+              <h1 className="text-2xl mt-1 mb-1 font-extrabold text-gray-900 flex items-center justify-center gap-2">
+                <UserPlus className="h-7 w-7" />
+                <span>Criar Conta</span>
               </h1>
-              <p className="text-xs sm:text-sm text-gray-600">Preencha os dados para criar sua conta</p>
+              <p className="text-gray-600 mt-1 text-sm">
+                Preencha os dados para criar sua conta
+              </p>
             </div>
 
             <StepProgress />
 
             {renderStep()}
 
-            <div className="text-center mt-4 pt-4 border-t border-gray-100">
-              <p className="text-gray-600 text-xs sm:text-sm">
+            <div className="text-center mt-5">
+              <p className="text-gray-600 text-sm">
                 Já tem uma conta?{' '}
                 <Link
                   to="/login"
@@ -650,7 +678,6 @@ const Register = () => {
           </div>
         </div>
       </div>
-    </div>
   );
 };
 
