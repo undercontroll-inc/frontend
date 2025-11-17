@@ -1,5 +1,6 @@
 import { FileText, CheckCircle, Clock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { memo, useCallback, useMemo } from "react";
 import Button from "../shared/Button";
 
 const statusStyles = {
@@ -44,9 +45,36 @@ const formatUpdatedAt = (s) => {
   return s.includes("T") ? s.replace("T", " ") : s;
 };
 
-const RepairCard = ({ repair }) => {
+const RepairCard = memo(({ repair }) => {
   const navigate = useNavigate();
-  const status = statusStyles[repair.status] || statusStyles["PENDING"];
+  const status = useMemo(
+    () => statusStyles[repair.status] || statusStyles["PENDING"],
+    [repair.status]
+  );
+
+  const handleViewDetails = useCallback(() => {
+    navigate(`/repairs/${repair.id}`);
+  }, [navigate, repair.id]);
+
+  const formattedUpdatedAt = useMemo(
+    () => formatUpdatedAt(repair.updatedAt || repair.updated) || "-",
+    [repair.updatedAt, repair.updated]
+  );
+
+  const formattedValue = useMemo(
+    () => formatCurrency(repair.totalValue),
+    [repair.totalValue]
+  );
+
+  const appliancesText = useMemo(
+    () =>
+      repair.appliances?.length > 0
+        ? repair.appliances
+            .map((a, idx) => `${idx + 1}. ${a.type || "-"}`)
+            .join("\n")
+        : "-",
+    [repair.appliances]
+  );
 
   return (
     <div className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-sm dark:shadow-gray-900/50 overflow-hidden hover:shadow-md dark:hover:shadow-gray-900/70 transition-all duration-200">
@@ -66,22 +94,24 @@ const RepairCard = ({ repair }) => {
           </div>
         </div>
         <div className="text-sm text-gray-100 dark:text-gray-300">
-          Atualizado: {formatUpdatedAt(repair.updatedAt || repair.updated) || "-"}
+          Atualizado: {formattedUpdatedAt}
         </div>
       </div>
 
       <div className="p-4">
-        <div className={`grid ${repair.status === "COMPLETED" || repair.status === "DELIVERED" ? "grid-cols-4" : "grid-cols-3"} gap-4 text-sm mb-4`}>
+        <div
+          className={`grid ${
+            repair.status === "COMPLETED" || repair.status === "DELIVERED"
+              ? "grid-cols-4"
+              : "grid-cols-3"
+          } gap-4 text-sm mb-4`}
+        >
           <div>
             <div className="text-xs text-gray-500 dark:text-gray-400 font-semibold mb-1.5 uppercase tracking-wide">
               Eletrodomésticos
             </div>
             <div className="text-gray-900 dark:text-gray-100 text-sm whitespace-pre-line">
-              {repair.appliances?.length > 0
-                ? repair.appliances
-                    .map((a, idx) => `${idx + 1}. ${a.type || "-"}`)
-                    .join("\n")
-                : "-"}
+              {appliancesText}
             </div>
           </div>
           <div>
@@ -89,7 +119,7 @@ const RepairCard = ({ repair }) => {
               Valor Total
             </div>
             <div className="text-gray-900 dark:text-gray-100 text-sm font-medium">
-              {formatCurrency(repair.totalValue)}
+              {formattedValue}
             </div>
           </div>
           <div>
@@ -115,7 +145,7 @@ const RepairCard = ({ repair }) => {
         <div className="flex justify-end pt-2 border-t border-gray-100 dark:border-gray-700">
           <button
             className="rounded-md p-2 text-white bg-[#0037a7] dark:bg-blue-600 hover:bg-[#002d8a] dark:hover:bg-blue-700 hover:cursor-pointer transition-colors duration-200"
-            onClick={() => navigate(`/repairs/${repair.id}`)}
+            onClick={handleViewDetails}
           >
             Ver Detalhes
           </button>
@@ -123,6 +153,8 @@ const RepairCard = ({ repair }) => {
       </div>
     </div>
   );
-};
+});
+
+RepairCard.displayName = "RepairCard";
 
 export default RepairCard;
