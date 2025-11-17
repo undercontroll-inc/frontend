@@ -17,6 +17,8 @@ export const ClientDetailSheet = ({ isOpen, onClose, client }) => {
   const loadClientRepairs = async () => {
     if (!client?.id) return;
     
+    console.log(client);
+
     try {
       setLoading(true);
       const data = await RepairService.getAllRepairs(client.id);

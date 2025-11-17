@@ -80,6 +80,16 @@ class RepairService {
       throw error;
     }
   }
+
+  async getUserRepair(userId) {
+    try {
+      const response = await apiClient.get(`/repairs?status=${status}`);
+      return response.data;
+    } catch (error) {
+      console.error(`Erro ao buscar repairs por status ${status}:`, error);
+      throw error;
+    }
+  }
 }
 
 export default new RepairService();

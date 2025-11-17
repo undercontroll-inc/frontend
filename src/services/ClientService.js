@@ -36,7 +36,7 @@ class ClientService {
     try {
       const response = await apiClient.post('/users', {
         ...clientData,
-        userType: 'COSTUMER'
+        userType: 'CUSTOMER'
       });
       return response.data;
     } catch (error) {
