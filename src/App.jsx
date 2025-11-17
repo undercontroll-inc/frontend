@@ -21,6 +21,7 @@ import { LandingPage } from "./components/landing_page/LandingPage";
 import { Estoque } from "./components/admin/Estoque";
 import { ThemeProvider } from "./components/shared/ThemeProvider";
 import { ThemeDebug } from "./components/shared/ThemeDebug";
+import SettingsPage from "./components/shared/SettingsPage";
 
 function App() {
   return (
@@ -115,6 +116,15 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <Estoque />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/settings"
+                element={
+                  <ProtectedRoute>
+                    <SettingsPage />
                   </ProtectedRoute>
                 }
               />

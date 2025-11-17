@@ -1,6 +1,6 @@
 import SideBar from "../shared/SideBar";
 import Loading from "../shared/Loading";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useMemo, memo } from "react";
 import { MessageCircle, Phone, MapPin, Clock, Wrench } from "lucide-react";
 
 const ComponentVisit = () => {
@@ -9,35 +9,38 @@ const ComponentVisit = () => {
   useEffect(() => {
     document.title = "Dashboard - Visita";
 
-    const t = setTimeout(() => setLoading(false), 200);
+    const t = setTimeout(() => setLoading(false), 50);
     return () => clearTimeout(t);
   }, []);
 
-  const handleWhatsAppClick = () => {
+  const handleWhatsAppClick = useCallback(() => {
     const phoneNumber = "5511964007420";
     const message = encodeURIComponent(
       "Olá! Gostaria de agendar uma visita técnica."
     );
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
     window.open(whatsappUrl, "_blank");
-  };
+  }, []);
 
-  const handleCallClick = () => {
-    const phoneNumber = "+551123417100"; // número exibido no mock
+  const handleCallClick = useCallback(() => {
+    const phoneNumber = "+551123417100";
     window.open(`tel:${phoneNumber}`);
-  };
+  }, []);
 
-  const services = [
-    "Aspirador",
-    "Secador de Cabelo",
-    "Ferro de Passar",
-    "Liquidificador",
-    "Chapinha",
-    "Micro-ondas",
-    "Máquina de Café (Dolce Gusto)",
-    "Ventilador",
-    "Batedeira",
-  ];
+  const services = useMemo(
+    () => [
+      "Aspirador",
+      "Secador de Cabelo",
+      "Ferro de Passar",
+      "Liquidificador",
+      "Chapinha",
+      "Micro-ondas",
+      "Máquina de Café (Dolce Gusto)",
+      "Ventilador",
+      "Batedeira",
+    ],
+    []
+  );
 
   if (loading) return <Loading text="Carregando visita técnica..." />;
 
