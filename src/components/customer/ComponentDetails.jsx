@@ -72,12 +72,14 @@ const ComponentDetails = () => {
 
   const getStatusColor = () => {
     switch (repair.status) {
-      case "EM_ANDAMENTO":
+      case "PENDING":
         return "text-yellow-400 border-yellow-400";
-      case "FINALIZADO":
+      case "IN_ANALYSIS":
+        return "text-blue-400 border-blue-400";
+      case "COMPLETED":
         return "text-green-400 border-green-400";
-      case "NAO_INICIADO":
-        return "text-red-400 border-red-400";
+      case "DELIVERED":
+        return "text-green-600 border-green-600";
       default:
         return "text-gray-400 border-gray-400";
     }
@@ -85,12 +87,14 @@ const ComponentDetails = () => {
 
   const getStatusLabel = () => {
     switch (repair.status) {
-      case "EM_ANDAMENTO":
-        return "Em Andamento";
-      case "FINALIZADO":
-        return "Finalizado";
-      case "NAO_INICIADO":
-        return "Não Iniciado";
+      case "PENDING":
+        return "Pendente";
+      case "IN_ANALYSIS":
+        return "Em Análise";
+      case "COMPLETED":
+        return "Concluído";
+      case "DELIVERED":
+        return "Entregue";
       default:
         return "Desconhecido";
     }
@@ -180,14 +184,14 @@ const ComponentDetails = () => {
                                     : "-"}
                                 </td>
                                 <td className="px-3 py-2 text-gray-900">
-                                  {appliance.voltage || "-"}
+                                  {appliance.volt || "-"}
                                 </td>
                                 <td className="px-3 py-2 text-gray-900">
-                                  {appliance.serial || "-"}
+                                  {appliance.series || "-"}
                                 </td>
                                 <td className="px-3 py-2 text-gray-900 font-medium">
                                   {idx === 0
-                                    ? formatCurrency(repair.laborValue)
+                                    ? formatCurrency(repair.laborTotal)
                                     : "-"}
                                 </td>
                               </tr>
@@ -199,7 +203,7 @@ const ComponentDetails = () => {
                                 Total
                               </td>
                               <td className="px-3 py-2">
-                                {formatCurrency(repair.laborValue)}
+                                {formatCurrency(repair.laborTotal)}
                               </td>
                             </tr>
                           </tfoot>
@@ -224,7 +228,7 @@ const ComponentDetails = () => {
                             Retirada
                           </div>
                           <div className="bg-white rounded-md border border-gray-200 px-2 py-1.5 text-gray-900 text-xs text-center shadow-sm">
-                            {repair.status === "FINALIZADO"
+                            {repair.status === "COMPLETED" || repair.status === "DELIVERED"
                               ? repair.deadline || "-"
                               : "-"}
                           </div>

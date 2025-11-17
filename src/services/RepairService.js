@@ -15,8 +15,12 @@ class RepairService {
 
   async getRepairById(id) {
     try {
-      const response = await jsonServer.get(`/repairs/${id}`);
-      return response.data;
+      const response = await apiClient.get(`/orders/${id}`);
+      const { data } = response.data;
+
+      console.log(data);
+
+      return data;
     } catch (error) {
       console.error(`Erro ao buscar repair ${id}:`, error);
       throw error;
@@ -35,7 +39,7 @@ class RepairService {
 
   async updateRepair(id, repairData) {
     try {
-      const response = await jsonServer.put(`/repairs/${id}`, repairData);
+      const response = await apiClient.put(`/repairs/${id}`, repairData);
       return response.data;
     } catch (error) {
       console.error(`Erro ao atualizar repair ${id}:`, error);
@@ -45,7 +49,7 @@ class RepairService {
 
   async patchRepair(id, partialData) {
     try {
-      const response = await apiClient.patch(`/orders/${id}`, partialData);
+      const response = await apiClient.put(`/orders/${id}`, partialData);
       return response.data;
     } catch (error) {
       console.error(`Erro ao atualizar parcialmente repair ${id}:`, error);
@@ -81,12 +85,16 @@ class RepairService {
     }
   }
 
-  async getUserRepair(userId) {
+  async getUserRepairs(userId) {
     try {
-      const response = await apiClient.get(`/repairs?status=${status}`);
-      return response.data;
+      const response = await apiClient.get(`/orders?userId=${userId}`);
+      const { data } = response.data;
+      
+      console.log(data);
+
+      return data;
     } catch (error) {
-      console.error(`Erro ao buscar repairs por status ${status}:`, error);
+      console.error(`Erro ao buscar repairs do usuário ${userId}:`, error);
       throw error;
     }
   }
