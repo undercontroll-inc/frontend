@@ -14,8 +14,16 @@ class RepairService {
   }
 
   async getRepairById(id) {
+    const token = localStorage.getItem("authToken");
+
+    console.log(token);
+
     try {
-      const response = await apiClient.get(`/orders/${id}`);
+      const response = await apiClient.get(`/orders/${id}`, {
+        headers:{
+          "Authorization": `Bearer ${token}`,
+        },
+      });
       const { data } = response.data;
 
       console.log(data);
@@ -86,10 +94,18 @@ class RepairService {
   }
 
   async getUserRepairs(userId) {
+    const token = localStorage.getItem("authToken");
+
+    console.log(token);
+
     try {
-      const response = await apiClient.get(`/orders?userId=${userId}`);
+      const response = await apiClient.get(`orders/filter?userId=${userId}`, {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+      });
       const { data } = response.data;
-      
+
       console.log(data);
 
       return data;
