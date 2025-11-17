@@ -25,8 +25,8 @@ import { ThemeDebug } from "./components/shared/ThemeDebug";
 function App() {
   return (
     <ThemeProvider>
-{/*       <ThemeDebug />
- */}      <AuthProvider>
+      <ThemeDebug />
+      <AuthProvider>
         <ToastProvider>
           <Router>
             <Routes>

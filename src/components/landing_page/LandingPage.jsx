@@ -235,38 +235,38 @@ export const LandingPage = () => {
           </p>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 relative z-10">
-            <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200 hover:border-[#0B4BCC] transition-all duration-300 hover:shadow-xl hover:-translate-y-1 group">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 hover:border-[#0B4BCC] dark:hover:border-[#0B4BCC] transition-all duration-300 hover:shadow-xl hover:-translate-y-1 group">
               <div className="bg-gradient-to-br from-[#0B4BCC] to-[#0B4BCC]/80 text-white p-3 rounded-xl inline-block mb-3 group-hover:scale-110 transition-transform duration-300">
                 <Wrench className="h-6 w-6" />
               </div>
-              <h3 className="font-bold text-lg mb-2 text-[#041A2D]">
+              <h3 className="font-bold text-lg mb-2 text-[#041A2D] dark:text-gray-100">
                 Conserto de eletrodomésticos
               </h3>
-              <p className="text-gray-600 text-sm">
+              <p className="text-gray-600 dark:text-gray-300 text-sm">
                 Realizamos reparos especializados em diversos tipos de eletrodomésticos com garantia de serviço, peças originais e qualidade comprovada.
               </p>
             </div>
 
-            <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200 hover:border-[#BA4610] transition-all duration-300 hover:shadow-xl hover:-translate-y-1 group">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 hover:border-[#BA4610] dark:hover:border-[#BA4610] transition-all duration-300 hover:shadow-xl hover:-translate-y-1 group">
               <div className="bg-gradient-to-br from-[#BA4610] to-[#BA4610]/80 text-white p-3 rounded-xl inline-block mb-3 group-hover:scale-110 transition-transform duration-300">
                 <ShieldCheck className="h-6 w-6" />
               </div>
-              <h3 className="font-bold text-lg mb-2 text-[#041A2D]">
+              <h3 className="font-bold text-lg mb-2 text-[#041A2D] dark:text-gray-100">
                 Venda de peças originais
               </h3>
-              <p className="text-gray-600 text-sm">
+              <p className="text-gray-600 dark:text-gray-300 text-sm">
                 Comercializamos peças e acessórios originais das principais marcas do mercado, garantindo durabilidade e o melhor desempenho para seu aparelho.
               </p>
             </div>
 
-            <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200 hover:border-[#0B4BCC] transition-all duration-300 hover:shadow-xl hover:-translate-y-1 group sm:col-span-2 lg:col-span-1">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 hover:border-[#0B4BCC] dark:hover:border-[#0B4BCC] transition-all duration-300 hover:shadow-xl hover:-translate-y-1 group sm:col-span-2 lg:col-span-1">
               <div className="bg-gradient-to-br from-[#0B4BCC] to-[#0B4BCC]/80 text-white p-3 rounded-xl inline-block mb-3 group-hover:scale-110 transition-transform duration-300">
                 <Clock className="h-6 w-6" />
               </div>
-              <h3 className="font-bold text-lg mb-2 text-[#041A2D]">
+              <h3 className="font-bold text-lg mb-2 text-[#041A2D] dark:text-gray-100">
                 Assistência Técnica
               </h3>
-              <p className="text-gray-600 text-sm">
+              <p className="text-gray-600 dark:text-gray-300 text-sm">
                 <b className="text-[#BA4610]">Aspiradores</b>,{" "}
                 <b className="text-[#BA4610]">secadores de cabelo</b>,{" "}
                 <b className="text-[#BA4610]">ferros de passar</b>,{" "}
@@ -357,24 +357,24 @@ export const LandingPage = () => {
                     </h2>
                   </div>
                   <div className="flex flex-col gap-3 mt-4 ml-11">
-                    <div className="flex justify-between items-center p-3 bg-white rounded-lg border border-gray-200">
-                      <span className="font-semibold text-gray-800">
+                    <div className="flex justify-between items-center p-3 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+                      <span className="font-semibold text-gray-800 dark:text-gray-200">
                         Segunda à Sexta
                       </span>
                       <span className="text-[#0B4BCC] font-bold">
                         09:00 - 17:00
                       </span>
                     </div>
-                    <div className="flex justify-between items-center p-3 bg-white rounded-lg border border-gray-200">
-                      <span className="font-semibold text-gray-800">
+                    <div className="flex justify-between items-center p-3 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+                      <span className="font-semibold text-gray-800 dark:text-gray-200">
                         Sábado
                       </span>
                       <span className="text-[#0B4BCC] font-bold">
                         09:00 - 12:00
                       </span>
                     </div>
-                    <div className="flex justify-between items-center p-3 bg-white rounded-lg border border-gray-200">
-                      <span className="font-semibold text-gray-800">
+                    <div className="flex justify-between items-center p-3 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+                      <span className="font-semibold text-gray-800 dark:text-gray-200">
                         Domingo
                       </span>
                       <span className="text-red-600 font-bold">Fechado</span>

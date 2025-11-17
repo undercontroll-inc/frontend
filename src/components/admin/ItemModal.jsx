@@ -126,16 +126,16 @@ const ItemModal = ({ isOpen, onClose, item, onSave }) => {
 
       {/* Modal */}
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
-        <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full my-8 flex flex-col" style={{ maxHeight: 'calc(100vh - 4rem)' }}>
+        <div className="bg-white dark:bg-zinc-900 rounded-lg shadow-xl max-w-2xl w-full my-8 flex flex-col" style={{ maxHeight: 'calc(100vh - 4rem)' }}>
           {/* Header Fixo */}
-          <div className="flex items-center justify-between p-6 border-b border-gray-200 flex-shrink-0">
-            <h2 className="text-xl font-semibold text-gray-900">
+          <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
               {isEditing ? "Editar Item" : "Cadastrar novo item"}
             </h2>
             <button
               onClick={handleClose}
               disabled={loading}
-              className="text-gray-400 hover:text-gray-600 transition-colors"
+              className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
             >
               <X className="h-6 w-6" />
             </button>

@@ -138,16 +138,16 @@ const Dashboard = () => {
       <Card className="mb-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-gray-900 text-3xl font-bold mb-2 flex items-center gap-3">
+            <h1 className="text-gray-900 dark:text-gray-100 text-3xl font-bold mb-2 flex items-center gap-3">
               <Wrench className="h-8 w-8" />
               Dashboard de Componentes
             </h1>
-            <p className="text-gray-600">
+            <p className="text-gray-600 dark:text-gray-400">
               Sistema de Gerenciamento de Componentes Microeletrônicos
             </p>
           </div>
           <div className="flex items-center gap-4">
-            <span className="text-gray-600">
+            <span className="text-gray-600 dark:text-gray-400">
               Bem-vindo, <span className="font-medium">{user?.name}</span>
             </span>
             <Button variant="outline" onClick={handleLogout}>
@@ -173,7 +173,7 @@ const Dashboard = () => {
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-slate-900"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-slate-900 dark:focus:ring-slate-600 focus:border-slate-900 dark:focus:border-slate-600"
             >
               <option value="">Todas as categorias</option>
               {categories.map((category) => (
@@ -203,13 +203,13 @@ const Dashboard = () => {
       {filteredComponents.length === 0 ? (
         <Card>
           <div className="text-center">
-            <Wrench className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
+            <Wrench className="h-12 w-12 text-gray-400 dark:text-gray-600 mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
               {components.length === 0
                 ? "Nenhum componente cadastrado"
                 : "Nenhum componente encontrado"}
             </h3>
-            <p className="text-gray-600 mb-6">
+            <p className="text-gray-600 dark:text-gray-400 mb-6">
               {components.length === 0
                 ? "Comece criando seu primeiro componente eletrônico"
                 : "Tente ajustar os filtros de pesquisa"}

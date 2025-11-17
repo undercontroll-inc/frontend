@@ -159,7 +159,7 @@ const Login = () => {
 
   return (
     <div className="min-h-screen w-full bg-[#041a2dfa] flex items-center justify-center p-4">
-      <div className="w-full max-w-6xl bg-white rounded-3xl shadow-xl overflow-hidden">
+      <div className="w-full max-w-6xl bg-white dark:bg-gray-900 rounded-3xl shadow-xl overflow-hidden">
         <div className="grid grid-cols-1 md:grid-cols-2">
           {/* Painel de imagem (esquerda) */}
           <div className="relative h-full w-full">
@@ -184,13 +184,13 @@ const Login = () => {
           {/* Formulário (direita) */}
           <div className="px-6 sm:px-10 py-8 md:py-12">
             <div className="mb-8 text-center">
-              <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 flex items-center justify-center gap-3 text-center">
+              <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-gray-100 flex items-center justify-center gap-3 text-center">
                 <span>Bem-vindo de volta</span>
                 <span role="img" aria-label="Waving Hand">
                   👋
                 </span>
               </h1>
-              <p className="text-gray-600 mt-2 text-center">
+              <p className="text-gray-600 dark:text-gray-400 mt-2 text-center">
                 Insira seus dados para entrar
               </p>
             </div>
@@ -198,8 +198,8 @@ const Login = () => {
             <form className="space-y-5" onSubmit={handleSubmit}>
               <div>
                 <div className="flex items-center gap-2 mb-2">
-                  <User className="text-gray-700 mb-2" />
-                  <span className="block text-md font-medium text-gray-700 mb-1">
+                  <User className="text-gray-700 dark:text-gray-300 mb-2" />
+                  <span className="block text-md font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Usuário
                   </span>
                 </div>
@@ -217,8 +217,8 @@ const Login = () => {
 
               <div>
                 <div className="flex items-center gap-2 mb-2">
-                  <Lock className="w-auto h-5 text-gray-700 mb-2" />
-                  <span className="block text-md font-medium text-gray-700 mb-1">
+                  <Lock className="w-auto h-5 text-gray-700 dark:text-gray-300 mb-2" />
+                  <span className="block text-md font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Senha
                   </span>
                 </div>
@@ -249,9 +249,9 @@ const Login = () => {
 
               {/* Divisor */}
               <div className="flex items-center gap-4">
-                <div className="h-px bg-gray-200 flex-1" />
-                <span className="text-sm text-gray-500">ou</span>
-                <div className="h-px bg-gray-200 flex-1" />
+                <div className="h-px bg-gray-200 dark:bg-gray-700 flex-1" />
+                <span className="text-sm text-gray-500 dark:text-gray-400">ou</span>
+                <div className="h-px bg-gray-200 dark:bg-gray-700 flex-1" />
               </div>
 
               {/* Botão Google abaixo do Entrar */}
@@ -265,11 +265,11 @@ const Login = () => {
             </form>
 
             <div className="text-center mt-8">
-              <p className="text-gray-600 text-sm">
+              <p className="text-gray-600 dark:text-gray-400 text-sm">
                 Não tem uma conta?{" "}
                 <Link
                   to="/register"
-                  className="text-slate-900 hover:text-slate-700 font-medium transition-colors"
+                  className="text-slate-900 dark:text-slate-300 hover:text-slate-700 dark:hover:text-slate-400 font-medium transition-colors"
                 >
                   Cadastre-se aqui
                 </Link>

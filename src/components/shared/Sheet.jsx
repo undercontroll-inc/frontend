@@ -36,9 +36,9 @@ export const Sheet = ({ isOpen, onClose, children, title }) => {
       />
 
       {/* Sheet */}
-      <div className="fixed inset-y-0 right-0 z-50 w-full sm:w-[500px] bg-white shadow-xl flex flex-col animate-slide-in-right">
+      <div className="fixed inset-y-0 right-0 z-50 w-full sm:w-[500px] bg-white dark:bg-gray-900 shadow-xl flex flex-col animate-slide-in-right">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 bg-[#041A2D]">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-[#041A2D]">
           <h2 className="text-lg font-semibold text-white">{title}</h2>
           <button
             onClick={onClose}
@@ -83,7 +83,7 @@ export const SheetSection = ({ title, children, className = '' }) => {
   return (
     <div className={`mb-6 ${className}`}>
       {title && (
-        <h3 className="text-sm font-semibold text-gray-900 mb-3 uppercase tracking-wide">
+        <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3 uppercase tracking-wide">
           {title}
         </h3>
       )}
@@ -94,9 +94,9 @@ export const SheetSection = ({ title, children, className = '' }) => {
 
 export const SheetItem = ({ label, value, className = '' }) => {
   return (
-    <div className={`flex justify-between py-2 border-b border-gray-100 ${className}`}>
-      <span className="text-sm text-gray-600">{label}</span>
-      <span className="text-sm font-medium text-gray-900">{value}</span>
+    <div className={`flex justify-between py-2 border-b border-gray-100 dark:border-gray-800 ${className}`}>
+      <span className="text-sm text-gray-600 dark:text-gray-400">{label}</span>
+      <span className="text-sm font-medium text-gray-900 dark:text-gray-100">{value}</span>
     </div>
   );
 };

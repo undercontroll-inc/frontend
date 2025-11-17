@@ -20,29 +20,29 @@ const Toast = ({ toast, onRemove }) => {
   const getVariantStyles = () => {
     const variants = {
       success: {
-        container: 'border-green-500/50 bg-white',
+        container: 'border-green-500/50 bg-white dark:bg-gray-800',
         icon: <CheckCircle className="h-5 w-5 text-green-600" />,
-        iconBg: 'bg-green-50',
+        iconBg: 'bg-green-50 dark:bg-green-900/30',
       },
       error: {
-        container: 'border-red-500/50 bg-white',
+        container: 'border-red-500/50 bg-white dark:bg-gray-800',
         icon: <AlertCircle className="h-5 w-5 text-red-600" />,
-        iconBg: 'bg-red-50',
+        iconBg: 'bg-red-50 dark:bg-red-900/30',
       },
       warning: {
-        container: 'border-yellow-500/50 bg-white',
+        container: 'border-yellow-500/50 bg-white dark:bg-gray-800',
         icon: <AlertTriangle className="h-5 w-5 text-yellow-600" />,
-        iconBg: 'bg-yellow-50',
+        iconBg: 'bg-yellow-50 dark:bg-yellow-900/30',
       },
       info: {
-        container: 'border-blue-500/50 bg-white',
+        container: 'border-blue-500/50 bg-white dark:bg-gray-800',
         icon: <Info className="h-5 w-5 text-blue-600" />,
-        iconBg: 'bg-blue-50',
+        iconBg: 'bg-blue-50 dark:bg-blue-900/30',
       },
       default: {
-        container: 'border-gray-200 bg-white',
-        icon: <Info className="h-5 w-5 text-gray-600" />,
-        iconBg: 'bg-gray-50',
+        container: 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800',
+        icon: <Info className="h-5 w-5 text-gray-600 dark:text-gray-400" />,
+        iconBg: 'bg-gray-50 dark:bg-gray-700',
       },
     };
 
@@ -72,12 +72,12 @@ const Toast = ({ toast, onRemove }) => {
 
       <div className="flex-1 min-w-0 space-y-1">
         {toast.title && (
-          <div className="text-sm font-semibold leading-none tracking-tight text-gray-900">
+          <div className="text-sm font-semibold leading-none tracking-tight text-gray-900 dark:text-gray-100">
             {toast.title}
           </div>
         )}
         {toast.description && (
-          <div className="text-sm leading-relaxed text-gray-600">
+          <div className="text-sm leading-relaxed text-gray-600 dark:text-gray-300">
             {toast.description}
           </div>
         )}

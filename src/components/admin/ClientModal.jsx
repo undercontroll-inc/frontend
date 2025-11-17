@@ -157,17 +157,17 @@ export const ClientModal = ({ isOpen, onClose, onSave, client = null }) => {
 
       {/* Modal */}
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col animate-modal-in">
+        <div className="bg-white dark:bg-zinc-900 rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col animate-modal-in">
           {/* Header */}
-          <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-            <h2 className="text-xl font-semibold text-gray-900">
+          <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
               {client ? 'Editar Cliente' : 'Cadastrar novo cliente'}
             </h2>
             <button
               onClick={handleClose}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              className="p-2 hover:bg-gray-100 dark:hover:bg-zinc-800 rounded-lg transition-colors"
             >
-              <X className="h-5 w-5 text-gray-500" />
+              <X className="h-5 w-5 text-gray-500 dark:text-gray-400" />
             </button>
           </div>
 

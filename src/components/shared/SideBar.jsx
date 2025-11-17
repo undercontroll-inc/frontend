@@ -4,7 +4,6 @@ import { useAuth } from "../../contexts/AuthContext";
 import Tooltip from "./Tooltip";
 import UserDropdown from "./UserDropdown";
 import { useState, useEffect } from "react";
-import Foto from "../../../public/images/logo_pelluci.jpg";
 
 const SideBar = ({ active = "repairs" }) => {
   const { user, logout } = useAuth();
@@ -92,25 +91,7 @@ const SideBar = ({ active = "repairs" }) => {
 
   return (
     <div className="flex relative">
-      <aside className={`${isOpen ? 'w-56' : 'w-16'} text-white border-r bg-[#0a1929] dark:bg-gray-950 border-gray-800 dark:border-gray-800 flex flex-col shadow-lg dark:shadow-gray-900/50 transition-all duration-300 ease-in-out relative`}>
-        <div className={`p-4 border-b border-gray-800 ${!isOpen && 'px-2'}`}>
-          <div className={`flex items-center ${isOpen ? 'gap-2' : 'justify-center'}`}>
-            <div className="">
-              <img
-              width={50}
-              height={50}
-              src={Foto} 
-              className="rounded-md"
-              />
-            </div>
-            {isOpen && (
-              <div className="flex-1">
-                <div className="font-bold text-base text-white">Pelluci</div>
-                <div className="text-xs text-gray-400">Sistema OS</div>
-              </div>
-            )}
-          </div>
-        </div>
+      <aside className={`${isOpen ? 'w-56' : 'w-16'} text-white border-r ${isAdmin ? 'bg-[#0a1929]' : 'bg-[#041A2D]'} border-gray-800 flex flex-col shadow-lg transition-all duration-300 ease-in-out relative`}>
 
         <nav className="flex-1 p-2 flex flex-col space-y-1 overflow-y-auto">
           {isOpen && (
@@ -165,7 +146,7 @@ const SideBar = ({ active = "repairs" }) => {
         <Tooltip content={isOpen ? "Recolher (Ctrl+S)" : "Expandir (Ctrl+S)"} side="right">
           <button
             onClick={handleToggleSidebar}
-            className="p-2 bg-white border border-gray-200 rounded-lg shadow-md text-gray-600 hover:bg-gray-50 hover:text-[#041A2D] transition-all duration-200 hover:shadow-lg"
+            className="p-2 bg-white border border-gray-200 dark:bg-zinc-950 dark:border-zinc-500 dark:text-zinc-200 rounded-lg shadow-md text-gray-600 hover:bg-gray-50 hover:text-[#041A2D] transition-all duration-200 hover:shadow-lg"
             aria-label={isOpen ? "Recolher menu (Ctrl+S)" : "Expandir menu (Ctrl+S)"}
           >
             {isOpen ? (
