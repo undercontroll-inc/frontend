@@ -12,6 +12,8 @@ import Alert from "../shared/Alert";
 import RepairCard from "./RepairCard";
 
 const ComponentRepair = () => {
+  console.log("=== ComponentRepair MOUNTED ===");
+  
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [repairs, setRepairs] = useState([]);
@@ -20,8 +22,12 @@ const ComponentRepair = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
 
+  console.log("ComponentRepair - User:", user);
+  console.log("ComponentRepair - Loading:", loading);
+  console.log("ComponentRepair - Repairs:", repairs);
+
   useEffect(() => {
-    document.title = "Dashboard - Reparos";
+    document.title = "Reparos";
   }, []);
 
   useEffect(() => {
@@ -36,13 +42,12 @@ const ComponentRepair = () => {
 
       if (user?.id) {
         try {
-          data = await RepairService.getAllRepairs(user.id);
+          data = { data } = await RepairService.getUserRepairs(user.id);
         } catch (err) {
-          // Fallback: busca todos se falhar buscar por userId
-          data = await RepairService.getAllRepairs();
+          console.error("Erro ao buscar reparos do usuário:", err);
         }
       } else {
-        data = await RepairService.getAllRepairs();
+        data = null   
       }
 
       if (!Array.isArray(data)) data = [];
@@ -51,7 +56,7 @@ const ComponentRepair = () => {
       console.error("Erro ao carregar consertos:", error);
       setAlert({
         type: "error",
-        message: "Erro ao carregar consertos. Verifique se o json-server está rodando.",
+        message: "Erro ao carregar consertos. Tente novamente.",
       });
     } finally {
       setLoading(false);
@@ -86,7 +91,9 @@ const ComponentRepair = () => {
     return applianceMatch || serviceMatch;
   });
 
-  if (loading) return <Loading text="Carregando consertos..." />;
+  if (loading) {
+    return <Loading text="Carregando consertos..." />;
+  }
 
   return (
     <div className="flex min-h-screen bg-gray-50">
@@ -103,9 +110,10 @@ const ComponentRepair = () => {
                 containerClassName="w-48"
               >
                 <option value="">Status: Todos</option>
-                <option value="EM_ANDAMENTO">Em Andamento</option>
-                <option value="FINALIZADO">Finalizado</option>
-                <option value="NAO_INICIADO">Não Iniciado</option>
+                <option value="PENDING">Pendente</option>
+                <option value="IN_ANALYSIS">Em Análise</option>
+                <option value="COMPLETED">Concluído</option>
+                <option value="DELIVERED">Entregue</option>
               </Select>
               <div className="flex-1">
                 <Input

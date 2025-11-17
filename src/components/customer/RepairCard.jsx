@@ -3,26 +3,33 @@ import { useNavigate } from "react-router-dom";
 import Button from "../shared/Button";
 
 const statusStyles = {
-  EM_ANDAMENTO: {
+  PENDING: {
     bg: "bg-transparent",
     text: "text-yellow-400",
     border: "border border-yellow-400",
-    label: "Em Andamento",
+    label: "Pendente",
     icon: <Clock className="h-4 w-4" />,
   },
-  FINALIZADO: {
+  IN_ANALYSIS: {
+    bg: "bg-transparent",
+    text: "text-blue-400",
+    border: "border border-blue-400",
+    label: "Em Análise",
+    icon: <Clock className="h-4 w-4" />,
+  },
+  COMPLETED: {
     bg: "bg-transparent",
     text: "text-green-400",
     border: "border border-green-400",
-    label: "Finalizado",
+    label: "Concluído",
     icon: <CheckCircle className="h-4 w-4" />,
   },
-  NAO_INICIADO: {
+  DELIVERED: {
     bg: "bg-transparent",
-    text: "text-red-400",
-    border: "border border-red-400",
-    label: "Não Iniciado",
-    icon: null,
+    text: "text-green-600",
+    border: "border border-green-600",
+    label: "Entregue",
+    icon: <CheckCircle className="h-4 w-4" />,
   },
 };
 
@@ -39,7 +46,7 @@ const formatUpdatedAt = (s) => {
 
 const RepairCard = ({ repair }) => {
   const navigate = useNavigate();
-  const status = statusStyles[repair.status] || statusStyles["NAO_INICIADO"];
+  const status = statusStyles[repair.status] || statusStyles["PENDING"];
 
   return (
     <div className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-sm dark:shadow-gray-900/50 overflow-hidden hover:shadow-md dark:hover:shadow-gray-900/70 transition-all duration-200">
@@ -64,7 +71,7 @@ const RepairCard = ({ repair }) => {
       </div>
 
       <div className="p-4">
-        <div className={`grid ${repair.status === "FINALIZADO" ? "grid-cols-4" : "grid-cols-3"} gap-4 text-sm mb-4`}>
+        <div className={`grid ${repair.status === "COMPLETED" || repair.status === "DELIVERED" ? "grid-cols-4" : "grid-cols-3"} gap-4 text-sm mb-4`}>
           <div>
             <div className="text-xs text-gray-500 dark:text-gray-400 font-semibold mb-1.5 uppercase tracking-wide">
               Eletrodomésticos
@@ -93,7 +100,7 @@ const RepairCard = ({ repair }) => {
               {repair.receivedAt || "-"}
             </div>
           </div>
-          {repair.status === "FINALIZADO" && (
+          {(repair.status === "COMPLETED" || repair.status === "DELIVERED") && (
             <div>
               <div className="text-xs text-gray-500 dark:text-gray-400 font-semibold mb-1.5 uppercase tracking-wide">
                 Retirada

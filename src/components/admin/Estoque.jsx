@@ -5,7 +5,7 @@ import Input from "../shared/Input";
 import Select from "../shared/Select";
 import ItemModal from "./ItemModal";
 import { Search, Plus, Pencil, Trash2 } from "lucide-react";
-import { StorageService } from "../../services/StorageService";
+import ComponentService from "../../services/ComponentService";
 import { useToast } from "../../contexts/ToastContext";
 import Loading from "../shared/Loading";
 
@@ -22,13 +22,15 @@ export function Estoque() {
 
     // Buscar itens do JSON server
     useEffect(() => {
+        document.title = "Irmãos Pelluci - Componentes"    
+
         loadItems();
     }, []);
 
     const loadItems = async () => {
         try {
             setLoading(true);
-            const data = await StorageService.getAll();
+            const data = await ComponentService.getAllComponents();
             setItems(Array.isArray(data) ? data : []);
         } catch (error) {
             toast.error("Erro ao carregar itens do estoque");
@@ -43,11 +45,11 @@ export function Estoque() {
         try {
             if (itemId) {
                 // Editar item existente
-                await StorageService.update(itemId, itemData);
+                await ComponentService.updateComponent(itemId, itemData);
                 toast.success("Item atualizado com sucesso!");
             } else {
                 // Criar novo item
-                await StorageService.create(itemData);
+                await ComponentService.createComponent(itemData);
                 toast.success("Item cadastrado com sucesso!");
             }
             await loadItems();
@@ -67,7 +69,7 @@ export function Estoque() {
     const handleDeleteItem = async (id) => {
         if (window.confirm("Tem certeza que deseja excluir este item?")) {
             try {
-                await StorageService.delete(id);
+                await ComponentService.deleteComponent(id);
                 toast.success("Item excluído com sucesso!");
                 await loadItems();
             } catch (error) {
@@ -98,9 +100,10 @@ export function Estoque() {
         setSupplierFilter("");
     };
 
-    // Extrair marcas e fornecedores únicos dos itens
+    // Extrair marcas, fornecedores e categorias únicos dos itens
     const uniqueBrands = [...new Set(items.map(item => item.brand).filter(Boolean))].sort();
     const uniqueSuppliers = [...new Set(items.map(item => item.supplier).filter(Boolean))].sort();
+    const uniqueCategories = [...new Set(items.map(item => item.category).filter(Boolean))].sort();
 
     if (loading) {
         return (
@@ -120,7 +123,7 @@ export function Estoque() {
             <div className="flex-1 p-4 lg:p-6 overflow-x-hidden">
                 {/* Header */}
                 <div className="flex justify-between items-center mb-4">
-                    <h1 className="text-xl lg:text-2xl font-bold text-gray-900">Gerenciamento de Estoque</h1>
+                    <h1 className="text-3xl font-bold text-gray-900">Gerenciamento de Estoque</h1>
                     <Button 
                         onClick={handleOpenModal}
                         className="bg-orange-500 hover:bg-orange-600 focus:ring-orange-500 text-sm px-4 py-2"
@@ -151,11 +154,9 @@ export function Estoque() {
                             onChange={(e) => setCategoryFilter(e.target.value)}
                         >
                             <option value="">Todas as categorias</option>
-                            <option value="Eletrônicos">Eletrônicos</option>
-                            <option value="Elétrica">Elétrica</option>
-                            <option value="Ferramentas">Ferramentas</option>
-                            <option value="Informática">Informática</option>
-                            <option value="Peças de Reposição">Peças de Reposição</option>
+                            {uniqueCategories.map(category => (
+                                <option key={category} value={category}>{category}</option>
+                            ))}
                         </Select>
 
                         {/* Brand Filter */}

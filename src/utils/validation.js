@@ -28,7 +28,8 @@ export const validateCPF = (cpf) => {
 };
 
 export const isEmpty = (value) => {
-  return !value || value.trim() === '';
+  if (typeof value === 'number') return false;
+  return !value || (typeof value === 'string' && value.trim() === '');
 };
 
 export const isPositiveNumber = (value) => {

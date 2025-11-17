@@ -15,7 +15,7 @@ class ComponentService {
   }
   async getComponentById(id) {
     try {
-      const response = await jsonServer.get(`/components/${id}`);
+      const response = await apiClient.get(`/components/${id}`);
       return response.data;
     } catch (error) {
       console.error(`Erro ao buscar componente ${id}:`, error);
@@ -35,7 +35,7 @@ class ComponentService {
 
   async updateComponent(id, componentData) {
     try {
-      const response = await jsonServer.put(`/components/${id}`, componentData);
+      const response = await apiClient.put(`/components/${id}`, componentData);
       return response.data;
     } catch (error) {
       console.error(`Erro ao atualizar componente ${id}:`, error);
@@ -53,7 +53,7 @@ class ComponentService {
   }
   async deleteComponent(id) {
     try {
-      await jsonServer.delete(`/components/${id}`);
+      await apiClient.delete(`/components/${id}`);
     } catch (error) {
       console.error(`Erro ao deletar componente ${id}:`, error);
       throw error;
@@ -62,7 +62,7 @@ class ComponentService {
 
   async getComponentsByCategory(category) {
     try {
-      const response = await jsonServer.get(`/components?category=${category}`);
+      const response = await apiClient.get(`/components/category/${category}`);
       return response.data;
     } catch (error) {
       console.error(`Erro ao buscar componentes por categoria ${category}:`, error);

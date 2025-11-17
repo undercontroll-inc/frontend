@@ -15,7 +15,7 @@ import CreateOrderModal from './CreateOrderModal';
 
 export function RepairPage() {
   const { user } = useAuth();
-  const { toast } = useToast();
+  const toast = useToast();
   const navigate = useNavigate();
   const [repairs, setRepairs] = useState([]);
   const [filteredRepairs, setFilteredRepairs] = useState([]);

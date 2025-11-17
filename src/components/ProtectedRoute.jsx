@@ -6,19 +6,30 @@ import Loading from "./shared/Loading";
 const ProtectedRoute = ({ children, roles }) => {
   const { isAuthenticated, loading, user } = useAuth();
 
+  console.log("=== ProtectedRoute ===");
+  console.log("isAuthenticated:", isAuthenticated);
+  console.log("loading:", loading);
+  console.log("user:", user);
+  console.log("roles allowed:", roles);
+  console.log("user.userType:", user?.userType);
+
   if (loading) {
+    console.log("ProtectedRoute: Showing loading...");
     return <Loading text="Verificando autenticação..." />;
   }
 
   if (!isAuthenticated) {
+    console.log("ProtectedRoute: Not authenticated, redirecting to login");
     return <Navigate to="/login" replace />;
   }
 
   if (roles && user && !roles.includes(user.userType)) {
+    console.log("ProtectedRoute: User role not allowed, redirecting...");
     const fallback = user.userType === "ADMINISTRATOR" ? "/repairs" : "/my-repairs";
     return <Navigate to={fallback} replace />;
   }
 
+  console.log("ProtectedRoute: Rendering children");
   return children;
 };
 

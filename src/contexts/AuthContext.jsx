@@ -131,6 +131,11 @@ export const AuthProvider = ({ children }) => {
     isAuthenticated: !!user,
   };
 
+  console.log("=== AuthContext Provider ===");
+  console.log("User:", user);
+  console.log("Loading:", loading);
+  console.log("isAuthenticated:", !!user);
+
   return (
     <AuthContext.Provider value={value}>
       {children}

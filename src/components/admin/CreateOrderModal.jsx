@@ -10,7 +10,7 @@ import { useToast } from '../../contexts/ToastContext';
 import { useNavigate } from 'react-router-dom';
 
 export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
-  const { toast } = useToast();
+  const toast = useToast();
   const navigate = useNavigate();
 
   const [selectedClient, setSelectedClient] = useState(null);
