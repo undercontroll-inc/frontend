@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useCallback, memo } from "react";
 import { Search, Clock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
@@ -12,8 +12,6 @@ import Alert from "../shared/Alert";
 import RepairCard from "./RepairCard";
 
 const ComponentRepair = () => {
-  console.log("=== ComponentRepair MOUNTED ===");
-  
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [repairs, setRepairs] = useState([]);
@@ -22,20 +20,11 @@ const ComponentRepair = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
 
-  console.log("ComponentRepair - User:", user);
-  console.log("ComponentRepair - Loading:", loading);
-  console.log("ComponentRepair - Repairs:", repairs);
-
   useEffect(() => {
     document.title = "Reparos";
   }, []);
 
-  useEffect(() => {
-    loadRepairs();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
-
-  const loadRepairs = async () => {
+  const loadRepairs = useCallback(async () => {
     try {
       setLoading(true);
       let data = [];
@@ -47,7 +36,7 @@ const ComponentRepair = () => {
           console.error("Erro ao buscar reparos do usuário:", err);
         }
       } else {
-        data = null   
+        data = null;
       }
 
       if (!Array.isArray(data)) data = [];
@@ -62,34 +51,40 @@ const ComponentRepair = () => {
       setLoading(false);
       setTimeout(() => setAlert(null), 5000);
     }
-  };
+  }, [user?.id]);
 
-  const handleLogout = () => {
+  useEffect(() => {
+    loadRepairs();
+  }, [loadRepairs]);
+
+  const handleLogout = useCallback(() => {
     logout();
     navigate("/login");
-  };
+  }, [logout, navigate]);
 
-  const filtered = repairs.filter((r) => {
-    const term = searchTerm.trim().toLowerCase();
-    if (statusFilter && r.status !== statusFilter) return false;
-    if (!term) return true;
+  const filtered = useMemo(() => {
+    return repairs.filter((r) => {
+      const term = searchTerm.trim().toLowerCase();
+      if (statusFilter && r.status !== statusFilter) return false;
+      if (!term) return true;
 
-    // Busca nos eletrodomésticos
-    const applianceMatch = r.appliances?.some(
-      (a) =>
-        (a.type || "").toLowerCase().includes(term) ||
-        (a.brand || "").toLowerCase().includes(term) ||
-        (a.model || "").toLowerCase().includes(term) ||
-        (a.serial || "").toLowerCase().includes(term)
-    );
+      // Busca nos eletrodomésticos
+      const applianceMatch = r.appliances?.some(
+        (a) =>
+          (a.type || "").toLowerCase().includes(term) ||
+          (a.brand || "").toLowerCase().includes(term) ||
+          (a.model || "").toLowerCase().includes(term) ||
+          (a.serial || "").toLowerCase().includes(term)
+      );
 
-    // Busca na descrição do serviço
-    const serviceMatch = (r.serviceDescription || "")
-      .toLowerCase()
-      .includes(term);
+      // Busca na descrição do serviço
+      const serviceMatch = (r.serviceDescription || "")
+        .toLowerCase()
+        .includes(term);
 
-    return applianceMatch || serviceMatch;
-  });
+      return applianceMatch || serviceMatch;
+    });
+  }, [repairs, searchTerm, statusFilter]);
 
   if (loading) {
     return <Loading text="Carregando consertos..." />;
@@ -135,10 +130,10 @@ const ComponentRepair = () => {
               </p>
               <p className="text-sm mt-2 text-center text-gray-700">
                 <span className="font-bold">Observação:</span> O prazo para
-                retirada dos produtos é de 30 dias. Após esta data será
-                cobrado R$ 1,00 por dia de permanência. Produto não retirado no
-                prazo máximo de 60 dias será desmontado para recuperação das
-                peças aplicadas.
+                retirada dos produtos é de 30 dias. Após esta data será cobrado
+                R$ 1,00 por dia de permanência. Produto não retirado no prazo
+                máximo de 60 dias será desmontado para recuperação das peças
+                aplicadas.
               </p>
             </div>
           </div>

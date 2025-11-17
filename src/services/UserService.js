@@ -1,6 +1,6 @@
 import { apiClient, getAxiosErrorMessage } from "../providers/api";
 
-const BASE_URI = '/users';
+const BASE_URI = "/users";
 
 class UserService {
   async auth(email, senha) {
@@ -12,12 +12,12 @@ class UserService {
 
       return {
         success: true,
-        data: response.data
+        data: response.data,
       };
     } catch (e) {
       return {
         success: false,
-        error: getAxiosErrorMessage(e)
+        error: getAxiosErrorMessage(e),
       };
     }
   }
@@ -33,19 +33,23 @@ class UserService {
 
       return {
         success: true,
-        data: response.data
+        data: response.data,
       };
     } catch (e) {
       return {
         success: false,
         error: getAxiosErrorMessage(e),
-        statusCode: e.response?.status
+        statusCode: e.response?.status,
       };
     }
   }
 
   async register(user) {
     try {
+      // Remove caracteres não numéricos do CEP e CPF
+      const cleanCEP = user.CEP ? user.CEP.replace(/\D/g, "") : user.CEP;
+      const cleanCPF = user.cpf ? user.cpf.replace(/\D/g, "") : user.cpf;
+
       const response = await apiClient.post(BASE_URI, {
         name: user.name,
         email: user.email,
@@ -53,19 +57,19 @@ class UserService {
         lastName: user.lastname,
         password: user.password,
         address: user.address,
-        CEP: user.CEP,
-        cpf: user.cpf,
-        userType: user.userType
+        CEP: cleanCEP,
+        cpf: cleanCPF,
+        userType: user.userType,
       });
 
       return {
         success: true,
-        data: response.data
+        data: response.data,
       };
     } catch (e) {
       return {
         success: false,
-        error: getAxiosErrorMessage(e)
+        error: getAxiosErrorMessage(e),
       };
     }
   }
@@ -75,12 +79,12 @@ class UserService {
       const response = await apiClient.get(BASE_URI);
       return {
         success: true,
-        data: response.data
+        data: response.data,
       };
     } catch (e) {
       return {
         success: false,
-        error: getAxiosErrorMessage(e)
+        error: getAxiosErrorMessage(e),
       };
     }
   }
@@ -90,12 +94,41 @@ class UserService {
       const response = await apiClient.get(`${BASE_URI}/${id}`);
       return {
         success: true,
-        data: response.data
+        data: response.data,
       };
     } catch (e) {
       return {
         success: false,
-        error: getAxiosErrorMessage(e)
+        error: getAxiosErrorMessage(e),
+      };
+    }
+  }
+
+  async updateUser(id, userData) {
+    try {
+      // Remove caracteres não numéricos do CEP (hífen, pontos, etc)
+      const cleanCEP = userData.CEP
+        ? userData.CEP.replace(/\D/g, "")
+        : userData.CEP;
+
+      const response = await apiClient.put(`${BASE_URI}/${id}`, {
+        name: userData.name,
+        email: userData.email,
+        phone: userData.phone,
+        lastName: userData.lastName,
+        address: userData.address,
+        CEP: cleanCEP,
+        addressNumber: userData.addressNumber,
+      });
+
+      return {
+        success: true,
+        data: response.data,
+      };
+    } catch (e) {
+      return {
+        success: false,
+        error: getAxiosErrorMessage(e),
       };
     }
   }
