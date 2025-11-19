@@ -18,6 +18,7 @@ import { RepairPage } from "./components/admin/RepairPage";
 import { ClientsPage } from "./components/admin/ClientsPage";
 import Toaster from "./components/shared/Toaster";
 import { LandingPage } from "./components/landing_page/LandingPage";
+import { AnnouncementsPage } from "./components/landing_page/AnnouncementsPage";
 import { Estoque } from "./components/admin/Estoque";
 import { ThemeProvider } from "./components/shared/ThemeProvider";
 import { ThemeDebug } from "./components/shared/ThemeDebug";
@@ -33,6 +34,7 @@ function App() {
           <Router>
             <Routes>
               <Route path="/" element={<LandingPage />} />
+              <Route path="/announcements" element={<AnnouncementsPage />} />
 
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />

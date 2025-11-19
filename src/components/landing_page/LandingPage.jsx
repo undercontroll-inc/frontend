@@ -39,7 +39,6 @@ export const LandingPage = () => {
     window.open(`tel:${phoneNumber}`);
   };
 
-
   return (
     <div className="bg-gradient-to-br from-gray-50 via-blue-50/30 to-orange-50/20">
       <header className="header flex items-center justify-around p-2 bg-gradient-to-r from-[#041A2D] via-[#052540] to-[#041A2D] fixed w-full top-0 z-50 shadow-lg backdrop-blur-md border-b border-white/10">
@@ -109,9 +108,8 @@ export const LandingPage = () => {
           <div className="absolute inset-0 bg-gradient-to-br from-[#041A2D]/80 via-[#041A2D]/70 to-[#BA4610]/30"></div>
 
           <div className="relative z-10 text-center px-4 max-w-4xl animate-fade-in">
-
             <h1 className="text-5xl w-full sm:text-6xl lg:text-6xl font-bold mb-10 text-white drop-shadow-2xl">
-              Bem-vindo à Comercial Irmãos Pelluci {" "}
+              Bem-vindo à Comercial Irmãos Pelluci{" "}
             </h1>
             <p className="text-xl sm:text-2xl mb-10 text-white/95 drop-shadow-lg font-light">
               Reparos rápidos e confiáveis para seus eletrodomésticos
@@ -133,6 +131,52 @@ export const LandingPage = () => {
             <ChevronDown className="h-8 w-8" />
           </div>
         </section>
+
+        {/* Central de Anúncios */}
+        <section className="bg-white py-39 px-4 sm:px-8 border-b border-gray-200 mt-[-50px]">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-20">
+              <h2 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-[#041A2D] to-[#BA4610] bg-clip-text text-transparent mb-2">
+                📢 Central de Anúncios
+              </h2>
+              <p className="text-gray-600 text-lg">
+                Fique por dentro das novidades e promoções
+              </p>
+            </div>
+
+            {/* Anúncio em Destaque */}
+            <div className="bg-gradient-to-br from-[#041A2D] to-[#052540] rounded-xl shadow-lg overflow-hidden border-2 border-[#0B4BCC] hover:shadow-xl transition-all duration-300">
+              <div className="p-6 sm:p-8">
+                <div className="flex items-center justify-between mb-4">
+                  <span className="bg-[#0B4BCC] text-white px-3 py-1 rounded-full text-sm font-semibold">
+                    Feriados
+                  </span>
+                  <span className="text-gray-300 text-sm">19 Nov 2025</span>
+                </div>
+                <h3 className="text-xl sm:text-2xl font-bold text-white mb-3">
+                  Funcionamento no Dia da Consciência Negra
+                </h3>
+                <p className="text-gray-300 leading-relaxed mb-6">
+                  Informamos que no dia{" "}
+                  <span className="font-semibold text-white">
+                    20 de novembro (quarta-feira)
+                  </span>
+                  , feriado nacional, estaremos{" "}
+                  <span className="font-semibold text-white">fechados</span>.
+                  Retornaremos ao atendimento normal no dia seguinte.
+                </p>
+                <button
+                  onClick={() => navigate("/announcements")}
+                  className="w-full sm:w-auto bg-[#0B4BCC] hover:bg-[#0a3fa0] text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:shadow-lg flex items-center justify-center gap-2"
+                >
+                  Ver todos os anúncios
+                  <ChevronDown className="h-5 w-5 rotate-[-90deg]" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section
           id="about"
           className="about-section p-16 sm:p-20 bg-gradient-to-br from-[#041A2D] via-[#052540] to-[#041A2D] flex flex-col lg:flex-row justify-around items-center gap-12 relative overflow-hidden"
@@ -149,8 +193,8 @@ export const LandingPage = () => {
             </h2>
             <p className="text-lg leading-relaxed text-gray-200">
               A Comercial Irmãos Pelluci atua{" "}
-              <span className="font-extrabold">desde 1987</span> em
-              São Paulo, oferecendo{" "}
+              <span className="font-extrabold">desde 1987</span> em São Paulo,
+              oferecendo{" "}
               <span className="font-extrabold">
                 conserto de eletrodomésticos
               </span>{" "}
@@ -179,11 +223,13 @@ export const LandingPage = () => {
               </div>
               <div className="bg-white/10 backdrop-blur-sm p-4 rounded-xl border border-white/20 text-center">
                 <div className="text-3xl font-bold">1000+</div>
-                <div className="text-sm text-gray-300">Clientes satisfeitos</div>
+                <div className="text-sm text-gray-300">
+                  Clientes satisfeitos
+                </div>
               </div>
             </div>
           </div>
-      
+
           <div className="image-content lg:w-1/2 relative z-10">
             <div className="relative group">
               <div className="absolute inset-0 bg-gradient-to-br from-[#0B4BCC]/30 to-[#BA4610]/30 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-300"></div>
@@ -243,7 +289,9 @@ export const LandingPage = () => {
                 Conserto de eletrodomésticos
               </h3>
               <p className="text-gray-600 text-sm">
-                Realizamos reparos especializados em diversos tipos de eletrodomésticos com garantia de serviço, peças originais e qualidade comprovada.
+                Realizamos reparos especializados em diversos tipos de
+                eletrodomésticos com garantia de serviço, peças originais e
+                qualidade comprovada.
               </p>
             </div>
 
@@ -255,7 +303,9 @@ export const LandingPage = () => {
                 Venda de peças originais
               </h3>
               <p className="text-gray-600 text-sm">
-                Comercializamos peças e acessórios originais das principais marcas do mercado, garantindo durabilidade e o melhor desempenho para seu aparelho.
+                Comercializamos peças e acessórios originais das principais
+                marcas do mercado, garantindo durabilidade e o melhor desempenho
+                para seu aparelho.
               </p>
             </div>
 
@@ -314,7 +364,10 @@ export const LandingPage = () => {
                   Nossos contatos:
                 </p>
                 <div className="buttons flex flex-col items-center justify-center gap-4">
-                  <button onClick={handleWhatsAppClick} className="rounded-xl px-4 py-3 w-full bg-gradient-to-r from-green-400 to-green-500 hover:from-green-500 hover:to-green-600 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer font-semibold text-white hover:scale-105 flex items-center justify-center gap-2">
+                  <button
+                    onClick={handleWhatsAppClick}
+                    className="rounded-xl px-4 py-3 w-full bg-gradient-to-r from-green-400 to-green-500 hover:from-green-500 hover:to-green-600 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer font-semibold text-white hover:scale-105 flex items-center justify-center gap-2"
+                  >
                     <i className="fa-brands fa-whatsapp text-xl"></i>
                     Agendar pelo Whatsapp
                   </button>
@@ -325,7 +378,10 @@ export const LandingPage = () => {
                     </span>
                     <div className="h-px bg-gray-400 flex-1"></div>
                   </div>
-                  <button onClick={handleCallClick} className="rounded-xl px-4 py-3 w-full bg-gradient-to-r from-[#0B4BCC] to-[#0952d6] hover:from-[#0a3fa0] hover:to-[#0a3fa0] shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer font-semibold text-white hover:scale-105 flex items-center justify-center gap-2">
+                  <button
+                    onClick={handleCallClick}
+                    className="rounded-xl px-4 py-3 w-full bg-gradient-to-r from-[#0B4BCC] to-[#0952d6] hover:from-[#0a3fa0] hover:to-[#0a3fa0] shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer font-semibold text-white hover:scale-105 flex items-center justify-center gap-2"
+                  >
                     <Phone className="h-5 w-5" />
                     Ligar agora (11) 2341-7100
                   </button>
@@ -401,23 +457,148 @@ export const LandingPage = () => {
             <div className="accordion space-y-4">
               <FAQItem
                 question="Como posso realizar um orçamento? O orçamento possui custo?"
-                answer={<>Você pode solicitar um orçamento <span className="text-[#BA4610] font-semibold">gratuito</span> entrando em contato conosco pelo <span className="text-[#BA4610] font-semibold">WhatsApp</span>, <span className="text-[#BA4610] font-semibold">telefone</span> ou visitando nossa <span className="text-[#BA4610] font-semibold">loja</span>. Nossa equipe fará uma avaliação inicial <span className="text-[#BA4610] font-semibold">sem custos</span> e apresentará o valor do serviço antes de iniciar qualquer reparo.</>}
+                answer={
+                  <>
+                    Você pode solicitar um orçamento{" "}
+                    <span className="text-[#BA4610] font-semibold">
+                      gratuito
+                    </span>{" "}
+                    entrando em contato conosco pelo{" "}
+                    <span className="text-[#BA4610] font-semibold">
+                      WhatsApp
+                    </span>
+                    ,{" "}
+                    <span className="text-[#BA4610] font-semibold">
+                      telefone
+                    </span>{" "}
+                    ou visitando nossa{" "}
+                    <span className="text-[#BA4610] font-semibold">loja</span>.
+                    Nossa equipe fará uma avaliação inicial{" "}
+                    <span className="text-[#BA4610] font-semibold">
+                      sem custos
+                    </span>{" "}
+                    e apresentará o valor do serviço antes de iniciar qualquer
+                    reparo.
+                  </>
+                }
               />
               <FAQItem
                 question="Quais tipos de eletrodomésticos e marcas vocês atendem?"
-                answer={<>Atendemos uma ampla variedade de eletrodomésticos, incluindo <span className="text-[#BA4610] font-semibold">aspiradores</span>, <span className="text-[#BA4610] font-semibold">secadores de cabelo</span>, <span className="text-[#BA4610] font-semibold">ferros de passar</span>, <span className="text-[#BA4610] font-semibold">liquidificadores</span>, <span className="text-[#BA4610] font-semibold">chapinhas</span>, <span className="text-[#BA4610] font-semibold">micro-ondas</span>, <span className="text-[#BA4610] font-semibold">máquinas de café</span>, <span className="text-[#BA4610] font-semibold">ventiladores</span> e <span className="text-[#BA4610] font-semibold">batedeiras</span>. Trabalhamos com as <span className="text-[#BA4610] font-semibold">principais marcas</span> do mercado e utilizamos <span className="text-[#BA4610] font-semibold">peças originais</span> para garantir a qualidade.</>}
+                answer={
+                  <>
+                    Atendemos uma ampla variedade de eletrodomésticos, incluindo{" "}
+                    <span className="text-[#BA4610] font-semibold">
+                      aspiradores
+                    </span>
+                    ,{" "}
+                    <span className="text-[#BA4610] font-semibold">
+                      secadores de cabelo
+                    </span>
+                    ,{" "}
+                    <span className="text-[#BA4610] font-semibold">
+                      ferros de passar
+                    </span>
+                    ,{" "}
+                    <span className="text-[#BA4610] font-semibold">
+                      liquidificadores
+                    </span>
+                    ,{" "}
+                    <span className="text-[#BA4610] font-semibold">
+                      chapinhas
+                    </span>
+                    ,{" "}
+                    <span className="text-[#BA4610] font-semibold">
+                      micro-ondas
+                    </span>
+                    ,{" "}
+                    <span className="text-[#BA4610] font-semibold">
+                      máquinas de café
+                    </span>
+                    ,{" "}
+                    <span className="text-[#BA4610] font-semibold">
+                      ventiladores
+                    </span>{" "}
+                    e{" "}
+                    <span className="text-[#BA4610] font-semibold">
+                      batedeiras
+                    </span>
+                    . Trabalhamos com as{" "}
+                    <span className="text-[#BA4610] font-semibold">
+                      principais marcas
+                    </span>{" "}
+                    do mercado e utilizamos{" "}
+                    <span className="text-[#BA4610] font-semibold">
+                      peças originais
+                    </span>{" "}
+                    para garantir a qualidade.
+                  </>
+                }
               />
               <FAQItem
                 question="Vocês trabalham com o conserto de geladeiras e fogões (linha branca)?"
-                answer={<>Nossa especialidade são <span className="text-[#BA4610] font-semibold">eletrodomésticos de pequeno porte</span> e uso doméstico. Por esse motivo, <span className="text-[#BA4610] font-semibold">não realizamos serviços</span> para linha branca, como geladeiras, fogões e máquinas de lavar.</>}
+                answer={
+                  <>
+                    Nossa especialidade são{" "}
+                    <span className="text-[#BA4610] font-semibold">
+                      eletrodomésticos de pequeno porte
+                    </span>{" "}
+                    e uso doméstico. Por esse motivo,{" "}
+                    <span className="text-[#BA4610] font-semibold">
+                      não realizamos serviços
+                    </span>{" "}
+                    para linha branca, como geladeiras, fogões e máquinas de
+                    lavar.
+                  </>
+                }
               />
               <FAQItem
                 question="Existe garantia para os serviços realizados?"
-                answer={<><span className="text-[#BA4610] font-semibold">Sim!</span> Todos os nossos serviços possuem <span className="text-[#BA4610] font-semibold">garantia</span>. O prazo varia de acordo com o tipo de reparo realizado e será informado no momento da prestação do serviço. Trabalhamos apenas com <span className="text-[#BA4610] font-semibold">peças originais</span> para assegurar a <span className="text-[#BA4610] font-semibold">durabilidade</span> e <span className="text-[#BA4610] font-semibold">qualidade</span> do reparo.</>}
+                answer={
+                  <>
+                    <span className="text-[#BA4610] font-semibold">Sim!</span>{" "}
+                    Todos os nossos serviços possuem{" "}
+                    <span className="text-[#BA4610] font-semibold">
+                      garantia
+                    </span>
+                    . O prazo varia de acordo com o tipo de reparo realizado e
+                    será informado no momento da prestação do serviço.
+                    Trabalhamos apenas com{" "}
+                    <span className="text-[#BA4610] font-semibold">
+                      peças originais
+                    </span>{" "}
+                    para assegurar a{" "}
+                    <span className="text-[#BA4610] font-semibold">
+                      durabilidade
+                    </span>{" "}
+                    e{" "}
+                    <span className="text-[#BA4610] font-semibold">
+                      qualidade
+                    </span>{" "}
+                    do reparo.
+                  </>
+                }
               />
               <FAQItem
                 question="Consigo acompanhar o andamento do conserto do meu eletrodoméstico?"
-                answer={<><span className="text-[#BA4610] font-semibold">Sim!</span> Você pode acompanhar o andamento do conserto <span className="text-[#BA4610] font-semibold">diretamente em nosso site</span>, após realizar um simples <span className="text-[#BA4610] font-semibold">cadastro</span>. Caso tenha alguma dúvida ou precise de mais informações durante o processo, entre em contato pelos nossos <span className="text-[#BA4610] font-semibold">meios de comunicação</span>.</>}
+                answer={
+                  <>
+                    <span className="text-[#BA4610] font-semibold">Sim!</span>{" "}
+                    Você pode acompanhar o andamento do conserto{" "}
+                    <span className="text-[#BA4610] font-semibold">
+                      diretamente em nosso site
+                    </span>
+                    , após realizar um simples{" "}
+                    <span className="text-[#BA4610] font-semibold">
+                      cadastro
+                    </span>
+                    . Caso tenha alguma dúvida ou precise de mais informações
+                    durante o processo, entre em contato pelos nossos{" "}
+                    <span className="text-[#BA4610] font-semibold">
+                      meios de comunicação
+                    </span>
+                    .
+                  </>
+                }
               />
             </div>
           </div>
