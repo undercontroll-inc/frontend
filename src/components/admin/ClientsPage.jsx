@@ -190,7 +190,7 @@ export function ClientsPage() {
     <div className="flex h-screen bg-gray-50 dark:bg-zinc-950 overflow-hidden">
       <SideBar active="clients" />
       
-      <div className="flex-1 flex overflow-hidden">
+      <div className="flex-1 flex overflow-hidden" style={{ marginLeft: 'var(--sidebar-offset, 280px)', transition: 'margin-left 300ms ease-in-out' }}>
         {/* Área Principal - Tabela */}
         <div className="flex-1 flex flex-col overflow-hidden">
           <div className="p-8 pb-4">

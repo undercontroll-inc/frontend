@@ -514,7 +514,7 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
                       {/* Primeira linha: Tipo, Marca, Modelo */}
                       <div className="grid grid-cols-3 gap-3 mb-3">
                         <div>
-                          <label className="block text-xs font-medium text-gray-600 mb-1">Tipo *</label>
+                          <label className="block text-xs font-medium text-gray-600 dark:text-zinc-300 mb-1">Tipo *</label>
                           <Select
                             value={appliance.type}
                             onChange={(e) => handleApplianceChange(index, 'type', e.target.value)}
@@ -534,7 +534,7 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
                         </div>
 
                         <div>
-                          <label className="block text-xs font-medium text-gray-600 mb-1">Marca</label>
+                          <label className="block text-xs font-medium text-gray-600 dark:text-zinc-300 mb-1">Marca</label>
                           <Input
                             type="text"
                             placeholder="Ex: Brastemp"
@@ -544,7 +544,7 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
                         </div>
 
                         <div>
-                          <label className="block text-xs font-medium text-gray-600 mb-1">Modelo</label>
+                          <label className="block text-xs font-medium text-gray-600 dark:text-zinc-300 mb-1">Modelo</label>
                           <Input
                             type="text"
                             placeholder="Ex: BRM45"
@@ -557,7 +557,7 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
                       {/* Segunda linha: Voltagem, Nº Série, Valor Mão-de-obra */}
                       <div className="grid grid-cols-3 gap-3 mb-3">
                         <div>
-                          <label className="block text-xs font-medium text-gray-600 mb-1">Voltagem</label>
+                          <label className="block text-xs font-medium text-gray-600 dark:text-zinc-300 mb-1">Voltagem</label>
                           <Select
                             value={appliance.voltage}
                             onChange={(e) => handleApplianceChange(index, 'voltage', e.target.value)}
@@ -569,7 +569,7 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
                         </div>
 
                         <div>
-                          <label className="block text-xs font-medium text-gray-600 mb-1">Nº de Série</label>
+                          <label className="block text-xs font-medium text-gray-600 dark:text-zinc-300 mb-1">Nº de Série</label>
                           <Input
                             type="text"
                             placeholder="Ex: ABC123456"
@@ -579,7 +579,7 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
                         </div>
 
                         <div>
-                          <label className="block text-xs font-medium text-gray-600 mb-1">Valor Mão-de-obra (R$) - Opcional</label>
+                          <label className="block text-xs font-medium text-gray-600 dark:text-zinc-300 mb-1">Valor Mão-de-obra (R$) - Opcional</label>
                           <Input
                             type="number"
                             step="0.01"
@@ -592,7 +592,7 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
 
                       {/* Terceira linha: Observação do cliente */}
                       <div>
-                        <label className="block text-xs font-medium text-gray-600 mb-1">Observação do Cliente</label>
+                        <label className="block text-xs font-medium text-gray-600 dark:text-zinc-300 mb-1">Observação do Cliente</label>
                         <Input
                           type="text"
                           placeholder="Descreva o problema relatado pelo cliente"
@@ -652,7 +652,7 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
                       <div className="grid grid-cols-4 gap-3">
                         {/* Campo de busca do componente */}
                         <div className="col-span-2 relative">
-                          <label className="block text-xs font-medium text-gray-600 mb-1">Componente *</label>
+                          <label className="block text-xs font-medium text-gray-600 dark:text-zinc-300 mb-1">Componente *</label>
                           <div className="relative">
                             <Input
                               type="text"
@@ -689,7 +689,7 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
 
                         {/* Quantidade */}
                         <div>
-                          <label className="block text-xs font-medium text-gray-600 mb-1">Quantidade *</label>
+                          <label className="block text-xs font-medium text-gray-600 dark:text-zinc-300 mb-1">Quantidade *</label>
                           <Input
                             type="number"
                             min="1"
@@ -750,7 +750,7 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
 
               <div className="grid grid-cols-2 gap-4 mb-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-1">
                     Garantia
                   </label>
                   <Input
@@ -763,7 +763,7 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-1">
                     Desconto (Opcional)
                   </label>
                   <Input
@@ -781,7 +781,7 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
               {/* Observações */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-1">
                     Observações do Cliente
                   </label>
                   <textarea
@@ -795,7 +795,7 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-1">
                     Observações Técnicas
                   </label>
                   <textarea
@@ -812,7 +812,7 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
               {/* NF e Garantias */}
               <div className="mt-4 grid grid-cols-3 gap-4 items-end">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Nota Fiscal (opcional)</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-1">Nota Fiscal (opcional)</label>
                   <Input
                     type="text"
                     name="nf"
@@ -831,7 +831,7 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
                     onChange={handleInputChange}
                     className="h-4 w-4 text-blue-600 border-gray-300 rounded"
                   />
-                  <label htmlFor="returnGuarantee" className="text-sm text-gray-700">Garantia de Retorno</label>
+                  <label htmlFor="returnGuarantee" className="text-sm text-gray-700 dark:text-zinc-300">Garantia de Retorno</label>
                 </div>
 
                 <div className="flex items-center gap-3">
@@ -843,7 +843,7 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
                     onChange={handleInputChange}
                     className="h-4 w-4 text-blue-600 border-gray-300 rounded"
                   />
-                  <label htmlFor="fabricGuarantee" className="text-sm text-gray-700">Garantia de Fábrica</label>
+                  <label htmlFor="fabricGuarantee" className="text-sm text-gray-700 dark:text-zinc-300">Garantia de Fábrica</label>
                 </div>
               </div>
             </div>

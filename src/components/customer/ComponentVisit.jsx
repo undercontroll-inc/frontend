@@ -48,7 +48,7 @@ const ComponentVisit = () => {
     <div className="flex h-screen overflow-hidden bg-gray-50 dark:bg-zinc-950">
       <SideBar active="visita" />
 
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto" style={{ marginLeft: 'var(--sidebar-offset, 280px)', transition: 'margin-left 300ms ease-in-out' }}>
         <div className="max-w-5xl mx-auto p-6 sm:p-8">
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">

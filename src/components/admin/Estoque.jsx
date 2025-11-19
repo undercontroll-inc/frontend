@@ -107,9 +107,9 @@ export function Estoque() {
 
     if (loading) {
         return (
-            <div className="flex min-h-screen bg-gray-50">
+            <div className="flex min-h-screen bg-gray-50 dark:bg-zinc-950">
                 <SideBar active="storage" />
-                <div className="flex-1 flex items-center justify-center">
+                <div className="flex-1 flex items-center justify-center" style={{ marginLeft: 'var(--sidebar-offset, 280px)', transition: 'margin-left 300ms ease-in-out' }}>
                     <Loading />
                 </div>
             </div>
@@ -120,9 +120,9 @@ export function Estoque() {
         <div className="flex min-h-screen bg-gray-50 dark:bg-zinc-950">
             <SideBar active="storage" />
             
-            <div className="flex-1 p-4 lg:p-6 overflow-x-hidden">
+            <div className="flex-1 p-4 lg:p-6 overflow-x-hidden" style={{ marginLeft: 'var(--sidebar-offset, 280px)', transition: 'margin-left 300ms ease-in-out' }}>
                 {/* Header */}
-                <div className="flex justify-between items-center mb-4">
+                <div className="flex justify-between items-center mb-4 ">
                     <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Gerenciamento de Estoque</h1>
                     <Button 
                         onClick={handleOpenModal}

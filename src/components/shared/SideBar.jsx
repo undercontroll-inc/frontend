@@ -90,9 +90,16 @@ const SideBar = memo(({ active = "repairs" }) => {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handleToggleSidebar]);
 
+  // Atualizar CSS variable para o margin-left
+  useEffect(() => {
+    const sidebarWidth = isOpen ? 224 : 64; // w-56 = 224px, w-16 = 64px
+    const buttonWidth = 56; // largura aproximada do botão + padding
+    document.documentElement.style.setProperty('--sidebar-offset', `${sidebarWidth + buttonWidth}px`);
+  }, [isOpen]);
+
   return (
     <div className="flex relative">
-      <aside className={`${isOpen ? 'w-56' : 'w-16'} text-white border-r ${isAdmin ? 'bg-[#0a1929]' : 'bg-[#041A2D]'} border-gray-800 flex flex-col shadow-lg transition-all duration-300 ease-in-out relative`}>
+      <aside className={`${isOpen ? 'w-56' : 'w-16'} text-white border-r ${isAdmin ? 'bg-[#0a1929]' : 'bg-[#041A2D]'} border-gray-800 flex flex-col shadow-lg transition-all duration-300 ease-in-out fixed top-0 left-0 h-screen z-40`}>
 
         <nav className="flex-1 p-2 flex flex-col space-y-1 overflow-y-auto">
           {isOpen && (
@@ -154,7 +161,7 @@ const SideBar = memo(({ active = "repairs" }) => {
         </div>
       </aside>
 
-      <div className="flex items-start pt-5 pl-2">
+      <div className="flex items-start pt-5 pl-2 fixed top-0 z-50" style={{ left: isOpen ? '224px' : '64px', transition: 'left 300ms ease-in-out' }}>
         <Tooltip
           content={isOpen ? "Recolher (Ctrl+S)" : "Expandir (Ctrl+S)"}
           side="right"

@@ -94,7 +94,7 @@ const ComponentRepair = () => {
     <div className="flex min-h-screen bg-gray-50 dark:bg-zinc-950">
       <SideBar active="repairs" />
 
-      <div className="flex-1 overflow-y-auto h-screen">
+      <div className="flex-1 overflow-y-auto h-screen" style={{ marginLeft: 'var(--sidebar-offset, 280px)', transition: 'margin-left 300ms ease-in-out' }}>
         <div className="max-w-5xl mx-auto px-6 py-8">
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-6">Consertos</h1>

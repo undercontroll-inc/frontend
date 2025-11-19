@@ -47,7 +47,7 @@ class RepairService {
 
   async updateRepair(id, repairData) {
     try {
-      const response = await apiClient.put(`/repairs/${id}`, repairData);
+      const response = await apiClient.patch(`/repairs/${id}`, repairData);
       return response.data;
     } catch (error) {
       console.error(`Erro ao atualizar repair ${id}:`, error);
@@ -57,7 +57,7 @@ class RepairService {
 
   async patchRepair(id, partialData) {
     try {
-      const response = await apiClient.put(`/orders/${id}`, partialData);
+      const response = await apiClient.patch(`/orders/${id}`, partialData);
       return response.data;
     } catch (error) {
       console.error(`Erro ao atualizar parcialmente repair ${id}:`, error);

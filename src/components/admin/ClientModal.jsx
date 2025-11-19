@@ -15,7 +15,8 @@ export const ClientModal = ({ isOpen, onClose, onSave, client = null }) => {
     addressNumber: '',
     password: '',
     avatarUrl: '',
-    userType: 'CUSTOMER'
+    userType: 'CUSTOMER',
+    hasWhatsApp: false
   });
 
   const [errors, setErrors] = useState({});
@@ -45,7 +46,8 @@ export const ClientModal = ({ isOpen, onClose, onSave, client = null }) => {
         addressNumber: client.addressNumber || '',
         password: '',
         avatarUrl: client.avatarUrl || '',
-        userType: client.userType || 'CUSTOMER'
+        userType: client.userType || 'CUSTOMER',
+        hasWhatsApp: client.hasWhatsApp || false
       });
     } else {
       resetForm();
@@ -64,7 +66,8 @@ export const ClientModal = ({ isOpen, onClose, onSave, client = null }) => {
       addressNumber: '',
       password: '',
       avatarUrl: '',
-      userType: 'CUSTOMER'
+      userType: 'CUSTOMER',
+      hasWhatsApp: false
     });
     setErrors({});
   };
@@ -127,7 +130,8 @@ export const ClientModal = ({ isOpen, onClose, onSave, client = null }) => {
       cpf: formData.cpf,
       avatarUrl: formData.avatarUrl || "",
       userType: formData.userType,
-      CEP: formData.CEP
+      CEP: formData.CEP,
+      hasWhatsApp: formData.hasWhatsApp
     };
 
     onSave(dataToSend);
@@ -177,7 +181,7 @@ export const ClientModal = ({ isOpen, onClose, onSave, client = null }) => {
               <div className="grid grid-cols-2 gap-4">
                 {/* Nome */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-1">
                     Nome*
                   </label>
                   <Input
@@ -192,7 +196,7 @@ export const ClientModal = ({ isOpen, onClose, onSave, client = null }) => {
 
                 {/* Sobrenome */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-1">
                     Sobrenome*
                   </label>
                   <Input
@@ -209,7 +213,7 @@ export const ClientModal = ({ isOpen, onClose, onSave, client = null }) => {
               <div className="grid grid-cols-2 gap-4">
                 {/* Celular/Telefone */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Celular/Telefone*
                   </label>
                   <Input
@@ -220,11 +224,25 @@ export const ClientModal = ({ isOpen, onClose, onSave, client = null }) => {
                     onChange={handleChange}
                     error={errors.phone}
                   />
+                  {/* Checkbox WhatsApp */}
+                  <div className="mt-2 flex items-center">
+                    <input
+                      type="checkbox"
+                      id="hasWhatsApp"
+                      name="hasWhatsApp"
+                      checked={formData.hasWhatsApp}
+                      onChange={handleChange}
+                      className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded cursor-pointer"
+                    />
+                    <label htmlFor="hasWhatsApp" className="ml-2 text-sm text-gray-700 dark:text-gray-300 cursor-pointer">
+                      Possui WhatsApp
+                    </label>
+                  </div>
                 </div>
 
                 {/* E-mail */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     E-mail
                   </label>
                   <Input
@@ -241,7 +259,7 @@ export const ClientModal = ({ isOpen, onClose, onSave, client = null }) => {
               <div className="grid grid-cols-2 gap-4">
                 {/* CPF */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-1">
                     CPF
                   </label>
                   <Input
@@ -258,7 +276,7 @@ export const ClientModal = ({ isOpen, onClose, onSave, client = null }) => {
               <div className="grid grid-cols-2 gap-4">
                 {/* CEP */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-1">
                     CEP *
                   </label>
                   <Input
@@ -273,7 +291,7 @@ export const ClientModal = ({ isOpen, onClose, onSave, client = null }) => {
 
                 {/* Endereço */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-1">
                     Endereço
                   </label>
                   <Input
@@ -289,7 +307,7 @@ export const ClientModal = ({ isOpen, onClose, onSave, client = null }) => {
 
               {/* Número */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-1">
                   Número *
                 </label>
                 <Input
@@ -305,7 +323,7 @@ export const ClientModal = ({ isOpen, onClose, onSave, client = null }) => {
           </div>
 
           {/* Footer */}
-          <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-200 bg-gray-50">
+          <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-200 dark:border-zinc-700 bg-gray-50 dark:bg-zinc-900">
             <Button
               type="button"
               variant="outline"

@@ -56,7 +56,7 @@ const ComponentDetails = () => {
     return (
       <div className="flex min-h-screen bg-gray-50 dark:bg-zinc-950">
         <SideBar active="repairs" />
-        <div className="flex-1 flex items-center justify-center">
+        <div className="flex-1 flex items-center justify-center" style={{ marginLeft: 'var(--sidebar-offset, 280px)', transition: 'margin-left 300ms ease-in-out' }}>
           <div className="text-center">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
               Ordem de serviço não encontrada
@@ -101,11 +101,11 @@ const ComponentDetails = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-gray-50 dark:bg-zinc-950">
       <SideBar active="repairs" />
 
       {/* Main Content */}
-      <div className="flex-1 overflow-y-auto h-screen">
+      <div className="flex-1 overflow-y-auto h-screen" style={{ marginLeft: 'var(--sidebar-offset, 280px)', transition: 'margin-left 300ms ease-in-out' }}>
         <div className="max-w-5xl mx-auto px-6 py-8">
           {/* Header com botões */}
           <div className="flex items-center justify-between mb-6">

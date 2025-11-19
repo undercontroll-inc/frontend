@@ -94,7 +94,7 @@ export const RepairDetailSheet = ({ isOpen, onClose, repair, onUpdate }) => {
       onClose={onClose}
       title={`Ordem de Serviço #${repair.id}`}
     >
-      <SheetContent>
+      <SheetContent className='dark:bg-zinc-950'>
         {/* Status Badge */}
         <div className="mb-6">
           <div className={`inline-flex items-center gap-2 px-3 py-2 rounded-lg font-medium ${
@@ -113,9 +113,9 @@ export const RepairDetailSheet = ({ isOpen, onClose, repair, onUpdate }) => {
           <div className="space-y-2">
             {appliances.length > 0 ? (
               appliances.map((appliance) => (
-                <div key={appliance.key} className="flex items-start gap-2">
-                  <span className="text-sm text-gray-600">•</span>
-                  <span className="text-sm text-gray-900">{appliance.text || 'Não especificado'}</span>
+                <div key={appliance.key} className="flex items-start  gap-2">
+                  <span className="text-sm text-gray-600 dark:text-gray-500">•</span>
+                  <span className="text-sm text-gray-900 dark:text-gray-300">{appliance.text || 'Não especificado'}</span>
                 </div>
               ))
             ) : (
@@ -130,8 +130,8 @@ export const RepairDetailSheet = ({ isOpen, onClose, repair, onUpdate }) => {
             {replacementParts.length > 0 ? (
               replacementParts.map((part, index) => (
                 <div key={index} className="flex items-start gap-2">
-                  <span className="text-sm text-gray-600">•</span>
-                  <span className="text-sm text-gray-900">{part}</span>
+                  <span className="text-sm text-gray-600 dark:text-gray-500">•</span>
+                  <span className="text-sm text-gray-900 dark:text-gray-300">{part}</span>
                 </div>
               ))
             ) : (
@@ -142,7 +142,7 @@ export const RepairDetailSheet = ({ isOpen, onClose, repair, onUpdate }) => {
 
         {/* Informações do Cliente */}
         <SheetSection title="Informações do Cliente">
-          <div className="bg-gray-50 rounded-lg p-4 space-y-3">
+          <div className="bg-gray-50 dark:bg-zinc-800 rounded-lg p-4 space-y-3">
             <SheetItem label="Nome" value={repair.clientName || 'Não informado'} className="border-0" />
             <SheetItem label="Email" value={repair.clientEmail || 'Não informado'} className="border-0" />
             <SheetItem 
@@ -161,7 +161,7 @@ export const RepairDetailSheet = ({ isOpen, onClose, repair, onUpdate }) => {
         {/* Datas e Prazos */}
         {(repair.receivedAt || repair.deadline) && (
           <SheetSection title="Datas">
-            <div className="bg-gray-50 rounded-lg p-4 space-y-3">
+            <div className="bg-gray-50 dark:bg-zinc-800 rounded-lg p-4 space-y-3">
               {repair.receivedAt && (
                 <SheetItem 
                   label="Data de Recebimento" 
@@ -190,7 +190,7 @@ export const RepairDetailSheet = ({ isOpen, onClose, repair, onUpdate }) => {
         {/* Valores */}
         {repair.totalValue && (
           <SheetSection title="Valores">
-            <div className="bg-gray-50 rounded-lg p-4 space-y-3">
+            <div className="bg-gray-50 dark:bg-zinc-800 rounded-lg p-4 space-y-3">
               {repair.partsTotal && (
                 <SheetItem 
                   label="Peças" 
@@ -222,7 +222,7 @@ export const RepairDetailSheet = ({ isOpen, onClose, repair, onUpdate }) => {
         )}
 
         {/* Botão de Editar */}
-        <div className="pt-4 border-t border-gray-200">
+        <div className="pt-4 border-t border-gray-200 dark:border-gray-600">
           <Button
             variant="primary"
             className="w-full"
@@ -237,7 +237,10 @@ export const RepairDetailSheet = ({ isOpen, onClose, repair, onUpdate }) => {
       {/* Modal de Detalhes da OS */}
       <OrderDetailModal
         isOpen={isOrderModalOpen}
-        onClose={() => setIsOrderModalOpen(false)}
+        onClose={() => {
+          setIsOrderModalOpen(false);
+          onClose();
+        }}
         repair={repair}
         client={{
           name: repair.clientName || 'Não informado',

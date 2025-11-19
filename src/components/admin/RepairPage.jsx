@@ -108,9 +108,12 @@ export function RepairPage() {
     setIsSheetOpen(true);
   };
 
-  const handleCloseSheet = () => {
+  const handleCloseSheet = async () => {
     setIsSheetOpen(false);
     setTimeout(() => setSelectedRepair(null), 300); // Delay para animação
+    
+    console.log("CU");
+    await loadRepairs();
   };
 
   const handleSaveOrder = async (orderData) => {
@@ -255,7 +258,7 @@ export function RepairPage() {
       {/* Sheet de Detalhes */}
       <RepairDetailSheet
         isOpen={isSheetOpen}
-        onClose={handleCloseSheet}
+        onClose={() => handleCloseSheet}
         repair={selectedRepair}
         onUpdate={loadRepairs}
       />

@@ -229,7 +229,7 @@ const ItemModal = ({ isOpen, onClose, item, onSave }) => {
 
               {/* Descrição */}
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-2">
                   Descrição *
                 </label>
                 <textarea
@@ -257,7 +257,7 @@ const ItemModal = ({ isOpen, onClose, item, onSave }) => {
           </div>
 
           {/* Footer Fixo */}
-          <div className="flex gap-3 px-6 py-4 border-t border-gray-200 flex-shrink-0 justify-end bg-gray-50">
+          <div className="flex gap-3 px-6 py-4flex-shrink-0 justify-end bg-gray-50 dark:bg-zinc-900">
             <Button
               type="button"
               variant="outline"
