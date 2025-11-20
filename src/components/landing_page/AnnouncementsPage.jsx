@@ -1,0 +1,354 @@
+import React, { useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
+import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
+import Logo from "../../../public/images/logo_pelluci.png";
+
+// Mock de dados - depois você pode substituir pela API
+const mockAnnouncements = [
+  {
+    id: 1,
+    category: "Feriados",
+    title: "Funcionamento no Dia da Consciência Negra",
+    description:
+      "Informamos que no dia 20 de novembro (quarta-feira), feriado nacional, estaremos fechados. Retornaremos ao atendimento normal no dia seguinte.",
+    date: "2025-11-19",
+    categoryColor: "blue",
+  },
+  {
+    id: 2,
+    category: "Descontos",
+    title: "🎉 Black Friday - 20% OFF em Peças Originais!",
+    description:
+      "De 25 a 29 de novembro, aproveite 20% de desconto na compra de peças originais para eletrodomésticos. Não perca essa oportunidade!",
+    date: "2025-11-15",
+    categoryColor: "orange",
+  },
+  {
+    id: 3,
+    category: "Feriados",
+    title: "Horário Especial de Natal",
+    description:
+      "No dia 24 de dezembro funcionaremos das 09h às 14h. Dia 25 estaremos fechados. Feliz Natal!",
+    date: "2025-12-10",
+    categoryColor: "blue",
+  },
+  {
+    id: 4,
+    category: "Descontos",
+    title: "Promoção de Fim de Ano - Peças Selecionadas",
+    description:
+      "Confira nossa seleção especial de peças com até 30% de desconto. Válido até 31 de dezembro ou enquanto durarem os estoques.",
+    date: "2025-12-01",
+    categoryColor: "orange",
+  },
+  {
+    id: 5,
+    category: "Feriados",
+    title: "Recesso de Ano Novo",
+    description:
+      "Dia 01 de janeiro estaremos fechados. Retornamos no dia 02/01 com horário normal. Feliz Ano Novo!",
+    date: "2025-12-20",
+    categoryColor: "blue",
+  },
+  {
+    id: 6,
+    category: "Descontos",
+    title: "Janeiro em Promoção - Ventiladores e Climatizadores",
+    description:
+      "Prepare-se para o verão! Ventiladores e climatizadores com desconto especial durante todo o mês de janeiro.",
+    date: "2025-12-28",
+    categoryColor: "orange",
+  },
+];
+
+export const AnnouncementsPage = () => {
+  const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [categoryFilter, setCategoryFilter] = useState("Todos");
+
+  // Filtrar anúncios por categoria
+  const filteredAnnouncements = useMemo(() => {
+    if (categoryFilter === "Todos") {
+      return mockAnnouncements;
+    }
+    return mockAnnouncements.filter((ann) => ann.category === categoryFilter);
+  }, [categoryFilter]);
+
+  // Calcular paginação
+  const totalPages = Math.ceil(filteredAnnouncements.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentAnnouncements = filteredAnnouncements.slice(
+    startIndex,
+    endIndex
+  );
+
+  // Resetar para página 1 quando mudar filtro ou itens por página
+  const handleCategoryChange = (category) => {
+    setCategoryFilter(category);
+    setCurrentPage(1);
+  };
+
+  const handleItemsPerPageChange = (value) => {
+    setItemsPerPage(value);
+    setCurrentPage(1);
+  };
+
+  const handlePrevPage = () => {
+    setCurrentPage((prev) => Math.max(prev - 1, 1));
+  };
+
+  const handleNextPage = () => {
+    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+  };
+
+  const getCategoryStyles = (color) => {
+    if (color === "blue") {
+      return {
+        bg: "from-[#041A2D] to-[#052540]",
+        border: "border-[#0B4BCC]",
+        badge: "bg-[#0B4BCC]",
+      };
+    }
+    return {
+      bg: "from-[#BA4610] to-[#d45012]",
+      border: "border-[#BA4610]",
+      badge: "bg-white text-[#BA4610]",
+    };
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-orange-50/20">
+      {/* Header/Navbar */}
+      <header className="header flex items-center justify-around p-2 bg-gradient-to-r from-[#041A2D] via-[#052540] to-[#041A2D] fixed w-full top-0 z-50 shadow-lg backdrop-blur-md border-b border-white/10">
+        <a
+          href="/"
+          onClick={(e) => {
+            e.preventDefault();
+            navigate("/");
+          }}
+        >
+          <img
+            src={Logo}
+            alt="Logo da irmãos pelluci"
+            className="h-14 sm:h-16 transition-transform hover:scale-105 duration-300 rounded-lg shadow-lg"
+          />
+        </a>
+        <nav className="nav text-white hidden lg:block">
+          <ul className="flex items-center gap-12">
+            <li>
+              <a
+                href="/#about"
+                className="link-underline-animation transition-colors duration-300 font-medium hover:text-gray-300"
+              >
+                Quem somos
+              </a>
+            </li>
+            <li>
+              <a
+                href="/#services"
+                className="link-underline-animation transition-colors duration-300 font-medium hover:text-gray-300"
+              >
+                Nossos Serviços
+              </a>
+            </li>
+            <li>
+              <a
+                href="/#contact"
+                className="link-underline-animation transition-colors duration-300 font-medium hover:text-gray-300"
+              >
+                Contato
+              </a>
+            </li>
+            <li>
+              <a
+                href="/#faq"
+                className="link-underline-animation transition-colors duration-300 font-medium hover:text-gray-300"
+              >
+                Perguntas Frequentes
+              </a>
+            </li>
+          </ul>
+        </nav>
+        <div className="auth-buttons flex gap-3">
+          <button
+            onClick={() => navigate("/login")}
+            className="bg-transparent border-2 border-white text-white px-3 py-1 rounded-lg hover:bg-white hover:text-[#041A2D] transition-all duration-300 cursor-pointer font-medium shadow-md"
+          >
+            Entrar
+          </button>
+          <button
+            onClick={() => navigate("/register")}
+            className="bg-gradient-to-r from-[#BA4610] to-[#d45012] text-white px-3 py-1 rounded-lg hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer font-medium shadow-lg"
+          >
+            Crie sua conta
+          </button>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="pt-24 pb-16 px-4 sm:px-8">
+        <div className="max-w-4xl mx-auto">
+          {/* Botão Voltar */}
+          <button
+            onClick={() => navigate("/")}
+            className="mb-6 flex items-center gap-2 text-[#041A2D] hover:text-[#0B4BCC] transition-colors duration-300 font-medium group"
+          >
+            <ArrowLeft className="h-5 w-5 group-hover:-translate-x-1 transition-transform duration-300" />
+            Voltar para página inicial
+          </button>
+
+          {/* Título */}
+          <div className="text-center mb-8">
+            <h1 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-[#041A2D] to-[#BA4610] bg-clip-text text-transparent mb-3">
+              📢 Central de Anúncios
+            </h1>
+            <p className="text-gray-600 text-lg">
+              Acompanhe todas as novidades, feriados e promoções
+            </p>
+          </div>
+
+          {/* Filtros e Controles */}
+          <div className="bg-white rounded-xl shadow-md p-6 mb-8 border border-gray-200">
+            <div className="grid sm:grid-cols-2 gap-6">
+              {/* Filtro de Categoria */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Filtrar por categoria:
+                </label>
+                <select
+                  value={categoryFilter}
+                  onChange={(e) => handleCategoryChange(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0B4BCC] focus:border-transparent outline-none transition-all"
+                >
+                  <option value="Todos">Todos</option>
+                  <option value="Feriados">Feriados</option>
+                  <option value="Descontos">Descontos</option>
+                </select>
+              </div>
+
+              {/* Itens por Página */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Anúncios por página:
+                </label>
+                <select
+                  value={itemsPerPage}
+                  onChange={(e) =>
+                    handleItemsPerPageChange(Number(e.target.value))
+                  }
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0B4BCC] focus:border-transparent outline-none transition-all"
+                >
+                  <option value={3}>3</option>
+                  <option value={5}>5</option>
+                  <option value={10}>10</option>
+                  <option value={20}>20</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Informações */}
+            <div className="mt-4 pt-4 border-t border-gray-200">
+              <p className="text-sm text-gray-600">
+                Mostrando{" "}
+                <span className="font-semibold">{startIndex + 1}</span> a{" "}
+                <span className="font-semibold">
+                  {Math.min(endIndex, filteredAnnouncements.length)}
+                </span>{" "}
+                de{" "}
+                <span className="font-semibold">
+                  {filteredAnnouncements.length}
+                </span>{" "}
+                anúncio(s)
+              </p>
+            </div>
+          </div>
+
+          {/* Lista de Anúncios */}
+          <div className="space-y-6">
+            {currentAnnouncements.length > 0 ? (
+              currentAnnouncements.map((announcement) => {
+                const styles = getCategoryStyles(announcement.categoryColor);
+                return (
+                  <div
+                    key={announcement.id}
+                    className={`bg-gradient-to-br ${styles.bg} rounded-xl shadow-lg overflow-hidden border-2 ${styles.border} hover:shadow-xl transition-all duration-300`}
+                  >
+                    <div className="p-6 sm:p-8">
+                      <div className="flex items-center justify-between mb-4">
+                        <span
+                          className={`${styles.badge} px-3 py-1 rounded-full text-sm font-semibold`}
+                        >
+                          {announcement.category}
+                        </span>
+                        <span className="text-gray-300 text-sm">
+                          {new Date(announcement.date).toLocaleDateString(
+                            "pt-BR"
+                          )}
+                        </span>
+                      </div>
+                      <h2 className="text-xl sm:text-2xl font-bold text-white mb-3">
+                        {announcement.title}
+                      </h2>
+                      <p className="text-gray-300 leading-relaxed">
+                        {announcement.description}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })
+            ) : (
+              <div className="bg-white rounded-xl shadow-md p-12 text-center border border-gray-200">
+                <p className="text-gray-500 text-lg">
+                  Nenhum anúncio encontrado para os filtros selecionados.
+                </p>
+              </div>
+            )}
+          </div>
+
+          {/* Paginação */}
+          {totalPages > 1 && (
+            <div className="mt-8 flex items-center justify-center gap-4">
+              <button
+                onClick={handlePrevPage}
+                disabled={currentPage === 1}
+                className="flex items-center gap-2 px-4 py-2 bg-white border-2 border-[#0B4BCC] text-[#0B4BCC] rounded-lg hover:bg-[#0B4BCC] hover:text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:text-[#0B4BCC] font-medium"
+              >
+                <ChevronLeft className="h-5 w-5" />
+                Anterior
+              </button>
+
+              <div className="flex items-center gap-2">
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                  (page) => (
+                    <button
+                      key={page}
+                      onClick={() => setCurrentPage(page)}
+                      className={`w-10 h-10 rounded-lg font-semibold transition-all duration-300 ${
+                        currentPage === page
+                          ? "bg-[#0B4BCC] text-white shadow-lg"
+                          : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  )
+                )}
+              </div>
+
+              <button
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages}
+                className="flex items-center gap-2 px-4 py-2 bg-white border-2 border-[#0B4BCC] text-[#0B4BCC] rounded-lg hover:bg-[#0B4BCC] hover:text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:text-[#0B4BCC] font-medium"
+              >
+                Próxima
+                <ChevronRight className="h-5 w-5" />
+              </button>
+            </div>
+          )}
+        </div>
+      </main>
+    </div>
+  );
+};
