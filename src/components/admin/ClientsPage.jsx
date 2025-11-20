@@ -187,16 +187,16 @@ export function ClientsPage() {
   }
 
   return (
-    <div className="flex h-screen bg-gray-50 overflow-hidden">
+    <div className="flex h-screen bg-gray-50 dark:bg-zinc-950 overflow-hidden">
       <SideBar active="clients" />
       
-      <div className="flex-1 flex overflow-hidden">
+      <div className="flex-1 flex overflow-hidden" style={{ marginLeft: 'var(--sidebar-offset, 280px)', transition: 'margin-left 300ms ease-in-out' }}>
         {/* Área Principal - Tabela */}
         <div className="flex-1 flex flex-col overflow-hidden">
           <div className="p-8 pb-4">
             {/* Header */}
             <div className="mb-6">
-              <h1 className="text-3xl font-bold text-gray-900">Gerenciamento de Clientes</h1>
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Gerenciamento de Clientes</h1>
             </div>
 
             {/* Search and Actions */}
@@ -225,7 +225,7 @@ export function ClientsPage() {
 
           {/* Table Container com Scroll */}
           <div className="flex-1 px-8 pb-8 overflow-hidden">
-            <div className="bg-white rounded-lg shadow overflow-hidden h-full flex flex-col">
+            <div className="bg-white dark:bg-zinc-900 rounded-lg shadow overflow-hidden h-full flex flex-col">
               <div className="flex-1 overflow-auto">
                 <table className="w-full">
                   <thead className="sticky top-0 z-10">
@@ -235,7 +235,7 @@ export function ClientsPage() {
                       <th className="px-6 py-4 text-left text-sm font-semibold">E-mail</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-200">
+                  <tbody className="divide-y divide-gray-200 dark:divide-zinc-800">
                     {filteredClients.length === 0 ? (
                       <tr>
                         <td colSpan="3" className="px-6 py-8 text-center text-gray-500">
@@ -248,18 +248,18 @@ export function ClientsPage() {
                           key={client.id}
                           className={`cursor-pointer transition-colors ${
                             selectedClient?.id === client.id 
-                              ? 'bg-gray-200' 
-                              : 'hover:bg-gray-50'
+                              ? 'bg-gray-200 dark:bg-zinc-700' 
+                              : 'hover:bg-gray-50 dark:hover:bg-zinc-800'
                           }`}
                           onClick={() => handleRowClick(client)}
                         >
-                          <td className="px-6 py-4 text-sm text-gray-900">
+                          <td className="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
                             {client.name || 'Não informado'}
                           </td>
-                          <td className="px-6 py-4 text-sm text-gray-900">
+                          <td className="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
                             {formatPhone(client.phone)}
                           </td>
-                          <td className="px-6 py-4 text-sm text-gray-900">
+                          <td className="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
                             {client.email || '-'}
                           </td>
                         </tr>
@@ -274,14 +274,14 @@ export function ClientsPage() {
 
         {/* Painel Lateral Fixo - Detalhes do Cliente */}
         {selectedClient && (
-          <div className="w-[450px] bg-gray-100 border-l border-gray-300 flex flex-col h-full overflow-hidden">
+          <div className="w-[450px] bg-gray-100 dark:bg-zinc-900 border-l border-gray-300 dark:border-zinc-700 flex flex-col h-full overflow-hidden">
             {/* Header Fixo */}
-            <div className="p-6 border-b border-gray-300 bg-white flex-shrink-0">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            <div className="p-6 border-b border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 flex-shrink-0">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
                 {selectedClient.name || 'Cliente'}
               </h2>
               {selectedClient.createdAt && (
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-gray-600 dark:text-gray-400">
                   <span className="font-medium">Cadastrado desde:</span> {formatDate(selectedClient.createdAt)}
                 </p>
               )}
@@ -289,31 +289,31 @@ export function ClientsPage() {
 
             {/* Informações do Cliente - Com Scroll */}
             <div className="flex-1 overflow-y-auto">
-              <div className="p-6 space-y-4 bg-white border-b border-gray-300">
+              <div className="p-6 space-y-4 bg-white dark:bg-zinc-800 border-b border-gray-300 dark:border-zinc-700">
                 <div>
-                  <h3 className="text-sm font-semibold text-gray-700 mb-2">Telefone</h3>
-                  <p className="text-base font-medium text-gray-900">
+                  <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Telefone</h3>
+                  <p className="text-base font-medium text-gray-900 dark:text-gray-100">
                     {formatPhone(selectedClient.phone) || 'Não informado'}
                   </p>
                 </div>
 
                 <div>
-                  <h3 className="text-sm font-semibold text-gray-700 mb-2">Email</h3>
-                  <p className="text-base font-medium text-gray-900">
+                  <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Email</h3>
+                  <p className="text-base font-medium text-gray-900 dark:text-gray-100">
                     {selectedClient.email || 'Não informado'}
                   </p>
                 </div>
 
                 <div>
-                  <h3 className="text-sm font-semibold text-gray-700 mb-2">CPF</h3>
-                  <p className="text-base font-medium text-gray-900">
+                  <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">CPF</h3>
+                  <p className="text-base font-medium text-gray-900 dark:text-gray-100">
                     {formatCPF(selectedClient.cpf) || 'Não informado'}
                   </p>
                 </div>
 
                 <div>
-                  <h3 className="text-sm font-semibold text-gray-700 mb-2">Endereço</h3>
-                  <p className="text-base font-medium text-gray-900">
+                  <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Endereço</h3>
+                  <p className="text-base font-medium text-gray-900 dark:text-gray-100">
                     {selectedClient.address || 'Não informado'}
                   </p>
                 </div>
@@ -321,15 +321,15 @@ export function ClientsPage() {
 
               {/* Histórico */}
               <div className="p-6">
-                <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wide mb-4 flex items-center gap-2">
+                <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 uppercase tracking-wide mb-4 flex items-center gap-2">
                   Histórico
-                  <span className="text-xs text-gray-500 normal-case">▼</span>
+                  <span className="text-xs text-gray-500 dark:text-gray-400 normal-case">▼</span>
                 </h3>
 
                 {loadingRepairs ? (
-                  <p className="text-sm text-gray-500 italic">Carregando...</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 italic">Carregando...</p>
                 ) : clientRepairs.length === 0 ? (
-                  <p className="text-sm text-gray-500 italic">Nenhuma ordem de serviço encontrada</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 italic">Nenhuma ordem de serviço encontrada</p>
                 ) : (
                   <div className="space-y-3">
                     {clientRepairs.map((repair) => {

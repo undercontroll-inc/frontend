@@ -19,25 +19,23 @@ const Calendar = () => {
   }
 
   return (
-    <div className="flex h-screen bg-gray-50 dark:bg-gray-900 overflow-hidden transition-colors duration-200">
+    <div className="flex h-screen bg-gray-50 dark:bg-zinc-950 overflow-hidden transition-colors duration-200">
       <SideBar active="calendar" />
 
       <div className="flex-1 overflow-y-auto">
         <PageContainer>
           {/* Header */}
-          <Card className="mb-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h1 className="text-gray-900 dark:text-gray-100 text-xl font-bold mb-2 flex items-center gap-3">
-                  <CalendarIcon className="h-8 w-8" />
-                  Calendário de Agendamentos
-                </h1>
-                <p className="text-gray-600 dark:text-gray-400">
-                  Visualize e gerencie os agendamentos e compromissos
-                </p>
-              </div>
+          <div className="flex items-center mb-10 justify-between">
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-1 mt-1 flex items-center gap-3">
+                <CalendarIcon className="h-8 w-8" />
+                Calendário de Agendamentos
+              </h1>
+              <p className="text-gray-600 dark:text-gray-400">
+                Visualize e gerencie os agendamentos e compromissos
+              </p>
             </div>
-          </Card>
+          </div>
 
           {/* Calendar Container */}
           <Card>
@@ -50,7 +48,7 @@ const Calendar = () => {
                   Calendário integrado com eventos e feriados do Brasil
                 </p>
               </div>
-              
+
               {/* Google Calendar Embed */}
               <div className="relative w-full overflow-hidden rounded-lg border border-gray-300 dark:border-gray-600 shadow-sm dark:shadow-gray-900/50">
                 <div className="w-full" style={{ paddingBottom: '75%', position: 'relative' }}>

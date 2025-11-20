@@ -69,7 +69,7 @@ export function DropdownMenuContent({ align = "start", children }) {
   return (
     <div
       ref={menuRef}
-      className={`absolute ${alignmentClasses[align]} mt-2 w-48 rounded-lg bg-white dark:bg-[#0a1f35] border border-gray-200 dark:border-gray-700 shadow-lg z-50 py-1 animate-in fade-in-0 zoom-in-95`}
+      className={`absolute ${alignmentClasses[align]} mt-2 w-48 rounded-lg bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700 shadow-lg z-50 py-1 animate-in fade-in-0 zoom-in-95`}
     >
       {children}
     </div>
@@ -87,7 +87,7 @@ export function DropdownMenuItem({ onClick, children }) {
   return (
     <button
       onClick={handleClick}
-      className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-[#1e293b] transition-colors duration-150 first:rounded-t-lg last:rounded-b-lg"
+      className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-zinc-300 hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors duration-150 first:rounded-t-lg last:rounded-b-lg"
     >
       {children}
     </button>

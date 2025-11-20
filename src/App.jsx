@@ -21,14 +21,11 @@ import { LandingPage } from "./components/landing_page/LandingPage";
 import { AnnouncementsPage } from "./components/landing_page/AnnouncementsPage";
 import { Estoque } from "./components/admin/Estoque";
 import { ThemeProvider } from "./components/shared/ThemeProvider";
-import { ThemeDebug } from "./components/shared/ThemeDebug";
 import SettingsPage from "./components/shared/SettingsPage";
 
 function App() {
   return (
     <ThemeProvider>
-      {/*       <ThemeDebug />
-       */}{" "}
       <AuthProvider>
         <ToastProvider>
           <Router>

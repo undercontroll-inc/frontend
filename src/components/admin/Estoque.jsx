@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import SideBar from "../shared/SideBar";
 import Button from "../shared/Button";
-import Input from "../shared/Input";
 import Select from "../shared/Select";
 import ItemModal from "./ItemModal";
 import { Search, Plus, Pencil, Trash2 } from "lucide-react";
 import ComponentService from "../../services/ComponentService";
 import { useToast } from "../../contexts/ToastContext";
 import Loading from "../shared/Loading";
+import Input from "../shared/Input";
 
 export function Estoque() {
     const [searchTerm, setSearchTerm] = useState("");
@@ -107,9 +107,9 @@ export function Estoque() {
 
     if (loading) {
         return (
-            <div className="flex min-h-screen bg-gray-50">
+            <div className="flex min-h-screen bg-gray-50 dark:bg-zinc-950">
                 <SideBar active="storage" />
-                <div className="flex-1 flex items-center justify-center">
+                <div className="flex-1 flex items-center justify-center" style={{ marginLeft: 'var(--sidebar-offset, 280px)', transition: 'margin-left 300ms ease-in-out' }}>
                     <Loading />
                 </div>
             </div>
@@ -117,13 +117,13 @@ export function Estoque() {
     }
 
     return (
-        <div className="flex min-h-screen bg-gray-50">
+        <div className="flex min-h-screen bg-gray-50 dark:bg-zinc-950">
             <SideBar active="storage" />
             
-            <div className="flex-1 p-4 lg:p-6 overflow-x-hidden">
+            <div className="flex-1 p-4 lg:p-6 overflow-x-hidden" style={{ marginLeft: 'var(--sidebar-offset, 280px)', transition: 'margin-left 300ms ease-in-out' }}>
                 {/* Header */}
-                <div className="flex justify-between items-center mb-4">
-                    <h1 className="text-3xl font-bold text-gray-900">Gerenciamento de Estoque</h1>
+                <div className="flex justify-between items-center mb-4 ">
+                    <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Gerenciamento de Estoque</h1>
                     <Button 
                         onClick={handleOpenModal}
                         className="bg-orange-500 hover:bg-orange-600 focus:ring-orange-500 text-sm px-4 py-2"
@@ -134,17 +134,17 @@ export function Estoque() {
                 </div>
 
                 {/* Filters Section */}
-                <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
+                <div className=" rounded-lg shadow-sm p-4 mb-4">
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
                         {/* Search Input */}
                         <div className="relative">
                             <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                            <input
+                            <Input
                                 type="text"
                                 placeholder="Pesquisa por item"
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                className="w-full pl-8 pr-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent"
+                                className="w-full pl-8 pr-3 py-2 text-sm border  rounded-lg focus:outline-none focus:ring-2  focus:border-transparent"
                             />
                         </div>
 
@@ -196,7 +196,7 @@ export function Estoque() {
                 </div>
 
                 {/* Table */}
-                <div className="bg-white rounded-lg shadow-sm overflow-hidden">
+                <div className="bg-white dark:bg-zinc-900 rounded-lg shadow-sm overflow-hidden">
                     {/* Scrollable container for table */}
                     <div className="overflow-auto max-h-[calc(100vh-280px)]">
                         <table className="w-full min-w-max">
@@ -213,7 +213,7 @@ export function Estoque() {
                                     <th className="px-3 py-3 text-center text-xs font-semibold whitespace-nowrap">Ações</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-gray-200">
+                            <tbody className="divide-y divide-gray-200 dark:divide-zinc-800">
                                 {filteredItems.length === 0 ? (
                                     <tr>
                                         <td colSpan="9" className="text-center py-8">
@@ -224,16 +224,16 @@ export function Estoque() {
                                     filteredItems.map((item, index) => (
                                         <tr 
                                             key={item.id} 
-                                            className={index % 2 === 0 ? "bg-white" : "bg-blue-50"}
+                                            className={index % 2 === 0 ? "bg-white dark:bg-zinc-900" : "bg-blue-50 dark:bg-zinc-800"}
                                         >
-                                            <td className="px-3 py-3 text-xs text-gray-900">{item.id}</td>
-                                            <td className="px-3 py-3 text-xs text-gray-900 max-w-[150px] truncate" title={item.item}>{item.item}</td>
-                                            <td className="px-3 py-3 text-xs text-gray-900 whitespace-nowrap">{item.brand}</td>
-                                            <td className="px-3 py-3 text-xs text-gray-900 whitespace-nowrap">{item.category}</td>
-                                            <td className="px-3 py-3 text-xs text-gray-900">{item.quantity}</td>
-                                            <td className="px-3 py-3 text-xs text-gray-900 whitespace-nowrap">{item.price}</td>
-                                            <td className="px-3 py-3 text-xs text-gray-900 whitespace-nowrap">{item.supplier}</td>
-                                            <td className="px-3 py-3 text-xs text-gray-600 max-w-[200px] truncate" title={item.description}>
+                                            <td className="px-3 py-3 text-xs text-gray-900 dark:text-gray-100">{item.id}</td>
+                                            <td className="px-3 py-3 text-xs text-gray-900 dark:text-gray-100 max-w-[150px] truncate" title={item.item}>{item.item}</td>
+                                            <td className="px-3 py-3 text-xs text-gray-900 dark:text-gray-100 whitespace-nowrap">{item.brand}</td>
+                                            <td className="px-3 py-3 text-xs text-gray-900 dark:text-gray-100 whitespace-nowrap">{item.category}</td>
+                                            <td className="px-3 py-3 text-xs text-gray-900 dark:text-gray-100">{item.quantity}</td>
+                                            <td className="px-3 py-3 text-xs text-gray-900 dark:text-gray-100 whitespace-nowrap">{item.price}</td>
+                                            <td className="px-3 py-3 text-xs text-gray-900 dark:text-gray-100 whitespace-nowrap">{item.supplier}</td>
+                                            <td className="px-3 py-3 text-xs text-gray-600 dark:text-gray-400 max-w-[200px] truncate" title={item.description}>
                                                 {item.description}
                                             </td>
                                             <td className="px-3 py-3">

@@ -117,16 +117,16 @@ const ComponentModal = ({ isOpen, onClose, component, onSave }) => {
 
       {/* Modal */}
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
-        <div className="bg-white rounded-lg shadow-xl max-w-md w-full my-8 flex flex-col" style={{ maxHeight: 'calc(100vh - 4rem)' }}>
+        <div className="bg-white dark:bg-zinc-900 rounded-lg shadow-xl max-w-md w-full my-8 flex flex-col" style={{ maxHeight: 'calc(100vh - 4rem)' }}>
           {/* Header Fixo */}
-          <div className="flex items-center justify-between p-6 border-b border-gray-200 flex-shrink-0">
-            <h2 className="text-xl font-semibold text-gray-900">
+          <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
               {isEditing ? "Editar Componente" : "Novo Componente"}
             </h2>
             <button
               onClick={handleClose}
               disabled={loading}
-              className="text-gray-400 hover:text-gray-600 transition-colors"
+              className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
             >
               <X className="h-6 w-6" />
             </button>
@@ -145,7 +145,7 @@ const ComponentModal = ({ isOpen, onClose, component, onSave }) => {
             />
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-1">
                 Descrição *
               </label>
               <textarea
@@ -153,12 +153,12 @@ const ComponentModal = ({ isOpen, onClose, component, onSave }) => {
                 value={formData.description}
                 onChange={handleInputChange}
                 className={`
-                  w-full px-5 py-4 border rounded-lg bg-white text-gray-900 placeholder-gray-500
+                  w-full px-5 py-4 border rounded-lg bg-white dark:bg-zinc-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400
                   focus:outline-none focus:ring-2 focus:ring-offset-1 transition-all duration-200 text-base
                   ${
                     errors.description
                       ? "border-red-300 focus:border-red-500 focus:ring-red-200"
-                      : "border-gray-300 focus:border-slate-500 focus:ring-slate-200"
+                      : "border-gray-300 dark:border-gray-600 focus:border-slate-500 focus:ring-slate-200"
                   }
                 `}
                 placeholder="Descreva o componente"

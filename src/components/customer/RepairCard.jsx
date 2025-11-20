@@ -77,8 +77,8 @@ const RepairCard = memo(({ repair }) => {
   );
 
   return (
-    <div className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-sm dark:shadow-gray-900/50 overflow-hidden hover:shadow-md dark:hover:shadow-gray-900/70 transition-all duration-200">
-      <div className="flex items-center justify-between px-4 py-3 bg-[#041A2D] dark:bg-gray-900 text-white">
+    <div className="bg-white dark:bg-zinc-900 border border-gray-300 dark:border-zinc-700 rounded-lg shadow-sm dark:shadow-zinc-900/50 overflow-hidden hover:shadow-md dark:hover:shadow-zinc-900/70 transition-all duration-200">
+      <div className="flex items-center justify-between px-4 py-3 bg-[#041A2D] dark:bg-zinc-800 text-white">
         <div className="flex items-center gap-3">
           <FileText className="h-4 w-4" />
           <span className="text-sm font-medium">OS:</span>
@@ -142,7 +142,7 @@ const RepairCard = memo(({ repair }) => {
           )}
         </div>
 
-        <div className="flex justify-end pt-2 border-t border-gray-100 dark:border-gray-700">
+        <div className="flex justify-end pt-2 border-t border-gray-100 dark:border-zinc-700">
           <button
             className="rounded-md p-2 text-white bg-[#0037a7] dark:bg-blue-600 hover:bg-[#002d8a] dark:hover:bg-blue-700 hover:cursor-pointer transition-colors duration-200"
             onClick={handleViewDetails}

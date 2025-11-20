@@ -3,10 +3,10 @@ import {
   Upload,
   Trash2,
   User,
-  ChevronRight,
-  ChevronLeft,
   UserCircle,
   Palette,
+  Sun,
+  Moon,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
@@ -17,9 +17,8 @@ import { saveUserData } from "../../utils/auth";
 import Input from "./Input";
 import Button from "./Button";
 import { useToast } from "../../contexts/ToastContext";
-import Tooltip from "./Tooltip";
-import UserDropdown from "./UserDropdown";
-import Foto from "../../../public/images/logo_pelluci.jpg";
+import { useTheme } from "./ThemeProvider";
+import SideBar from "./SideBar";
 
 // Funções de formatação
 const formatCPF = (value) => {
@@ -60,14 +59,11 @@ const unformatValue = (value) => {
 export const SettingsPage = () => {
   const { user, updateUser } = useAuth();
   const toast = useToast();
+  const { theme, setTheme } = useTheme();
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
 
   const [activeTab, setActiveTab] = useState("personal");
-  const [isOpen, setIsOpen] = useState(() => {
-    const saved = localStorage.getItem("sidebarOpen");
-    return saved !== null ? saved === "true" : true;
-  });
 
   const [formData, setFormData] = useState({
     name: "",
@@ -118,28 +114,6 @@ export const SettingsPage = () => {
       setErrors({});
     }
   }, [user]);
-
-  // Otimização: useCallback para funções que não dependem de estado
-  const handleToggleSidebar = useCallback(() => {
-    setIsOpen((prev) => {
-      const newState = !prev;
-      localStorage.setItem("sidebarOpen", String(newState));
-      return newState;
-    });
-  }, []);
-
-  // Atalho Ctrl+S para toggle sidebar
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.ctrlKey && e.key === "s") {
-        e.preventDefault();
-        handleToggleSidebar();
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [handleToggleSidebar]);
 
   const handleAvatarChange = useCallback(
     async (e) => {
@@ -367,127 +341,47 @@ export const SettingsPage = () => {
   );
 
   return (
-    <div className="flex min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Sidebar Customizada */}
-      <div className="flex relative">
-        <aside
-          className={`${
-            isOpen ? "w-56" : "w-16"
-          } text-white border-r bg-[#0a1929] dark:bg-gray-950 border-gray-800 dark:border-gray-800 flex flex-col shadow-lg dark:shadow-gray-900/50 transition-all duration-300 ease-in-out relative`}
-        >
-          <div className={`p-4 border-b border-gray-800 ${!isOpen && "px-2"}`}>
-            <div
-              className={`flex items-center ${
-                isOpen ? "gap-2" : "justify-center"
-              }`}
-            >
-              <div className="">
-                <img width={50} height={50} src={Foto} className="rounded-md" />
-              </div>
-              {isOpen && (
-                <div className="flex-1">
-                  <div className="font-bold text-base text-white">Pelluci</div>
-                  <div className="text-xs text-gray-400">Sistema OS</div>
-                </div>
-              )}
-            </div>
-          </div>
+    <div className="flex min-h-screen bg-gray-50 dark:bg-zinc-950">
+      <SideBar />
 
-          <nav className="flex-1 p-2 flex flex-col space-y-1 overflow-y-auto">
-            {isOpen && (
-              <div className="px-3 py-2">
-                <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                  Configurações
-                </h2>
-              </div>
-            )}
-            {menuItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = activeTab === item.id;
-
-              const buttonContent = (
-                <button
-                  key={item.id}
-                  onClick={() => setActiveTab(item.id)}
-                  className={`
-                    group w-full flex items-center ${
-                      isOpen ? "gap-3 px-3" : "justify-center px-2"
-                    } py-2 rounded-md text-sm font-medium
-                    transition-all duration-200 ease-in-out
-                    ${
-                      isActive
-                        ? "bg-[#0B4BCC] text-white"
-                        : "text-gray-400 hover:bg-[#1e293b] hover:text-white"
-                    }
-                  `}
-                >
-                  <Icon
-                    className={`h-4 w-4 flex-shrink-0 ${
-                      isActive
-                        ? ""
-                        : "group-hover:scale-110 transition-transform duration-200"
-                    }`}
-                  />
-                  {isOpen && (
-                    <span className="flex-1 text-left text-sm">
-                      {item.label}
-                    </span>
-                  )}
-                </button>
-              );
-
-              if (!isOpen) {
-                return (
-                  <Tooltip key={item.id} content={item.label} side="right">
-                    {buttonContent}
-                  </Tooltip>
-                );
-              }
-
-              return buttonContent;
-            })}
-          </nav>
-
-          <div className="p-2 border-t border-gray-800 sticky bottom-0 bg-[#0a1929] dark:bg-gray-950">
-            <UserDropdown isOpen={isOpen} />
-          </div>
-        </aside>
-
-        <div className="flex items-start pt-5 pl-2">
-          <Tooltip
-            content={isOpen ? "Recolher (Ctrl+S)" : "Expandir (Ctrl+S)"}
-            side="right"
-          >
-            <button
-              onClick={handleToggleSidebar}
-              className="p-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-[#041A2D] dark:hover:text-gray-200 transition-all duration-200 hover:shadow-lg"
-              aria-label={
-                isOpen ? "Recolher menu (Ctrl+S)" : "Expandir menu (Ctrl+S)"
-              }
-            >
-              {isOpen ? (
-                <ChevronLeft className="h-4 w-4" />
-              ) : (
-                <ChevronRight className="h-4 w-4" />
-              )}
-            </button>
-          </Tooltip>
-        </div>
-      </div>
-
-      {/* Conteúdo Principal */}
-      <div className="flex-1 p-6 md:p-8">
+      {/* Conteúdo Principal - com padding-left para compensar a sidebar fixa */}
+      <div className="flex-1 p-6 md:p-8" style={{ marginLeft: 'var(--sidebar-offset, 280px)', transition: 'margin-left 300ms ease-in-out' }}>
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="mb-6">
             <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-              {activeTab === "personal" ? "Dados Pessoais" : "Tema e Aparência"}
+              Configurações
             </h1>
             <p className="text-gray-600 dark:text-gray-400 mt-1">
-              {activeTab === "personal"
-                ? "Gerencie suas informações pessoais"
-                : "Personalize a aparência do sistema"}
+              Gerencie suas preferências e informações pessoais
             </p>
+          </div>
+
+          {/* Navegação em Abas */}
+          <div className="mb-6 border-b border-gray-200 dark:border-zinc-700">
+            <nav className="flex gap-6">
+              {menuItems.map((item) => {
+                const Icon = item.icon;
+                const isActive = activeTab === item.id;
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => setActiveTab(item.id)}
+                    className={`
+                      flex items-center gap-2 pb-3 px-1 border-b-2 transition-colors
+                      ${
+                        isActive
+                          ? "border-[#0B4BCC] text-[#0B4BCC] dark:border-[#0B4BCC] dark:text-[#0B4BCC]"
+                          : "border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-zinc-600"
+                      }
+                    `}
+                  >
+                    <Icon className="h-4 w-4" />
+                    <span className="font-medium text-sm">{item.label}</span>
+                  </button>
+                );
+              })}
+            </nav>
           </div>
 
           {/* Aba Dados Pessoais */}
@@ -740,28 +634,52 @@ export const SettingsPage = () => {
           {activeTab === "theme" && (
             <div className="space-y-6">
               {/* Seção: Tema */}
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+              <div className="bg-white dark:bg-zinc-900 rounded-lg shadow-sm border border-gray-200 dark:border-zinc-700 p-6">
                 <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
                   Aparência do Sistema
                 </h2>
                 <p className="text-gray-600 dark:text-gray-400 mb-6">
-                  As cores e temas do sistema serão configurados pelo
-                  administrador
+                  Escolha entre modo claro ou escuro para personalizar sua experiência
                 </p>
 
-                <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg opacity-60 cursor-not-allowed">
+                <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-zinc-800 rounded-lg">
                   <div>
                     <h3 className="text-base font-medium text-gray-900 dark:text-gray-100">
-                      Alternar Tema
+                      Tema Atual
                     </h3>
                     <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                      Funcionalidade em desenvolvimento
+                      {theme === 'light' ? 'Modo Claro' : 'Modo Escuro'}
                     </p>
                   </div>
-                  <div className="flex items-center gap-2 px-3 py-2 bg-gray-200 dark:bg-gray-600 rounded-md">
-                    <span className="text-sm text-gray-700 dark:text-gray-300">
-                      Sistema
-                    </span>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => setTheme('light')}
+                      className={`
+                        px-4 py-2 rounded-lg border transition-all duration-200 flex items-center gap-2
+                        ${
+                          theme === 'light'
+                            ? 'bg-white border-[#0B4BCC] text-[#0B4BCC] shadow-sm'
+                            : 'bg-gray-100 dark:bg-zinc-700 border-gray-300 dark:border-zinc-600 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-zinc-600'
+                        }
+                      `}
+                    >
+                      <Sun className="h-4 w-4" />
+                      <span className="text-sm font-medium">Claro</span>
+                    </button>
+                    <button
+                      onClick={() => setTheme('dark')}
+                      className={`
+                        px-4 py-2 rounded-lg border transition-all duration-200 flex items-center gap-2
+                        ${
+                          theme === 'dark'
+                            ? 'bg-zinc-800 border-[#0B4BCC] text-[#0B4BCC] shadow-sm'
+                            : 'bg-gray-100 dark:bg-zinc-700 border-gray-300 dark:border-zinc-600 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-zinc-600'
+                        }
+                      `}
+                    >
+                      <Moon className="h-4 w-4" />
+                      <span className="text-sm font-medium">Escuro</span>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -772,18 +690,17 @@ export const SettingsPage = () => {
                   <Palette className="h-5 w-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
                   <div>
                     <h4 className="text-sm font-medium text-blue-900 dark:text-blue-100">
-                      Preferências de tema
+                      Preferências visuais
                     </h4>
                     <p className="text-sm text-blue-700 dark:text-blue-300 mt-1">
-                      Em breve você poderá personalizar as cores e temas do
-                      sistema de acordo com suas preferências.
+                      O tema selecionado será aplicado em todas as páginas do sistema para proporcionar uma experiência visual consistente.
                     </p>
                   </div>
                 </div>
               </div>
 
               {/* Botão Voltar */}
-              <div className="sticky bottom-0 mt-6 py-4 bg-gray-50 dark:bg-gray-900/50 border-t border-gray-200 dark:border-gray-700 rounded-lg">
+              <div className="sticky bottom-0 mt-6 py-4">
                 <div className="flex items-center justify-start">
                   <Button
                     type="button"

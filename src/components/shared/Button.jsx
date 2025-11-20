@@ -18,14 +18,14 @@ const Button = forwardRef(
 
     const variants = {
       primary:
-        "bg-[#041A2D] hover:bg-slate-700 text-white focus:ring-slate-900 dark:bg-slate-700 dark:hover:bg-slate-600",
+        "bg-[#041A2D] hover:bg-slate-700 text-white focus:ring-slate-900 dark:bg-zinc-800 dark:hover:bg-zinc-700",
       secondary:
-        "bg-gray-100 hover:bg-gray-200 text-gray-900 focus:ring-gray-500 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-100",
+        "bg-gray-100 hover:bg-gray-200 text-gray-900 focus:ring-gray-500 dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:text-zinc-100",
       danger: "bg-red-600 hover:bg-red-700 text-white focus:ring-red-500 dark:bg-red-700 dark:hover:bg-red-800",
       outline:
-        "border border-gray-300 hover:bg-gray-50 text-gray-700 focus:ring-gray-500 dark:border-gray-600 dark:hover:bg-gray-800 dark:text-gray-300 dark:hover:text-white",
+        "border border-gray-300 hover:bg-gray-50 text-gray-700 focus:ring-gray-500 dark:border-zinc-700 dark:hover:bg-zinc-800 dark:text-zinc-300 dark:hover:text-white",
       light:
-        "bg-white hover:bg-gray-50 text-[#041A2D] border border-white focus:ring-gray-300",
+        "bg-white hover:bg-gray-50 text-[#041A2D] border border-white focus:ring-gray-300 dark:bg-zinc-900 dark:text-zinc-100 dark:border-zinc-700",
     };
 
     const sizes = {

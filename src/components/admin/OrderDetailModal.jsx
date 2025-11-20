@@ -277,7 +277,7 @@ export const OrderDetailModal = ({ isOpen, onClose, repair, client, onUpdate }) 
 
       {/* Modal */}
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[95vh] overflow-hidden flex flex-col animate-modal-in">
+        <div className="bg-white dark:bg-zinc-900 rounded-lg shadow-xl w-full max-w-4xl max-h-[95vh] overflow-hidden flex flex-col animate-modal-in">
           {/* Header */}
           <div className="flex items-center justify-between px-6 py-4 bg-blue-600 text-white">
             <div className="flex items-center gap-4">
@@ -329,10 +329,10 @@ export const OrderDetailModal = ({ isOpen, onClose, repair, client, onUpdate }) 
           </div>
 
           {/* Content */}
-          <div className="flex-1 overflow-y-auto p-6 bg-gray-100">
+          <div className="flex-1 overflow-y-auto p-6 bg-gray-100 dark:bg-zinc-950">
             {/* Status */}
-            <div className="bg-white rounded-lg p-4 mb-4">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">Status da Ordem</h3>
+            <div className="bg-white dark:bg-zinc-900 rounded-lg p-4 mb-4">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-zinc-100 mb-3">Status da Ordem</h3>
               {isEditing ? (
                 <Select
                   value={editedRepair.status}
@@ -361,30 +361,30 @@ export const OrderDetailModal = ({ isOpen, onClose, repair, client, onUpdate }) 
             </div>
 
             {/* Dados do Cliente */}
-            <div className="bg-white rounded-lg p-4 mb-4">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">Dados do Cliente</h3>
+            <div className="bg-white dark:bg-zinc-900 rounded-lg p-4 mb-4">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-zinc-100 mb-3">Dados do Cliente</h3>
               <div className="grid grid-cols-4 gap-4">
                 <div>
-                  <p className="text-xs text-gray-600 mb-1">Nome</p>
-                  <p className="text-sm font-medium text-gray-900">
+                  <p className="text-xs text-gray-600 dark:text-zinc-400 mb-1">Nome</p>
+                  <p className="text-sm font-medium text-gray-900 dark:text-zinc-100">
                     {client?.name || repair.clientName || 'Não informado'}
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-600 mb-1">CPF</p>
-                  <p className="text-sm font-medium text-gray-900">
+                  <p className="text-xs text-gray-600 dark:text-zinc-400 mb-1">CPF</p>
+                  <p className="text-sm font-medium text-gray-900 dark:text-zinc-100">
                     {client?.cpf || repair.clientCPF || 'Não informado'}
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-600 mb-1">Telefone</p>
-                  <p className="text-sm font-medium text-gray-900">
+                  <p className="text-xs text-gray-600 dark:text-zinc-400 mb-1">Telefone</p>
+                  <p className="text-sm font-medium text-gray-900 dark:text-zinc-100">
                     {client?.phone || repair.clientPhone || 'Não informado'}
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-600 mb-1">Email</p>
-                  <p className="text-sm font-medium text-gray-900">
+                  <p className="text-xs text-gray-600 dark:text-zinc-400 mb-1">Email</p>
+                  <p className="text-sm font-medium text-gray-900 dark:text-zinc-100">
                     {client?.email || repair.clientEmail || 'Não informado'}
                   </p>
                 </div>
@@ -392,8 +392,8 @@ export const OrderDetailModal = ({ isOpen, onClose, repair, client, onUpdate }) 
             </div>
 
             {/* Informações da OS */}
-            <div className="bg-white rounded-lg p-4 mb-4">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">Informações da OS</h3>
+            <div className="bg-white dark:bg-zinc-900 rounded-lg p-4 mb-4">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-zinc-100 mb-3">Informações da OS</h3>
 
               {/* Eletrodomésticos */}
               <div className="mb-4">
@@ -566,7 +566,7 @@ export const OrderDetailModal = ({ isOpen, onClose, repair, client, onUpdate }) 
                 {/* Seletor de Peças */}
                 {isEditing && showComponentSelector && (
                   <div className="mb-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-2">
                       Selecione uma peça do sistema:
                     </label>
                     <div className="flex gap-2">
@@ -666,58 +666,58 @@ export const OrderDetailModal = ({ isOpen, onClose, repair, client, onUpdate }) 
               <div className="grid grid-cols-2 gap-4 mb-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-semibold text-gray-700 mb-1">
+                    <label className="block text-xs font-semibold text-gray-700 dark:text-zinc-300 mb-1">
                       Data de Recebimento
                     </label>
-                    <input
+                    <Input
                       type="text"
                       value={formatDate(repair.receivedAt)}
                       readOnly
-                      className="w-full px-3 py-2 border border-gray-300 rounded bg-gray-50 text-sm"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-zinc-700 rounded bg-gray-50 dark:bg-zinc-800 text-sm text-gray-900 dark:text-zinc-100"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold text-gray-700 mb-1">
+                    <label className="block text-xs font-semibold text-gray-700 dark:text-zinc-300 mb-1">
                       Data de Retirada
                     </label>
-                    <input
+                    <Input
                       type="text"
                       value={formatDate(repair.deadline)}
                       readOnly
-                      className="w-full px-3 py-2 border border-gray-300 rounded bg-gray-50 text-sm"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-zinc-700 rounded bg-gray-50 dark:bg-zinc-800 text-sm text-gray-900 dark:text-zinc-100"
                     />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-gray-700 mb-1">
+                  <label className="block text-xs font-semibold text-gray-700 dark:text-zinc-300 mb-1">
                     Garantia
                   </label>
-                  <input
+                  <Input
                     type="text"
                     value={repair.warranty || 'Não informado'}
                     readOnly
-                    className="w-full px-3 py-2 border border-gray-300 rounded bg-gray-50 text-sm"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-zinc-700 rounded bg-gray-50 dark:bg-zinc-800 text-sm text-gray-900 dark:text-zinc-100"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-gray-700 mb-1">
+                  <label className="block text-xs font-semibold text-gray-700 dark:text-zinc-300 mb-1">
                     Desconto (opcional)
                   </label>
-                  <input
+                  <Input
                     type="text"
                     value={formatCurrency(discount)}
                     readOnly
-                    className="w-full px-3 py-2 border border-gray-300 rounded bg-gray-50 text-sm"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-zinc-700 rounded bg-gray-50 dark:bg-zinc-800 text-sm text-gray-900 dark:text-zinc-100"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-gray-700 mb-1">
+                  <label className="block text-xs font-semibold text-gray-700 dark:text-zinc-300 mb-1">
                     Valor Total
                   </label>
-                  <input
+                  <Input
                     type="text"
                     value={formatCurrency(totalValue)}
                     readOnly
@@ -729,27 +729,27 @@ export const OrderDetailModal = ({ isOpen, onClose, repair, client, onUpdate }) 
 
             {/* Observações */}
             <div className="grid grid-cols-2 gap-4">
-              <div className="bg-white rounded-lg p-4">
-                <h4 className="text-sm font-semibold text-gray-700 mb-2">
+              <div className="bg-white dark:bg-zinc-900 rounded-lg p-4">
+                <h4 className="text-sm font-semibold text-gray-700 dark:text-zinc-300 mb-2">
                   Observações do Cliente por Item
                 </h4>
                 <div className="space-y-2 text-sm">
                   {editedRepair.appliances && Array.isArray(editedRepair.appliances) && editedRepair.appliances.length > 0 ? (
                     editedRepair.appliances.map((appliance, index) => (
-                      <div key={index} className="bg-gray-50 p-2 rounded">
-                        <p className="font-medium text-gray-900 mb-1">
+                      <div key={index} className="bg-gray-50 dark:bg-zinc-800 p-2 rounded">
+                        <p className="font-medium text-gray-900 dark:text-zinc-100 mb-1">
                           Item {index + 1} - {appliance.type || 'Sem tipo'}
                         </p>
                         {isEditing ? (
                           <textarea
                             value={appliance.customerNote || ''}
                             onChange={(e) => handleApplianceChange(index, 'customerNote', e.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 rounded text-sm resize-none"
+                            className="w-full px-3 py-2 border border-gray-300 dark:border-zinc-700 rounded text-sm resize-none bg-white dark:bg-zinc-800 text-gray-900 dark:text-zinc-100"
                             rows="2"
                             placeholder="Observação do cliente..."
                           />
                         ) : (
-                          <p className="text-gray-700">{appliance.observation || 'Sem observação'}</p>
+                          <p className="text-gray-700 dark:text-zinc-300">{appliance.observation || 'Sem observação'}</p>
                         )}
                       </div>
                     ))
@@ -759,20 +759,20 @@ export const OrderDetailModal = ({ isOpen, onClose, repair, client, onUpdate }) 
                 </div>
               </div>
 
-              <div className="bg-white rounded-lg p-4">
-                <h4 className="text-sm font-semibold text-gray-700 mb-2">
+              <div className="bg-white dark:bg-zinc-900 rounded-lg p-4">
+                <h4 className="text-sm font-semibold text-gray-700 dark:text-zinc-300 mb-2">
                   Observações Técnicas (opcional)
                 </h4>
                 {isEditing ? (
                   <textarea
                     value={editedRepair.serviceDescription || ''}
                     onChange={(e) => handleServiceDescriptionChange(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded text-sm resize-none"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-zinc-700 rounded text-sm resize-none bg-white dark:bg-zinc-800 text-gray-900 dark:text-zinc-100"
                     rows="6"
                     placeholder="Digite as observações técnicas aqui..."
                   />
                 ) : (
-                  <div className="bg-gray-50 p-3 rounded text-sm text-gray-700 min-h-[100px]">
+                  <div className="bg-gray-50 dark:bg-zinc-800 p-3 rounded text-sm text-gray-700 dark:text-zinc-300 min-h-[100px]">
                     {editedRepair.serviceDescription || 'Nenhuma observação técnica registrada'}
                   </div>
                 )}
@@ -781,7 +781,7 @@ export const OrderDetailModal = ({ isOpen, onClose, repair, client, onUpdate }) 
           </div>
 
           {/* Footer */}
-          <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-200 bg-white">
+          <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-200 dark:border-zinc-700 bg-white dark:bg-zinc-900">
             <Button
               type="button"
               variant="primary"

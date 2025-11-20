@@ -353,7 +353,7 @@ const Register = () => {
             <div className="text-center mb-2">
               <div className="flex items-center justify-center gap-2 mb-4 mt-6">
                 <User className="h-5 w-5 text-slate-900" />
-                <h2 className="text-base font-semibold text-gray-900">Informações Pessoais</h2>
+                <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">Informações Pessoais</h2>
               </div>
               {/* <p className="text-xs text-gray-600">Preencha os dados para criar sua conta</p> */}
             </div>
@@ -396,7 +396,7 @@ const Register = () => {
                       <div className="w-full border-t border-gray-200"></div>
                     </div>
                     <div className="relative flex justify-center text-xs">
-                      <span className="px-3 bg-white text-gray-500 text-xs">ou preencha manualmente</span>
+                      <span className="px-3 bg-white dark:bg-gray-900 text-gray-500 dark:text-gray-400 text-xs">ou preencha manualmente</span>
                     </div>
                   </div>
                 </>
@@ -471,7 +471,7 @@ const Register = () => {
             <div className="text-center mb-2">
               <div className="flex items-center justify-center gap-2 mb-4 mt-6">
                 <Home className="h-5 w-5 text-slate-900" />
-                <h2 className="text-base font-semibold text-gray-900">Endereço e Contato</h2>
+                <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">Endereço e Contato</h2>
               </div>
             </div>
 
@@ -576,7 +576,7 @@ const Register = () => {
             <div className="text-center mb-2">
               <div className="flex items-center justify-center gap-2 mb-4 mt-6">
                 <Lock className="h-5 w-5 text-slate-900" />
-                <h2 className="text-base font-semibold text-gray-900">Defina sua Senha</h2>
+                <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">Defina sua Senha</h2>
               </div>
             </div>
 
@@ -648,14 +648,14 @@ const Register = () => {
         />
       </div>
 
-      <div className="w-full max-w-lg bg-white rounded-3xl shadow-xl overflow-hidden">
+      <div className="w-full max-w-lg bg-white dark:bg-gray-900 rounded-3xl shadow-xl overflow-hidden">
         <div className="px-6 sm:px-10 py-5 overflow-y-auto max-h-[calc(100vh-4rem)]">
           <div className="text-center mb-4">
-              <h1 className="text-2xl mt-1 mb-1 font-extrabold text-gray-900 flex items-center justify-center gap-2">
+              <h1 className="text-2xl mt-1 mb-1 font-extrabold text-gray-900 dark:text-gray-100 flex items-center justify-center gap-2">
                 <UserPlus className="h-7 w-7" />
                 <span>Criar Conta</span>
               </h1>
-              <p className="text-gray-600 mt-1 text-sm">
+              <p className="text-gray-600 dark:text-gray-400 mt-1 text-sm">
                 Preencha os dados para criar sua conta
               </p>
             </div>
@@ -665,11 +665,11 @@ const Register = () => {
             {renderStep()}
 
             <div className="text-center mt-5">
-              <p className="text-gray-600 text-sm">
+              <p className="text-gray-600 dark:text-gray-400 text-sm">
                 Já tem uma conta?{' '}
                 <Link
                   to="/login"
-                  className="text-slate-900 hover:text-slate-700 font-medium transition-colors"
+                  className="text-slate-900 dark:text-slate-300 hover:text-slate-700 dark:hover:text-slate-400 font-medium transition-colors"
                 >
                   Faça login aqui
                 </Link>

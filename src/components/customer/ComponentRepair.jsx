@@ -91,10 +91,10 @@ const ComponentRepair = () => {
   }
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-gray-50 dark:bg-zinc-950">
       <SideBar active="repairs" />
 
-      <div className="flex-1 overflow-y-auto h-screen">
+      <div className="flex-1 overflow-y-auto h-screen" style={{ marginLeft: 'var(--sidebar-offset, 280px)', transition: 'margin-left 300ms ease-in-out' }}>
         <div className="max-w-5xl mx-auto px-6 py-8">
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-6">Consertos</h1>
@@ -122,7 +122,7 @@ const ComponentRepair = () => {
           </div>
 
           <div className="mb-6">
-            <div className="border border-gray-300 rounded-lg p-4 bg-white">
+            <div className="border border-gray-300 dark:border-zinc-700 rounded-lg p-4 bg-white dark:bg-zinc-900">
               <p className="text-sm leading-relaxed text-center text-gray-700">
                 Nesta página você encontra todas as ordens de serviço realizadas
                 em nossa assistência técnica. Aqui é possível acompanhar seus
@@ -147,7 +147,7 @@ const ComponentRepair = () => {
           )}
 
           {filtered.length === 0 ? (
-            <div className="bg-white border border-gray-200 rounded-lg p-12 text-center shadow-sm">
+            <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700 rounded-lg p-12 text-center shadow-sm">
               <Clock className="h-12 w-12 text-gray-400 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-gray-900 mb-2">
                 Nenhum conserto encontrado

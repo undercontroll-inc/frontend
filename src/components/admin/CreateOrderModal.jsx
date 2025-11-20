@@ -392,7 +392,7 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
 
       {/* Modal */}
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
-        <div className="bg-white rounded-lg shadow-xl w-full max-w-6xl my-8 flex flex-col animate-modal-in" style={{ maxHeight: 'calc(100vh - 4rem)' }}>
+        <div className="bg-white dark:bg-zinc-900 rounded-lg shadow-xl w-full max-w-6xl my-8 flex flex-col animate-modal-in" style={{ maxHeight: 'calc(100vh - 4rem)' }}>
           {/* Header */}
           <div className="flex items-center justify-between px-6 py-4 bg-[#041A2D] text-white flex-shrink-0">
             <h2 className="text-xl font-semibold">Nova Ordem de Serviço</h2>
@@ -407,8 +407,8 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
           {/* Content */}
           <div className="flex-1 overflow-y-auto p-6" style={{ scrollbarGutter: 'stable' }}>
             {/* Dados do Cliente */}
-            <div className="bg-gray-50 rounded-lg p-6 mb-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Dados do Cliente</h3>
+            <div className="bg-gray-50 dark:bg-zinc-800 rounded-lg p-6 mb-6">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Dados do Cliente</h3>
               
               <div className="flex gap-3 mb-4">
                 <div className="flex-1 relative">
@@ -426,13 +426,13 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
 
                   {/* Suggestions Dropdown */}
                   {showClientSuggestions && filteredClients.length > 0 && (
-                    <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                    <div className="absolute z-10 w-full mt-1 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg max-h-60 overflow-y-auto">
                       {filteredClients.map((client) => (
                         <button
                           key={client.id}
                           type="button"
                           onClick={() => handleClientSelect(client)}
-                          className="w-full text-left px-4 py-3 hover:bg-blue-50 border-b border-gray-100 last:border-b-0 transition-colors"
+                          className="w-full text-left px-4 py-3 hover:bg-blue-50 dark:hover:bg-zinc-700 border-b border-gray-100 dark:border-gray-700 last:border-b-0 transition-colors"
                         >
                           <div className="font-medium text-gray-900">
                             {client.name} {client.lastName}
@@ -461,22 +461,22 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
 
               {/* Client Info Display */}
               {selectedClient && (
-                <div className="grid grid-cols-4 gap-4 p-4 bg-white rounded-lg border border-gray-200">
+                <div className="grid grid-cols-4 gap-4 p-4 bg-white dark:bg-zinc-800 rounded-lg border border-gray-200 dark:border-gray-700">
                   <div>
-                    <label className="block text-xs font-medium text-gray-500 mb-1">Nome Completo</label>
-                    <div className="text-sm text-gray-900">{selectedClient.name} {selectedClient.lastName}</div>
+                    <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Nome Completo</label>
+                    <div className="text-sm text-gray-900 dark:text-gray-100">{selectedClient.name} {selectedClient.lastName}</div>
                   </div>
                   <div>
-                    <label className="block text-xs font-medium text-gray-500 mb-1">CPF</label>
-                    <div className="text-sm text-gray-900">{selectedClient.cpf ? formatCPF(selectedClient.cpf) : 'Não informado'}</div>
+                    <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">CPF</label>
+                    <div className="text-sm text-gray-900 dark:text-gray-100">{selectedClient.cpf ? formatCPF(selectedClient.cpf) : 'Não informado'}</div>
                   </div>
                   <div>
-                    <label className="block text-xs font-medium text-gray-500 mb-1">Telefone</label>
-                    <div className="text-sm text-gray-900">{formatPhone(selectedClient.phone)}</div>
+                    <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Telefone</label>
+                    <div className="text-sm text-gray-900 dark:text-gray-100">{formatPhone(selectedClient.phone)}</div>
                   </div>
                   <div>
-                    <label className="block text-xs font-medium text-gray-500 mb-1">Email</label>
-                    <div className="text-sm text-gray-900">{selectedClient.email || 'Não informado'}</div>
+                    <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Email</label>
+                    <div className="text-sm text-gray-900 dark:text-gray-100">{selectedClient.email || 'Não informado'}</div>
                   </div>
                 </div>
               )}
@@ -484,21 +484,21 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
 
             {/* Informações da OS */}
             <div className="mb-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Informações da OS</h3>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Informações da OS</h3>
 
               {/* Eletrodomésticos */}
               <div className="mb-4">
                 <div className="flex items-center justify-between mb-3">
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                     Eletrodomésticos *
                   </label>
                 </div>
 
                 <div className="space-y-4">
                   {appliances.map((appliance, index) => (
-                    <div key={index} className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    <div key={index} className="bg-gray-50 dark:bg-zinc-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
                       <div className="flex items-start justify-between mb-3">
-                        <h4 className="text-sm font-medium text-gray-700">Eletrodoméstico {index + 1}</h4>
+                        <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">Eletrodoméstico {index + 1}</h4>
                         {appliances.length > 1 && (
                           <Button
                             type="button"
@@ -514,7 +514,7 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
                       {/* Primeira linha: Tipo, Marca, Modelo */}
                       <div className="grid grid-cols-3 gap-3 mb-3">
                         <div>
-                          <label className="block text-xs font-medium text-gray-600 mb-1">Tipo *</label>
+                          <label className="block text-xs font-medium text-gray-600 dark:text-zinc-300 mb-1">Tipo *</label>
                           <Select
                             value={appliance.type}
                             onChange={(e) => handleApplianceChange(index, 'type', e.target.value)}
@@ -534,7 +534,7 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
                         </div>
 
                         <div>
-                          <label className="block text-xs font-medium text-gray-600 mb-1">Marca</label>
+                          <label className="block text-xs font-medium text-gray-600 dark:text-zinc-300 mb-1">Marca</label>
                           <Input
                             type="text"
                             placeholder="Ex: Brastemp"
@@ -544,7 +544,7 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
                         </div>
 
                         <div>
-                          <label className="block text-xs font-medium text-gray-600 mb-1">Modelo</label>
+                          <label className="block text-xs font-medium text-gray-600 dark:text-zinc-300 mb-1">Modelo</label>
                           <Input
                             type="text"
                             placeholder="Ex: BRM45"
@@ -557,7 +557,7 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
                       {/* Segunda linha: Voltagem, Nº Série, Valor Mão-de-obra */}
                       <div className="grid grid-cols-3 gap-3 mb-3">
                         <div>
-                          <label className="block text-xs font-medium text-gray-600 mb-1">Voltagem</label>
+                          <label className="block text-xs font-medium text-gray-600 dark:text-zinc-300 mb-1">Voltagem</label>
                           <Select
                             value={appliance.voltage}
                             onChange={(e) => handleApplianceChange(index, 'voltage', e.target.value)}
@@ -569,7 +569,7 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
                         </div>
 
                         <div>
-                          <label className="block text-xs font-medium text-gray-600 mb-1">Nº de Série</label>
+                          <label className="block text-xs font-medium text-gray-600 dark:text-zinc-300 mb-1">Nº de Série</label>
                           <Input
                             type="text"
                             placeholder="Ex: ABC123456"
@@ -579,7 +579,7 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
                         </div>
 
                         <div>
-                          <label className="block text-xs font-medium text-gray-600 mb-1">Valor Mão-de-obra (R$) - Opcional</label>
+                          <label className="block text-xs font-medium text-gray-600 dark:text-zinc-300 mb-1">Valor Mão-de-obra (R$) - Opcional</label>
                           <Input
                             type="number"
                             step="0.01"
@@ -592,7 +592,7 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
 
                       {/* Terceira linha: Observação do cliente */}
                       <div>
-                        <label className="block text-xs font-medium text-gray-600 mb-1">Observação do Cliente</label>
+                        <label className="block text-xs font-medium text-gray-600 dark:text-zinc-300 mb-1">Observação do Cliente</label>
                         <Input
                           type="text"
                           placeholder="Descreva o problema relatado pelo cliente"
@@ -634,9 +634,9 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
 
                 <div className="space-y-3">
                   {parts.map((part, index) => (
-                    <div key={index} className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    <div key={index} className="bg-gray-50 dark:bg-zinc-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
                       <div className="flex items-start justify-between mb-3">
-                        <h4 className="text-sm font-medium text-gray-700">Peça {index + 1}</h4>
+                        <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">Peça {index + 1}</h4>
                         {parts.length > 1 && (
                           <Button
                             type="button"
@@ -652,7 +652,7 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
                       <div className="grid grid-cols-4 gap-3">
                         {/* Campo de busca do componente */}
                         <div className="col-span-2 relative">
-                          <label className="block text-xs font-medium text-gray-600 mb-1">Componente *</label>
+                          <label className="block text-xs font-medium text-gray-600 dark:text-zinc-300 mb-1">Componente *</label>
                           <div className="relative">
                             <Input
                               type="text"
@@ -667,16 +667,16 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
                           
                           {/* Suggestions Dropdown - Agora com z-index mais alto */}
                           {showComponentSuggestions && currentPartIndex === index && filteredComponents.length > 0 && (
-                            <div className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-xl max-h-48 overflow-y-auto">
+                            <div className="absolute z-50 w-full mt-1 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-xl max-h-48 overflow-y-auto">
                               {filteredComponents.map((component) => (
                                 <button
                                   key={component.id}
                                   type="button"
                                   onClick={() => handleComponentSelect(component, index)}
-                                  className="w-full text-left px-3 py-2 hover:bg-blue-50 border-b border-gray-100 last:border-b-0 transition-colors"
+                                  className="w-full text-left px-3 py-2 hover:bg-blue-50 dark:hover:bg-zinc-700 border-b border-gray-100 dark:border-gray-700 last:border-b-0 transition-colors"
                                 >
-                                  <div className="font-medium text-sm text-gray-900">{component.name}</div>
-                                  <div className="text-xs text-gray-500 mt-0.5">
+                                  <div className="font-medium text-sm text-gray-900 dark:text-gray-100">{component.name}</div>
+                                  <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
                                     {component.code && `Cód: ${component.code} | `}
                                     R$ {(component.price || 0).toFixed(2)} | 
                                     Estoque: {component.quantity || 0} un.
@@ -689,7 +689,7 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
 
                         {/* Quantidade */}
                         <div>
-                          <label className="block text-xs font-medium text-gray-600 mb-1">Quantidade *</label>
+                          <label className="block text-xs font-medium text-gray-600 dark:text-zinc-300 mb-1">Quantidade *</label>
                           <Input
                             type="number"
                             min="1"
@@ -706,8 +706,8 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
 
                         {/* Valor Unitário - Display only */}
                         <div>
-                          <label className="block text-xs font-medium text-gray-600 mb-1">Valor Unit.</label>
-                          <div className="text-sm text-gray-900 font-medium bg-white px-3 py-2 rounded border border-gray-200 h-[42px] flex items-center">
+                          <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">Valor Unit.</label>
+                          <div className="text-sm text-gray-900 dark:text-gray-100 font-medium bg-white dark:bg-zinc-700 px-3 py-2 rounded border border-gray-200 dark:border-gray-600 h-[42px] flex items-center">
                             R$ {(part.price || 0).toFixed(2)}
                           </div>
                         </div>
@@ -715,10 +715,10 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
 
                       {/* Total da peça - destaque */}
                       {part.id && part.quantity && (
-                        <div className="mt-3 pt-3 border-t border-gray-200">
+                        <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
                           <div className="flex justify-between items-center">
-                            <span className="text-sm text-gray-600">Subtotal desta peça:</span>
-                            <span className="text-base font-semibold text-gray-900">
+                            <span className="text-sm text-gray-600 dark:text-gray-400">Subtotal desta peça:</span>
+                            <span className="text-base font-semibold text-gray-900 dark:text-gray-100">
                               R$ {(((part.price || 0) * (parseFloat(part.quantity) || 0)) || 0).toFixed(2)}
                             </span>
                           </div>
@@ -750,7 +750,7 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
 
               <div className="grid grid-cols-2 gap-4 mb-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-1">
                     Garantia
                   </label>
                   <Input
@@ -763,7 +763,7 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-1">
                     Desconto (Opcional)
                   </label>
                   <Input
@@ -781,7 +781,7 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
               {/* Observações */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-1">
                     Observações do Cliente
                   </label>
                   <textarea
@@ -795,7 +795,7 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-1">
                     Observações Técnicas
                   </label>
                   <textarea
@@ -812,7 +812,7 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
               {/* NF e Garantias */}
               <div className="mt-4 grid grid-cols-3 gap-4 items-end">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Nota Fiscal (opcional)</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-1">Nota Fiscal (opcional)</label>
                   <Input
                     type="text"
                     name="nf"
@@ -831,7 +831,7 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
                     onChange={handleInputChange}
                     className="h-4 w-4 text-blue-600 border-gray-300 rounded"
                   />
-                  <label htmlFor="returnGuarantee" className="text-sm text-gray-700">Garantia de Retorno</label>
+                  <label htmlFor="returnGuarantee" className="text-sm text-gray-700 dark:text-zinc-300">Garantia de Retorno</label>
                 </div>
 
                 <div className="flex items-center gap-3">
@@ -843,14 +843,14 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
                     onChange={handleInputChange}
                     className="h-4 w-4 text-blue-600 border-gray-300 rounded"
                   />
-                  <label htmlFor="fabricGuarantee" className="text-sm text-gray-700">Garantia de Fábrica</label>
+                  <label htmlFor="fabricGuarantee" className="text-sm text-gray-700 dark:text-zinc-300">Garantia de Fábrica</label>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Footer */}
-          <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-200 bg-gray-50 flex-shrink-0">
+          <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-zinc-800 flex-shrink-0">
             <Button
               type="button"
               variant="outline"

@@ -108,9 +108,12 @@ export function RepairPage() {
     setIsSheetOpen(true);
   };
 
-  const handleCloseSheet = () => {
+  const handleCloseSheet = async () => {
     setIsSheetOpen(false);
     setTimeout(() => setSelectedRepair(null), 300); // Delay para animação
+    
+    console.log("CU");
+    await loadRepairs();
   };
 
   const handleSaveOrder = async (orderData) => {
@@ -134,7 +137,7 @@ export function RepairPage() {
   }
 
   return (
-    <div className="flex min-h-screen bg-gray-50 ">
+    <div className="flex min-h-screen bg-gray-50 dark:bg-zinc-950 ">
       <SideBar />
       
       <div className="flex-1">
@@ -142,7 +145,7 @@ export function RepairPage() {
           <div className="max-w-7xl mx-auto">
             {/* Header */}
             <div className="mb-8">
-              <h1 className="text-3xl font-bold text-gray-900">Consertos</h1>
+              <h1 className="text-3xl font-bold text-zinc-900 dark:text-gray-100">Consertos</h1>
             </div>
 
             {/* Filters and Search */}
@@ -184,7 +187,7 @@ export function RepairPage() {
             </div>
 
             {/* Table */}
-            <div className="bg-white rounded-lg shadow overflow-hidden">
+            <div className="bg-white dark:bg-zinc-900 rounded-lg shadow overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
@@ -196,7 +199,7 @@ export function RepairPage() {
                       <th className="px-6 py-4 text-left text-sm font-semibold">Data de Recebimento</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-200">
+                  <tbody className="divide-y divide-gray-200 dark:divide-zinc-800">
                     {filteredRepairs.length === 0 ? (
                       <tr>
                         <td colSpan="5" className="px-6 py-8 text-center text-gray-500">
@@ -207,19 +210,19 @@ export function RepairPage() {
                       filteredRepairs.map((repair) => (
                         <tr 
                           key={repair.id}
-                          className="hover:bg-gray-50 cursor-pointer transition-colors"
+                          className="hover:bg-gray-50 dark:hover:bg-zinc-800 cursor-pointer transition-colors"
                           onClick={() => handleRowClick(repair)}
                         >
-                          <td className="px-6 py-4 text-sm text-gray-900">
+                          <td className="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
                             {getStatusLabel(repair.status)}
                           </td>
-                          <td className="px-6 py-4 text-sm text-gray-900 font-medium">
+                          <td className="px-6 py-4 text-sm text-gray-900 dark:text-gray-100 font-medium">
                             #{repair.id}
                           </td>
-                          <td className="px-6 py-4 text-sm text-gray-900">
+                          <td className="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
                             {repair.clientName || 'N/A'}
                           </td>
-                          <td className="px-6 py-4 text-sm text-gray-900">
+                          <td className="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
                             <div className="space-y-1">
                               {repair.appliances && Array.isArray(repair.appliances) ? (
                                 repair.appliances.map((appliance, index) => (
@@ -238,7 +241,7 @@ export function RepairPage() {
                               )}
                             </div>
                           </td>
-                          <td className="px-6 py-4 text-sm text-gray-900">
+                          <td className="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
                             {formatDate(repair.receivedAt)}
                           </td>
                         </tr>
@@ -255,7 +258,7 @@ export function RepairPage() {
       {/* Sheet de Detalhes */}
       <RepairDetailSheet
         isOpen={isSheetOpen}
-        onClose={handleCloseSheet}
+        onClose={() => handleCloseSheet}
         repair={selectedRepair}
         onUpdate={loadRepairs}
       />

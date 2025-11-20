@@ -7,7 +7,6 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
-import { ModeToggle } from "../shared/ModeToggle";
 
 const UserDropdown = ({ isOpen }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -113,13 +112,6 @@ const UserDropdown = ({ isOpen }) => {
               <LogOut className="h-4 w-4" />
               <span>Sair</span>
             </button>
-          </div>
-
-          <div className="p-2 border-t border-gray-700">
-            <div className="flex items-center justify-between px-2">
-              <span className="text-xs text-gray-400">Tema</span>
-              <ModeToggle />
-            </div>
           </div>
         </div>
       )}

@@ -36,6 +36,7 @@ class ClientService {
     try {
       const response = await apiClient.post('/users', {
         ...clientData,
+        inFirstLogin: true,
         userType: 'CUSTOMER'
       });
       return response.data;

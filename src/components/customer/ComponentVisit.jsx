@@ -45,22 +45,21 @@ const ComponentVisit = () => {
   if (loading) return <Loading text="Carregando visita técnica..." />;
 
   return (
-    <div className="flex h-screen overflow-hidden bg-gray-50">
+    <div className="flex h-screen overflow-hidden bg-gray-50 dark:bg-zinc-950">
       <SideBar active="visita" />
 
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto" style={{ marginLeft: 'var(--sidebar-offset, 280px)', transition: 'margin-left 300ms ease-in-out' }}>
         <div className="max-w-5xl mx-auto p-6 sm:p-8">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
               Visita Técnica
             </h1>
-            <p className="text-gray-600">
-              Agende sua visita ou entre em contato para solicitar um orçamento
-              personalizado
+            <p className="text-gray-600 dark:text-gray-400">
+              Agende sua visita ou entre em contato para solicitar um orçamento personalizado
             </p>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden mb-8">
+          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-800 overflow-hidden mb-8">
             <div className="bg-gradient-to-br from-[#041A2D] to-[#062E4F] p-6 sm:p-8">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
                 <div className="bg-white/10 backdrop-blur-sm rounded-xl p-5 border border-white/20">
@@ -131,14 +130,13 @@ const ComponentVisit = () => {
             </div> */}
           </div>
 
-          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 sm:p-8 border border-blue-100 mb-8">
+          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/50 dark:to-indigo-950/50 rounded-2xl p-6 sm:p-8 border border-blue-100 dark:border-blue-900/50 mb-8">
             <div className="text-center mb-6">
-              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-3">
                 Pronto para agendar?
               </h2>
-              <p className="text-gray-600 max-w-2xl mx-auto">
-                Entre em contato pelo WhatsApp ou telefone e receba seu
-                orçamento personalizado
+              <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                Entre em contato pelo WhatsApp ou telefone e receba seu orçamento personalizado
               </p>
             </div>
 
