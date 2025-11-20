@@ -12,6 +12,7 @@ import ComponentDetails from "./components/customer/ComponentDetails";
 import ComponentVisit from "./components/customer/ComponentVisit";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
+import NewPassword from "./components/auth/NewPassword";
 import Dashboard from "./components/dashboard/Dashboard";
 import Calendar from "./components/admin/Calendar";
 import { RepairPage } from "./components/admin/RepairPage";
@@ -35,6 +36,7 @@ function App() {
 
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/nova-senha" element={<NewPassword />} />
 
               <Route
                 path="/dashboard"
