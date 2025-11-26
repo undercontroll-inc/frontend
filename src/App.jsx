@@ -10,6 +10,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import ComponentRepair from "./components/customer/ComponentRepair";
 import ComponentDetails from "./components/customer/ComponentDetails";
 import ComponentVisit from "./components/customer/ComponentVisit";
+import AnnouncementsCustomer from "./components/customer/AnnouncementsCustomer";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import NewPassword from "./components/auth/NewPassword";
@@ -20,6 +21,7 @@ import { ClientsPage } from "./components/admin/ClientsPage";
 import Toaster from "./components/shared/Toaster";
 import { LandingPage } from "./components/landing_page/LandingPage";
 import { AnnouncementsPage } from "./components/landing_page/AnnouncementsPage";
+import AnnouncementsAdmin from "./components/admin/AnnouncementsAdmin";
 import { Estoque } from "./components/admin/Estoque";
 import { ThemeProvider } from "./components/shared/ThemeProvider";
 import SettingsPage from "./components/shared/SettingsPage";
@@ -67,12 +69,32 @@ function App() {
                 }
               />
 
+              {/* Rota /admin/announcements para ADMINISTRATOR - AnnouncementsAdmin */}
+              <Route
+                path="/admin/announcements"
+                element={
+                  <ProtectedRoute roles={["ADMINISTRATOR"]}>
+                    <AnnouncementsAdmin />
+                  </ProtectedRoute>
+                }
+              />
+
               {/* Rota /my-repairs para COSTUMER - ComponentRepair */}
               <Route
                 path="/my-repairs"
                 element={
                   <ProtectedRoute roles={["CUSTOMER"]}>
                     <ComponentRepair />
+                  </ProtectedRoute>
+                }
+              />
+
+              {/* Rota /customer-announcements para CUSTOMER - AnnouncementsCustomer */}
+              <Route
+                path="/customer-announcements"
+                element={
+                  <ProtectedRoute roles={["CUSTOMER"]}>
+                    <AnnouncementsCustomer />
                   </ProtectedRoute>
                 }
               />

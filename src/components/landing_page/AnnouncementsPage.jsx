@@ -1,79 +1,60 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
 import Logo from "../../../public/images/logo_pelluci.png";
-
-// Mock de dados - depois você pode substituir pela API
-const mockAnnouncements = [
-  {
-    id: 1,
-    category: "Feriados",
-    title: "Funcionamento no Dia da Consciência Negra",
-    description:
-      "Informamos que no dia 20 de novembro (quarta-feira), feriado nacional, estaremos fechados. Retornaremos ao atendimento normal no dia seguinte.",
-    date: "2025-11-19",
-    categoryColor: "blue",
-  },
-  {
-    id: 2,
-    category: "Descontos",
-    title: "🎉 Black Friday - 20% OFF em Peças Originais!",
-    description:
-      "De 25 a 29 de novembro, aproveite 20% de desconto na compra de peças originais para eletrodomésticos. Não perca essa oportunidade!",
-    date: "2025-11-15",
-    categoryColor: "orange",
-  },
-  {
-    id: 3,
-    category: "Feriados",
-    title: "Horário Especial de Natal",
-    description:
-      "No dia 24 de dezembro funcionaremos das 09h às 14h. Dia 25 estaremos fechados. Feliz Natal!",
-    date: "2025-12-10",
-    categoryColor: "blue",
-  },
-  {
-    id: 4,
-    category: "Descontos",
-    title: "Promoção de Fim de Ano - Peças Selecionadas",
-    description:
-      "Confira nossa seleção especial de peças com até 30% de desconto. Válido até 31 de dezembro ou enquanto durarem os estoques.",
-    date: "2025-12-01",
-    categoryColor: "orange",
-  },
-  {
-    id: 5,
-    category: "Feriados",
-    title: "Recesso de Ano Novo",
-    description:
-      "Dia 01 de janeiro estaremos fechados. Retornamos no dia 02/01 com horário normal. Feliz Ano Novo!",
-    date: "2025-12-20",
-    categoryColor: "blue",
-  },
-  {
-    id: 6,
-    category: "Descontos",
-    title: "Janeiro em Promoção - Ventiladores e Climatizadores",
-    description:
-      "Prepare-se para o verão! Ventiladores e climatizadores com desconto especial durante todo o mês de janeiro.",
-    date: "2025-12-28",
-    categoryColor: "orange",
-  },
-];
 
 export const AnnouncementsPage = () => {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const [categoryFilter, setCategoryFilter] = useState("Todos");
+  const [announcements, setAnnouncements] = useState([]);
 
-  // Filtrar anúncios por categoria
-  const filteredAnnouncements = useMemo(() => {
-    if (categoryFilter === "Todos") {
-      return mockAnnouncements;
+  // Carregar anúncios do localStorage
+  useEffect(() => {
+    const savedAnnouncements = localStorage.getItem("announcements");
+    if (savedAnnouncements) {
+      setAnnouncements(JSON.parse(savedAnnouncements));
+    } else {
+      // Dados iniciais se não houver nada no localStorage
+      const initialData = [
+        {
+          id: 1,
+          category: "Feriados",
+          title: "Funcionamento no Dia da Consciência Negra",
+          description:
+            "Informamos que no dia 20 de novembro (quarta-feira), feriado nacional, estaremos fechados. Retornaremos ao atendimento normal no dia seguinte.",
+          date: "2025-11-19",
+          categoryColor: "blue",
+        },
+        {
+          id: 2,
+          category: "Descontos",
+          title: "🎉 Black Friday - 20% OFF em Peças Originais!",
+          description:
+            "De 25 a 29 de novembro, aproveite 20% de desconto na compra de peças originais para eletrodomésticos. Não perca essa oportunidade!",
+          date: "2025-11-15",
+          categoryColor: "orange",
+        },
+      ];
+      setAnnouncements(initialData);
     }
-    return mockAnnouncements.filter((ann) => ann.category === categoryFilter);
-  }, [categoryFilter]);
+  }, []);
+
+  // Filtrar anúncios por categoria e apenas os marcados para visitantes
+  const filteredAnnouncements = useMemo(() => {
+    // Filtrar apenas anúncios marcados para visitantes
+    const visitorAnnouncements = announcements.filter(
+      (ann) => ann.forVisitors !== false
+    );
+
+    if (categoryFilter === "Todos") {
+      return visitorAnnouncements;
+    }
+    return visitorAnnouncements.filter(
+      (ann) => ann.category === categoryFilter
+    );
+  }, [categoryFilter, announcements]);
 
   // Calcular paginação
   const totalPages = Math.ceil(filteredAnnouncements.length / itemsPerPage);
@@ -108,7 +89,14 @@ export const AnnouncementsPage = () => {
       return {
         bg: "from-[#041A2D] to-[#052540]",
         border: "border-[#0B4BCC]",
-        badge: "bg-[#0B4BCC]",
+        badge: "bg-[#0B4BCC] text-white",
+      };
+    }
+    if (color === "green") {
+      return {
+        bg: "from-[#047857] to-[#065f46]",
+        border: "border-[#10b981]",
+        badge: "bg-[#10b981]",
       };
     }
     return {
@@ -202,7 +190,7 @@ export const AnnouncementsPage = () => {
           {/* Título */}
           <div className="text-center mb-8">
             <h1 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-[#041A2D] to-[#BA4610] bg-clip-text text-transparent mb-3">
-              📢 Central de Anúncios
+              📢 Central de Recados
             </h1>
             <p className="text-gray-600 text-lg">
               Acompanhe todas as novidades, feriados e promoções
@@ -223,15 +211,16 @@ export const AnnouncementsPage = () => {
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0B4BCC] focus:border-transparent outline-none transition-all"
                 >
                   <option value="Todos">Todos</option>
-                  <option value="Feriados">Feriados</option>
-                  <option value="Descontos">Descontos</option>
+                  <option value="Promoções">Promoções</option>
+                  <option value="Avisos">Avisos</option>
+                  <option value="Recomendações">Recomendações</option>
                 </select>
               </div>
 
               {/* Itens por Página */}
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Anúncios por página:
+                  Recados por página:
                 </label>
                 <select
                   value={itemsPerPage}
@@ -260,7 +249,7 @@ export const AnnouncementsPage = () => {
                 <span className="font-semibold">
                   {filteredAnnouncements.length}
                 </span>{" "}
-                anúncio(s)
+                recado(s)
               </p>
             </div>
           </div>
@@ -301,7 +290,7 @@ export const AnnouncementsPage = () => {
             ) : (
               <div className="bg-white rounded-xl shadow-md p-12 text-center border border-gray-200">
                 <p className="text-gray-500 text-lg">
-                  Nenhum anúncio encontrado para os filtros selecionados.
+                  Nenhum recado encontrado para os filtros selecionados.
                 </p>
               </div>
             )}

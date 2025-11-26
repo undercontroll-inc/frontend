@@ -75,8 +75,14 @@ class UserService {
   }
 
   async getAllUsers() {
+    const token = localStorage.getItem("authToken");
+
     try {
-      const response = await apiClient.get(BASE_URI);
+      const response = await apiClient.get(BASE_URI, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       return {
         success: true,
         data: response.data,
@@ -90,8 +96,14 @@ class UserService {
   }
 
   async getUserById(id) {
+    const token = localStorage.getItem("authToken");
+
     try {
-      const response = await apiClient.get(`${BASE_URI}/${id}`);
+      const response = await apiClient.get(`${BASE_URI}/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       return {
         success: true,
         data: response.data,
@@ -105,21 +117,31 @@ class UserService {
   }
 
   async updateUser(id, userData) {
+    const token = localStorage.getItem("authToken");
+
     try {
       // Remove caracteres não numéricos do CEP (hífen, pontos, etc)
       const cleanCEP = userData.CEP
         ? userData.CEP.replace(/\D/g, "")
         : userData.CEP;
 
-      const response = await apiClient.put(`${BASE_URI}/${id}`, {
-        name: userData.name,
-        email: userData.email,
-        phone: userData.phone,
-        lastName: userData.lastName,
-        address: userData.address,
-        CEP: cleanCEP,
-        addressNumber: userData.addressNumber,
-      });
+      const response = await apiClient.put(
+        `${BASE_URI}/${id}`,
+        {
+          name: userData.name,
+          email: userData.email,
+          phone: userData.phone,
+          lastName: userData.lastName,
+          address: userData.address,
+          CEP: cleanCEP,
+          addressNumber: userData.addressNumber,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       return {
         success: true,
