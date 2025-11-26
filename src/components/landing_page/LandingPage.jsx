@@ -25,12 +25,16 @@ export const LandingPage = () => {
       });
     });
 
-    // Carregar último anúncio do localStorage
+    // Carregar último anúncio do localStorage (apenas os marcados para visitantes)
     const savedAnnouncements = localStorage.getItem("announcements");
     if (savedAnnouncements) {
       const announcements = JSON.parse(savedAnnouncements);
-      if (announcements.length > 0) {
-        setLatestAnnouncement(announcements[0]); // Pega o mais recente
+      // Filtrar apenas os marcados para visitantes
+      const visitorAnnouncements = announcements.filter(
+        (ann) => ann.forVisitors !== false
+      );
+      if (visitorAnnouncements.length > 0) {
+        setLatestAnnouncement(visitorAnnouncements[0]); // Pega o mais recente para visitantes
       }
     }
   }, []);
@@ -160,10 +164,14 @@ export const LandingPage = () => {
                 className={`bg-gradient-to-br ${
                   latestAnnouncement.categoryColor === "blue"
                     ? "from-[#041A2D] to-[#052540]"
+                    : latestAnnouncement.categoryColor === "green"
+                    ? "from-[#047857] to-[#065f46]"
                     : "from-[#BA4610] to-[#d45012]"
                 } rounded-xl shadow-lg overflow-hidden border-2 ${
                   latestAnnouncement.categoryColor === "blue"
                     ? "border-[#0B4BCC]"
+                    : latestAnnouncement.categoryColor === "green"
+                    ? "border-[#10b981]"
                     : "border-[#BA4610]"
                 } hover:shadow-xl transition-all duration-300`}
               >
@@ -173,6 +181,8 @@ export const LandingPage = () => {
                       className={`${
                         latestAnnouncement.categoryColor === "blue"
                           ? "bg-[#0B4BCC] text-white"
+                          : latestAnnouncement.categoryColor === "green"
+                          ? "bg-[#10b981]"
                           : "bg-white text-[#BA4610]"
                       } px-3 py-1 rounded-full text-sm font-semibold`}
                     >
@@ -327,7 +337,9 @@ export const LandingPage = () => {
                 Conserto de eletrodomésticos
               </h3>
               <p className="text-gray-600 dark:text-gray-300 text-sm">
-                Realizamos reparos especializados em diversos tipos de eletrodomésticos com garantia de serviço, peças originais e qualidade comprovada.
+                Realizamos reparos especializados em diversos tipos de
+                eletrodomésticos com garantia de serviço, peças originais e
+                qualidade comprovada.
               </p>
             </div>
 
@@ -339,7 +351,9 @@ export const LandingPage = () => {
                 Venda de peças originais
               </h3>
               <p className="text-gray-600 dark:text-gray-300 text-sm">
-                Comercializamos peças e acessórios originais das principais marcas do mercado, garantindo durabilidade e o melhor desempenho para seu aparelho.
+                Comercializamos peças e acessórios originais das principais
+                marcas do mercado, garantindo durabilidade e o melhor desempenho
+                para seu aparelho.
               </p>
             </div>
 

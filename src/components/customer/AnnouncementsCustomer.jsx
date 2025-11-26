@@ -90,7 +90,7 @@ const AnnouncementsCustomer = () => {
   return (
     <div className="flex h-screen bg-gray-50 dark:bg-gray-900 overflow-hidden">
       <SideBar active="customer-announcements" />
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col overflow-hidden ml-[280px]">
         <div className="p-6 overflow-y-auto">
           {/* Header */}
           <div className="flex flex-col gap-4 mb-6">

@@ -41,12 +41,19 @@ export const AnnouncementsPage = () => {
     }
   }, []);
 
-  // Filtrar anúncios por categoria
+  // Filtrar anúncios por categoria e apenas os marcados para visitantes
   const filteredAnnouncements = useMemo(() => {
+    // Filtrar apenas anúncios marcados para visitantes
+    const visitorAnnouncements = announcements.filter(
+      (ann) => ann.forVisitors !== false
+    );
+
     if (categoryFilter === "Todos") {
-      return announcements;
+      return visitorAnnouncements;
     }
-    return announcements.filter((ann) => ann.category === categoryFilter);
+    return visitorAnnouncements.filter(
+      (ann) => ann.category === categoryFilter
+    );
   }, [categoryFilter, announcements]);
 
   // Calcular paginação
@@ -82,7 +89,14 @@ export const AnnouncementsPage = () => {
       return {
         bg: "from-[#041A2D] to-[#052540]",
         border: "border-[#0B4BCC]",
-        badge: "bg-[#0B4BCC]",
+        badge: "bg-[#0B4BCC] text-white",
+      };
+    }
+    if (color === "green") {
+      return {
+        bg: "from-[#047857] to-[#065f46]",
+        border: "border-[#10b981]",
+        badge: "bg-[#10b981]",
       };
     }
     return {
@@ -197,8 +211,9 @@ export const AnnouncementsPage = () => {
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0B4BCC] focus:border-transparent outline-none transition-all"
                 >
                   <option value="Todos">Todos</option>
-                  <option value="Feriados">Feriados</option>
-                  <option value="Descontos">Descontos</option>
+                  <option value="Promoções">Promoções</option>
+                  <option value="Avisos">Avisos</option>
+                  <option value="Recomendações">Recomendações</option>
                 </select>
               </div>
 
