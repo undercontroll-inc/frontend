@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ChevronDown,
   Wrench,
@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 
 export const LandingPage = () => {
   const navigate = useNavigate();
+  const [latestAnnouncement, setLatestAnnouncement] = useState(null);
 
   useEffect(() => {
     const faqItems = document.querySelectorAll(".faq-item");
@@ -23,6 +24,15 @@ export const LandingPage = () => {
         item.classList.toggle("active");
       });
     });
+
+    // Carregar último anúncio do localStorage
+    const savedAnnouncements = localStorage.getItem("announcements");
+    if (savedAnnouncements) {
+      const announcements = JSON.parse(savedAnnouncements);
+      if (announcements.length > 0) {
+        setLatestAnnouncement(announcements[0]); // Pega o mais recente
+      }
+    }
   }, []);
 
   const handleWhatsAppClick = () => {
@@ -137,7 +147,7 @@ export const LandingPage = () => {
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-20">
               <h2 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-[#041A2D] to-[#BA4610] bg-clip-text text-transparent mb-2">
-                📢 Central de Anúncios
+                📢 Central de Recados
               </h2>
               <p className="text-gray-600 text-lg">
                 Fique por dentro das novidades e promoções
@@ -145,35 +155,63 @@ export const LandingPage = () => {
             </div>
 
             {/* Anúncio em Destaque */}
-            <div className="bg-gradient-to-br from-[#041A2D] to-[#052540] rounded-xl shadow-lg overflow-hidden border-2 border-[#0B4BCC] hover:shadow-xl transition-all duration-300">
-              <div className="p-6 sm:p-8">
-                <div className="flex items-center justify-between mb-4">
-                  <span className="bg-[#0B4BCC] text-white px-3 py-1 rounded-full text-sm font-semibold">
-                    Feriados
-                  </span>
-                  <span className="text-gray-300 text-sm">19 Nov 2025</span>
+            {latestAnnouncement ? (
+              <div
+                className={`bg-gradient-to-br ${
+                  latestAnnouncement.categoryColor === "blue"
+                    ? "from-[#041A2D] to-[#052540]"
+                    : "from-[#BA4610] to-[#d45012]"
+                } rounded-xl shadow-lg overflow-hidden border-2 ${
+                  latestAnnouncement.categoryColor === "blue"
+                    ? "border-[#0B4BCC]"
+                    : "border-[#BA4610]"
+                } hover:shadow-xl transition-all duration-300`}
+              >
+                <div className="p-6 sm:p-8">
+                  <div className="flex items-center justify-between mb-4">
+                    <span
+                      className={`${
+                        latestAnnouncement.categoryColor === "blue"
+                          ? "bg-[#0B4BCC] text-white"
+                          : "bg-white text-[#BA4610]"
+                      } px-3 py-1 rounded-full text-sm font-semibold`}
+                    >
+                      {latestAnnouncement.category}
+                    </span>
+                    <span className="text-gray-300 text-sm">
+                      {new Date(latestAnnouncement.date).toLocaleDateString(
+                        "pt-BR"
+                      )}
+                    </span>
+                  </div>
+                  <h3 className="text-xl sm:text-2xl font-bold text-white mb-3">
+                    {latestAnnouncement.title}
+                  </h3>
+                  <p className="text-gray-300 leading-relaxed mb-6">
+                    {latestAnnouncement.description}
+                  </p>
+                  <button
+                    onClick={() => navigate("/announcements")}
+                    className="w-full sm:w-auto bg-[#0B4BCC] hover:bg-[#0a3fa0] text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:shadow-lg flex items-center justify-center gap-2"
+                  >
+                    Ver todos os recados
+                    <ChevronDown className="h-5 w-5 rotate-[-90deg]" />
+                  </button>
                 </div>
-                <h3 className="text-xl sm:text-2xl font-bold text-white mb-3">
-                  Funcionamento no Dia da Consciência Negra
-                </h3>
-                <p className="text-gray-300 leading-relaxed mb-6">
-                  Informamos que no dia{" "}
-                  <span className="font-semibold text-white">
-                    20 de novembro (quarta-feira)
-                  </span>
-                  , feriado nacional, estaremos{" "}
-                  <span className="font-semibold text-white">fechados</span>.
-                  Retornaremos ao atendimento normal no dia seguinte.
+              </div>
+            ) : (
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-12 text-center border border-gray-200 dark:border-gray-700">
+                <p className="text-gray-500 dark:text-gray-400 text-lg">
+                  Nenhum recado disponível no momento
                 </p>
                 <button
                   onClick={() => navigate("/announcements")}
-                  className="w-full sm:w-auto bg-[#0B4BCC] hover:bg-[#0a3fa0] text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:shadow-lg flex items-center justify-center gap-2"
+                  className="mt-4 bg-[#0B4BCC] hover:bg-[#0a3fa0] text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:shadow-lg"
                 >
-                  Ver todos os anúncios
-                  <ChevronDown className="h-5 w-5 rotate-[-90deg]" />
+                  Ver todos os recados
                 </button>
               </div>
-            </div>
+            )}
           </div>
         </section>
 

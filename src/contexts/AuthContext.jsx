@@ -1,13 +1,20 @@
-import { createContext, useContext, useState, useEffect } from 'react';
-import { userService } from '../services/UserService';
-import { getToken, saveToken, saveUserData, getUserData, clearAuth, isLoggedIn } from '../utils/auth';
+import { createContext, useContext, useState, useEffect } from "react";
+import { userService } from "../services/UserService";
+import {
+  getToken,
+  saveToken,
+  saveUserData,
+  getUserData,
+  clearAuth,
+  isLoggedIn,
+} from "../utils/auth";
 
 const AuthContext = createContext(null);
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };
@@ -30,7 +37,7 @@ export const AuthProvider = ({ children }) => {
             clearAuth();
           }
         } catch (error) {
-          console.error('Auth initialization failed:', error);
+          console.error("Auth initialization failed:", error);
           clearAuth();
         }
       }
@@ -42,7 +49,10 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (credentials) => {
     try {
-      const result = await userService.auth(credentials.name, credentials.password);
+      const result = await userService.auth(
+        credentials.name,
+        credentials.password
+      );
 
       if (result.success) {
         if (result.data?.token) {
@@ -55,13 +65,13 @@ export const AuthProvider = ({ children }) => {
       } else {
         return {
           success: false,
-          error: result.error || 'Credenciais inválidas'
+          error: result.error || "Credenciais inválidas",
         };
       }
     } catch (error) {
       return {
         success: false,
-        error: 'Erro inesperado ao fazer login'
+        error: "Erro inesperado ao fazer login",
       };
     }
   };
@@ -69,7 +79,7 @@ export const AuthProvider = ({ children }) => {
   const register = async (userData) => {
     const data = {
       ...userData,
-      userType: "COSTUMER" // isso aqui não é seguro
+      userType: "CUSTOMER", // isso aqui não é seguro
     };
 
     try {
@@ -79,7 +89,7 @@ export const AuthProvider = ({ children }) => {
         // Após registro bem-sucedido, faz login automático
         const loginResult = await login({
           name: userData.email,
-          password: userData.password
+          password: userData.password,
         });
 
         // Se o usuário veio do Google, atualiza o avatar_url no userData salvo
@@ -87,7 +97,7 @@ export const AuthProvider = ({ children }) => {
           const currentUserData = getUserData();
           const updatedUserData = {
             ...currentUserData,
-            avatar_url: userData.avatar_url
+            avatar_url: userData.avatar_url,
           };
           saveUserData(updatedUserData);
           setUser(updatedUserData);
@@ -96,18 +106,18 @@ export const AuthProvider = ({ children }) => {
         return {
           success: true,
           autoLogin: loginResult.success,
-          user: loginResult.user
+          user: loginResult.user,
         };
       } else {
         return {
           success: false,
-          error: result.error || 'Erro ao criar conta'
+          error: result.error || "Erro ao criar conta",
         };
       }
     } catch (error) {
       return {
         success: false,
-        error: 'Erro inesperado ao criar conta'
+        error: "Erro inesperado ao criar conta",
       };
     }
   };
@@ -136,9 +146,5 @@ export const AuthProvider = ({ children }) => {
   console.log("Loading:", loading);
   console.log("isAuthenticated:", !!user);
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
