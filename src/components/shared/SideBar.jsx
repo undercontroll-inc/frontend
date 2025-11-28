@@ -6,6 +6,7 @@ import {
   Package,
   Users,
   ChartBar,
+  BarChart3,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
@@ -50,6 +51,12 @@ const SideBar = memo(({ active = "repairs" }) => {
               label: "Calendário",
               icon: Calendar,
               path: "/calendar",
+            },
+            {
+              id: "analytics",
+              label: "Dashboard",
+              icon: BarChart3,
+              path: "/analytics",
             },
           ]
         : [
@@ -99,7 +106,7 @@ const SideBar = memo(({ active = "repairs" }) => {
 
   return (
     <div className="flex relative">
-      <aside className={`${isOpen ? 'w-56' : 'w-16'} text-white border-r ${isAdmin ? 'bg-[#0a1929]' : 'bg-[#041A2D]'} border-gray-800 flex flex-col shadow-lg transition-all duration-300 ease-in-out fixed top-0 left-0 h-screen z-40`}>
+      <aside className={`${isOpen ? 'w-56' : 'w-16'} text-white ${isAdmin ? 'bg-[#0a1929]' : 'bg-[#041A2D]'} flex flex-col shadow-lg fixed top-0 left-0 h-screen z-40`} style={{ transition: 'width 300ms ease-in-out', willChange: 'width' }}>
 
         <nav className="flex-1 p-2 flex flex-col space-y-1 overflow-y-auto">
           {isOpen && (
