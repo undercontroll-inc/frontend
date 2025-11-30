@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ChevronDown,
   Wrench,
@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 
 export const LandingPage = () => {
   const navigate = useNavigate();
+  const [latestAnnouncement, setLatestAnnouncement] = useState(null);
 
   useEffect(() => {
     const faqItems = document.querySelectorAll(".faq-item");
@@ -23,6 +24,19 @@ export const LandingPage = () => {
         item.classList.toggle("active");
       });
     });
+
+    // Carregar último anúncio do localStorage (apenas os marcados para visitantes)
+    const savedAnnouncements = localStorage.getItem("announcements");
+    if (savedAnnouncements) {
+      const announcements = JSON.parse(savedAnnouncements);
+      // Filtrar apenas os marcados para visitantes
+      const visitorAnnouncements = announcements.filter(
+        (ann) => ann.forVisitors !== false
+      );
+      if (visitorAnnouncements.length > 0) {
+        setLatestAnnouncement(visitorAnnouncements[0]); // Pega o mais recente para visitantes
+      }
+    }
   }, []);
 
   const handleWhatsAppClick = () => {
