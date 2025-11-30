@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+
+import { announcementService } from "../../services/AnnouncementService";
 import {
   ChevronDown,
   Wrench,
@@ -24,20 +26,13 @@ export const LandingPage = () => {
         item.classList.toggle("active");
       });
     });
-
-    // Carregar último anúncio do localStorage (apenas os marcados para visitantes)
-    const savedAnnouncements = localStorage.getItem("announcements");
-    if (savedAnnouncements) {
-      const announcements = JSON.parse(savedAnnouncements);
-      // Filtrar apenas os marcados para visitantes
-      const visitorAnnouncements = announcements.filter(
-        (ann) => ann.forVisitors !== false
-      );
-      if (visitorAnnouncements.length > 0) {
-        setLatestAnnouncement(visitorAnnouncements[0]); // Pega o mais recente para visitantes
-      }
-    }
+    getLastAnnouncement();
   }, []);
+
+  const getLastAnnouncement = async () => {
+    const lastAnnouncement = await announcementService.getLastAnnouncement();
+    setLatestAnnouncement(lastAnnouncement);
+  }
 
   const handleWhatsAppClick = () => {
     const phoneNumber = "5511964007420";
@@ -161,35 +156,32 @@ export const LandingPage = () => {
             {/* Anúncio em Destaque */}
             {latestAnnouncement ? (
               <div
-                className={`bg-gradient-to-br ${
-                  latestAnnouncement.categoryColor === "blue"
-                    ? "from-[#041A2D] to-[#052540]"
-                    : latestAnnouncement.categoryColor === "green"
+                className={`bg-gradient-to-br ${latestAnnouncement.categoryColor === "blue"
+                  ? "from-[#041A2D] to-[#052540]"
+                  : latestAnnouncement.categoryColor === "green"
                     ? "from-[#047857] to-[#065f46]"
                     : "from-[#BA4610] to-[#d45012]"
-                } rounded-xl shadow-lg overflow-hidden border-2 ${
-                  latestAnnouncement.categoryColor === "blue"
+                  } rounded-xl shadow-lg overflow-hidden border-2 ${latestAnnouncement.categoryColor === "blue"
                     ? "border-[#0B4BCC]"
                     : latestAnnouncement.categoryColor === "green"
-                    ? "border-[#10b981]"
-                    : "border-[#BA4610]"
-                } hover:shadow-xl transition-all duration-300`}
+                      ? "border-[#10b981]"
+                      : "border-[#BA4610]"
+                  } hover:shadow-xl transition-all duration-300`}
               >
                 <div className="p-6 sm:p-8">
                   <div className="flex items-center justify-between mb-4">
                     <span
-                      className={`${
-                        latestAnnouncement.categoryColor === "blue"
-                          ? "bg-[#0B4BCC] text-white"
-                          : latestAnnouncement.categoryColor === "green"
+                      className={`${latestAnnouncement.categoryColor === "blue"
+                        ? "bg-[#0B4BCC] text-white"
+                        : latestAnnouncement.categoryColor === "green"
                           ? "bg-[#10b981]"
                           : "bg-white text-[#BA4610]"
-                      } px-3 py-1 rounded-full text-sm font-semibold`}
+                        } px-3 py-1 rounded-full text-sm font-semibold`}
                     >
-                      {latestAnnouncement.category}
+                      {latestAnnouncement.type}
                     </span>
                     <span className="text-gray-300 text-sm">
-                      {new Date(latestAnnouncement.date).toLocaleDateString(
+                      {new Date(latestAnnouncement.publishedAt).toLocaleDateString(
                         "pt-BR"
                       )}
                     </span>
@@ -198,7 +190,7 @@ export const LandingPage = () => {
                     {latestAnnouncement.title}
                   </h3>
                   <p className="text-gray-300 leading-relaxed mb-6">
-                    {latestAnnouncement.description}
+                    {latestAnnouncement.content}
                   </p>
                   <button
                     onClick={() => navigate("/announcements")}
