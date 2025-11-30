@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import FAQItem from "./FAQItem";
 import Logo from "../../../public/images/logo_pelluci.png";
+import LogoNavbar from "../../../public/images/logo_pelluci_navbar.png";
 import Banner from "../../../public/images/banner_image.jpg";
 import Foto from "../../../public/images/foto_pelluci.jpg";
 import { useNavigate } from "react-router-dom";
@@ -53,12 +54,22 @@ export const LandingPage = () => {
     window.open(`tel:${phoneNumber}`);
   };
 
+  const handleFacebookClick = () => {
+    const facebookUrl = "https://www.facebook.com/comecialirmaospelluci/?locale=pt_BR";
+    window.open(facebookUrl, "_blank");
+  }
+
+  const handleInstagramClick = () => {
+    const instagramUrl = "https://www.instagram.com/comercial.irmaos.peluci/";
+    window.open(instagramUrl, "_blank");
+  }
+
   return (
     <div className="bg-gradient-to-br from-gray-50 via-blue-50/30 to-orange-50/20">
       <header className="header flex items-center justify-around p-2 bg-[#041A2D] fixed w-full top-0 z-50 shadow-lg backdrop-blur-md border-b border-white/10">
         <a href="#">
           <img
-            src={Logo}
+            src={LogoNavbar}
             alt="Logo da irmãos pelluci"
             className="h-14 sm:h-16 transition-transform hover:scale-107 duration-300 rounded-lg shadow-lg"
           />
@@ -462,11 +473,11 @@ export const LandingPage = () => {
 
           </div>
 
-          <div className="image-content lg:w-1/2 relative z-10">
-            <div className="relative group">
+          <div className="image-content lg:w-1/2 relative z-10 flex justify-center">
+            <div className="relative group w-[80%]">
               <div className="absolute inset-0 bg-gradient-to-br from-[#0B4BCC]/30 to-[#BA4610]/30 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
               <img
-                className="relative rounded-2xl shadow-2xl h-auto w-full object-cover border-4 border-gray-200 group-hover:scale-105 transition-transform duration-500"
+                className="relative rounded-2xl shadow-2xl max-h-[700px] w-full object-cover border-4 border-gray-200 group-hover:scale-105 transition-transform duration-500"
                 src={Foto}
                 alt="Comercial Irmãos Pelluci"
               />
@@ -488,9 +499,9 @@ export const LandingPage = () => {
             </p>
           </div>
 
-          <div className="main-content flex flex-col lg:flex-row gap-8 w-full max-w-6xl relative z-10">
-            <div className="contact-container flex flex-col lg:flex-row gap-8 w-full">
-              <div className="bg-gradient-to-br from-gray-50 to-gray-100 px-8 py-10 rounded-2xl shadow-2xl border border-gray-200 flex-1">
+          <div className="main-content flex flex-col lg:flex-row gap-8 w-full max-w-[77rem] relative z-10 my-6">
+            <div className="contact-container flex flex-col lg:flex-row gap-12 w-full">
+              <div className="bg-gradient-to-br from-gray-50 to-gray-100 px-8 py-10 rounded-2xl shadow-2xl border border-gray-200 lg:w-[48%]">
                 <h2 className="font-bold mt-3 mb-10 text-xl text-center text-[#041A2D]">
                   Visite nossa loja e faça um orçamento gratuito!
                 </h2>
@@ -505,7 +516,7 @@ export const LandingPage = () => {
                     <i className="fa-brands fa-whatsapp text-xl"></i>
                     Agendar pelo Whatsapp
                   </button>
-                  <div className="flex items-center gap-3 my-1">
+                  <div className="flex items-center gap-3 my-2">
                     <div className="h-px bg-gray-400 flex-1"></div>
                     <span className="text-gray-700 font-semibold text-sm">
                       Ou
@@ -522,9 +533,9 @@ export const LandingPage = () => {
                 </div>
               </div>
 
-              <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-8 rounded-2xl shadow-2xl text-gray-800 border border-gray-200 flex-1">
+              <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-8 rounded-2xl shadow-2xl text-gray-800 border border-gray-200 lg:w-[48%]">
                 <div className="mb-6">
-                  <div className="flex items-center gap-2 mb-3">
+                  <div className="flex items-center gap-2 mb-4">
                     <div className="bg-gradient-to-br from-[#0B4BCC] to-[#0B4BCC]/80 p-2 rounded-lg">
                       <MapPin className="h-5 w-5 text-white" />
                     </div>
@@ -532,13 +543,13 @@ export const LandingPage = () => {
                       Endereço
                     </h2>
                   </div>
-                  <p className="text-base ml-11 text-gray-700">
+                  <p className="text-base text-gray-700">
                     Av. Zelina, 505 - Vila Zelina, São Paulo - SP, 03143-000
                   </p>
                 </div>
 
                 <div className="mt-10">
-                  <div className="flex items-center gap-2 mb-3">
+                  <div className="flex items-center gap-2 mb-4">
                     <div className="bg-gradient-to-br from-[#BA4610] to-[#BA4610]/80 p-2 rounded-lg">
                       <Clock className="h-5 w-5 text-white" />
                     </div>
@@ -546,7 +557,7 @@ export const LandingPage = () => {
                       Horário de Funcionamento
                     </h2>
                   </div>
-                  <div className="flex flex-col gap-3 mt-4 ml-11">
+                  <div className="flex flex-col gap-3">
                     <div className="flex justify-between items-center p-3 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
                       <span className="font-semibold text-gray-800 dark:text-gray-200">
                         Segunda à Sexta
@@ -576,7 +587,7 @@ export const LandingPage = () => {
           </div>
         </section>
 
-        <section className="bg-gray-50 py-16 sm:py-20 px-4 sm:px-8">
+        <section className="bg-gray-50 py-16 sm:py-20 px-4 sm:px-8 min-h-[750px]">
           <div className="max-w-4xl mx-auto">
             <div className="mb-12 text-center">
               <h2 className="text-4xl sm:text-5xl font-bold mb-2 bg-[#041A2D] bg-clip-text text-transparent leading-tight pb-1">
@@ -588,7 +599,7 @@ export const LandingPage = () => {
             </div>
 
             {/* Anúncio em Destaque */}
-            <div className="bg-[#052540] rounded-xl shadow-lg overflow-hidden border-2 border-[#0B4BCC] hover:shadow-xl transition-all duration-300">
+            <div className="bg-[#052540] rounded-xl shadow-lg overflow-hidden border-2 hover:shadow-xl transition-all duration-300">
               <div className="p-6 sm:p-8">
                 <div className="flex items-center justify-between mb-4">
                   <span className="bg-[#0B4BCC] text-white px-3 py-1 rounded-full text-sm font-semibold">
@@ -622,76 +633,65 @@ export const LandingPage = () => {
 
         <footer className="footer-section bg-[#041A2D] text-white p-16 border-t border-white/10">
           <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-8">
-              {/* Logo e Redes Sociais */}
-              <div className="flex flex-col items-center justify-center md:items-start">
-                <div className="flex flex-col items-center">
-                  <img
-                    src={Logo}
-                    alt=""
-                    className="h-36 rounded-lg shadow-lg justify-self-center"
-                  />
-                  <div className="flex gap-4 my-4">
-                    <a
-                      href="#"
-                      className="bg-white/10 hover:bg-[#0B4BCC] p-3 rounded-full transition-all duration-300 hover:scale-110 backdrop-blur-sm border border-white/20"
-                    >
-                      <i className="fa-brands fa-facebook-f text-lg"></i>
-                    </a>
-                    <a
-                      href="#"
-                      className="bg-white/10 hover:bg-[#CF21A4] p-3 rounded-full transition-all duration-300 hover:scale-110 backdrop-blur-sm border border-white/20"
-                    >
-                      <i className="fa-brands fa-instagram text-lg"></i>
-                    </a>
-                    <a
-                      onClick={handleWhatsAppClick}
-                      href="#"
-                      className="bg-white/10 hover:bg-green-500 p-3 rounded-full transition-all duration-300 hover:scale-110 backdrop-blur-sm border border-white/20"
-                    >
-                      <i className="fa-brands fa-whatsapp text-lg"></i>
-                    </a>
-                  </div>
-                  <p className="font-semibold text-sm text-gray-300 mt-4">
-                    Agende já uma visita
-                  </p>
+            <div className="flex flex-col md:flex-row gap-44 mb-8">
+              <div className="flex flex-col items-center gap-6 my-4">
+                <img
+                  src={Logo}
+                  alt=""
+                  className="h-18 shadow-lg transition-transform duration-300 hover:scale-105 cursor-pointer"
+                />
+                <div className="flex gap-3">
+                  <a
+                    onClick={handleFacebookClick}
+                    className="bg-white/10 hover:bg-[#0B4BCC] p-3 rounded-full transition-all duration-300 hover:scale-110 backdrop-blur-sm border border-white/20 cursor-pointer"
+                  >
+                    <i className="fa-brands fa-facebook-f text-lg"></i>
+                  </a>
+                  <a
+                    onClick={handleInstagramClick}
+                    className="bg-white/10 hover:bg-[#CF21A4] p-3 rounded-full transition-all duration-300 hover:scale-110 backdrop-blur-sm border border-white/20 cursor-pointer"
+                  >
+                    <i className="fa-brands fa-instagram text-lg"></i>
+                  </a>
+                  <a
+                    onClick={handleWhatsAppClick}
+                    className="bg-white/10 hover:bg-green-500 p-3 rounded-full transition-all duration-300 hover:scale-110 backdrop-blur-sm border border-white/20 cursor-pointer"
+                  >
+                    <i className="fa-brands fa-whatsapp text-lg"></i>
+                  </a>
                 </div>
+                <p className="font-semibold text-sm text-gray-300 text-center md:text-left">
+                  Agende já uma visita!
+                </p>
               </div>
 
-              {/* Contato */}
               <div>
-                <h2 className="font-bold text-lg mb-4 flex items-center gap-2">
-                  Contato
+                <h2 className="font-bold text-lg mb-4">
+                  Contato e Localização
                 </h2>
                 <ul className="space-y-3 text-gray-300">
-                  <li className="flex items-start gap-2 hover:text-white transition-colors">
-                    <div>
-                      <div className="font-semibold text-white text-sm">
-                        Telefone
-                      </div>
-                      <div>(11) 2239-4448</div>
+                  <li className="hover:text-white transition-colors">
+                    <div className="font-semibold text-white text-sm">
+                      Telefone
                     </div>
+                    <div>(11) 2239-4448</div>
                   </li>
-                  <li className="flex items-start gap-2 hover:text-white transition-colors">
-                    <div>
-                      <div className="font-semibold text-white text-sm">
-                        Whatsapp
-                      </div>
-                      <div>(11) 99882-3435</div>
+                  {/* <li className="hover:text-white transition-colors">
+                    <div className="font-semibold text-white text-sm">
+                      Whatsapp
                     </div>
-                  </li>
-                  <li className="flex items-start gap-2 hover:text-white transition-colors">
-                    <div>
-                      <div className="font-semibold text-white text-sm">
-                        Email
-                      </div>
-                      <div>comercialirmaopeluci@gmail.com</div>
+                    <div>(11) 99882-3435</div>
+                  </li> */}
+                  <li className="hover:text-white transition-colors">
+                    <div className="font-semibold text-white text-sm">
+                      Email
                     </div>
+                    <div>comercialirmaopeluci@gmail.com</div>
                   </li>
                 </ul>
 
                 <div className="mt-6">
-                  <h2 className="font-bold text-sm mb-2 flex items-center gap-2">
+                  <h2 className="font-bold text-sm mb-2">
                     Endereço
                   </h2>
                   <p className="text-gray-300 hover:text-white transition-colors">
@@ -699,8 +699,9 @@ export const LandingPage = () => {
                   </p>
                 </div>
               </div>
+
               <div>
-                <h2 className="font-bold text-lg mb-4 flex items-center gap-2">
+                <h2 className="font-bold text-lg mb-4">
                   Links Rápidos
                 </h2>
                 <ul className="space-y-2 text-gray-300">
@@ -753,7 +754,6 @@ export const LandingPage = () => {
                 © 2025 Comercial Irmãos Pelluci. Todos os direitos reservados.
               </p>
             </div>
-            {/* aside removed: social icons moved back into footer left column */}
           </div>
         </footer>
       </main>
