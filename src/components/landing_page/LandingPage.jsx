@@ -20,10 +20,17 @@ export const LandingPage = () => {
 
   useEffect(() => {
     const faqItems = document.querySelectorAll(".faq-item");
+''    
+    const handleClick = (item) => () => {
+      item.classList.toggle("active");
+    };
+    
+    const handlers = [];
+    
     faqItems.forEach((item) => {
-      item.addEventListener("click", () => {
-        item.classList.toggle("active");
-      });
+      const handler = handleClick(item);
+      handlers.push({ item, handler });
+      item.addEventListener("click", handler);
     });
 
     // Carregar último anúncio do localStorage (apenas os marcados para visitantes)
@@ -38,6 +45,13 @@ export const LandingPage = () => {
         setLatestAnnouncement(visitorAnnouncements[0]); // Pega o mais recente para visitantes
       }
     }
+
+    // Cleanup: Remove event listeners ao desmontar
+    return () => {
+      handlers.forEach(({ item, handler }) => {
+        item.removeEventListener("click", handler);
+      });
+    };
   }, []);
 
   const handleWhatsAppClick = () => {
@@ -71,7 +85,7 @@ export const LandingPage = () => {
           <img
             src={LogoNavbar}
             alt="Logo da irmãos pelluci"
-            className="h-14 sm:h-16 transition-transform hover:scale-107 duration-300 rounded-lg shadow-lg"
+            className="h-12 sm:h-16 transition-transform hover:scale-105 duration-300 rounded-lg shadow-lg"
           />
         </a>
         <nav className="nav text-white hidden lg:block">
@@ -113,13 +127,13 @@ export const LandingPage = () => {
         <div className="auth-buttons flex gap-3">
           <button
             onClick={() => navigate("/login")}
-            className="bg-transparent border-2 border-white text-white px-3 py-1 rounded-lg hover:scale-107 transition-all duration-300 cursor-pointer font-medium shadow-md"
+            className="bg-transparent border-2 border-white text-white px-3 py-1 rounded-lg hover:scale-105 transition-all duration-300 cursor-pointer font-medium shadow-md"
           >
             Entrar
           </button>
           <button
             onClick={() => navigate("/register")}
-            className="bg-gradient-to-r from-[#BA4610] to-[#d45012] text-white px-3 py-1 rounded-lg hover:scale-107 transition-all duration-350 cursor-pointer font-medium shadow-lg"
+            className="bg-gradient-to-r from-[#BA4610] to-[#d45012] text-white px-3 py-1 rounded-lg hover:scale-105 transition-all duration-300 cursor-pointer font-medium shadow-lg"
           >
             Crie sua conta
           </button>
@@ -145,7 +159,7 @@ export const LandingPage = () => {
                   .getElementById("contact")
                   .scrollIntoView({ behavior: "smooth" })
               }
-              className="bg-gradient-to-r from-[#0B4BCC] to-[#0B4BCC] hover:from-[#0a3fa0] hover:to-[#0a3fa0] text-white px-8 py-4 mt-2 rounded-xl text-lg font-semibold shadow-2xl hover: transition-all duration-300 cursor-pointer hover:scale-105 border border-white/20"
+              className="bg-[#0B4BCC] hover:bg-[#0a3fa0] text-white px-8 py-4 mt-2 rounded-xl text-lg font-semibold shadow-2xl hover: transition-all duration-300 cursor-pointer hover:scale-105 border border-white/20"
             >
               Agende uma visita agora!
             </button>
@@ -631,14 +645,14 @@ export const LandingPage = () => {
           </div>
         </section>
 
-        <footer className="footer-section bg-[#041A2D] text-white p-16 border-t border-white/10">
+        <footer className="footer-section bg-[#041A2D] text-white p-16 border-t border-white/10 items-center">
           <div className="max-w-6xl mx-auto">
             <div className="flex flex-col md:flex-row gap-44 mb-8">
               <div className="flex flex-col items-center gap-6 my-4">
                 <img
                   src={Logo}
                   alt=""
-                  className="h-18 shadow-lg transition-transform duration-300 hover:scale-105 cursor-pointer"
+                  className="h-18 rounded-sm shadow-lg transition-transform duration-300 hover:scale-105 cursor-pointer"
                 />
                 <div className="flex gap-3">
                   <a
