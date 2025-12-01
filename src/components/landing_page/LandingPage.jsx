@@ -22,13 +22,13 @@ export const LandingPage = () => {
 
   useEffect(() => {
     const faqItems = document.querySelectorAll(".faq-item");
-''    
+    ''
     const handleClick = (item) => () => {
       item.classList.toggle("active");
     };
-    
+
     const handlers = [];
-    
+
     faqItems.forEach((item) => {
       const handler = handleClick(item);
       handlers.push({ item, handler });
@@ -158,72 +158,6 @@ export const LandingPage = () => {
           </div>
         </section>
 
-       
-
-        <section
-          id="about"
-          className="about-section p-16 sm:p-20 bg-gradient-to-br from-[#041A2D] via-[#052540] to-[#041A2D] flex flex-col lg:flex-row justify-around items-center gap-12 relative overflow-hidden"
-        >
-          {/* Decoração de fundo */}
-          <div className="absolute inset-0 opacity-5">
-            <div className="absolute top-20 left-20 w-72 h-72 bg-[#BA4610] rounded-full blur-3xl"></div>
-            <div className="absolute bottom-20 right-20 w-96 h-96 bg-[#0B4BCC] rounded-full blur-3xl"></div>
-          </div>
-
-          <div className="text-content lg:w-1/2 flex flex-col gap-6 text-white relative z-10">
-            <h2 className="text-4xl sm:text-5xl font-bold mb-6 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-              Quem Somos
-            </h2>
-            <p className="text-lg leading-relaxed text-gray-200">
-              A Comercial Irmãos Pelluci atua{" "}
-              <span className="font-extrabold">desde 1987</span> em São Paulo,
-              oferecendo{" "}
-              <span className="font-extrabold">
-                conserto de eletrodomésticos
-              </span>{" "}
-              e{" "}
-              <span className="font-extrabold">
-                venda de peças e acessórios
-              </span>{" "}
-              com qualidade e confiança. Nosso compromisso sempre foi entregar
-              soluções que unem experiência, eficiência e transparência.
-            </p>
-            <p className="text-lg leading-relaxed text-gray-200">
-              Nosso objetivo é proporcionar tranquilidade, segurança e economia,
-              prolongando a vida útil dos aparelhos e evitando gastos
-              desnecessários, sempre colocando o cliente em primeiro lugar.
-            </p>
-
-            {/* Stats */}
-            <div className="grid grid-cols-3 gap-6 mt-6">
-              <div className="bg-white/10 backdrop-blur-sm p-4 rounded-xl border border-white/20 text-center">
-                <div className="text-3xl font-bold">37+</div>
-                <div className="text-sm text-gray-300">Anos de história</div>
-              </div>
-              <div className="bg-white/10 backdrop-blur-sm p-4 rounded-xl border border-white/20 text-center">
-                <div className="text-3xl font-bold">3</div>
-                <div className="text-sm text-gray-300">Gerações</div>
-              </div>
-              <div className="bg-white/10 backdrop-blur-sm p-4 rounded-xl border border-white/20 text-center">
-                <div className="text-3xl font-bold">1000+</div>
-                <div className="text-sm text-gray-300">
-                  Clientes satisfeitos
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="image-content lg:w-1/2 relative z-10">
-            <div className="relative group">
-              <div className="absolute inset-0 bg-gradient-to-br from-[#0B4BCC]/30 to-[#BA4610]/30 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-300"></div>
-              <img
-                className="relative rounded-2xl shadow-2xl h-auto w-full object-cover border-4 border-white/10 group-hover:scale-105 transition-transform duration-300"
-                src={Foto}
-                alt="Comercial Irmãos Pelluci"
-              />
-            </div>
-          </div>
-        </section>
         <section
           id="services"
           className="services-section pt-16 pb-16 px-16 sm:pt-16 sm:pb-20 sm:px-20 flex flex-col justify-around gap-8 bg-gradient-to-br from-gray-50 via-gray-100 to-gray-50 relative overflow-hidden"
@@ -659,8 +593,8 @@ export const LandingPage = () => {
         <section className="bg-white py-39 px-4 sm:px-8 border-b border-gray-200 mt-[-50px]">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-20">
-              <h2 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-[#041A2D] to-[#BA4610] bg-clip-text text-transparent mb-2">
-                📢 Central de Recados
+              <h2 className="text-3xl sm:text-4xl font-bold bg-[#041A2D] bg-clip-text text-transparent mb-2">
+                Central de Recados
               </h2>
               <p className="text-gray-600 text-lg">
                 Fique por dentro das novidades e promoções
@@ -730,6 +664,7 @@ export const LandingPage = () => {
             )}
           </div>
         </section>
+
         <footer className="footer-section bg-[#041A2D] text-white p-16 border-t border-white/10 items-center">
           <div className="max-w-6xl mx-auto">
             <div className="flex flex-col md:flex-row gap-44 mb-8">
