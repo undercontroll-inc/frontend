@@ -2,6 +2,12 @@ import React, { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
 import Logo from "../../../public/images/logo_pelluci.png";
+import { announcementService } from "../../services/AnnouncementService";
+import {
+  getAnnouncementLabel,
+  getAnnouncementStyles,
+  getAnnouncementTypeOptions,
+} from "../../utils/announcementUtils";
 
 export const AnnouncementsPage = () => {
   const navigate = useNavigate();
@@ -12,39 +18,13 @@ export const AnnouncementsPage = () => {
 
   // Carregar anúncios do localStorage
   useEffect(() => {
-    const savedAnnouncements = localStorage.getItem("announcements");
-    if (savedAnnouncements) {
-      setAnnouncements(JSON.parse(savedAnnouncements));
-    } else {
-      // Dados iniciais se não houver nada no localStorage
-      const initialData = [
-        {
-          id: 1,
-          category: "Feriados",
-          title: "Funcionamento no Dia da Consciência Negra",
-          description:
-            "Informamos que no dia 20 de novembro (quarta-feira), feriado nacional, estaremos fechados. Retornaremos ao atendimento normal no dia seguinte.",
-          date: "2025-11-19",
-          categoryColor: "blue",
-        },
-        {
-          id: 2,
-          category: "Descontos",
-          title: "🎉 Black Friday - 20% OFF em Peças Originais!",
-          description:
-            "De 25 a 29 de novembro, aproveite 20% de desconto na compra de peças originais para eletrodomésticos. Não perca essa oportunidade!",
-          date: "2025-11-15",
-          categoryColor: "orange",
-        },
-      ];
-      setAnnouncements(initialData);
-    }
-  }, []);
+    getAllAnnouncements();
+  }, [currentPage, itemsPerPage]);
 
-  // Filtrar anúncios por categoria e apenas os marcados para visitantes
+  // Filtrar anúncios por tipo e apenas os marcados para visitantes
   const filteredAnnouncements = useMemo(() => {
     // Filtrar apenas anúncios marcados para visitantes
-    const visitorAnnouncements = announcements.filter(
+    const visitorAnnouncements = announcements ?? [].filter(
       (ann) => ann.forVisitors !== false
     );
 
@@ -52,7 +32,7 @@ export const AnnouncementsPage = () => {
       return visitorAnnouncements;
     }
     return visitorAnnouncements.filter(
-      (ann) => ann.category === categoryFilter
+      (ann) => ann.type === categoryFilter
     );
   }, [categoryFilter, announcements]);
 
@@ -64,6 +44,14 @@ export const AnnouncementsPage = () => {
     startIndex,
     endIndex
   );
+
+  const getAllAnnouncements = async () => {
+    const response = await announcementService.getAllAnnouncements(
+      currentPage - 1,
+      itemsPerPage
+    );
+    setAnnouncements(response);
+  }
 
   // Resetar para página 1 quando mudar filtro ou itens por página
   const handleCategoryChange = (category) => {
@@ -84,27 +72,7 @@ export const AnnouncementsPage = () => {
     setCurrentPage((prev) => Math.min(prev + 1, totalPages));
   };
 
-  const getCategoryStyles = (color) => {
-    if (color === "blue") {
-      return {
-        bg: "from-[#041A2D] to-[#052540]",
-        border: "border-[#0B4BCC]",
-        badge: "bg-[#0B4BCC] text-white",
-      };
-    }
-    if (color === "green") {
-      return {
-        bg: "from-[#047857] to-[#065f46]",
-        border: "border-[#10b981]",
-        badge: "bg-[#10b981]",
-      };
-    }
-    return {
-      bg: "from-[#BA4610] to-[#d45012]",
-      border: "border-[#BA4610]",
-      badge: "bg-white text-[#BA4610]",
-    };
-  };
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-orange-50/20">
@@ -200,10 +168,10 @@ export const AnnouncementsPage = () => {
           {/* Filtros e Controles */}
           <div className="bg-white rounded-xl shadow-md p-6 mb-8 border border-gray-200">
             <div className="grid sm:grid-cols-2 gap-6">
-              {/* Filtro de Categoria */}
+              {/* Filtro de Tipo */}
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Filtrar por categoria:
+                  Filtrar por tipo:
                 </label>
                 <select
                   value={categoryFilter}
@@ -211,9 +179,11 @@ export const AnnouncementsPage = () => {
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0B4BCC] focus:border-transparent outline-none transition-all"
                 >
                   <option value="Todos">Todos</option>
-                  <option value="Promoções">Promoções</option>
-                  <option value="Avisos">Avisos</option>
-                  <option value="Recomendações">Recomendações</option>
+                  {getAnnouncementTypeOptions().map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
                 </select>
               </div>
 
@@ -258,7 +228,7 @@ export const AnnouncementsPage = () => {
           <div className="space-y-6">
             {currentAnnouncements.length > 0 ? (
               currentAnnouncements.map((announcement) => {
-                const styles = getCategoryStyles(announcement.categoryColor);
+                const styles = getAnnouncementStyles(announcement.type);
                 return (
                   <div
                     key={announcement.id}
@@ -269,10 +239,10 @@ export const AnnouncementsPage = () => {
                         <span
                           className={`${styles.badge} px-3 py-1 rounded-full text-sm font-semibold`}
                         >
-                          {announcement.category}
+                          {getAnnouncementLabel(announcement.type)}
                         </span>
                         <span className="text-gray-300 text-sm">
-                          {new Date(announcement.date).toLocaleDateString(
+                          {new Date(announcement.publishedAt).toLocaleDateString(
                             "pt-BR"
                           )}
                         </span>
@@ -281,7 +251,7 @@ export const AnnouncementsPage = () => {
                         {announcement.title}
                       </h2>
                       <p className="text-gray-300 leading-relaxed">
-                        {announcement.description}
+                        {announcement.content}
                       </p>
                     </div>
                   </div>
@@ -314,11 +284,10 @@ export const AnnouncementsPage = () => {
                     <button
                       key={page}
                       onClick={() => setCurrentPage(page)}
-                      className={`w-10 h-10 rounded-lg font-semibold transition-all duration-300 ${
-                        currentPage === page
-                          ? "bg-[#0B4BCC] text-white shadow-lg"
-                          : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
-                      }`}
+                      className={`w-10 h-10 rounded-lg font-semibold transition-all duration-300 ${currentPage === page
+                        ? "bg-[#0B4BCC] text-white shadow-lg"
+                        : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
+                        }`}
                     >
                       {page}
                     </button>
