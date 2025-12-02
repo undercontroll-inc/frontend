@@ -80,18 +80,26 @@ export const LandingPage = () => {
           <ul className="flex items-center gap-12">
             <li>
               <a
-                href="#about"
-                className="link-underline-animation transition-colors duration-3000 font-medium"
-              >
-                Quem Somos
-              </a>
-            </li>
-            <li>
-              <a
                 href="#services"
                 className="link-underline-animation transition-colors duration-3000 font-medium"
               >
                 Nossos Serviços
+              </a>
+            </li>
+            <li>
+              <a
+                href="#faq"
+                className="link-underline-animation transition-colors duration-3000 font-medium"
+              >
+                Perguntas Frequentes
+              </a>
+            </li>
+            <li>
+              <a
+                href="#about"
+                className="link-underline-animation transition-colors duration-3000 font-medium"
+              >
+                Quem Somos
               </a>
             </li>
             <li>
@@ -104,10 +112,10 @@ export const LandingPage = () => {
             </li>
             <li>
               <a
-                href="#faq"
+                href="#announcements"
                 className="link-underline-animation transition-colors duration-3000 font-medium"
               >
-                Perguntas Frequentes
+                Central de Recados
               </a>
             </li>
           </ul>
@@ -590,10 +598,10 @@ export const LandingPage = () => {
         </section>
 
         {/* Central de Anúncios */}
-        <section className="bg-white py-39 px-4 sm:px-8 border-b border-gray-200 mt-[-50px]">
+        <section id="announcements" className="bg-white pt-16 pb-20 px-4 sm:px-8 border-b border-gray-200 min-h-[700px]">
           <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-20">
-              <h2 className="text-3xl sm:text-4xl font-bold bg-[#041A2D] bg-clip-text text-transparent mb-2">
+            <div className="text-center mb-24">
+              <h2 className="text-4xl sm:text-5xl font-bold bg-[#041A2D] bg-clip-text text-transparent mb-2 leading-tight pb-1">
                 Central de Recados
               </h2>
               <p className="text-gray-600 text-lg">
@@ -650,13 +658,13 @@ export const LandingPage = () => {
                 </div>
               </div>
             ) : (
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-12 text-center border border-gray-200 dark:border-gray-700">
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-20 text-center border border-gray-200 dark:border-gray-700">
                 <p className="text-gray-500 dark:text-gray-400 text-lg">
                   Nenhum recado disponível no momento
                 </p>
                 <button
                   onClick={() => navigate("/announcements")}
-                  className="mt-4 bg-[#0B4BCC] hover:bg-[#0a3fa0] text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:shadow-lg"
+                  className="mt-4 bg-[#0B4BCC] hover:bg-[#0a3fa0] text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:shadow-lg cursor-pointer"
                 >
                   Ver todos os recados
                 </button>
@@ -665,7 +673,7 @@ export const LandingPage = () => {
           </div>
         </section>
 
-        <footer className="footer-section bg-[#041A2D] text-white p-16 border-t border-white/10 items-center">
+        <footer className="footer-section bg-[#041A2D] text-white p-18 border-t border-white/10 items-center">
           <div className="max-w-6xl mx-auto">
             <div className="flex flex-col md:flex-row gap-44 mb-8">
               <div className="flex flex-col items-center gap-6 my-4">
@@ -749,18 +757,26 @@ export const LandingPage = () => {
                   </li>
                   <li>
                     <a
-                      href="#about"
-                      className="hover:font-bold hover:text-base transition-all hover:translate-x-1 inline-block duration-300"
-                    >
-                      → Quem Somos
-                    </a>
-                  </li>
-                  <li>
-                    <a
                       href="#services"
                       className="hover:font-bold hover:text-base transition-all hover:translate-x-1 inline-block duration-300"
                     >
                       → Nossos Serviços
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#faq"
+                      className="hover:font-bold hover:text-base transition-all hover:translate-x-1 inline-block duration-300"
+                    >
+                      → Perguntas Frequentes
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#about"
+                      className="hover:font-bold hover:text-base transition-all hover:translate-x-1 inline-block duration-300"
+                    >
+                      → Quem Somos
                     </a>
                   </li>
                   <li>
@@ -773,10 +789,10 @@ export const LandingPage = () => {
                   </li>
                   <li>
                     <a
-                      href="#faq"
+                      href="#announcements"
                       className="hover:font-bold hover:text-base transition-all hover:translate-x-1 inline-block duration-300"
                     >
-                      → Perguntas Frequentes
+                      → Central de Recados
                     </a>
                   </li>
                 </ul>

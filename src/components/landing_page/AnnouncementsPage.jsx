@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
-import Logo from "../../../public/images/logo_pelluci.png";
+import LogoNavbar from "../../../public/images/logo_pelluci_navbar.png";
 import { announcementService } from "../../services/AnnouncementService";
 import {
   getAnnouncementLabel,
@@ -77,52 +77,54 @@ export const AnnouncementsPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-orange-50/20">
       {/* Header/Navbar */}
-      <header className="header flex items-center justify-around p-2 bg-gradient-to-r from-[#041A2D] via-[#052540] to-[#041A2D] fixed w-full top-0 z-50 shadow-lg backdrop-blur-md border-b border-white/10">
-        <a
-          href="/"
-          onClick={(e) => {
-            e.preventDefault();
-            navigate("/");
-          }}
-        >
+      <header className="header flex items-center justify-around p-2 bg-[#041A2D] fixed w-full top-0 z-50 shadow-lg backdrop-blur-md border-b border-white/10">
+        <a href="#">
           <img
-            src={Logo}
+            src={LogoNavbar}
             alt="Logo da irmãos pelluci"
-            className="h-14 sm:h-16 transition-transform hover:scale-105 duration-300 rounded-lg shadow-lg"
+            className="h-12 sm:h-16 transition-transform hover:scale-105 duration-300 rounded-lg shadow-lg"
           />
         </a>
         <nav className="nav text-white hidden lg:block">
           <ul className="flex items-center gap-12">
             <li>
               <a
-                href="/#about"
-                className="link-underline-animation transition-colors duration-300 font-medium hover:text-gray-300"
-              >
-                Quem somos
-              </a>
-            </li>
-            <li>
-              <a
                 href="/#services"
-                className="link-underline-animation transition-colors duration-300 font-medium hover:text-gray-300"
+                className="link-underline-animation transition-colors duration-3000 font-medium"
               >
                 Nossos Serviços
               </a>
             </li>
             <li>
               <a
-                href="/#contact"
-                className="link-underline-animation transition-colors duration-300 font-medium hover:text-gray-300"
+                href="/#faq"
+                className="link-underline-animation transition-colors duration-3000 font-medium"
               >
-                Contato
+                Perguntas Frequentes
               </a>
             </li>
             <li>
               <a
-                href="/#faq"
-                className="link-underline-animation transition-colors duration-300 font-medium hover:text-gray-300"
+                href="/#about"
+                className="link-underline-animation transition-colors duration-3000 font-medium"
               >
-                Perguntas Frequentes
+                Quem Somos
+              </a>
+            </li>
+            <li>
+              <a
+                href="/#contact"
+                className="link-underline-animation transition-colors duration-3000 font-medium"
+              >
+                Fale Conosco
+              </a>
+            </li>
+            <li>
+              <a
+                href="/#announcements"
+                className="link-underline-animation transition-colors duration-3000 font-medium"
+              >
+                Central de Recados
               </a>
             </li>
           </ul>
@@ -130,13 +132,13 @@ export const AnnouncementsPage = () => {
         <div className="auth-buttons flex gap-3">
           <button
             onClick={() => navigate("/login")}
-            className="bg-transparent border-2 border-white text-white px-3 py-1 rounded-lg hover:bg-white hover:text-[#041A2D] transition-all duration-300 cursor-pointer font-medium shadow-md"
+            className="bg-transparent border-2 border-white text-white px-3 py-1 rounded-lg hover:scale-105 transition-all duration-300 cursor-pointer font-medium shadow-md"
           >
             Entrar
           </button>
           <button
             onClick={() => navigate("/register")}
-            className="bg-gradient-to-r from-[#BA4610] to-[#d45012] text-white px-3 py-1 rounded-lg hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer font-medium shadow-lg"
+            className="bg-gradient-to-r from-[#BA4610] to-[#d45012] text-white px-3 py-1 rounded-lg hover:scale-105 transition-all duration-300 cursor-pointer font-medium shadow-lg"
           >
             Crie sua conta
           </button>
@@ -144,21 +146,28 @@ export const AnnouncementsPage = () => {
       </header>
 
       {/* Main Content */}
-      <main className="pt-24 pb-16 px-4 sm:px-8">
-        <div className="max-w-4xl mx-auto">
-          {/* Botão Voltar */}
+      <main className="pt-20 pb-20 px-4 sm:px-8">
+        {/* Botão Voltar */}
           <button
-            onClick={() => navigate("/")}
-            className="mb-6 flex items-center gap-2 text-[#041A2D] hover:text-[#0B4BCC] transition-colors duration-300 font-medium group"
+            onClick={() => {
+              navigate("/");
+              setTimeout(() => {
+                const announcementsSection = document.querySelector('.announcements-section');
+                if (announcementsSection) {
+                  announcementsSection.scrollIntoView({ behavior: 'smooth' });
+                }
+              }, 100);
+            }}
+            className="mt-8 mb-6 flex items-center gap-2 text-[#041A2D] hover:text-[#0B4BCC] transition-colors duration-300 font-medium group cursor-pointer"
           >
             <ArrowLeft className="h-5 w-5 group-hover:-translate-x-1 transition-transform duration-300" />
             Voltar para página inicial
           </button>
-
+        <div className="max-w-4xl mx-auto">
           {/* Título */}
-          <div className="text-center mb-8">
-            <h1 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-[#041A2D] to-[#BA4610] bg-clip-text text-transparent mb-3">
-              📢 Central de Recados
+          <div className="text-center mb-14">
+            <h1 className="text-4xl sm:text-5xl font-bold bg-[#041A2D] bg-clip-text text-transparent mb-2 leading-tight pb-1">
+              Central de Recados
             </h1>
             <p className="text-gray-600 text-lg">
               Acompanhe todas as novidades, feriados e promoções
@@ -176,7 +185,13 @@ export const AnnouncementsPage = () => {
                 <select
                   value={categoryFilter}
                   onChange={(e) => handleCategoryChange(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0B4BCC] focus:border-transparent outline-none transition-all"
+                  className="w-full pl-4 pr-12 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0B4BCC] focus:border-transparent outline-none transition-all cursor-pointer appearance-none bg-white"
+                  style={{
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23374151' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")`,
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'right 0.75rem center',
+                    backgroundSize: '1.5rem'
+                  }}
                 >
                   <option value="Todos">Todos</option>
                   {getAnnouncementTypeOptions().map((option) => (
@@ -197,7 +212,13 @@ export const AnnouncementsPage = () => {
                   onChange={(e) =>
                     handleItemsPerPageChange(Number(e.target.value))
                   }
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0B4BCC] focus:border-transparent outline-none transition-all"
+                  className="w-full pl-4 pr-12 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0B4BCC] focus:border-transparent outline-none transition-all cursor-pointer appearance-none bg-white"
+                  style={{
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23374151' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")`,
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'right 0.75rem center',
+                    backgroundSize: '1.5rem'
+                  }}
                 >
                   <option value={3}>3</option>
                   <option value={5}>5</option>
@@ -272,7 +293,7 @@ export const AnnouncementsPage = () => {
               <button
                 onClick={handlePrevPage}
                 disabled={currentPage === 1}
-                className="flex items-center gap-2 px-4 py-2 bg-white border-2 border-[#0B4BCC] text-[#0B4BCC] rounded-lg hover:bg-[#0B4BCC] hover:text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:text-[#0B4BCC] font-medium"
+                className="flex items-center gap-2 px-4 py-2 bg-[#0B4BCC] text-white rounded-lg hover:bg-[#0a3fa0] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed font-medium shadow-lg hover:scale-105"
               >
                 <ChevronLeft className="h-5 w-5" />
                 Anterior
@@ -284,10 +305,11 @@ export const AnnouncementsPage = () => {
                     <button
                       key={page}
                       onClick={() => setCurrentPage(page)}
-                      className={`w-10 h-10 rounded-lg font-semibold transition-all duration-300 ${currentPage === page
-                        ? "bg-[#0B4BCC] text-white shadow-lg"
-                        : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
-                        }`}
+                      className={`w-10 h-10 rounded-lg font-semibold transition-all duration-300 shadow-md ${
+                        currentPage === page
+                          ? "bg-[#041A2D] text-white scale-110"
+                          : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 hover:scale-105"
+                      }`}
                     >
                       {page}
                     </button>
@@ -298,7 +320,7 @@ export const AnnouncementsPage = () => {
               <button
                 onClick={handleNextPage}
                 disabled={currentPage === totalPages}
-                className="flex items-center gap-2 px-4 py-2 bg-white border-2 border-[#0B4BCC] text-[#0B4BCC] rounded-lg hover:bg-[#0B4BCC] hover:text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:text-[#0B4BCC] font-medium"
+                className="flex items-center gap-2 px-4 py-2 bg-[#0B4BCC] text-white rounded-lg hover:bg-[#0a3fa0] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed font-medium shadow-lg hover:scale-105"
               >
                 Próxima
                 <ChevronRight className="h-5 w-5" />
