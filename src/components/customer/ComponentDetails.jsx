@@ -5,6 +5,7 @@ import SideBar from "../shared/SideBar";
 import Loading from "../shared/Loading";
 import Button from "../shared/Button";
 import RepairService from "../../services/RepairService";
+import { useAuth } from "../../contexts/AuthContext";
 
 const formatCurrency = (v) => {
   if (v == null) return "-";
@@ -19,9 +20,17 @@ const formatUpdatedAt = (s) => {
 
 const ComponentDetails = () => {
   const { id } = useParams();
+  const { user } = useAuth();
   const navigate = useNavigate();
   const [repair, setRepair] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Validacao do primeiro login
+    if(user.inFirstLogin) {
+      navigate("/nova-senha");
+    }
+  }, [user]);
 
   useEffect(() => {
     loadRepairDetails();
