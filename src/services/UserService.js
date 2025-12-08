@@ -132,6 +132,31 @@ class UserService {
       };
     }
   }
+  async resetPassword(newPassword, userId) {
+    const token = localStorage.getItem("authToken");
+    
+    try {
+      const response = await apiClient.patch(`${BASE_URI}/reset-password/${userId}`, {
+        newPassword,
+      }, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      return {
+        success: true,
+        data: response.data,
+      };
+    } catch (e) {
+      console.log(`Erro ao alterar a senha: ${e}`);
+
+      return {
+        success: false,
+        error: getAxiosErrorMessage(e),
+      };
+    }
+  }
 }
 
 export const userService = new UserService();

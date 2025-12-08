@@ -16,8 +16,6 @@ class RepairService {
   async getRepairById(id) {
     const token = localStorage.getItem("authToken");
 
-    console.log(token);
-
     try {
       const response = await apiClient.get(`/orders/${id}`, {
         headers:{
@@ -95,9 +93,6 @@ class RepairService {
 
   async getUserRepairs(userId) {
     const token = localStorage.getItem("authToken");
-
-    console.log(token);
-
     try {
       const response = await apiClient.get(`orders/filter?userId=${userId}`, {
         headers: {

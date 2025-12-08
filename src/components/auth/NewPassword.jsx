@@ -1,15 +1,16 @@
 import { useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff, Lock, Check, X } from "lucide-react";
 import Button from "../shared/Button";
 import Input from "../shared/Input";
 import AuthLayout from "../shared/AuthLayout";
 import { useToast } from "../../contexts/ToastContext";
+import { useAuth } from "../../contexts/AuthContext";
+import { userService } from "../../services/UserService";
 
 export default function NewPassword() {
-  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { showToast } = useToast();
+  const toast = useToast();
   
   const [formData, setFormData] = useState({
     password: "",
@@ -26,8 +27,7 @@ export default function NewPassword() {
     number: false,
     special: false,
   });
-
-  const token = searchParams.get("token");
+  const { user, logout, updateUser } = useAuth();
 
   const checkPasswordStrength = (password) => {
     return {
@@ -94,28 +94,30 @@ export default function NewPassword() {
       return;
     }
 
-    if (!token) {
-      showToast("Token inválido ou expirado", "error");
-      return;
-    }
-
     setIsLoading(true);
 
     try {
-      // Aqui você deve integrar com sua API de redefinição de senha
-      // Exemplo:
-      // const response = await resetPassword(token, formData.password);
-      
-      // Simulação de requisição
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const response = await userService.resetPassword(formData.password, user.id)
 
-      showToast("Senha redefinida com sucesso!", "success");
+      if(!response.success) {
+        
+        toast.error(
+        response.data || "Erro ao redefinir senha. Tente novamente.");
+
+        throw new Error(response.error);
+      }
+
+      toast.success("Senha redefinida com sucesso!");
+
+      user.inFirstLogin = false;
+
+      updateUser(user);
+
       navigate("/login");
     } catch (error) {
       console.error("Erro ao redefinir senha:", error);
-      showToast(
-        error.response?.data?.message || "Erro ao redefinir senha. Tente novamente.",
-        "error"
+      toast.error(
+        error.response?.data?.message || "Erro ao redefinir senha. Tente novamente."
       );
     } finally {
       setIsLoading(false);
@@ -127,6 +129,8 @@ export default function NewPassword() {
       title="Criar Nova Senha"
       subtitle="Digite sua nova senha abaixo"
     >
+      <h1 className="font-bold text-3xl ">Nova senha</h1>
+      <p>Este e seu primeiro login, precisamos registrar sua senha !</p>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <div className="relative">
@@ -243,7 +247,10 @@ export default function NewPassword() {
         <div className="text-center">
           <button
             type="button"
-            onClick={() => navigate("/login")}
+            onClick={() => {
+              navigate("/login");
+              logout();
+            }}
             className="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
           >
             Voltar para o login

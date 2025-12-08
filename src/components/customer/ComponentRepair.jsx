@@ -21,6 +21,13 @@ const ComponentRepair = () => {
   const [statusFilter, setStatusFilter] = useState("");
 
   useEffect(() => {
+    // Validacao do primeiro login
+    if(user.inFirstLogin) {
+      navigate("/nova-senha");
+    }
+  }, [user]);
+
+  useEffect(() => {
     document.title = "Reparos";
   }, []);
 

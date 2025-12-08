@@ -165,7 +165,7 @@ export function ClientsPage() {
         await ClientService.createClient({
           ...clientData,
           userType: 'COSTUMER',
-          password: 'senha123' // Senha padrão, idealmente seria gerada ou enviada por email
+          password:  clientData.phone // Senha padrão para usuarios criados pelo admin
         });
         toast.success('Cliente cadastrado com sucesso!');
       }
