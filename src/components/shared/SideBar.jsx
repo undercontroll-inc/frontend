@@ -7,6 +7,7 @@ import {
   Users,
   ChartBar,
   BarChart3,
+  Megaphone,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
@@ -47,6 +48,12 @@ const SideBar = memo(({ active = "repairs" }) => {
               path: "/clients",
             },
             {
+              id: "announcements",
+              label: "Recados",
+              icon: Megaphone,
+              path: "/admin/announcements",
+            },
+            {
               id: "calendar",
               label: "Calendário",
               icon: Calendar,
@@ -65,6 +72,12 @@ const SideBar = memo(({ active = "repairs" }) => {
               label: "Consertos",
               icon: Wrench,
               path: "/my-repairs",
+            },
+            {
+              id: "customer-announcements",
+              label: "Central de Recados",
+              icon: Megaphone,
+              path: "/customer-announcements",
             },
             {
               id: "visita",
@@ -101,12 +114,36 @@ const SideBar = memo(({ active = "repairs" }) => {
   useEffect(() => {
     const sidebarWidth = isOpen ? 224 : 64; // w-56 = 224px, w-16 = 64px
     const buttonWidth = 56; // largura aproximada do botão + padding
-    document.documentElement.style.setProperty('--sidebar-offset', `${sidebarWidth + buttonWidth}px`);
+    document.documentElement.style.setProperty(
+      "--sidebar-offset",
+      `${sidebarWidth + buttonWidth}px`
+    );
   }, [isOpen]);
 
   return (
     <div className="flex relative">
-      <aside className={`${isOpen ? 'w-56' : 'w-16'} text-white ${isAdmin ? 'bg-[#0a1929]' : 'bg-[#041A2D]'} flex flex-col shadow-lg fixed top-0 left-0 h-screen z-40`} style={{ transition: 'width 300ms ease-in-out', willChange: 'width' }}>
+      <aside
+        className={`${isOpen ? "w-56" : "w-16"} text-white border-r ${
+          isAdmin ? "bg-[#0a1929]" : "bg-[#041A2D]"
+        } border-gray-800 dark:border-gray-800 flex flex-col shadow-lg dark:shadow-gray-900/50 transition-all duration-300 ease-in-out fixed top-0 left-0 h-screen z-40`}
+      >
+        <div className={`p-4 border-b border-gray-800 ${!isOpen && "px-2"}`}>
+          <div
+            className={`flex items-center ${
+              isOpen ? "gap-2" : "justify-center"
+            }`}
+          >
+            <div className="">
+              <img width={50} height={50} src={Foto} className="rounded-md" />
+            </div>
+            {isOpen && (
+              <div className="flex-1">
+                <div className="font-bold text-base text-white">Pelluci</div>
+                <div className="text-xs text-gray-400">Sistema OS</div>
+              </div>
+            )}
+          </div>
+        </div>
 
         <nav className="flex-1 p-2 flex flex-col space-y-1 overflow-y-auto">
           {isOpen && (
@@ -153,7 +190,12 @@ const SideBar = memo(({ active = "repairs" }) => {
 
             if (!isOpen) {
               return (
-                <Tooltip key={item.id} content={item.label} side="right">
+                <Tooltip
+                  key={item.id}
+                  content={item.label}
+                  side="right"
+                  delayDuration={1700}
+                >
                   {buttonContent}
                 </Tooltip>
               );
@@ -168,7 +210,13 @@ const SideBar = memo(({ active = "repairs" }) => {
         </div>
       </aside>
 
-      <div className="flex items-start pt-5 pl-2 fixed top-0 z-50" style={{ left: isOpen ? '224px' : '64px', transition: 'left 300ms ease-in-out' }}>
+      <div
+        className="flex items-start pt-5 pl-2 fixed top-0 z-50"
+        style={{
+          left: isOpen ? "224px" : "64px",
+          transition: "left 300ms ease-in-out",
+        }}
+      >
         <Tooltip
           content={isOpen ? "Recolher (Ctrl+S)" : "Expandir (Ctrl+S)"}
           side="right"
@@ -176,7 +224,9 @@ const SideBar = memo(({ active = "repairs" }) => {
           <button
             onClick={handleToggleSidebar}
             className="p-2 bg-white border border-gray-200 dark:bg-zinc-950 dark:border-zinc-500 dark:text-zinc-200 rounded-lg shadow-md text-gray-600 hover:bg-gray-50 hover:text-[#041A2D] transition-all duration-200 hover:shadow-lg"
-            aria-label={isOpen ? "Recolher menu (Ctrl+S)" : "Expandir menu (Ctrl+S)"}
+            aria-label={
+              isOpen ? "Recolher menu (Ctrl+S)" : "Expandir menu (Ctrl+S)"
+            }
           >
             {isOpen ? (
               <ChevronLeft className="h-4 w-4" />
