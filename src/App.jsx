@@ -15,6 +15,7 @@ import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import NewPassword from "./components/auth/NewPassword";
 import Dashboard from "./components/dashboard/Dashboard";
+import AnalyticsDashboard from "./components/dashboard/AnalyticsDashboard";
 import Calendar from "./components/admin/Calendar";
 import { RepairPage } from "./components/admin/RepairPage";
 import { ClientsPage } from "./components/admin/ClientsPage";
@@ -45,6 +46,15 @@ function App() {
                 element={
                   <ProtectedRoute roles={["ADMINISTRATOR"]}>
                     <Dashboard />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/analytics"
+                element={
+                  <ProtectedRoute roles={["ADMINISTRATOR"]}>
+                    <AnalyticsDashboard />
                   </ProtectedRoute>
                 }
               />

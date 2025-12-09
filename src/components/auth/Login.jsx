@@ -139,9 +139,13 @@ const Login = () => {
 
       if (result.success) {
         toast.success(`Bem-vindo, ${result.user.name}!`);
+        
+        
+        const isAdmin = result.user?.userType === "ADMIN";
+
         setTimeout(() => {
           const dest =
-            result.user?.userType === "ADMIN" ? "/dashboard" : "/repairs";
+             isAdmin ? "/dashboard" : "/repairs";
           navigate(dest);
         }, 500);
       } else {
