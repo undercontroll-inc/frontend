@@ -358,7 +358,7 @@ const AnalyticsDashboard = () => {
           <p className="text-2xl font-bold text-gray-900 dark:text-gray-100" title={`Valor: ${metrics.totalRevenue}`}>
             {formatCurrency(metrics.totalRevenue)}
           </p>
-          <p className="text-xs text-gray-500 mt-1">Raw: {metrics.totalRevenue}</p>
+          <p className="text-xs text-gray-500 mt-1">{metrics.totalRevenue}</p>
         </Card>
 
         <Card className="p-6">
@@ -371,7 +371,7 @@ const AnalyticsDashboard = () => {
           <p className="text-2xl font-bold text-gray-900 dark:text-gray-100" title={`Valor: ${metrics.profitMargin}`}>
             {formatCurrency(metrics.profitMargin)}
           </p>
-          <p className="text-xs text-gray-500 mt-1">Raw: {metrics.profitMargin}</p>
+          <p className="text-xs text-gray-500 mt-1">{metrics.profitMargin}</p>
         </Card>
 
         <Card className="p-6">
@@ -384,7 +384,7 @@ const AnalyticsDashboard = () => {
           <p className="text-2xl font-bold text-gray-900 dark:text-gray-100" title={`Valor: ${metrics.averageOrderPrice}`}>
             {formatCurrency(metrics.averageOrderPrice)}
           </p>
-          <p className="text-xs text-gray-500 mt-1">Raw: {metrics.averageOrderPrice}</p>
+          <p className="text-xs text-gray-500 mt-1">{metrics.averageOrderPrice}</p>
         </Card>
 
         <Card className="p-6">
@@ -397,7 +397,7 @@ const AnalyticsDashboard = () => {
           <p className="text-2xl font-bold text-gray-900 dark:text-gray-100" title={`Valor: ${metrics.ongoingOrders}`}>
             {Math.round(metrics.ongoingOrders)}
           </p>
-          <p className="text-xs text-gray-500 mt-1">Raw: {metrics.ongoingOrders}</p>
+          <p className="text-xs text-gray-500 mt-1">{metrics.ongoingOrders}</p>
         </Card>
 
         <Card className="p-6">
@@ -410,7 +410,7 @@ const AnalyticsDashboard = () => {
           <p className="text-2xl font-bold text-gray-900 dark:text-gray-100" title={`Valor: ${metrics.averageRepairTime} horas`}>
             {DashboardService.formatAverageRepairTime(metrics.averageRepairTime)}
           </p>
-          <p className="text-xs text-gray-500 mt-1">Raw: {metrics.averageRepairTime}h</p>
+          <p className="text-xs text-gray-500 mt-1">{metrics.averageRepairTime}h</p>
         </Card>
       </div>
 

@@ -109,6 +109,27 @@ class RepairService {
       throw error;
     }
   }
+
+  async exportOrder(id) {
+    const token = localStorage.getItem("authToken");
+
+    try {
+      const response = await apiClient.get(`orders/export/${id}`, {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+        responseType: 'blob', // Important for binary data
+      });
+
+      return {
+        success: response.status === 200,
+        data: response.data,
+      };
+    } catch (error) {
+      console.error('Erro ao exportar orders:', error);
+      throw error;
+    }
+  }
 }
 
 export default new RepairService();
