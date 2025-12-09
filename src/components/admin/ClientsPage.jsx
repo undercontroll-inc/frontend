@@ -42,6 +42,8 @@ export function ClientsPage() {
 
   useEffect(() => {
     if (selectedClient) {
+      // Limpa os dados antigos antes de carregar os novos
+      setClientRepairs([]);
       loadClientRepairs(selectedClient.id);
     }
   }, [selectedClient]);
@@ -65,7 +67,7 @@ export function ClientsPage() {
   const loadClientRepairs = async (clientId) => {
     try {
       setLoadingRepairs(true);
-      const { data } = await RepairService.getAllRepairs(clientId);
+      const data = await RepairService.getUserRepairs(clientId);
       setClientRepairs(data || []);
     } catch (error) {
       console.error('Erro ao carregar histórico:', error);
