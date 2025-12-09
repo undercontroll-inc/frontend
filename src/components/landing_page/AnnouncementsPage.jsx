@@ -9,6 +9,7 @@ export const AnnouncementsPage = () => {
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const [categoryFilter, setCategoryFilter] = useState("Todos");
   const [announcements, setAnnouncements] = useState([]);
+  const [pageInput, setPageInput] = useState("1");
 
   // Carregar anúncios do localStorage
   useEffect(() => {
@@ -69,19 +70,49 @@ export const AnnouncementsPage = () => {
   const handleCategoryChange = (category) => {
     setCategoryFilter(category);
     setCurrentPage(1);
+    setPageInput("1");
   };
 
   const handleItemsPerPageChange = (value) => {
     setItemsPerPage(value);
     setCurrentPage(1);
+    setPageInput("1");
   };
 
   const handlePrevPage = () => {
-    setCurrentPage((prev) => Math.max(prev - 1, 1));
+    if (currentPage > 1) {
+      const newPage = currentPage - 1;
+      setCurrentPage(newPage);
+      setPageInput(String(newPage));
+    }
   };
 
   const handleNextPage = () => {
-    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+    if (currentPage < totalPages) {
+      const newPage = currentPage + 1;
+      setCurrentPage(newPage);
+      setPageInput(String(newPage));
+    }
+  };
+
+  const handlePageInputChange = (e) => {
+    const value = e.target.value;
+    setPageInput(value);
+  };
+
+  const handlePageInputSubmit = () => {
+    const pageNum = parseInt(pageInput, 10);
+    if (pageNum >= 1 && pageNum <= totalPages) {
+      setCurrentPage(pageNum);
+    } else {
+      setPageInput(String(currentPage));
+    }
+  };
+
+  const handlePageInputKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handlePageInputSubmit();
+    }
   };
 
   const getCategoryStyles = (color) => {
@@ -199,7 +230,7 @@ export const AnnouncementsPage = () => {
 
           {/* Filtros e Controles */}
           <div className="bg-white rounded-xl shadow-md p-6 mb-8 border border-gray-200">
-            <div className="grid sm:grid-cols-2 gap-6">
+            <div>
               {/* Filtro de Categoria */}
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -216,41 +247,24 @@ export const AnnouncementsPage = () => {
                   <option value="Recomendações">Recomendações</option>
                 </select>
               </div>
-
-              {/* Itens por Página */}
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Recados por página:
-                </label>
-                <select
-                  value={itemsPerPage}
-                  onChange={(e) =>
-                    handleItemsPerPageChange(Number(e.target.value))
-                  }
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0B4BCC] focus:border-transparent outline-none transition-all"
-                >
-                  <option value={3}>3</option>
-                  <option value={5}>5</option>
-                  <option value={10}>10</option>
-                  <option value={20}>20</option>
-                </select>
-              </div>
             </div>
 
             {/* Informações */}
             <div className="mt-4 pt-4 border-t border-gray-200">
-              <p className="text-sm text-gray-600">
-                Mostrando{" "}
-                <span className="font-semibold">{startIndex + 1}</span> a{" "}
-                <span className="font-semibold">
-                  {Math.min(endIndex, filteredAnnouncements.length)}
-                </span>{" "}
-                de{" "}
-                <span className="font-semibold">
-                  {filteredAnnouncements.length}
-                </span>{" "}
-                recado(s)
-              </p>
+              <div className="flex items-center justify-between">
+                <p className="text-sm text-gray-600">
+                  Mostrando{" "}
+                  <span className="font-semibold">{startIndex + 1}</span> a{" "}
+                  <span className="font-semibold">
+                    {Math.min(endIndex, filteredAnnouncements.length)}
+                  </span>{" "}
+                  de{" "}
+                  <span className="font-semibold">
+                    {filteredAnnouncements.length}
+                  </span>{" "}
+                  recado(s)
+                </p>
+              </div>
             </div>
           </div>
 
@@ -297,43 +311,65 @@ export const AnnouncementsPage = () => {
           </div>
 
           {/* Paginação */}
-          {totalPages > 1 && (
-            <div className="mt-8 flex items-center justify-center gap-4">
-              <button
-                onClick={handlePrevPage}
-                disabled={currentPage === 1}
-                className="flex items-center gap-2 px-4 py-2 bg-white border-2 border-[#0B4BCC] text-[#0B4BCC] rounded-lg hover:bg-[#0B4BCC] hover:text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:text-[#0B4BCC] font-medium"
-              >
-                <ChevronLeft className="h-5 w-5" />
-                Anterior
-              </button>
+          {filteredAnnouncements.length > 0 && (
+            <div className="mt-8 bg-white rounded-xl shadow-md p-4 border border-gray-200">
+              {/* Controles de Navegação */}
+              {totalPages > 1 && (
+                <div className="flex items-center justify-between mb-4">
+                  <button
+                    onClick={handlePrevPage}
+                    disabled={currentPage === 1}
+                    className="flex items-center gap-2 px-4 py-2 bg-white border-2 border-[#0B4BCC] text-[#0B4BCC] rounded-lg hover:bg-[#0B4BCC] hover:text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:text-[#0B4BCC] font-medium shadow-sm"
+                  >
+                    <ChevronLeft className="h-5 w-5" />
+                  </button>
 
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-gray-600">Página</span>
+                    <input
+                      type="number"
+                      min="1"
+                      max={totalPages}
+                      value={pageInput}
+                      onChange={handlePageInputChange}
+                      onKeyPress={handlePageInputKeyPress}
+                      onBlur={handlePageInputSubmit}
+                      className="w-16 px-2 py-1 text-center border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0B4BCC] focus:border-transparent outline-none"
+                    />
+                    <span className="text-sm text-gray-600">
+                      de {totalPages}
+                    </span>
+                  </div>
+
+                  <button
+                    onClick={handleNextPage}
+                    disabled={currentPage === totalPages}
+                    className="flex items-center gap-2 px-4 py-2 bg-white border-2 border-[#0B4BCC] text-[#0B4BCC] rounded-lg hover:bg-[#0B4BCC] hover:text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:text-[#0B4BCC] font-medium shadow-sm"
+                  >
+                    <ChevronRight className="h-5 w-5" />
+                  </button>
+                </div>
+              )}
+
+              {/* Seletor de Quantidade */}
               <div className="flex items-center gap-2">
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                  (page) => (
-                    <button
-                      key={page}
-                      onClick={() => setCurrentPage(page)}
-                      className={`w-10 h-10 rounded-lg font-semibold transition-all duration-300 ${
-                        currentPage === page
-                          ? "bg-[#0B4BCC] text-white shadow-lg"
-                          : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
-                      }`}
-                    >
-                      {page}
-                    </button>
-                  )
-                )}
+                <label className="text-sm text-gray-600">
+                  Recados por página:
+                </label>
+                <select
+                  value={itemsPerPage}
+                  onChange={(e) =>
+                    handleItemsPerPageChange(Number(e.target.value))
+                  }
+                  className="px-3 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0B4BCC] focus:border-transparent outline-none transition-all bg-white text-sm"
+                >
+                  <option value={2}>2</option>
+                  <option value={3}>3</option>
+                  <option value={5}>5</option>
+                  <option value={10}>10</option>
+                  <option value={20}>20</option>
+                </select>
               </div>
-
-              <button
-                onClick={handleNextPage}
-                disabled={currentPage === totalPages}
-                className="flex items-center gap-2 px-4 py-2 bg-white border-2 border-[#0B4BCC] text-[#0B4BCC] rounded-lg hover:bg-[#0B4BCC] hover:text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:text-[#0B4BCC] font-medium"
-              >
-                Próxima
-                <ChevronRight className="h-5 w-5" />
-              </button>
             </div>
           )}
         </div>

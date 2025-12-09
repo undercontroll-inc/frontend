@@ -13,44 +13,8 @@ const AnnouncementsCustomer = () => {
     if (savedAnnouncements) {
       setAnnouncements(JSON.parse(savedAnnouncements));
     } else {
-      // Dados iniciais de exemplo para clientes
-      const initialData = [
-        {
-          id: 1,
-          category: "Promoções",
-          title: "🎉 Desconto Especial em Reparos!",
-          description:
-            "Ganhe 15% de desconto em qualquer reparo agendado até o final do mês. Aproveite para consertar aquele eletrodoméstico que está guardado!",
-          date: "2025-11-25",
-          categoryColor: "orange",
-          createdAt: new Date().toISOString(),
-        },
-        {
-          id: 2,
-          category: "Avisos",
-          title: "Horário Especial - Final de Ano",
-          description:
-            "Atenção! Em dezembro nosso horário de atendimento será das 9h às 15h. Planeje-se e agende sua visita com antecedência.",
-          date: "2025-11-24",
-          categoryColor: "blue",
-          createdAt: new Date().toISOString(),
-        },
-        {
-          id: 3,
-          category: "Recomendações",
-          title: "Dicas de Manutenção - Aspiradores",
-          description:
-            "Limpe o filtro do seu aspirador a cada 3 usos para manter a potência de sucção. Troque o saco ou esvazie o reservatório regularmente para evitar problemas.",
-          date: "2025-11-23",
-          categoryColor: "green",
-          createdAt: new Date().toISOString(),
-        },
-      ];
-      setAnnouncements(initialData);
-      localStorage.setItem(
-        "customerAnnouncements",
-        JSON.stringify(initialData)
-      );
+      // Sem dados iniciais - os recados devem ser criados pelo admin
+      setAnnouncements([]);
     }
   }, []);
 
