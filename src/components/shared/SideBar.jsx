@@ -6,6 +6,7 @@ import {
   Package,
   Users,
   ChartBar,
+  BarChart3,
   Megaphone,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -57,6 +58,12 @@ const SideBar = memo(({ active = "repairs" }) => {
               label: "Calendário",
               icon: Calendar,
               path: "/calendar",
+            },
+            {
+              id: "analytics",
+              label: "Dashboard",
+              icon: BarChart3,
+              path: "/analytics",
             },
           ]
         : [

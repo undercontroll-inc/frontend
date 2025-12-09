@@ -2,9 +2,18 @@ import SideBar from "../shared/SideBar";
 import Loading from "../shared/Loading";
 import { useState, useEffect, useCallback, useMemo, memo } from "react";
 import { MessageCircle, Phone, MapPin, Clock, Wrench } from "lucide-react";
+import { useAuth } from "../../contexts/AuthContext";
 
 const ComponentVisit = () => {
   const [loading, setLoading] = useState(true);
+  const { user } = useMemo(() => useAuth());
+
+  useEffect(() => {
+    // Validacao do primeiro login
+    if(user.inFirstLogin) {
+      navigate("/nova-senha");
+    }
+  }, [user]);
 
   useEffect(() => {
     document.title = "Dashboard - Visita";

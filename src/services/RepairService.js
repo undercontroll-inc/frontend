@@ -22,8 +22,6 @@ class RepairService {
   async getRepairById(id) {
     const token = localStorage.getItem("authToken");
 
-    console.log(token);
-
     try {
       const response = await apiClient.get(`/orders/${id}`, {
         headers: {
@@ -131,9 +129,6 @@ class RepairService {
 
   async getUserRepairs(userId) {
     const token = localStorage.getItem("authToken");
-
-    console.log(token);
-
     try {
       const response = await apiClient.get(`orders/filter?userId=${userId}`, {
         headers: {
@@ -147,6 +142,27 @@ class RepairService {
       return data;
     } catch (error) {
       console.error(`Erro ao buscar repairs do usuário ${userId}:`, error);
+      throw error;
+    }
+  }
+
+  async exportOrder(id) {
+    const token = localStorage.getItem("authToken");
+
+    try {
+      const response = await apiClient.get(`orders/export/${id}`, {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+        responseType: 'blob', // Important for binary data
+      });
+
+      return {
+        success: response.status === 200,
+        data: response.data,
+      };
+    } catch (error) {
+      console.error('Erro ao exportar orders:', error);
       throw error;
     }
   }
