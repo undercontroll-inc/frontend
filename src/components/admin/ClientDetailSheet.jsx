@@ -10,6 +10,8 @@ export const ClientDetailSheet = ({ isOpen, onClose, client }) => {
 
   useEffect(() => {
     if (client && isOpen) {
+      // Limpa os dados antigos antes de carregar os novos
+      setRepairs([]);
       loadClientRepairs();
     }
   }, [client, isOpen]);
@@ -21,7 +23,7 @@ export const ClientDetailSheet = ({ isOpen, onClose, client }) => {
 
     try {
       setLoading(true);
-      const data = await RepairService.getAllRepairs(client.id);
+      const data = await RepairService.getUserRepairs(client.id);
       setRepairs(data || []);
     } catch (error) {
       console.error('Erro ao carregar histórico:', error);

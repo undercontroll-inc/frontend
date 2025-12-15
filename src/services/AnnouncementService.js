@@ -29,7 +29,7 @@ class AnnouncementService {
 
       const response = await apiClient.post("/announcements", {
         title,
-        content,
+        description: content,
         type,
       }, {
         headers: {
