@@ -59,9 +59,9 @@ export const getAnnouncementStyles = (type) => {
 
   const styleMap = {
     orange: {
-      bg: 'from-[#BA4610] to-[#d45012]',
-      border: 'border-[#BA4610]',
-      badge: 'bg-white text-[#BA4610]',
+      bg: 'from-[#ba5c00] to-[#d45012]',
+      border: 'border-[#ba5c00]',
+      badge: 'bg-white text-[#ba5c00]',
     },
     blue: {
       bg: 'from-[#041A2D] to-[#052540]',

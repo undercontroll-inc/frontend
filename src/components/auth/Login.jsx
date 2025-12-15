@@ -36,7 +36,7 @@ const Login = () => {
     document.title = "Irmãos Pelluci - Login";
   }, []);
 
-  const heroImage = "/images/microondas 6.jpg"; // imagem única do painel esquerdo
+  const heroImage = "/images/banner_login.png"; // imagem única do painel esquerdo
 
   const validateField = (name, value) => {
     switch (name) {
@@ -162,7 +162,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-[#041a2dfa] flex items-center justify-center p-4">
+    <div className="min-h-screen w-full bg-[#041a2df6] flex items-center justify-center p-4">
       <div className="w-full max-w-6xl bg-white dark:bg-gray-900 rounded-3xl shadow-xl overflow-hidden">
         <div className="grid grid-cols-1 md:grid-cols-2">
           {/* Painel de imagem (esquerda) */}
@@ -170,8 +170,8 @@ const Login = () => {
             {/* Botão Voltar */}
             <div className="absolute top-6 left-6 z-10">
               <ComeBack 
-                variant="primary" 
-                className="hover:bg-[#041a2dfa]" 
+                variant="light" 
+                className="bg-white hover:bg-gray-100" 
                 to="/" 
               />
             </div>

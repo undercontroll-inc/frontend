@@ -138,7 +138,7 @@ export const AnnouncementsPage = () => {
           </button>
           <button
             onClick={() => navigate("/register")}
-            className="bg-gradient-to-r from-[#BA4610] to-[#d45012] text-white px-3 py-1 rounded-lg hover:scale-105 transition-all duration-300 cursor-pointer font-medium shadow-lg"
+            className="bg-gradient-to-r from-[#ba5c00] to-[#d45012] text-white px-3 py-1 rounded-lg hover:scale-105 transition-all duration-300 cursor-pointer font-medium shadow-lg"
           >
             Crie sua conta
           </button>

@@ -638,19 +638,12 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-[#041a2dfa] flex items-center justify-center p-4 relative">
-      {/* Botão Voltar */}
-      <div className="absolute top-10 left-12 z-10">
-        <ComeBack 
-          variant="light" 
-          className="hover:bg-gray-200" 
-          to="/" 
-        />
-      </div>
-
-      <div className="w-full max-w-lg bg-white dark:bg-gray-900 rounded-3xl shadow-xl overflow-hidden">
-        <div className="px-6 sm:px-10 py-5 overflow-y-auto max-h-[calc(100vh-4rem)]">
-          <div className="text-center mb-4">
+    <div className="min-h-screen w-full bg-[#041a2dfa] flex items-center justify-center p-4">
+      <div className="w-full max-w-6xl bg-white dark:bg-gray-900 rounded-3xl shadow-xl overflow-hidden">
+        <div className="grid grid-cols-1 md:grid-cols-2">
+          {/* Formulário (esquerda) */}
+          <div className="px-6 sm:px-10 py-5 overflow-y-auto max-h-[calc(100vh-4rem)]">
+            <div className="text-center mb-4">
               <h1 className="text-2xl mt-1 mb-1 font-extrabold text-gray-900 dark:text-gray-100 flex items-center justify-center gap-2">
                 <UserPlus className="h-7 w-7" />
                 <span>Criar Conta</span>
@@ -676,8 +669,29 @@ const Register = () => {
               </p>
             </div>
           </div>
+
+          {/* Painel de imagem (direita) */}
+          <div className="relative h-full w-full min-h-[600px] md:min-h-0">
+            {/* Botão Voltar */}
+            <div className="absolute top-6 right-6 z-10">
+              <ComeBack 
+                variant="light" 
+                className="bg-white hover:bg-gray-100" 
+                to="/" 
+              />
+            </div>
+            
+            <img
+              src="/images/banner_login.png"
+              alt="Register Hero"
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+            {/* Overlay suave */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent" />
+          </div>
         </div>
       </div>
+    </div>
   );
 };
 

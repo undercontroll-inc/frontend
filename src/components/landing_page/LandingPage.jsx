@@ -129,7 +129,7 @@ export const LandingPage = () => {
           </button>
           <button
             onClick={() => navigate("/register")}
-            className="bg-gradient-to-r from-[#BA4610] to-[#d45012] text-white px-3 py-1 rounded-lg hover:scale-105 transition-all duration-300 cursor-pointer font-medium shadow-lg"
+            className="bg-gradient-to-r from-[#ba5c00] to-[#d45012] text-white px-3 py-1 rounded-lg hover:scale-105 transition-all duration-300 cursor-pointer font-medium shadow-lg"
           >
             Crie sua conta
           </button>
@@ -140,7 +140,7 @@ export const LandingPage = () => {
           className="hero-section relative h-[calc(100vh-5rem)] flex flex-col items-center justify-center bg-cover overflow-hidden"
           style={{ backgroundImage: `url(${Banner})`, backgroundPosition: 'center top' }}
         >
-          <div className="absolute inset-0 bg-gradient-to-br from-[#041A2D]/80 via-[#041A2D]/70 to-[#BA4610]/30"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-[#041A2D]/80 via-[#041A2D]/70 to-[#ba5c00]/30"></div>
 
           <div className="relative z-10 text-center px-4 max-w-4xl animate-fade-in">
             <h1 className="text-5xl w-full sm:text-6xl lg:text-6xl font-bold mb-10 text-white drop-shadow-2xl">
@@ -181,25 +181,25 @@ export const LandingPage = () => {
           </div>
 
           <p className="text-lg leading-relaxed text-gray-700 relative z-10">
-            Na <b className="text-[#BA4610]">Comercial Irmãos Pelluci</b>,
+            Na <b className="text-[#ba5c00]">Comercial Irmãos Pelluci</b>,
             acreditamos que cada reparo vai além de uma simples execução técnica
             — é uma oportunidade de entregar
-            <b className="text-[#BA4610]"> excelência</b> e{" "}
-            <b className="text-[#BA4610]">confiança</b> a cada cliente. Com{" "}
-            <b className="text-[#BA4610]">três gerações</b> no comando do
+            <b className="text-[#ba5c00]"> excelência</b> e{" "}
+            <b className="text-[#ba5c00]">confiança</b> a cada cliente. Com{" "}
+            <b className="text-[#ba5c00]">três gerações</b> no comando do
             negócio e mais de três décadas de experiência, unimos tradição a um{" "}
-            <b className="text-[#BA4610]">
+            <b className="text-[#ba5c00]">
               atendimento próximo e personalizado
             </b>
             , sempre focado em entender as necessidades antes de propor a
             solução. Trabalhamos com as principais marcas do mercado, utilizamos{" "}
-            <b className="text-[#BA4610]">peças originais</b> e oferecemos um
+            <b className="text-[#ba5c00]">peças originais</b> e oferecemos um
             serviço ágil e acessível, criando relações de confiança que se
             mantêm ao longo dos anos.
           </p>
 
           <p className="text-lg text-gray-800 relative z-10">
-            Entre os <b className="text-[#BA4610]">principais serviços</b>,
+            Entre os <b className="text-[#ba5c00]">principais serviços</b>,
             destacam-se:
           </p>
 
@@ -216,8 +216,8 @@ export const LandingPage = () => {
               </p>
             </div>
 
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 hover:border-[#BA4610] dark:hover:border-[#BA4610] transition-all duration-300 hover:shadow-xl hover:-translate-y-1 group">
-              <div className="bg-gradient-to-br from-[#BA4610] to-[#BA4610]/80 text-white p-3 rounded-xl inline-block mb-3 group-hover:scale-110 transition-transform duration-300">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 hover:border-[#ba5c00] dark:hover:border-[#ba5c00] transition-all duration-300 hover:shadow-xl hover:-translate-y-1 group">
+              <div className="bg-gradient-to-br from-[#ba5c00] to-[#ba5c00]/80 text-white p-3 rounded-xl inline-block mb-3 group-hover:scale-110 transition-transform duration-300">
                 <ShieldCheck className="h-6 w-6" />
               </div>
               <h3 className="font-bold text-xl mb-3 text-[#041A2D] dark:text-gray-100">
@@ -236,15 +236,15 @@ export const LandingPage = () => {
                 Assistência Técnica
               </h3>
               <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                <b className="text-[#BA4610]">Aspiradores</b>,{" "}
-                <b className="text-[#BA4610]">secadores de cabelo</b>,{" "}
-                <b className="text-[#BA4610]">ferros de passar</b>,{" "}
-                <b className="text-[#BA4610]">liquidificadores</b>,{" "}
-                <b className="text-[#BA4610]">chapinhas</b>,{" "}
-                <b className="text-[#BA4610]">micro-ondas</b>,{" "}
-                <b className="text-[#BA4610]">máquina de café (Dolce Gusto)</b>,{" "}
-                <b className="text-[#BA4610]">ventiladores</b>,{" "}
-                <b className="text-[#BA4610]">batedeiras</b>, entre outros
+                <b className="text-[#ba5c00]">Aspiradores</b>,{" "}
+                <b className="text-[#ba5c00]">secadores de cabelo</b>,{" "}
+                <b className="text-[#ba5c00]">ferros de passar</b>,{" "}
+                <b className="text-[#ba5c00]">liquidificadores</b>,{" "}
+                <b className="text-[#ba5c00]">chapinhas</b>,{" "}
+                <b className="text-[#ba5c00]">micro-ondas</b>,{" "}
+                <b className="text-[#ba5c00]">máquina de café (Dolce Gusto)</b>,{" "}
+                <b className="text-[#ba5c00]">ventiladores</b>,{" "}
+                <b className="text-[#ba5c00]">batedeiras</b>, entre outros
               </p>
             </div>
           </div>
@@ -275,21 +275,21 @@ export const LandingPage = () => {
                 answer={
                   <>
                     Você pode solicitar um orçamento{" "}
-                    <span className="text-[#BA4610] font-semibold">
+                    <span className="text-[#ba5c00] font-semibold">
                       gratuito
                     </span>{" "}
                     entrando em contato conosco pelo{" "}
-                    <span className="text-[#BA4610] font-semibold">
+                    <span className="text-[#ba5c00] font-semibold">
                       WhatsApp
                     </span>
                     ,{" "}
-                    <span className="text-[#BA4610] font-semibold">
+                    <span className="text-[#ba5c00] font-semibold">
                       telefone
                     </span>{" "}
                     ou visitando nossa{" "}
-                    <span className="text-[#BA4610] font-semibold">loja</span>.
+                    <span className="text-[#ba5c00] font-semibold">loja</span>.
                     Nossa equipe fará uma avaliação inicial{" "}
-                    <span className="text-[#BA4610] font-semibold">
+                    <span className="text-[#ba5c00] font-semibold">
                       sem custos
                     </span>{" "}
                     e apresentará o valor do serviço antes de iniciar qualquer
@@ -304,47 +304,47 @@ export const LandingPage = () => {
                 answer={
                   <>
                     Atendemos uma ampla variedade de eletrodomésticos, incluindo{" "}
-                    <span className="text-[#BA4610] font-semibold">
+                    <span className="text-[#ba5c00] font-semibold">
                       aspiradores
                     </span>
                     ,{" "}
-                    <span className="text-[#BA4610] font-semibold">
+                    <span className="text-[#ba5c00] font-semibold">
                       secadores de cabelo
                     </span>
                     ,{" "}
-                    <span className="text-[#BA4610] font-semibold">
+                    <span className="text-[#ba5c00] font-semibold">
                       ferros de passar
                     </span>
                     ,{" "}
-                    <span className="text-[#BA4610] font-semibold">
+                    <span className="text-[#ba5c00] font-semibold">
                       liquidificadores
                     </span>
                     ,{" "}
-                    <span className="text-[#BA4610] font-semibold">
+                    <span className="text-[#ba5c00] font-semibold">
                       chapinhas
                     </span>
                     ,{" "}
-                    <span className="text-[#BA4610] font-semibold">
+                    <span className="text-[#ba5c00] font-semibold">
                       micro-ondas
                     </span>
                     ,{" "}
-                    <span className="text-[#BA4610] font-semibold">
+                    <span className="text-[#ba5c00] font-semibold">
                       máquinas de café
                     </span>
                     ,{" "}
-                    <span className="text-[#BA4610] font-semibold">
+                    <span className="text-[#ba5c00] font-semibold">
                       ventiladores
                     </span>{" "}
                     e{" "}
-                    <span className="text-[#BA4610] font-semibold">
+                    <span className="text-[#ba5c00] font-semibold">
                       batedeiras
                     </span>
                     . Trabalhamos com as{" "}
-                    <span className="text-[#BA4610] font-semibold">
+                    <span className="text-[#ba5c00] font-semibold">
                       principais marcas
                     </span>{" "}
                     do mercado e utilizamos{" "}
-                    <span className="text-[#BA4610] font-semibold">
+                    <span className="text-[#ba5c00] font-semibold">
                       peças originais
                     </span>{" "}
                     para garantir a qualidade.
@@ -356,11 +356,11 @@ export const LandingPage = () => {
                 answer={
                   <>
                     Nossa especialidade são{" "}
-                    <span className="text-[#BA4610] font-semibold">
+                    <span className="text-[#ba5c00] font-semibold">
                       eletrodomésticos de pequeno porte
                     </span>{" "}
                     e uso doméstico. Por esse motivo,{" "}
-                    <span className="text-[#BA4610] font-semibold">
+                    <span className="text-[#ba5c00] font-semibold">
                       não realizamos serviços
                     </span>{" "}
                     para linha branca, como geladeiras, fogões e máquinas de
@@ -372,23 +372,23 @@ export const LandingPage = () => {
                 question="Existe garantia para os serviços realizados?"
                 answer={
                   <>
-                    <span className="text-[#BA4610] font-semibold">Sim!</span>{" "}
+                    <span className="text-[#ba5c00] font-semibold">Sim!</span>{" "}
                     Todos os nossos serviços possuem{" "}
-                    <span className="text-[#BA4610] font-semibold">
+                    <span className="text-[#ba5c00] font-semibold">
                       garantia
                     </span>
                     . O prazo varia de acordo com o tipo de reparo realizado e
                     será informado no momento da prestação do serviço.
                     Trabalhamos apenas com{" "}
-                    <span className="text-[#BA4610] font-semibold">
+                    <span className="text-[#ba5c00] font-semibold">
                       peças originais
                     </span>{" "}
                     para assegurar a{" "}
-                    <span className="text-[#BA4610] font-semibold">
+                    <span className="text-[#ba5c00] font-semibold">
                       durabilidade
                     </span>{" "}
                     e{" "}
-                    <span className="text-[#BA4610] font-semibold">
+                    <span className="text-[#ba5c00] font-semibold">
                       qualidade
                     </span>{" "}
                     do reparo.
@@ -399,18 +399,18 @@ export const LandingPage = () => {
                 question="Consigo acompanhar o andamento do conserto do meu eletrodoméstico?"
                 answer={
                   <>
-                    <span className="text-[#BA4610] font-semibold">Sim!</span>{" "}
+                    <span className="text-[#ba5c00] font-semibold">Sim!</span>{" "}
                     Você pode acompanhar o andamento do conserto{" "}
-                    <span className="text-[#BA4610] font-semibold">
+                    <span className="text-[#ba5c00] font-semibold">
                       diretamente em nosso site
                     </span>
                     , após realizar um simples{" "}
-                    <span className="text-[#BA4610] font-semibold">
+                    <span className="text-[#ba5c00] font-semibold">
                       cadastro
                     </span>
                     . Caso tenha alguma dúvida ou precise de mais informações
                     durante o processo, entre em contato pelos nossos{" "}
-                    <span className="text-[#BA4610] font-semibold">
+                    <span className="text-[#ba5c00] font-semibold">
                       meios de comunicação
                     </span>
                     .
@@ -485,7 +485,7 @@ export const LandingPage = () => {
 
           <div className="image-content lg:w-1/2 relative z-10 flex justify-center">
             <div className="relative group w-[80%]">
-              <div className="absolute inset-0 bg-gradient-to-br from-[#0B4BCC]/30 to-[#BA4610]/30 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-[#0B4BCC]/30 to-[#ba5c00]/30 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
               <img
                 className="relative rounded-2xl shadow-2xl max-h-[700px] w-full object-cover border-4 border-gray-200 group-hover:scale-105 transition-transform duration-500"
                 src={Foto}
@@ -560,7 +560,7 @@ export const LandingPage = () => {
 
                 <div className="mt-10">
                   <div className="flex items-center gap-2 mb-4">
-                    <div className="bg-gradient-to-br from-[#BA4610] to-[#BA4610]/80 p-2 rounded-lg">
+                    <div className="bg-gradient-to-br from-[#ba5c00] to-[#ba5c00]/80 p-2 rounded-lg">
                       <Clock className="h-5 w-5 text-white" />
                     </div>
                     <h2 className="text-xl font-bold text-[#041A2D]">
@@ -616,12 +616,12 @@ export const LandingPage = () => {
                   ? "from-[#041A2D] to-[#052540]"
                   : latestAnnouncement.categoryColor === "green"
                     ? "from-[#047857] to-[#065f46]"
-                    : "from-[#BA4610] to-[#d45012]"
+                    : "from-[#ba5c00] to-[#d45012]"
                   } rounded-xl shadow-lg overflow-hidden border-2 ${latestAnnouncement.categoryColor === "blue"
                     ? "border-[#0B4BCC]"
                     : latestAnnouncement.categoryColor === "green"
                       ? "border-[#10b981]"
-                      : "border-[#BA4610]"
+                      : "border-[#ba5c00]"
                   } hover:shadow-xl transition-all duration-300`}
               >
                 <div className="p-6 sm:p-8">
@@ -631,7 +631,7 @@ export const LandingPage = () => {
                         ? "bg-[#0B4BCC] text-white"
                         : latestAnnouncement.categoryColor === "green"
                           ? "bg-[#10b981]"
-                          : "bg-white text-[#BA4610]"
+                          : "bg-white text-[#ba5c00]"
                         } px-3 py-1 rounded-full text-sm font-semibold`}
                     >
                       {latestAnnouncement.type}

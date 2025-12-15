@@ -57,10 +57,10 @@ export const ClientDetailSheet = ({ isOpen, onClose, client }) => {
 
   const getStatusBadge = (status) => {
     const statusConfig = {
-      'EM_ANDAMENTO': { label: 'Em Andamento', color: 'bg-blue-100 text-blue-700' },
-      'NAO_INICIADO': { label: 'Não Iniciado', color: 'bg-yellow-100 text-yellow-700' },
-      'FINALIZADO': { label: 'Finalizado', color: 'bg-green-100 text-green-700' },
-      'CANCELADO': { label: 'Cancelado', color: 'bg-red-100 text-red-700' }
+      'PENDING': { label: 'Pendente', color: 'bg-yellow-100 text-yellow-700' },
+      'IN_ANALYSIS': { label: 'Em Análise', color: 'bg-blue-100 text-blue-700' },
+      'COMPLETED': { label: 'Concluído', color: 'bg-green-100 text-green-700' },
+      'DELIVERED': { label: 'Entregue', color: 'bg-purple-100 text-purple-700' }
     };
     return statusConfig[status] || { label: status, color: 'bg-gray-100 text-gray-700' };
   };

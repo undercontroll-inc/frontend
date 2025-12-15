@@ -169,7 +169,7 @@ const SideBar = memo(({ active = "repairs" }) => {
                   ${
                     isActive
                       ? `${
-                          isAdmin ? "bg-[#ba4610]" : "bg-[#0B4BCC]"
+                          isAdmin ? "bg-[#ba5c00]" : "bg-[#0B4BCC]"
                         } text-white`
                       : `text-gray-400 hover:bg-[#1e293b] hover:text-white`
                   }

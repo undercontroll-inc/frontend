@@ -98,10 +98,10 @@ export const RepairDetailSheet = ({ isOpen, onClose, repair, onUpdate }) => {
         {/* Status Badge */}
         <div className="mb-6">
           <div className={`inline-flex items-center gap-2 px-3 py-2 rounded-lg font-medium ${
-            repair.status === 'COMPLETED' || repair.status === 'FINALIZADO' ? 'bg-green-100 text-green-800' :
-            repair.status === 'EM_ANDAMENTO' ? 'bg-blue-100 text-blue-800' :
-            repair.status === 'CANCELADO' ? 'bg-red-100 text-red-800' :
-            repair.status === 'PENDING' || repair.status === 'NAO_INICIADO' ? 'bg-yellow-100 text-yellow-800' :
+            repair.status === 'COMPLETED' ? 'bg-green-100 text-green-800' :
+            repair.status === 'IN_ANALYSIS' ? 'bg-blue-100 text-blue-800' :
+            repair.status === 'DELIVERED' ? 'bg-purple-100 text-purple-800' :
+            repair.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' :
             'bg-gray-100 text-gray-800'
           }`}>
             <span>{statusBadge.label}</span>
