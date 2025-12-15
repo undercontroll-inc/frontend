@@ -437,22 +437,29 @@ export const LandingPage = () => {
             </div>
             <p className="text-lg leading-relaxed text-gray-700">
               A Comercial Irmãos Pelluci atua{" "}
-              <span className="font-extrabold text-[#041A2D]">desde 1987</span> em São Paulo,
-              oferecendo{" "}
+              <span className="font-extrabold text-[#041A2D]">desde 1987</span> no mercado
+              paulista, consolidando sua atuação por meio de uma trajetória pautada pela
+              ética, responsabilidade e excelência nos serviços prestados. A empresa é
+              especializada no{" "}
               <span className="font-extrabold text-[#041A2D]">
                 conserto de eletrodomésticos
               </span>{" "}
-              e{" "}
+              e na{" "}
               <span className="font-extrabold text-[#041A2D]">
                 venda de peças e acessórios
               </span>{" "}
-              com qualidade e confiança. Nosso compromisso sempre foi entregar
-              soluções que unem experiência, eficiência e transparência.
+              para diversas marcas e modelos, atendendo com eficiência e padrão técnico
+              rigoroso.
             </p>
             <p className="text-lg leading-relaxed text-gray-700">
-              Nosso objetivo é proporcionar tranquilidade, segurança e economia,
-              prolongando a vida útil dos aparelhos e evitando gastos
-              desnecessários, sempre colocando o cliente em primeiro lugar.
+              Nosso compromisso institucional é oferecer soluções{" "}
+              <span className="font-extrabold text-[#041A2D]">seguras, transparentes e
+              confiáveis</span>, sempre com foco na{" "}
+              <span className="font-extrabold text-[#041A2D]">satisfação do cliente</span> e na preservação da vida
+              útil dos equipamentos. Atuamos com processos bem definidos,{" "}
+              <span className="font-extrabold text-[#041A2D]">equipe qualificada</span> e constante aprimoramento técnico, buscando reduzir custos,
+              evitar desperdícios e garantir um atendimento responsável, alinhado às boas
+              práticas do mercado.
             </p>
 
             <div className="grid grid-cols-3 gap-6 mt-6">
