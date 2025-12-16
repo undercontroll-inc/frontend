@@ -5,6 +5,8 @@ import SideBar from "../shared/SideBar";
 import Loading from "../shared/Loading";
 import Button from "../shared/Button";
 import RepairService from "../../services/RepairService";
+import { useAuth } from "../../contexts/AuthContext";
+import { useToast } from "../../contexts/ToastContext";
 
 const formatCurrency = (v) => {
   if (v == null) return "-";
@@ -19,9 +21,18 @@ const formatUpdatedAt = (s) => {
 
 const ComponentDetails = () => {
   const { id } = useParams();
+  const { user } = useAuth();
   const navigate = useNavigate();
   const [repair, setRepair] = useState(null);
   const [loading, setLoading] = useState(true);
+  const toast = useToast();
+
+  useEffect(() => {
+    // Validacao do primeiro login
+    if(user.inFirstLogin) {
+      navigate("/nova-senha");
+    }
+  }, [user]);
 
   useEffect(() => {
     loadRepairDetails();
@@ -46,9 +57,37 @@ const ComponentDetails = () => {
     navigate("/repairs");
   };
 
-  const handleExportPDF = () => {
-    // Função para exportar PDF (implementar depois)
-    console.log("Exportar para PDF");
+  const handleExportPDF = async () => {
+    try {
+      const response = await RepairService.exportOrder(id);
+      
+      if(response.success && response.data) {
+        // Create a blob from the response data
+        const blob = new Blob([response.data], { type: 'application/pdf' });
+        
+        // Create a download link
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `OS-A${id}.pdf`;
+        
+        // Trigger download
+        document.body.appendChild(link);
+        link.click();
+        
+        // Cleanup
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+        
+        toast.success("PDF exportado com sucesso!");
+        return;
+      }
+
+      toast.error("Erro ao exportar PDF. Tente novamente.");
+    } catch (err) {
+      console.error("Erro ao exportar PDF:", err);
+      toast.error(err?.message || "Erro ao exportar PDF. Tente novamente.");
+    }
   };
 
   if (loading) return <Loading text="Carregando detalhes..." />;
