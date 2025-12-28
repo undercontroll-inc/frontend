@@ -24,8 +24,7 @@ const Select = forwardRef(
           <select
             ref={ref}
             className={`w-full pl-3 pr-10 py-2 border rounded-lg 
-            bg-[#041A2D] dark:bg-zinc-900 
-            hover:bg-slate-700 dark:hover:bg-zinc-800 
+            bg-[#041A2D] dark:bg-zinc-900
             text-white dark:text-zinc-100
             focus:outline-none focus:ring-2 
             focus:ring-gray-100 dark:focus:ring-zinc-700

@@ -148,21 +148,22 @@ export const AnnouncementsPage = () => {
       {/* Main Content */}
       <main className="pt-20 pb-20 px-4 sm:px-8">
         {/* Botão Voltar */}
-          <button
-            onClick={() => {
-              navigate("/");
-              setTimeout(() => {
-                const announcementsSection = document.querySelector('.announcements-section');
-                if (announcementsSection) {
-                  announcementsSection.scrollIntoView({ behavior: 'smooth' });
-                }
-              }, 100);
-            }}
-            className="mt-8 mb-6 flex items-center gap-2 text-[#041A2D] hover:text-[#0B4BCC] transition-colors duration-300 font-medium group cursor-pointer"
-          >
-            <ArrowLeft className="h-5 w-5 group-hover:-translate-x-1 transition-transform duration-300" />
-            Voltar para página inicial
-          </button>
+        <button
+          onClick={() => {
+            navigate("/");
+            setTimeout(() => {
+              const announcementsSection = document.querySelector('.announcements-section');
+              if (announcementsSection) {
+                announcementsSection.scrollIntoView({ behavior: 'smooth' });
+              }
+            }, 100);
+          }}
+          className="mb-8 bg-[#041A2D] text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer border border-white/20 flex items-center gap-2 mt-10"
+        >
+          <ArrowLeft className="h-5 w-5 group-hover:-translate-x-1 transition-transform duration-300" />
+          Voltar para página inicial
+        </button>
+
         <div className="max-w-4xl mx-auto">
           {/* Título */}
           <div className="text-center mb-14">
@@ -307,7 +308,7 @@ export const AnnouncementsPage = () => {
                       onClick={() => setCurrentPage(page)}
                       className={`w-10 h-10 rounded-lg font-semibold transition-all duration-300 shadow-md ${
                         currentPage === page
-                          ? "bg-[#041A2D] text-white scale-110"
+                          ? "bg-[#041A2D] text-white hover:scale-105"
                           : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 hover:scale-105"
                       }`}
                     >

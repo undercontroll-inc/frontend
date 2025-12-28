@@ -162,27 +162,27 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-[#041a2df6] flex items-center justify-center p-4">
+    <div className="min-h-screen w-full bg-[#041a2dec] flex items-center justify-center p-4">
+      {/* Botão Voltar */}
+      <div className="absolute top-8 left-8 z-10">
+        <ComeBack 
+          variant="light" 
+          className="bg-white hover:bg-gray-100 hover:scale-105 transition-all duration-300 cursor-pointer" 
+          to="/" 
+        />
+      </div>
+
       <div className="w-full max-w-6xl bg-white dark:bg-gray-900 rounded-3xl shadow-xl overflow-hidden">
         <div className="grid grid-cols-1 md:grid-cols-2">
           {/* Painel de imagem (esquerda) */}
           <div className="relative h-full w-full">
-            {/* Botão Voltar */}
-            <div className="absolute top-6 left-6 z-10">
-              <ComeBack 
-                variant="light" 
-                className="bg-white hover:bg-gray-100" 
-                to="/" 
-              />
-            </div>
-            
             <img
               src={heroImage}
               alt="Login Hero"
               className="absolute inset-0 h-full w-full object-cover"
             />
             {/* Overlay suave */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent" />
+            {/* <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent" /> */}
           </div>
 
           {/* Formulário (direita) */}
@@ -243,7 +243,7 @@ const Login = () => {
                   type="submit"
                   variant="primary"
                   size="sm"
-                  className="w-full"
+                  className="w-full hover:scale-[1.02] transition-all duration-300 cursor-pointer"
                   loading={loading}
                   disabled={loading || googleLoading}
                 >
@@ -264,6 +264,7 @@ const Login = () => {
                   onClick={handleGoogleLogin}
                   loading={googleLoading}
                   text="Continuar com Google"
+                  className="hover:scale-[1.02] transition-all duration-300 cursor-pointer"
                 />
               </div>
             </form>

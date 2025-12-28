@@ -73,7 +73,7 @@ export const LandingPage = () => {
           <img
             src={LogoNavbar}
             alt="Logo da irmãos pelluci"
-            className="h-12 sm:h-16 transition-transform hover:scale-105 duration-300 rounded-lg shadow-lg"
+            className="h-12 sm:h-16 hover:scale-105 transition-all duration-300 cursor-pointer rounded-lg shadow-lg"
           />
         </a>
         <nav className="nav text-white hidden lg:block">
@@ -155,7 +155,7 @@ export const LandingPage = () => {
                   .getElementById("contact")
                   .scrollIntoView({ behavior: "smooth" })
               }
-              className="bg-[#0B4BCC] hover:bg-[#0a3fa0] text-white px-8 py-4 mt-2 rounded-xl text-lg font-semibold shadow-2xl hover: transition-all duration-300 cursor-pointer hover:scale-105 border border-white/20"
+              className="bg-[#0B4BCC] hover:bg-[#0a3fa0] text-white px-8 py-4 mt-2 rounded-xl text-lg font-semibold shadow-2xl transition-all duration-300 cursor-pointer hover:scale-105 border border-white/20"
             >
               Agende uma visita agora!
             </button>
@@ -463,21 +463,21 @@ export const LandingPage = () => {
             </p>
 
             <div className="grid grid-cols-3 gap-6 mt-6">
-              <div className="relative bg-gradient-to-br from-[#041A2D] to-[#052540] border border-[#0B4BCC]/30 p-6 rounded-xl shadow-lg text-center transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 hover:border-[#0B4BCC] group overflow-hidden">
+              <div className="relative bg-gradient-to-br from-[#041A2D] to-[#052540] border border-[#0B4BCC]/30 p-6 rounded-xl shadow-2xl text-center transition-all duration-500 hover:shadow-3xl hover:-translate-y-2 hover:border-[#0B4BCC] group overflow-hidden">
                 <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <div className="relative z-10">
                   <div className="text-4xl font-bold mb-1 bg-gradient-to-r from-white to-gray-200 bg-clip-text text-transparent">37+</div>
                   <div className="text-sm text-gray-300 font-medium">Anos de história</div>
                 </div>
               </div>
-              <div className="relative bg-gradient-to-br from-[#041A2D] to-[#052540] border border-[#0B4BCC]/30 p-6 rounded-xl shadow-lg text-center transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 hover:border-[#0B4BCC] group overflow-hidden">
+              <div className="relative bg-gradient-to-br from-[#041A2D] to-[#052540] border border-[#0B4BCC]/30 p-6 rounded-xl shadow-2xl text-center transition-all duration-500 hover:shadow-3xl hover:-translate-y-2 hover:border-[#0B4BCC] group overflow-hidden">
                 <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <div className="relative z-10">
                   <div className="text-4xl font-bold mb-1 bg-gradient-to-r from-white to-gray-200 bg-clip-text text-transparent">3</div>
                   <div className="text-sm text-gray-300 font-medium">Gerações</div>
                 </div>
               </div>
-              <div className="relative bg-gradient-to-br from-[#041A2D] to-[#052540] border border-[#0B4BCC]/30 p-6 rounded-xl shadow-lg text-center transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 hover:border-[#0B4BCC] group overflow-hidden">
+              <div className="relative bg-gradient-to-br from-[#041A2D] to-[#052540] border border-[#0B4BCC]/30 p-6 rounded-xl shadow-2xl text-center transition-all duration-500 hover:shadow-3xl hover:-translate-y-2 hover:border-[#0B4BCC] group overflow-hidden">
                 <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <div className="relative z-10">
                   <div className="text-4xl font-bold mb-1 bg-gradient-to-r from-white to-gray-200 bg-clip-text text-transparent">10.000+</div>
@@ -528,7 +528,7 @@ export const LandingPage = () => {
                 <div className="buttons flex flex-col items-center justify-center gap-4">
                   <button
                     onClick={handleWhatsAppClick}
-                    className="rounded-xl px-4 py-3 w-full bg-gradient-to-r from-green-400 to-green-500 hover:from-green-500 hover:to-green-600 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer font-semibold text-white hover:scale-105 flex items-center justify-center gap-2"
+                    className="rounded-xl px-4 py-3 w-full bg-gradient-to-r from-green-400 to-green-500 hover:from-green-500 hover:to-green-600 shadow-lg transition-all duration-300 cursor-pointer font-semibold text-white hover:scale-105 flex items-center justify-center gap-2"
                   >
                     <i className="fa-brands fa-whatsapp text-xl"></i>
                     Agendar pelo Whatsapp
@@ -542,7 +542,7 @@ export const LandingPage = () => {
                   </div>
                   <button
                     onClick={handleCallClick}
-                    className="rounded-xl px-4 py-3 w-full bg-gradient-to-r from-[#0B4BCC] to-[#0952d6] hover:from-[#0a3fa0] hover:to-[#0a3fa0] shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer font-semibold text-white hover:scale-105 flex items-center justify-center gap-2"
+                    className="rounded-xl px-4 py-3 w-full bg-gradient-to-r from-[#0B4BCC] to-[#0952d6] hover:from-[#0a3fa0] hover:to-[#0a3fa0] shadow-lg transition-all duration-300 cursor-pointer font-semibold text-white hover:scale-105 flex items-center justify-center gap-2"
                   >
                     <Phone className="h-5 w-5" />
                     Ligar agora (11) 2341-7100
@@ -652,16 +652,9 @@ export const LandingPage = () => {
                   <h3 className="text-xl sm:text-2xl font-bold text-white mb-3">
                     {latestAnnouncement.title}
                   </h3>
-                  <p className="text-gray-300 leading-relaxed mb-6">
+                  <p className="text-gray-300 leading-relaxed">
                     {latestAnnouncement.content}
                   </p>
-                  <button
-                    onClick={() => navigate("/announcements")}
-                    className="w-full sm:w-auto bg-[#0B4BCC] hover:bg-[#0a3fa0] text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:shadow-lg flex items-center justify-center gap-2"
-                  >
-                    Ver todos os recados
-                    <ChevronDown className="h-5 w-5 rotate-[-90deg]" />
-                  </button>
                 </div>
               </div>
             ) : (
@@ -669,14 +662,17 @@ export const LandingPage = () => {
                 <p className="text-gray-500 dark:text-gray-400 text-lg">
                   Nenhum recado disponível no momento
                 </p>
-                <button
-                  onClick={() => navigate("/announcements")}
-                  className="mt-4 bg-[#0B4BCC] hover:bg-[#0a3fa0] text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:shadow-lg cursor-pointer"
-                >
-                  Ver todos os recados
-                </button>
               </div>
             )}
+
+            <div className="flex justify-center mt-32">
+              <button
+                onClick={() => navigate("/announcements")}
+                className="bg-[#0B4BCC] hover:bg-[#0a3fa0] text-white px-16 py-3 rounded-xl text-lg font-semibold shadow-2xl transition-all duration-300 cursor-pointer hover:scale-105 border border-white/20"
+              >
+                Ver todos os recados
+              </button>
+            </div>
           </div>
         </section>
 
@@ -684,27 +680,29 @@ export const LandingPage = () => {
           <div className="max-w-6xl mx-auto">
             <div className="flex flex-col md:flex-row gap-44 mb-8">
               <div className="flex flex-col items-center gap-6 my-4">
-                <img
-                  src={Logo}
-                  alt=""
-                  className="h-18 rounded-sm shadow-lg transition-transform duration-300 hover:scale-105 cursor-pointer"
-                />
+                <a href="#">
+                  <img
+                    src={Logo}
+                    alt=""
+                    className="h-18 rounded-sm shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer"
+                  />
+                </a>
                 <div className="flex gap-3">
                   <a
                     onClick={handleFacebookClick}
-                    className="bg-white/10 hover:bg-[#0B4BCC] p-3 rounded-full transition-all duration-300 hover:scale-110 backdrop-blur-sm border border-white/20 cursor-pointer"
+                    className="bg-white/10 hover:bg-[#0B4BCC] p-3 rounded-full hover:scale-105 transition-all duration-300 cursor-pointer backdrop-blur-sm border border-white/20"
                   >
                     <i className="fa-brands fa-facebook-f text-lg"></i>
                   </a>
                   <a
                     onClick={handleInstagramClick}
-                    className="bg-white/10 hover:bg-[#CF21A4] p-3 rounded-full transition-all duration-300 hover:scale-110 backdrop-blur-sm border border-white/20 cursor-pointer"
+                    className="bg-white/10 hover:bg-[#CF21A4] p-3 rounded-full hover:scale-105 transition-all duration-300 cursor-pointer backdrop-blur-sm border border-white/20"
                   >
                     <i className="fa-brands fa-instagram text-lg"></i>
                   </a>
                   <a
                     onClick={handleWhatsAppClick}
-                    className="bg-white/10 hover:bg-green-500 p-3 rounded-full transition-all duration-300 hover:scale-110 backdrop-blur-sm border border-white/20 cursor-pointer"
+                    className="bg-white/10 hover:bg-green-500 p-3 rounded-full hover:scale-105 transition-all duration-300 cursor-pointer backdrop-blur-sm border border-white/20"
                   >
                     <i className="fa-brands fa-whatsapp text-lg"></i>
                   </a>
@@ -757,7 +755,7 @@ export const LandingPage = () => {
                   <li>
                     <a
                       href="#"
-                      className="hover:font-bold hover:text-base transition-all hover:translate-x-1 inline-block duration-300"
+                      className="hover:font-extrabold hover:text-base transition-all hover:translate-x-1 inline-block duration-300"
                     >
                       → Início
                     </a>
@@ -765,7 +763,7 @@ export const LandingPage = () => {
                   <li>
                     <a
                       href="#services"
-                      className="hover:font-bold hover:text-base transition-all hover:translate-x-1 inline-block duration-300"
+                      className="hover:font-extrabold hover:text-base transition-all hover:translate-x-1 inline-block duration-300"
                     >
                       → Nossos Serviços
                     </a>
@@ -773,7 +771,7 @@ export const LandingPage = () => {
                   <li>
                     <a
                       href="#faq"
-                      className="hover:font-bold hover:text-base transition-all hover:translate-x-1 inline-block duration-300"
+                      className="hover:font-extrabold hover:text-base transition-all hover:translate-x-1 inline-block duration-300"
                     >
                       → Perguntas Frequentes
                     </a>
@@ -781,7 +779,7 @@ export const LandingPage = () => {
                   <li>
                     <a
                       href="#about"
-                      className="hover:font-bold hover:text-base transition-all hover:translate-x-1 inline-block duration-300"
+                      className="hover:font-extrabold hover:text-base transition-all hover:translate-x-1 inline-block duration-300"
                     >
                       → Quem Somos
                     </a>
@@ -789,7 +787,7 @@ export const LandingPage = () => {
                   <li>
                     <a
                       href="#contact"
-                      className="hover:font-bold hover:text-base transition-all hover:translate-x-1 inline-block duration-300"
+                      className="hover:font-extrabold hover:text-base transition-all hover:translate-x-1 inline-block duration-300"
                     >
                       → Fale Conosco
                     </a>
@@ -797,7 +795,7 @@ export const LandingPage = () => {
                   <li>
                     <a
                       href="#announcements"
-                      className="hover:font-bold hover:text-base transition-all hover:translate-x-1 inline-block duration-300"
+                      className="hover:font-extrabold hover:text-base transition-all hover:translate-x-1 inline-block duration-300"
                     >
                       → Central de Recados
                     </a>

@@ -32,7 +32,7 @@ export default function ComeBack({ to, onClick, className = "", ariaLabel = "Vol
       <Link to={to} aria-label={ariaLabel} className="inline-block">
         <button className={buttonClasses}>
           <ArrowLeft className="h-4 w-4" />
-          <span>Voltar</span>
+          <span>Voltar para página inicial</span>
         </button>
       </Link>
     );

@@ -1,3 +1,5 @@
+import { bg } from "date-fns/locale";
+
 /**
  * Announcement Types - Backend Enum Values
  */
@@ -59,29 +61,35 @@ export const getAnnouncementStyles = (type) => {
 
   const styleMap = {
     orange: {
-      bg: 'from-[#ba5c00] to-[#d45012]',
-      border: 'border-[#ba5c00]',
-      badge: 'bg-white text-[#ba5c00]',
+      // bg: 'bg-gradient-to-br from-orange-50 to-orange-100/50 dark:from-orange-950/20 dark:to-orange-900/10',
+      bg: 'gray-50 dark:from-orange-950/20 dark:to-orange-900/10',
+      border: 'border-l-4 border-[#ba5c00]',
+      badge: 'bg-[#ba5c00] text-white',
+      text: 'text-gray-900 dark:text-gray-100',
     },
     blue: {
-      bg: 'from-[#041A2D] to-[#052540]',
-      border: 'border-[#0B4BCC]',
+      bg: 'gray-50 dark:from-blue-950/20 dark:to-blue-900/10',
+      border: 'border-l-4 border-[#0B4BCC]',
       badge: 'bg-[#0B4BCC] text-white',
+      text: 'text-gray-900 dark:text-gray-100',
     },
     green: {
-      bg: 'from-[#047857] to-[#065f46]',
-      border: 'border-[#10b981]',
+      bg: 'gray-50 dark:from-emerald-950/20 dark:to-emerald-900/10',
+      border: 'border-l-4 border-[#10b981]',
       badge: 'bg-[#10b981] text-white',
+      text: 'text-gray-900 dark:text-gray-100',
     },
     purple: {
-      bg: 'from-[#6B21A8] to-[#7C3AED]',
-      border: 'border-[#9333EA]',
+      bg: 'gray-50 dark:from-purple-950/20 dark:to-purple-900/10',
+      border: 'border-l-4 border-[#9333EA]',
       badge: 'bg-[#9333EA] text-white',
+      text: 'text-gray-900 dark:text-gray-100',
     },
     cyan: {
-      bg: 'from-[#0E7490] to-[#0891B2]',
-      border: 'border-[#06B6D4]',
+      bg: 'gray-50 dark:from-cyan-950/20 dark:to-cyan-900/10',
+      border: 'border-l-4 border-[#06B6D4]',
       badge: 'bg-[#06B6D4] text-white',
+      text: 'text-gray-900 dark:text-gray-100',
     },
   };
 

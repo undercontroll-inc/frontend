@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const GoogleButton = ({ onClick, loading = false, text = "Continuar com Google" }) => {
+const GoogleButton = ({ onClick, loading = false, text = "Continuar com Google", className = "" }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -17,6 +17,7 @@ const GoogleButton = ({ onClick, loading = false, text = "Continuar com Google" 
         transition-all duration-200
         ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-400 dark:hover:border-gray-500 hover:shadow-sm'}
         focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 cursor-pointer
+        ${className}
       `}
     >
       {loading ? (
