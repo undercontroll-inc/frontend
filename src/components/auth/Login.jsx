@@ -36,13 +36,14 @@ const Login = () => {
     document.title = "Irmãos Pelluci - Login";
   }, []);
 
-  const heroImage = "/images/banner_login.png"; // imagem única do painel esquerdo
+  const heroImage = new URL("../../assets/images/banner_login.png", import.meta.url).href;
 
   const validateField = (name, value) => {
+    // O correto seria enviar como "email" para o backend, mas o sistema usa nome de usuário
     switch (name) {
       case "name":
-        if (!value.trim()) return "Nome é obrigatório";
-        if (value.length < 2) return "Nome deve ter pelo menos 2 caracteres";
+        if (!value.trim()) return "O e-mail é obrigatório";
+        // if (value.length < 2) return "Nome deve ter pelo menos 2 caracteres";
         return "";
       case "password":
         if (!value) return "Senha é obrigatória";
@@ -204,16 +205,16 @@ const Login = () => {
                 <div className="flex items-center gap-2 mb-2">
                   <User className="text-gray-700 dark:text-gray-300 mb-2" />
                   <span className="block text-md font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Usuário
+                    E-mail
                   </span>
                 </div>
                 <Input
                   name="name"
                   type="text"
-                  placeholder="Digite seu nome de usuário"
+                  placeholder="Digite seu e-mail"
                   value={formData.name}
                   onChange={handleInputChange}
-                  error={errors.name}
+                  // error={errors.name}
                   autoComplete="username"
                   required
                 />

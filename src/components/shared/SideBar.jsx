@@ -14,7 +14,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import Tooltip from "./Tooltip";
 import UserDropdown from "./UserDropdown";
 import { useState, useEffect, useCallback, useMemo, memo } from "react";
-import Foto from "../../../public/images/logo_pelluci.jpg";
+import Foto from "../../assets/images/logo_pelluci.jpg";
 
 const SideBar = memo(({ active = "repairs" }) => {
   const { user, logout } = useAuth();
@@ -162,7 +162,7 @@ const SideBar = memo(({ active = "repairs" }) => {
                 key={item.id}
                 onClick={() => navigate(item.path)}
                 className={`
-                  group w-full flex items-center ${
+                  group w-full flex items-center cursor-pointer ${
                     isOpen ? "gap-3 px-3" : "justify-center px-2"
                   } py-2 rounded-md text-sm font-medium
                   transition-all duration-200 ease-in-out
@@ -223,7 +223,7 @@ const SideBar = memo(({ active = "repairs" }) => {
         >
           <button
             onClick={handleToggleSidebar}
-            className="p-2 bg-white border border-gray-200 dark:bg-zinc-950 dark:border-zinc-500 dark:text-zinc-200 rounded-lg shadow-md text-gray-600 hover:bg-gray-50 hover:text-[#041A2D] transition-all duration-200 hover:shadow-lg"
+            className="p-2 bg-white border border-gray-200 dark:bg-zinc-950 dark:border-zinc-500 dark:text-zinc-200 rounded-lg shadow-md text-gray-600 hover:bg-gray-50 hover:text-[#041A2D] transition-all duration-200 hover:shadow-lg cursor-pointer"
             aria-label={
               isOpen ? "Recolher menu (Ctrl+S)" : "Expandir menu (Ctrl+S)"
             }

@@ -2,6 +2,10 @@ import React, { useEffect, useState } from "react";
 
 import { announcementService } from "../../services/AnnouncementService";
 import {
+  getAnnouncementLabel,
+  getAnnouncementStyles,
+} from "../../utils/announcementUtils";
+import {
   ChevronDown,
   Wrench,
   ShieldCheck,
@@ -10,15 +14,15 @@ import {
   MapPin,
 } from "lucide-react";
 import FAQItem from "./FAQItem";
-import Logo from "../../../public/images/logo_pelluci.png";
-import LogoNavbar from "../../../public/images/logo_pelluci_navbar.png";
-import Banner from "../../../public/images/banner_image.jpg";
-import Foto from "../../../public/images/foto_pelluci.jpg";
+import Logo from "../../assets/images/logo_pelluci.png";
+import LogoNavbar from "../../assets/images/logo_pelluci_navbar.png";
+import Banner from "../../assets/images/banner_image.jpg";
+import Foto from "../../assets/images/foto_pelluci.jpg";
 import { useNavigate } from "react-router-dom";
 
 export const LandingPage = () => {
   const navigate = useNavigate();
-  const [latestAnnouncement, setLatestAnnouncement] = useState(null);
+  const [latestAnnouncements, setLatestAnnouncements] = useState([]);
 
   useEffect(() => {
     const faqItems = document.querySelectorAll(".faq-item");
@@ -34,12 +38,12 @@ export const LandingPage = () => {
       handlers.push({ item, handler });
       item.addEventListener("click", handler);
     });
-    getLastAnnouncement();
+    getLatestAnnouncements();
   }, []);
 
-  const getLastAnnouncement = async () => {
-    const lastAnnouncement = await announcementService.getLastAnnouncement();
-    setLatestAnnouncement(lastAnnouncement);
+  const getLatestAnnouncements = async () => {
+    const announcements = await announcementService.getAllAnnouncements(0, 3);
+    setLatestAnnouncements(announcements || []);
   }
 
   const handleWhatsAppClick = () => {
@@ -607,7 +611,7 @@ export const LandingPage = () => {
         {/* Central de Anúncios */}
         <section id="announcements" className="bg-white pt-16 pb-20 px-4 sm:px-8 border-b border-gray-200 min-h-[700px]">
           <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-24">
+            <div className="text-center mb-20">
               <h2 className="text-4xl sm:text-5xl font-bold bg-[#041A2D] bg-clip-text text-transparent mb-2 leading-tight pb-1">
                 Central de Recados
               </h2>
@@ -616,46 +620,41 @@ export const LandingPage = () => {
               </p>
             </div>
 
-            {/* Anúncio em Destaque */}
-            {latestAnnouncement ? (
-              <div
-                className={`bg-gradient-to-br ${latestAnnouncement.categoryColor === "blue"
-                  ? "from-[#041A2D] to-[#052540]"
-                  : latestAnnouncement.categoryColor === "green"
-                    ? "from-[#047857] to-[#065f46]"
-                    : "from-[#ba5c00] to-[#d45012]"
-                  } rounded-xl shadow-lg overflow-hidden border-2 ${latestAnnouncement.categoryColor === "blue"
-                    ? "border-[#0B4BCC]"
-                    : latestAnnouncement.categoryColor === "green"
-                      ? "border-[#10b981]"
-                      : "border-[#ba5c00]"
-                  } hover:shadow-xl transition-all duration-300`}
-              >
-                <div className="p-6 sm:p-8">
-                  <div className="flex items-center justify-between mb-4">
-                    <span
-                      className={`${latestAnnouncement.categoryColor === "blue"
-                        ? "bg-[#0B4BCC] text-white"
-                        : latestAnnouncement.categoryColor === "green"
-                          ? "bg-[#10b981]"
-                          : "bg-white text-[#ba5c00]"
-                        } px-3 py-1 rounded-full text-sm font-semibold`}
+            {/* Anúncios em Destaque */}
+            {latestAnnouncements.length > 0 ? (
+              <div className="space-y-6">
+                {latestAnnouncements.map((announcement) => {
+                  const styles = getAnnouncementStyles(announcement.type);
+                  return (
+                    <div
+                      key={announcement.id}
+                      className={`bg-gradient-to-br ${styles.bg} rounded-xl shadow-lg overflow-hidden border-2 ${styles.border} transition-all duration-300`}
                     >
-                      {latestAnnouncement.type}
-                    </span>
-                    <span className="text-gray-300 text-sm">
-                      {new Date(latestAnnouncement.publishedAt).toLocaleDateString(
-                        "pt-BR"
-                      )}
-                    </span>
-                  </div>
-                  <h3 className="text-xl sm:text-2xl font-bold text-white mb-3">
-                    {latestAnnouncement.title}
-                  </h3>
-                  <p className="text-gray-300 leading-relaxed">
-                    {latestAnnouncement.content}
-                  </p>
-                </div>
+                      <div className="p-6">
+                        <div className="flex items-start justify-between mb-4">
+                          <div className="flex items-center gap-3">
+                            <span
+                              className={`${styles.badge} px-3 py-1 rounded-full text-sm font-semibold`}
+                            >
+                              {getAnnouncementLabel(announcement.type)}
+                            </span>
+                            <span className="text-gray-500 text-sm">
+                              {new Date(announcement.publishedAt).toLocaleDateString(
+                                "pt-BR"
+                              )}
+                            </span>
+                          </div>
+                        </div>
+                        <h3 className="text-xl font-bold text-gray-800 mb-2">
+                          {announcement.title}
+                        </h3>
+                        <p className="text-gray-700 leading-relaxed">
+                          {announcement.content}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             ) : (
               <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-20 text-center border border-gray-200 dark:border-gray-700">
@@ -665,7 +664,7 @@ export const LandingPage = () => {
               </div>
             )}
 
-            <div className="flex justify-center mt-32">
+            <div className="flex justify-center mt-20">
               <button
                 onClick={() => navigate("/announcements")}
                 className="bg-[#0B4BCC] hover:bg-[#0a3fa0] text-white px-16 py-3 rounded-xl text-lg font-semibold shadow-2xl transition-all duration-300 cursor-pointer hover:scale-105 border border-white/20"
@@ -721,7 +720,7 @@ export const LandingPage = () => {
                     <div className="font-semibold text-white text-sm">
                       Telefone
                     </div>
-                    <div>(11) 2239-4448</div>
+                    <div>(11) 2341-7100</div>
                   </li>
                   {/* <li className="hover:text-white transition-colors">
                     <div className="font-semibold text-white text-sm">

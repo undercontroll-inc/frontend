@@ -57,8 +57,8 @@ const ComponentVisit = () => {
     <div className="flex h-screen overflow-hidden bg-gray-50 dark:bg-zinc-950">
       <SideBar active="visita" />
 
-      <div className="flex-1 overflow-y-auto" style={{ marginLeft: 'var(--sidebar-offset, 280px)', transition: 'margin-left 300ms ease-in-out' }}>
-        <div className="max-w-5xl mx-auto p-6 sm:p-8">
+      <div className="flex-1 flex flex-col overflow-hidden ml-[280px]">
+        <div className="py-8 px-20 overflow-y-auto">
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
               Visita Técnica
@@ -144,7 +144,7 @@ const ComponentVisit = () => {
               <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-3">
                 Pronto para agendar?
               </h2>
-              <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              <p className="text-gray-600 dark:text-gray-400 mb-14">
                 Entre em contato pelo WhatsApp ou telefone e receba seu orçamento personalizado
               </p>
             </div>
@@ -152,16 +152,16 @@ const ComponentVisit = () => {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <button
                 onClick={handleWhatsAppClick}
-                className="group w-full sm:w-auto inline-flex items-center justify-center gap-3 rounded-xl bg-green-600 hover:bg-green-700 text-white px-8 py-4 font-semibold shadow-lg hover:shadow-xl transition-all hover:scale-105"
+                className="group w-full sm:w-auto inline-flex items-center justify-center gap-3 rounded-xl bg-green-600 hover:bg-green-700 text-white px-8 py-4 font-semibold shadow-lg hover:shadow-xl transition-all hover:scale-105 cursor-pointer"
                 aria-label="Agendar pelo WhatsApp"
               >
-                <MessageCircle className="h-5 w-5 group-hover:rotate-12 transition-transform" />
+                <i className="fa-brands fa-whatsapp text-[22px]"></i>
                 <span>Agendar pelo WhatsApp</span>
               </button>
 
               <button
                 onClick={handleCallClick}
-                className="group w-full sm:w-auto inline-flex items-center justify-center gap-3 rounded-xl bg-[#041A2D] hover:bg-[#062E4F] text-white px-8 py-4 font-semibold shadow-lg hover:shadow-xl transition-all hover:scale-105"
+                className="group w-full sm:w-auto inline-flex items-center justify-center gap-3 rounded-xl bg-[#041A2D] hover:bg-[#062E4F] text-white px-8 py-4 font-semibold shadow-lg hover:shadow-xl transition-all hover:scale-105 cursor-pointer"
                 aria-label="Ligar agora"
               >
                 <Phone className="h-5 w-5 group-hover:rotate-12 transition-transform" />

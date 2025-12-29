@@ -236,6 +236,18 @@ const Register = () => {
     }
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      
+      if (currentStep < totalSteps) {
+        nextStep();
+      } else {
+        handleSubmit(e);
+      }
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -349,7 +361,7 @@ const Register = () => {
     switch (currentStep) {
       case 1:
         return (
-          <div>
+          <div onKeyDown={handleKeyDown}>
             <div className="text-center mb-2">
               <div className="flex items-center justify-center gap-2 mb-4 mt-6">
                 <User className="h-5 w-5 text-slate-900" />
@@ -468,16 +480,26 @@ const Register = () => {
 
       case 2:
         return (
-          <div>
+          <div onKeyDown={handleKeyDown}>
             <div className="text-center mb-2">
               <div className="flex items-center justify-center gap-2 mb-14 mt-6">
                 <Home className="h-5 w-5 text-slate-900" />
-                <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">Endereço e Contato</h2>
+                <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">Contato e Endereço</h2>
               </div>
             </div>
 
             <div className="space-y-2.5 mb-2.5 mt-4">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-2.5">
+                <Input
+                  label="Telefone"
+                  name="phone"
+                  placeholder="(99) 99999-9999"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  error={errors.phone}
+                  required
+                />
+
                 <Input
                   label="CEP"
                   name="cep"
@@ -489,16 +511,6 @@ const Register = () => {
                   maxLength={9}
                   required
                   disabled={loadingCep}
-                />
-
-                <Input
-                  label="Telefone"
-                  name="phone"
-                  placeholder="(99) 99999-9999"
-                  value={formData.phone}
-                  onChange={handleInputChange}
-                  error={errors.phone}
-                  required
                 />
               </div>
 
@@ -572,7 +584,7 @@ const Register = () => {
 
       case 3:
         return (
-          <div>
+          <div onKeyDown={handleKeyDown}>
             <div className="text-center mb-2">
               <div className="flex items-center justify-center gap-2 mb-14 mt-6">
                 <Lock className="h-5 w-5 text-slate-900" />
@@ -581,11 +593,11 @@ const Register = () => {
             </div>
 
             {/* Dica de senha */}
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-3">
-                <p className="text-sm text-gray-700">
-                  <span className="font-medium text-slate-900">💡 Aviso:</span> Escolha uma senha com pelo menos <span className="font-medium text-slate-900">6 caracteres</span> para proteger sua conta!
-                </p>
-              </div>
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-3">
+              <p className="text-sm text-gray-700">
+                <span className="font-medium text-slate-900">💡 Aviso:</span> Escolha uma senha com pelo menos <span className="font-medium text-slate-900">6 caracteres</span> para proteger sua conta!
+              </p>
+            </div>
 
             <div className="space-y-2.5 mb-2.5 mt-4">
               <Input
@@ -642,10 +654,10 @@ const Register = () => {
     <div className="min-h-screen w-full bg-[#041a2dec] flex items-center justify-center p-4">
       {/* Botão Voltar */}
       <div className="absolute top-8 left-8 z-10">
-        <ComeBack 
-          variant="light" 
-          className="bg-white hover:bg-gray-100 hover:scale-105 transition-all duration-300 cursor-pointer" 
-          to="/" 
+        <ComeBack
+          variant="light"
+          className="bg-white hover:bg-gray-100 hover:scale-105 transition-all duration-300 cursor-pointer"
+          to="/"
         />
       </div>
 
@@ -685,7 +697,7 @@ const Register = () => {
           {/* Painel de imagem (direita) */}
           <div className="relative h-full w-full min-h-[600px] md:min-h-0">
             <img
-              src="/images/banner_login.png"
+              src={new URL("../../assets/images/banner_login.png", import.meta.url).href}
               alt="Register Hero"
               className="absolute inset-0 h-full w-full object-cover"
             />
