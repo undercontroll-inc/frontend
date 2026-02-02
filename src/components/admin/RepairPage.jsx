@@ -98,7 +98,9 @@ export function RepairPage() {
   const getStatusLabel = (status) => {
     const statusMap = {
       'PENDING': 'Pendente',
+      'IN_ANALYSIS': 'Em Análise',
       'COMPLETED': 'Concluído',
+      'DELIVERED': 'Entregue',
     };
     return statusMap[status] || status;
   };
@@ -144,51 +146,64 @@ export function RepairPage() {
         <PageContainer>
           <div className="max-w-7xl mx-auto">
             {/* Header */}
-            <div className="mb-8">
+            <div className="flex justify-between items-center mb-4">
               <h1 className="text-3xl font-bold text-zinc-900 dark:text-gray-100">Consertos</h1>
+              <Button 
+                onClick={() => setIsCreateModalOpen(true)}
+                className="!bg-[#ba5c00] hover:!bg-[#8a4500] hover:brightness-90 hover:shadow-lg transition-all duration-200 focus:ring-orange-100 text-sm px-4 py-2"
+              >
+                <Plus className="h-4 w-4" />
+                Nova Ordem de Serviço
+              </Button>
             </div>
 
-            {/* Filters and Search */}
-            <div className="mb-6 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
-              <div className="flex flex-col sm:flex-row gap-4 flex-1">
-                <div className="w-full sm:w-48">
-                  <Select
-                    value={statusFilter}
-                    onChange={(e) => setStatusFilter(e.target.value)}
-                  >
-                    <option value="Todos">Status: Todos</option>
-                    <option value="EM_ANDAMENTO">Em Andamento</option>
-                    <option value="NAO_INICIADO">Não Iniciado</option>
-                    <option value="FINALIZADO">Finalizado</option>
-                    <option value="CANCELADO">Cancelado</option>
-                  </Select>
-                </div>
-
-                <div className="flex-1 relative">
+            {/* Filters Section */}
+            <div className=" rounded-lg shadow-sm p-4 mb-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {/* Search Input */}
+                <div className="relative">
+                  <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                   <Input
                     type="text"
                     placeholder="Pesquise o conserto pela OS ou nome do cliente"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10"
+                    className="w-full pl-8 pr-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent"
                   />
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                 </div>
+
+                {/* Status Filter */}
+                <Select
+                  value={statusFilter}
+                  onChange={(e) => setStatusFilter(e.target.value)}
+                >
+                  <option value="Todos">Status: Todos</option>
+                  <option value="PENDING">Pendente</option>
+                  <option value="IN_ANALYSIS">Em Análise</option>
+                  <option value="COMPLETED">Concluído</option>
+                  <option value="DELIVERED">Entregue</option>
+                </Select>
               </div>
 
-              <Button
-                variant="primary"
-                className="w-full sm:w-auto"
-                onClick={() => setIsCreateModalOpen(true)}
-              >
-                <Plus className="h-5 w-5" />
-                Nova Ordem de Serviço
-              </Button>
+              {/* Clear Filters Button */}
+              {(searchQuery || statusFilter !== 'Todos') && (
+                <div className="mt-4">
+                  <button
+                    onClick={() => {
+                      setSearchQuery('');
+                      setStatusFilter('Todos');
+                    }}
+                    className="text-sm text-blue-600 hover:text-blue-800 underline"
+                  >
+                    Limpar filtros
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* Table */}
-            <div className="bg-white dark:bg-zinc-900 rounded-lg shadow overflow-hidden">
-              <div className="overflow-x-auto">
+            <div className="bg-white dark:bg-zinc-900 rounded-lg shadow-sm overflow-hidden">
+              <div className="overflow-auto max-h-[calc(100vh-280px)]">
                 <table className="w-full">
                   <thead>
                     <tr className="bg-[#041A2D] text-white">
@@ -207,10 +222,12 @@ export function RepairPage() {
                         </td>
                       </tr>
                     ) : (
-                      filteredRepairs.map((repair) => (
+                      filteredRepairs.map((repair, index) => (
                         <tr 
                           key={repair.id}
-                          className="hover:bg-gray-50 dark:hover:bg-zinc-800 cursor-pointer transition-colors"
+                          className={`cursor-pointer transition-colors ${
+                            index % 2 === 0 ? "bg-white dark:bg-zinc-900" : "bg-blue-50 dark:bg-zinc-800"
+                          }`}
                           onClick={() => handleRowClick(repair)}
                         >
                           <td className="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
@@ -250,6 +267,11 @@ export function RepairPage() {
                   </tbody>
                 </table>
               </div>
+            </div>
+
+            {/* Results Counter */}
+            <div className="mt-4 text-sm text-gray-600 dark:text-gray-400">
+              Mostrando {filteredRepairs.length} de {repairs.length} ordens de serviço
             </div>
           </div>
         </PageContainer>

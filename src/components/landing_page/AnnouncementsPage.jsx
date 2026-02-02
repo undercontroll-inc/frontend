@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
-import LogoNavbar from "../../../public/images/logo_pelluci_navbar.png";
+import LogoNavbar from "../../assets/images/logo_pelluci_navbar.png";
 import { announcementService } from "../../services/AnnouncementService";
 import {
   getAnnouncementLabel,
@@ -16,15 +16,15 @@ export const AnnouncementsPage = () => {
   const [categoryFilter, setCategoryFilter] = useState("Todos");
   const [announcements, setAnnouncements] = useState([]);
 
-  // Carregar anúncios do localStorage
+  // Carregar anúncios
   useEffect(() => {
     getAllAnnouncements();
-  }, [currentPage, itemsPerPage]);
+  }, []);
 
   // Filtrar anúncios por tipo e apenas os marcados para visitantes
   const filteredAnnouncements = useMemo(() => {
     // Filtrar apenas anúncios marcados para visitantes
-    const visitorAnnouncements = announcements ?? [].filter(
+    const visitorAnnouncements = (announcements ?? []).filter(
       (ann) => ann.forVisitors !== false
     );
 
@@ -46,9 +46,10 @@ export const AnnouncementsPage = () => {
   );
 
   const getAllAnnouncements = async () => {
+    // Buscar todos os anúncios (limite de 40 para evitar sobrecarga)
     const response = await announcementService.getAllAnnouncements(
-      currentPage - 1,
-      itemsPerPage
+      0,
+      40
     );
     setAnnouncements(response);
   }
@@ -138,7 +139,7 @@ export const AnnouncementsPage = () => {
           </button>
           <button
             onClick={() => navigate("/register")}
-            className="bg-gradient-to-r from-[#BA4610] to-[#d45012] text-white px-3 py-1 rounded-lg hover:scale-105 transition-all duration-300 cursor-pointer font-medium shadow-lg"
+            className="bg-gradient-to-r from-[#ba5c00] to-[#d45012] text-white px-3 py-1 rounded-lg hover:scale-105 transition-all duration-300 cursor-pointer font-medium shadow-lg"
           >
             Crie sua conta
           </button>
@@ -148,21 +149,22 @@ export const AnnouncementsPage = () => {
       {/* Main Content */}
       <main className="pt-20 pb-20 px-4 sm:px-8">
         {/* Botão Voltar */}
-          <button
-            onClick={() => {
-              navigate("/");
-              setTimeout(() => {
-                const announcementsSection = document.querySelector('.announcements-section');
-                if (announcementsSection) {
-                  announcementsSection.scrollIntoView({ behavior: 'smooth' });
-                }
-              }, 100);
-            }}
-            className="mt-8 mb-6 flex items-center gap-2 text-[#041A2D] hover:text-[#0B4BCC] transition-colors duration-300 font-medium group cursor-pointer"
-          >
-            <ArrowLeft className="h-5 w-5 group-hover:-translate-x-1 transition-transform duration-300" />
-            Voltar para página inicial
-          </button>
+        <button
+          onClick={() => {
+            navigate("/");
+            setTimeout(() => {
+              const announcementsSection = document.querySelector('.announcements-section');
+              if (announcementsSection) {
+                announcementsSection.scrollIntoView({ behavior: 'smooth' });
+              }
+            }, 100);
+          }}
+          className="mb-8 bg-[#041A2D] text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer border border-white/20 flex items-center gap-2 mt-10"
+        >
+          <ArrowLeft className="h-5 w-5 group-hover:-translate-x-1 transition-transform duration-300" />
+          Voltar para página inicial
+        </button>
+
         <div className="max-w-4xl mx-auto">
           {/* Título */}
           <div className="text-center mb-14">
@@ -253,25 +255,27 @@ export const AnnouncementsPage = () => {
                 return (
                   <div
                     key={announcement.id}
-                    className={`bg-gradient-to-br ${styles.bg} rounded-xl shadow-lg overflow-hidden border-2 ${styles.border} hover:shadow-xl transition-all duration-300`}
+                    className={`bg-gradient-to-br ${styles.bg} rounded-xl shadow-lg overflow-hidden border-2 ${styles.border} transition-all duration-300`}
                   >
-                    <div className="p-6 sm:p-8">
-                      <div className="flex items-center justify-between mb-4">
-                        <span
-                          className={`${styles.badge} px-3 py-1 rounded-full text-sm font-semibold`}
-                        >
-                          {getAnnouncementLabel(announcement.type)}
-                        </span>
-                        <span className="text-gray-300 text-sm">
-                          {new Date(announcement.publishedAt).toLocaleDateString(
-                            "pt-BR"
-                          )}
-                        </span>
+                    <div className="p-6">
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex items-center gap-3">
+                          <span
+                            className={`${styles.badge} px-3 py-1 rounded-full text-sm font-semibold`}
+                          >
+                            {getAnnouncementLabel(announcement.type)}
+                          </span>
+                          <span className="text-gray-500 text-sm">
+                            {new Date(announcement.publishedAt).toLocaleDateString(
+                              "pt-BR"
+                            )}
+                          </span>
+                        </div>
                       </div>
-                      <h2 className="text-xl sm:text-2xl font-bold text-white mb-3">
+                      <h2 className="text-xl font-bold text-gray-800 mb-2">
                         {announcement.title}
                       </h2>
-                      <p className="text-gray-300 leading-relaxed">
+                      <p className="text-gray-700 leading-relaxed">
                         {announcement.content}
                       </p>
                     </div>
@@ -293,7 +297,7 @@ export const AnnouncementsPage = () => {
               <button
                 onClick={handlePrevPage}
                 disabled={currentPage === 1}
-                className="flex items-center gap-2 px-4 py-2 bg-[#0B4BCC] text-white rounded-lg hover:bg-[#0a3fa0] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed font-medium shadow-lg hover:scale-105"
+                className="flex items-center gap-2 px-4 py-2 bg-[#0B4BCC] text-white rounded-lg hover:bg-[#0a3fa0] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed font-medium shadow-lg hover:scale-105 cursor-pointer"
               >
                 <ChevronLeft className="h-5 w-5" />
                 Anterior
@@ -307,7 +311,7 @@ export const AnnouncementsPage = () => {
                       onClick={() => setCurrentPage(page)}
                       className={`w-10 h-10 rounded-lg font-semibold transition-all duration-300 shadow-md ${
                         currentPage === page
-                          ? "bg-[#041A2D] text-white scale-110"
+                          ? "bg-[#041A2D] text-white hover:scale-105"
                           : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 hover:scale-105"
                       }`}
                     >
@@ -320,7 +324,7 @@ export const AnnouncementsPage = () => {
               <button
                 onClick={handleNextPage}
                 disabled={currentPage === totalPages}
-                className="flex items-center gap-2 px-4 py-2 bg-[#0B4BCC] text-white rounded-lg hover:bg-[#0a3fa0] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed font-medium shadow-lg hover:scale-105"
+                className="flex items-center gap-2 px-4 py-2 bg-[#0B4BCC] text-white rounded-lg hover:bg-[#0a3fa0] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed font-medium shadow-lg hover:scale-105 cursor-pointer"
               >
                 Próxima
                 <ChevronRight className="h-5 w-5" />

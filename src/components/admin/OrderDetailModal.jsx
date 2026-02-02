@@ -344,18 +344,16 @@ export const OrderDetailModal = ({ isOpen, onClose, repair, client, onUpdate }) 
                 </Select>
               ) : (
                 <span className={`inline-flex items-center px-3 py-2 rounded-lg font-medium ${
-                  editedRepair.status === 'COMPLETED' || editedRepair.status === 'FINALIZADO' ? 'bg-green-100 text-green-800' :
-                  editedRepair.status === 'EM_ANDAMENTO' ? 'bg-blue-100 text-blue-800' :
-                  editedRepair.status === 'CANCELADO' ? 'bg-red-100 text-red-800' :
-                  editedRepair.status === 'PENDING' || editedRepair.status === 'NAO_INICIADO' ? 'bg-yellow-100 text-yellow-800' :
+                  editedRepair.status === 'COMPLETED' ? 'bg-green-100 text-green-800' :
+                  editedRepair.status === 'IN_ANALYSIS' ? 'bg-blue-100 text-blue-800' :
+                  editedRepair.status === 'DELIVERED' ? 'bg-purple-100 text-purple-800' :
+                  editedRepair.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' :
                   'bg-gray-100 text-gray-800'
                 }`}>
                   {editedRepair.status === 'PENDING' ? 'Pendente' :
                    editedRepair.status === 'COMPLETED' ? 'Concluído' :
-                   editedRepair.status === 'NAO_INICIADO' ? 'Não Iniciado' :
-                   editedRepair.status === 'EM_ANDAMENTO' ? 'Em Andamento' :
-                   editedRepair.status === 'FINALIZADO' ? 'Finalizado' :
-                   editedRepair.status === 'CANCELADO' ? 'Cancelado' : editedRepair.status}
+                   editedRepair.status === 'IN_ANALYSIS' ? 'Em Análise' :
+                   editedRepair.status === 'DELIVERED' ? 'Entregue' : editedRepair.status}
                 </span>
               )}
             </div>

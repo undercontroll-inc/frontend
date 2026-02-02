@@ -101,47 +101,72 @@ const ComponentRepair = () => {
     <div className="flex min-h-screen bg-gray-50 dark:bg-zinc-950">
       <SideBar active="repairs" />
 
-      <div className="flex-1 overflow-y-auto h-screen" style={{ marginLeft: 'var(--sidebar-offset, 280px)', transition: 'margin-left 300ms ease-in-out' }}>
-        <div className="max-w-5xl mx-auto px-6 py-8">
+      <div className="flex-1 flex flex-col overflow-hidden ml-[280px]">
+        <div className="py-8 px-20 overflow-y-auto">
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-6">Consertos</h1>
-            <div className="flex items-center gap-3">
-              <Select
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-                containerClassName="w-48"
-              >
-                <option value="">Status: Todos</option>
-                <option value="PENDING">Pendente</option>
-                <option value="IN_ANALYSIS">Em Análise</option>
-                <option value="COMPLETED">Concluído</option>
-                <option value="DELIVERED">Entregue</option>
-              </Select>
-              <div className="flex-1">
-                <Input
-                  placeholder="Pesquisar por: Tipo do aparelho, marca ou modelo"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  icon={Search}
-                />
+            
+            {/* Filters Section */}
+            <div className="rounded-lg shadow-sm p-4 mb-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {/* Search Input */}
+                <div className="relative">
+                  <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                  <Input
+                    placeholder="Pesquisar por: Tipo do aparelho, marca ou modelo"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="w-full pl-8 pr-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent"
+                  />
+                </div>
+
+                {/* Status Filter */}
+                <Select
+                  value={statusFilter}
+                  onChange={(e) => setStatusFilter(e.target.value)}
+                >
+                  <option value="">Todos os status</option>
+                  <option value="PENDING">Pendente</option>
+                  <option value="IN_ANALYSIS">Em Análise</option>
+                  <option value="COMPLETED">Concluído</option>
+                  <option value="DELIVERED">Entregue</option>
+                </Select>
               </div>
+
+              {/* Clear Filters Button */}
+              {(searchTerm || statusFilter) && (
+                <div className="mt-4">
+                  <button
+                    onClick={() => {
+                      setSearchTerm("");
+                      setStatusFilter("");
+                    }}
+                    className="text-sm text-blue-600 hover:text-blue-800 underline"
+                  >
+                    Limpar filtros
+                  </button>
+                </div>
+              )}
             </div>
           </div>
 
           <div className="mb-6">
-            <div className="border border-gray-300 dark:border-zinc-700 rounded-lg p-4 bg-white dark:bg-zinc-900">
-              <p className="text-sm leading-relaxed text-center text-gray-700">
+            <div className="border border-gray-300 dark:border-zinc-700 rounded-lg p-6 bg-white dark:bg-zinc-900 space-y-4">
+              <p className="text-sm leading-relaxed text-center text-gray-700 dark:text-gray-300">
                 Nesta página você encontra todas as ordens de serviço realizadas
                 em nossa assistência técnica. Aqui é possível acompanhar seus
                 pedidos e verificar o status de cada atendimento.
               </p>
-              <p className="text-sm mt-2 text-center text-gray-700">
-                <span className="font-bold">Observação:</span> O prazo para
-                retirada dos produtos é de 30 dias. Após esta data será cobrado
-                R$ 1,00 por dia de permanência. Produto não retirado no prazo
-                máximo de 60 dias será desmontado para recuperação das peças
-                aplicadas.
-              </p>
+              
+              <div className="border-t border-gray-200 dark:border-zinc-700 pt-4">
+                <p className="text-sm leading-relaxed text-center text-gray-700 dark:text-gray-300">
+                  <span className="font-bold text-[#BA4A00]">OBSERVAÇÃO:</span> O prazo para
+                  retirada dos produtos é de <span className="font-bold">30 dias</span>. Após esta data será cobrado
+                  <span className="font-bold"> R$ 1,00 por dia</span> de permanência. <br/> Produto não retirado no prazo
+                  máximo de <span className="font-bold">60 dias</span> será desmontado para recuperação das peças
+                  aplicadas.
+                </p>
+              </div>
             </div>
           </div>
 

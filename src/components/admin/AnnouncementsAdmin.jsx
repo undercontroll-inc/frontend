@@ -4,6 +4,7 @@ import SideBar from "../shared/SideBar";
 import PageContainer from "../shared/PageContainer";
 import Button from "../shared/Button";
 import Input from "../shared/Input";
+import Select from "../shared/Select";
 import { useToast } from "../../contexts/ToastContext";
 import { announcementService } from "../../services/AnnouncementService";
 import {
@@ -205,30 +206,32 @@ const AnnouncementsAdmin = () => {
               </div>
               <Button
                 onClick={() => handleOpenModal()}
-                className="flex items-center gap-2"
+                className="!bg-[#ba5c00] hover:!bg-[#8a4500] hover:brightness-90 hover:shadow-lg transition-all duration-200 focus:ring-orange-100 text-sm px-4 py-2"
               >
-                <Plus className="h-5 w-5" />
+                <Plus className="h-4 w-4" />
                 Novo Recado
               </Button>
             </div>
 
             {/* Filtros */}
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 mb-6">
-              <div className="flex flex-col sm:flex-row gap-4">
-                <div className="relative flex-1 min-w-[350px]">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                  <input
+            <div className="rounded-lg shadow-sm p-4 mb-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {/* Search Input */}
+                <div className="relative">
+                  <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                  <Input
                     type="text"
-                    placeholder="Buscar recados..."
+                    placeholder="Buscar recados"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-[#0B4BCC] focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                    className="w-full pl-8 pr-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent"
                   />
                 </div>
-                <select
+
+                {/* Category Filter */}
+                <Select
                   value={categoryFilter}
                   onChange={(e) => setCategoryFilter(e.target.value)}
-                  className="w-full sm:w-[250px] px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-[#0B4BCC] focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 flex-shrink-0"
                 >
                   <option value="Todos">Todos os tipos</option>
                   {getAnnouncementTypeOptions().map((option) => (
@@ -236,7 +239,7 @@ const AnnouncementsAdmin = () => {
                       {option.label}
                     </option>
                   ))}
-                </select>
+                </Select>
               </div>
             </div>
 
@@ -258,7 +261,7 @@ const AnnouncementsAdmin = () => {
                             >
                               {getAnnouncementLabel(announcement.type)}
                             </span>
-                            <span className="text-gray-300 text-sm">
+                            <span className="text-gray-500 text-sm">
                               {new Date(announcement.publishedAt).toLocaleDateString(
                                 "pt-BR"
                               )}
@@ -267,24 +270,24 @@ const AnnouncementsAdmin = () => {
                           <div className="flex items-center gap-2">
                             <button
                               onClick={() => handleOpenModal(announcement)}
-                              className="p-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors"
+                              className="p-2 bg-gray-200/60 dark:bg-gray-700/60 hover:bg-gray-300/80 dark:hover:bg-gray-600/80 rounded-lg transition-all duration-200 hover:shadow-sm cursor-pointer"
                               title="Editar"
                             >
-                              <Edit2 className="h-4 w-4 text-white" />
+                              <Edit2 className="h-4 w-4 text-gray-800" />
                             </button>
                             <button
                               onClick={() => handleDelete(announcement.id)}
-                              className="p-2 bg-white/10 hover:bg-red-500/50 rounded-lg transition-colors"
+                              className="p-2 bg-gray-200/60 dark:bg-gray-700/60 hover:bg-gray-300/80 dark:hover:bg-gray-600/80 rounded-lg transition-all duration-200 hover:shadow-sm cursor-pointer"
                               title="Excluir"
                             >
-                              <Trash2 className="h-4 w-4 text-white" />
+                              <Trash2 className="h-4 w-4 text-gray-800" />
                             </button>
                           </div>
                         </div>
-                        <h2 className="text-xl font-bold text-white mb-2">
+                        <h2 className="text-xl font-bold text-gray-800 mb-2">
                           {announcement.title}
                         </h2>
-                        <p className="text-gray-300 leading-relaxed">
+                        <p className="text-gray-700 leading-relaxed">
                           {announcement.content}
                         </p>
                       </div>

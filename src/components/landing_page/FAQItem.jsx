@@ -11,7 +11,7 @@ const FAQItem = ({ question, answer }) => {
       }`}
       onClick={() => setIsOpen(!isOpen)}
     >
-      <div className="faq-question bg-gradient-to-r from-[#BA4610] to-[#d45012] text-white p-4 flex items-center justify-between">
+      <div className="faq-question bg-gradient-to-r from-[#ba5c00] to-[#d45012] text-white p-4 flex items-center justify-between">
         <h3 className="text-lg font-semibold">{question}</h3>
         <ChevronDown
           className={`arrow transition-transform duration-300 flex-shrink-0 ml-4 ${

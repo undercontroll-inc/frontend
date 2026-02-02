@@ -36,13 +36,14 @@ const Login = () => {
     document.title = "Irmãos Pelluci - Login";
   }, []);
 
-  const heroImage = "/images/microondas 6.jpg"; // imagem única do painel esquerdo
+  const heroImage = new URL("../../assets/images/banner_login.png", import.meta.url).href;
 
   const validateField = (name, value) => {
+    // O correto seria enviar como "email" para o backend, mas o sistema usa nome de usuário
     switch (name) {
       case "name":
-        if (!value.trim()) return "Nome é obrigatório";
-        if (value.length < 2) return "Nome deve ter pelo menos 2 caracteres";
+        if (!value.trim()) return "O e-mail é obrigatório";
+        // if (value.length < 2) return "Nome deve ter pelo menos 2 caracteres";
         return "";
       case "password":
         if (!value) return "Senha é obrigatória";
@@ -162,27 +163,27 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-[#041a2dfa] flex items-center justify-center p-4">
+    <div className="min-h-screen w-full bg-[#041a2dec] flex items-center justify-center p-4">
+      {/* Botão Voltar */}
+      <div className="absolute top-8 left-8 z-10">
+        <ComeBack 
+          variant="light" 
+          className="bg-white hover:bg-gray-100 hover:scale-105 transition-all duration-300 cursor-pointer" 
+          to="/" 
+        />
+      </div>
+
       <div className="w-full max-w-6xl bg-white dark:bg-gray-900 rounded-3xl shadow-xl overflow-hidden">
         <div className="grid grid-cols-1 md:grid-cols-2">
           {/* Painel de imagem (esquerda) */}
           <div className="relative h-full w-full">
-            {/* Botão Voltar */}
-            <div className="absolute top-6 left-6 z-10">
-              <ComeBack 
-                variant="primary" 
-                className="hover:bg-[#041a2dfa]" 
-                to="/" 
-              />
-            </div>
-            
             <img
               src={heroImage}
               alt="Login Hero"
               className="absolute inset-0 h-full w-full object-cover"
             />
             {/* Overlay suave */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent" />
+            {/* <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent" /> */}
           </div>
 
           {/* Formulário (direita) */}
@@ -204,16 +205,16 @@ const Login = () => {
                 <div className="flex items-center gap-2 mb-2">
                   <User className="text-gray-700 dark:text-gray-300 mb-2" />
                   <span className="block text-md font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Usuário
+                    E-mail
                   </span>
                 </div>
                 <Input
                   name="name"
                   type="text"
-                  placeholder="Digite seu nome de usuário"
+                  placeholder="Digite seu e-mail"
                   value={formData.name}
                   onChange={handleInputChange}
-                  error={errors.name}
+                  // error={errors.name}
                   autoComplete="username"
                   required
                 />
@@ -243,7 +244,7 @@ const Login = () => {
                   type="submit"
                   variant="primary"
                   size="sm"
-                  className="w-full"
+                  className="w-full hover:scale-[1.02] transition-all duration-300 cursor-pointer"
                   loading={loading}
                   disabled={loading || googleLoading}
                 >
@@ -264,6 +265,7 @@ const Login = () => {
                   onClick={handleGoogleLogin}
                   loading={googleLoading}
                   text="Continuar com Google"
+                  className="hover:scale-[1.02] transition-all duration-300 cursor-pointer"
                 />
               </div>
             </form>

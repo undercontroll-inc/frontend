@@ -126,7 +126,7 @@ export function Estoque() {
                     <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Gerenciamento de Estoque</h1>
                     <Button 
                         onClick={handleOpenModal}
-                        className="bg-orange-500 hover:bg-orange-600 focus:ring-orange-500 text-sm px-4 py-2"
+                        className="!bg-[#ba5c00] hover:!bg-[#8a4500] hover:brightness-98 hover:shadow-lg transition-all duration-200 focus:ring-orange-100 text-sm px-4 py-2"
                     >
                         <Plus className="h-4 w-4" />
                         Cadastrar novo item
@@ -202,15 +202,15 @@ export function Estoque() {
                         <table className="w-full min-w-max">
                             <thead className="bg-[#041A2D] text-white sticky top-0 z-10">
                                 <tr>
-                                    <th className="px-3 py-3 text-left text-xs font-semibold whitespace-nowrap">ID</th>
-                                    <th className="px-3 py-3 text-left text-xs font-semibold whitespace-nowrap">Item</th>
-                                    <th className="px-3 py-3 text-left text-xs font-semibold whitespace-nowrap">Marca</th>
-                                    <th className="px-3 py-3 text-left text-xs font-semibold whitespace-nowrap">Categoria</th>
-                                    <th className="px-3 py-3 text-left text-xs font-semibold whitespace-nowrap">Qtd.</th>
-                                    <th className="px-3 py-3 text-left text-xs font-semibold whitespace-nowrap">Preço</th>
-                                    <th className="px-3 py-3 text-left text-xs font-semibold whitespace-nowrap">Fornecedor</th>
-                                    <th className="px-3 py-3 text-left text-xs font-semibold whitespace-nowrap">Descrição</th>
-                                    <th className="px-3 py-3 text-center text-xs font-semibold whitespace-nowrap">Ações</th>
+                                    <th className="px-3 py-3 text-left text-sm font-semibold whitespace-nowrap">ID</th>
+                                    <th className="px-3 py-3 text-left text-sm font-semibold whitespace-nowrap">Item</th>
+                                    <th className="px-3 py-3 text-left text-sm font-semibold whitespace-nowrap">Marca</th>
+                                    <th className="px-3 py-3 text-left text-sm font-semibold whitespace-nowrap">Categoria</th>
+                                    <th className="px-3 py-3 text-left text-sm font-semibold whitespace-nowrap">Qtd.</th>
+                                    <th className="px-3 py-3 text-left text-sm font-semibold whitespace-nowrap">Preço</th>
+                                    <th className="px-3 py-3 text-left text-sm font-semibold whitespace-nowrap">Fornecedor</th>
+                                    <th className="px-3 py-3 text-left text-sm font-semibold whitespace-nowrap">Descrição</th>
+                                    <th className="px-3 py-3 text-center text-sm font-semibold whitespace-nowrap">Ações</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-200 dark:divide-zinc-800">
@@ -226,14 +226,14 @@ export function Estoque() {
                                             key={item.id} 
                                             className={index % 2 === 0 ? "bg-white dark:bg-zinc-900" : "bg-blue-50 dark:bg-zinc-800"}
                                         >
-                                            <td className="px-3 py-3 text-xs text-gray-900 dark:text-gray-100">{item.id}</td>
-                                            <td className="px-3 py-3 text-xs text-gray-900 dark:text-gray-100 max-w-[150px] truncate" title={item.item}>{item.item}</td>
-                                            <td className="px-3 py-3 text-xs text-gray-900 dark:text-gray-100 whitespace-nowrap">{item.brand}</td>
-                                            <td className="px-3 py-3 text-xs text-gray-900 dark:text-gray-100 whitespace-nowrap">{item.category}</td>
-                                            <td className="px-3 py-3 text-xs text-gray-900 dark:text-gray-100">{item.quantity}</td>
-                                            <td className="px-3 py-3 text-xs text-gray-900 dark:text-gray-100 whitespace-nowrap">{item.price}</td>
-                                            <td className="px-3 py-3 text-xs text-gray-900 dark:text-gray-100 whitespace-nowrap">{item.supplier}</td>
-                                            <td className="px-3 py-3 text-xs text-gray-600 dark:text-gray-400 max-w-[200px] truncate" title={item.description}>
+                                            <td className="px-3 py-3 text-sm text-gray-900 dark:text-gray-100">{item.id}</td>
+                                            <td className="px-3 py-3 text-sm text-gray-900 dark:text-gray-100 max-w-[150px] truncate" title={item.item}>{item.item}</td>
+                                            <td className="px-3 py-3 text-sm text-gray-900 dark:text-gray-100 whitespace-nowrap">{item.brand}</td>
+                                            <td className="px-3 py-3 text-sm text-gray-900 dark:text-gray-100 whitespace-nowrap">{item.category}</td>
+                                            <td className="px-3 py-3 text-sm text-gray-900 dark:text-gray-100">{item.quantity}</td>
+                                            <td className="px-3 py-3 text-sm text-gray-900 dark:text-gray-100 whitespace-nowrap">{item.price}</td>
+                                            <td className="px-3 py-3 text-sm text-gray-900 dark:text-gray-100 whitespace-nowrap">{item.supplier}</td>
+                                            <td className="px-3 py-3 text-sm text-gray-600 dark:text-gray-400 max-w-[200px] truncate" title={item.description}>
                                                 {item.description}
                                             </td>
                                             <td className="px-3 py-3">

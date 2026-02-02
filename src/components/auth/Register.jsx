@@ -236,6 +236,18 @@ const Register = () => {
     }
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      
+      if (currentStep < totalSteps) {
+        nextStep();
+      } else {
+        handleSubmit(e);
+      }
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -349,7 +361,7 @@ const Register = () => {
     switch (currentStep) {
       case 1:
         return (
-          <div>
+          <div onKeyDown={handleKeyDown}>
             <div className="text-center mb-2">
               <div className="flex items-center justify-center gap-2 mb-4 mt-6">
                 <User className="h-5 w-5 text-slate-900" />
@@ -389,6 +401,7 @@ const Register = () => {
                     onClick={handleGoogleSignup}
                     loading={googleLoading}
                     text="Cadastrar com Google"
+                    className="hover:scale-[1.02] transition-all duration-300 cursor-pointer"
                   />
 
                   <div className="relative my-2 mt-4">
@@ -404,7 +417,7 @@ const Register = () => {
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-2.5 mt-4">
                 <Input
-                  label="Nome *"
+                  label="Nome"
                   name="name"
                   placeholder="Seu primeiro nome"
                   value={formData.name}
@@ -417,7 +430,7 @@ const Register = () => {
                 />
 
                 <Input
-                  label="Sobrenome *"
+                  label="Sobrenome"
                   name="lastname"
                   placeholder="Seu sobrenome"
                   value={formData.lastname}
@@ -431,7 +444,7 @@ const Register = () => {
               </div>
 
               <Input
-                label="Email *"
+                label="E-mail"
                 name="email"
                 type="email"
                 placeholder="exemplo@email.com"
@@ -457,7 +470,7 @@ const Register = () => {
             </div>
 
             <div className="flex justify-end mt-6">
-              <Button onClick={nextStep} variant="primary" size="sm">
+              <Button onClick={nextStep} variant="primary" size="sm" className="hover:scale-[1.02] transition-all duration-300 cursor-pointer">
                 Próximo
                 <ChevronRight className="h-4 w-4" />
               </Button>
@@ -467,18 +480,28 @@ const Register = () => {
 
       case 2:
         return (
-          <div>
+          <div onKeyDown={handleKeyDown}>
             <div className="text-center mb-2">
-              <div className="flex items-center justify-center gap-2 mb-4 mt-6">
+              <div className="flex items-center justify-center gap-2 mb-14 mt-6">
                 <Home className="h-5 w-5 text-slate-900" />
-                <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">Endereço e Contato</h2>
+                <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">Contato e Endereço</h2>
               </div>
             </div>
 
             <div className="space-y-2.5 mb-2.5 mt-4">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-2.5">
                 <Input
-                  label="CEP *"
+                  label="Telefone"
+                  name="phone"
+                  placeholder="(99) 99999-9999"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  error={errors.phone}
+                  required
+                />
+
+                <Input
+                  label="CEP"
                   name="cep"
                   placeholder="00000-000"
                   value={formData.cep}
@@ -488,16 +511,6 @@ const Register = () => {
                   maxLength={9}
                   required
                   disabled={loadingCep}
-                />
-
-                <Input
-                  label="Telefone *"
-                  name="phone"
-                  placeholder="(99) 99999-9999"
-                  value={formData.phone}
-                  onChange={handleInputChange}
-                  error={errors.phone}
-                  required
                 />
               </div>
 
@@ -509,40 +522,17 @@ const Register = () => {
                     <span>Buscando endereço...</span>
                   </div>
                 ) : addressData ? (
-                  <>
-                    <div className="flex items-start gap-2">
-                      <MapPin className="h-4 w-4 text-slate-900 mt-0.5 flex-shrink-0" />
-                      <div className="flex-1">
-                        <p className="text-xs font-medium text-gray-900">Endereço encontrado:</p>
-                        <p className="text-xs text-gray-600 mt-0.5">
-                          {addressData.logradouro}, {addressData.bairro}
-                          <br />
-                          {addressData.localidade} - {addressData.uf}
-                        </p>
-                      </div>
+                  <div className="flex items-start gap-2">
+                    <MapPin className="h-4 w-4 text-slate-900 mt-0.5 flex-shrink-0" />
+                    <div className="flex-1">
+                      <p className="text-xs font-medium text-gray-900">Endereço encontrado:</p>
+                      <p className="text-xs text-gray-600 mt-0.5">
+                        {addressData.logradouro}, {addressData.bairro}
+                        <br />
+                        {addressData.localidade} - {addressData.uf}
+                      </p>
                     </div>
-
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-2.5 pt-1">
-                      <Input
-                        label="Número *"
-                        name="numero"
-                        placeholder="123"
-                        value={formData.numero}
-                        onChange={handleInputChange}
-                        error={errors.numero}
-                        required
-                      />
-
-                      <Input
-                        label="Complemento"
-                        name="complemento"
-                        placeholder="Apto, Bloco, etc"
-                        value={formData.complemento}
-                        onChange={handleInputChange}
-                        optional
-                      />
-                    </div>
-                  </>
+                  </div>
                 ) : (
                   <div className="flex items-start gap-2 py-2">
                     <MapPin className="h-4 w-4 text-gray-400 mt-0.5 flex-shrink-0" />
@@ -555,14 +545,36 @@ const Register = () => {
                   </div>
                 )}
               </div>
+
+              {/* Campos de Número e Complemento - sempre visíveis */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-2.5">
+                <Input
+                  label="Número"
+                  name="numero"
+                  placeholder="123"
+                  value={formData.numero}
+                  onChange={handleInputChange}
+                  error={errors.numero}
+                  required
+                />
+
+                <Input
+                  label="Complemento"
+                  name="complemento"
+                  placeholder="Apto, Bloco, etc"
+                  value={formData.complemento}
+                  onChange={handleInputChange}
+                  optional
+                />
+              </div>
             </div>
 
             <div className="flex justify-between mt-6">
-              <Button onClick={prevStep} variant="outline" size="sm">
+              <Button onClick={prevStep} variant="outline" size="sm" className="hover:scale-[1.02] transition-all duration-300 cursor-pointer">
                 <ChevronLeft className="h-4 w-4" />
                 Anterior
               </Button>
-              <Button onClick={nextStep} variant="primary" size="sm">
+              <Button onClick={nextStep} variant="primary" size="sm" className="hover:scale-[1.02] transition-all duration-300 cursor-pointer">
                 Próximo
                 <ChevronRight className="h-4 w-4" />
               </Button>
@@ -572,24 +584,24 @@ const Register = () => {
 
       case 3:
         return (
-          <div>
+          <div onKeyDown={handleKeyDown}>
             <div className="text-center mb-2">
-              <div className="flex items-center justify-center gap-2 mb-4 mt-6">
+              <div className="flex items-center justify-center gap-2 mb-14 mt-6">
                 <Lock className="h-5 w-5 text-slate-900" />
                 <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">Defina sua Senha</h2>
               </div>
             </div>
 
             {/* Dica de senha */}
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mt-3">
-                <p className="text-xs text-gray-700">
-                  <span className="font-medium text-slate-900">💡 Aviso:</span> Escolha uma senha com pelo menos <span className="font-medium text-slate-900">6 caracteres</span> para proteger sua conta!
-                </p>
-              </div>
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-3">
+              <p className="text-sm text-gray-700">
+                <span className="font-medium text-slate-900">💡 Aviso:</span> Escolha uma senha com pelo menos <span className="font-medium text-slate-900">6 caracteres</span> para proteger sua conta!
+              </p>
+            </div>
 
             <div className="space-y-2.5 mb-2.5 mt-4">
               <Input
-                label="Senha *"
+                label="Senha"
                 name="password"
                 type="password"
                 placeholder="Digite sua senha"
@@ -601,7 +613,7 @@ const Register = () => {
               />
 
               <Input
-                label="Confirmar Senha *"
+                label="Confirmar Senha"
                 name="confirmPassword"
                 type="password"
                 placeholder="Repita sua senha"
@@ -615,7 +627,7 @@ const Register = () => {
             </div>
 
             <div className="flex justify-between mt-6">
-              <Button onClick={prevStep} variant="outline" size="sm">
+              <Button onClick={prevStep} variant="outline" size="sm" className="hover:scale-[1.02] transition-all duration-300 cursor-pointer">
                 <ChevronLeft className="h-4 w-4" />
                 Anterior
               </Button>
@@ -625,6 +637,7 @@ const Register = () => {
                 size="sm"
                 loading={loading}
                 disabled={loading}
+                className="hover:scale-[1.02] transition-all duration-300 cursor-pointer"
               >
                 {loading ? "Criando conta..." : "Criar Conta"}
               </Button>
@@ -638,19 +651,21 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-[#041a2dfa] flex items-center justify-center p-4 relative">
+    <div className="min-h-screen w-full bg-[#041a2dec] flex items-center justify-center p-4">
       {/* Botão Voltar */}
-      <div className="absolute top-10 left-12 z-10">
-        <ComeBack 
-          variant="light" 
-          className="hover:bg-gray-200" 
-          to="/" 
+      <div className="absolute top-8 left-8 z-10">
+        <ComeBack
+          variant="light"
+          className="bg-white hover:bg-gray-100 hover:scale-105 transition-all duration-300 cursor-pointer"
+          to="/"
         />
       </div>
 
-      <div className="w-full max-w-lg bg-white dark:bg-gray-900 rounded-3xl shadow-xl overflow-hidden">
-        <div className="px-6 sm:px-10 py-5 overflow-y-auto max-h-[calc(100vh-4rem)]">
-          <div className="text-center mb-4">
+      <div className="w-full max-w-6xl bg-white dark:bg-gray-900 rounded-3xl shadow-xl overflow-hidden">
+        <div className="grid grid-cols-1 md:grid-cols-2">
+          {/* Formulário (esquerda) */}
+          <div className="px-6 sm:px-10 py-5 overflow-y-auto max-h-[calc(100vh-4rem)]">
+            <div className="text-center mb-4">
               <h1 className="text-2xl mt-1 mb-1 font-extrabold text-gray-900 dark:text-gray-100 flex items-center justify-center gap-2">
                 <UserPlus className="h-7 w-7" />
                 <span>Criar Conta</span>
@@ -662,7 +677,9 @@ const Register = () => {
 
             <StepProgress />
 
-            {renderStep()}
+            <div className="min-h-[430px]">
+              {renderStep()}
+            </div>
 
             <div className="text-center mt-5">
               <p className="text-gray-600 dark:text-gray-400 text-sm">
@@ -676,8 +693,20 @@ const Register = () => {
               </p>
             </div>
           </div>
+
+          {/* Painel de imagem (direita) */}
+          <div className="relative h-full w-full min-h-[600px] md:min-h-0">
+            <img
+              src={new URL("../../assets/images/banner_login.png", import.meta.url).href}
+              alt="Register Hero"
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+            {/* Overlay suave */}
+            {/* <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent" /> */}
+          </div>
         </div>
       </div>
+    </div>
   );
 };
 

@@ -96,7 +96,7 @@ const UserDropdown = ({ isOpen }) => {
                 setIsDropdownOpen(false);
                 navigate("/settings");
               }}
-              className="w-full flex items-center gap-3 px-3 py-2 text-sm text-gray-300 hover:bg-[#000f1d] hover:text-white rounded-md transition-colors"
+              className="w-full flex items-center gap-3 px-3 py-2 text-sm text-gray-300 hover:bg-[#000f1d] hover:text-white rounded-md transition-colors cursor-pointer"
             >
               <SettingsIcon className="h-4 w-4" />
               <span>Configurações</span>
@@ -107,7 +107,7 @@ const UserDropdown = ({ isOpen }) => {
                 setIsDropdownOpen(false);
                 handleLogout();
               }}
-              className="w-full flex items-center gap-3 px-3 py-2 text-sm text-red-400 hover:bg-red-500/10 hover:text-red-300 rounded-md transition-colors"
+              className="w-full flex items-center gap-3 px-3 py-2 text-sm text-red-400 hover:bg-red-500/10 hover:text-red-300 rounded-md transition-colors cursor-pointer"
             >
               <LogOut className="h-4 w-4" />
               <span>Sair</span>
