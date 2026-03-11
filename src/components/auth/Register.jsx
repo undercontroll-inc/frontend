@@ -1,17 +1,35 @@
-import { useState, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { User, Home, Lock, CheckCircle, ChevronRight, ChevronLeft, UserPlus, MapPin, Mail } from 'lucide-react';
-import { useAuth } from '../../contexts/AuthContext';
-import { useToast } from '../../contexts/ToastContext';
-import Input from '../shared/Input';
-import Button from '../shared/Button';
-import GoogleButton from '../shared/GoogleButton';
-import ComeBack from '../shared/ComeBack';
-import GoogleAuthService from '../../services/GoogleAuthService';
-import { userService } from '../../services/UserService';
-import { saveToken, saveUserData } from '../../utils/auth';
-import { validateCPF, formatCPF, validatePhoneBR, formatPhoneBR, formatCEP, validateCEP, validateEmail } from '../../utils/validation';
-import { cepService } from '../../services/CepService';
+import { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import {
+  User,
+  Home,
+  Lock,
+  CheckCircle,
+  ChevronRight,
+  ChevronLeft,
+  UserPlus,
+  MapPin,
+  Mail,
+} from "lucide-react";
+import { useAuth } from "../../contexts/AuthContext";
+import { useToast } from "../../contexts/ToastContext";
+import Input from "../shared/Input";
+import Button from "../shared/Button";
+import GoogleButton from "../shared/GoogleButton";
+import ComeBack from "../shared/ComeBack";
+import GoogleAuthService from "../../services/GoogleAuthService";
+import { userService } from "../../services/UserService";
+import { saveToken, saveUserData } from "../../utils/auth";
+import {
+  validateCPF,
+  formatCPF,
+  validatePhoneBR,
+  formatPhoneBR,
+  formatCEP,
+  validateCEP,
+  validateEmail,
+} from "../../utils/validation";
+import { cepService } from "../../services/CepService";
 
 const Register = () => {
   const location = useLocation();
@@ -20,18 +38,18 @@ const Register = () => {
 
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
-    name: googleData?.name || '',
-    lastname: googleData?.lastname || '',
-    email: googleData?.email || '',
+    name: googleData?.name || "",
+    lastname: googleData?.lastname || "",
+    email: googleData?.email || "",
     avatar_url: googleData?.photoURL || null,
-    cpf: '',
-    cep: '',
-    numero: '',
-    complemento: '',
-    phone: '',
-    address: '',
-    password: '',
-    confirmPassword: ''
+    cpf: "",
+    cep: "",
+    numero: "",
+    complemento: "",
+    phone: "",
+    address: "",
+    password: "",
+    confirmPassword: "",
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
@@ -50,40 +68,43 @@ const Register = () => {
 
   const validateField = (name, value) => {
     switch (name) {
-      case 'name':
-      case 'lastname':
-        if (!value.trim()) return `${name === 'name' ? 'Nome' : 'Sobrenome'} é obrigatório`;
-        if (value.length < 2) return `${name === 'name' ? 'Nome' : 'Sobrenome'} deve ter pelo menos 2 caracteres`;
-        if (!/^[a-zA-ZÀ-ÿ\s]+$/.test(value)) return `${name === 'name' ? 'Nome' : 'Sobrenome'} deve conter apenas letras`;
-        return '';
-      case 'email':
-        if (!value.trim()) return 'Email é obrigatório';
-        if (!validateEmail(value)) return 'Email inválido';
-        return '';
-      case 'cpf':
-        if (!value) return '';
-        if (value && value.length < 14) return 'CPF incompleto';
-        if (value && !validateCPF(value)) return 'CPF inválido';
-        return '';
-      case 'cep':
-        if (!value.trim()) return 'CEP é obrigatório';
-        if (!validateCEP(value)) return 'CEP inválido';
-        return '';
-      case 'numero':
-        if (!value.trim()) return 'Número é obrigatório';
-        return '';
-      case 'phone':
-        if (!value.trim()) return 'Telefone é obrigatório';
-        if (!validatePhoneBR(value)) return 'Telefone inválido';
-        return '';
-      case 'password':
-        if (!value) return 'Senha é obrigatória';
-        if (value.length < 6) return 'Senha deve ter pelo menos 6 caracteres';
-        return '';
-      case 'confirmPassword':
-        if (!value) return 'Confirmação de senha é obrigatória';
-        if (value !== formData.password) return 'Senhas não coincidem';
-        return '';
+      case "name":
+      case "lastname":
+        if (!value.trim())
+          return `${name === "name" ? "Nome" : "Sobrenome"} é obrigatório`;
+        if (value.length < 2)
+          return `${name === "name" ? "Nome" : "Sobrenome"} deve ter pelo menos 2 caracteres`;
+        if (!/^[a-zA-ZÀ-ÿ\s]+$/.test(value))
+          return `${name === "name" ? "Nome" : "Sobrenome"} deve conter apenas letras`;
+        return "";
+      case "email":
+        if (!value.trim()) return "Email é obrigatório";
+        if (!validateEmail(value)) return "Email inválido";
+        return "";
+      case "cpf":
+        if (!value) return "";
+        if (value && value.length < 14) return "CPF incompleto";
+        if (value && !validateCPF(value)) return "CPF inválido";
+        return "";
+      case "cep":
+        if (!value.trim()) return "CEP é obrigatório";
+        if (!validateCEP(value)) return "CEP inválido";
+        return "";
+      case "numero":
+        if (!value.trim()) return "Número é obrigatório";
+        return "";
+      case "phone":
+        if (!value.trim()) return "Telefone é obrigatório";
+        if (!validatePhoneBR(value)) return "Telefone inválido";
+        return "";
+      case "password":
+        if (!value) return "Senha é obrigatória";
+        if (value.length < 6) return "Senha deve ter pelo menos 6 caracteres";
+        return "";
+      case "confirmPassword":
+        if (!value) return "Confirmação de senha é obrigatória";
+        if (value !== formData.password) return "Senhas não coincidem";
+        return "";
       default:
         return "";
     }
@@ -92,30 +113,33 @@ const Register = () => {
   const handleInputChange = (e) => {
     let { name, value } = e.target;
 
-    if (name === 'cpf') {
+    if (name === "cpf") {
       value = formatCPF(value);
-    } else if (name === 'phone') {
+    } else if (name === "phone") {
       value = formatPhoneBR(value);
-    } else if (name === 'cep') {
+    } else if (name === "cep") {
       value = formatCEP(value);
     }
 
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
 
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }));
     }
 
-    if (name === 'password' && formData.confirmPassword) {
-      const confirmError = validateField('confirmPassword', formData.confirmPassword);
-      setErrors(prev => ({ ...prev, confirmPassword: confirmError }));
+    if (name === "password" && formData.confirmPassword) {
+      const confirmError = validateField(
+        "confirmPassword",
+        formData.confirmPassword,
+      );
+      setErrors((prev) => ({ ...prev, confirmPassword: confirmError }));
     }
   };
 
   const handleCepBlur = async () => {
     const cepValue = formData.cep;
 
-    if (!cepValue || cepValue.replace(/\D/g, '').length !== 8) {
+    if (!cepValue || cepValue.replace(/\D/g, "").length !== 8) {
       return;
     }
 
@@ -126,13 +150,14 @@ const Register = () => {
 
       if (result.success) {
         setAddressData(result.data);
-        setErrors(prev => ({ ...prev, cep: '' }));
+        setErrors((prev) => ({ ...prev, cep: "" }));
       } else {
         setAddressData(null);
-        setErrors(prev => ({ ...prev, cep: result.error }));
+        setErrors((prev) => ({ ...prev, cep: result.error }));
       }
-    } catch (error) {
-      toast.error('Erro ao buscar CEP');
+    } catch (err) {
+      console.error(err);
+      toast.error("Erro ao buscar CEP");
     } finally {
       setLoadingCep(false);
     }
@@ -144,13 +169,16 @@ const Register = () => {
       const userData = await GoogleAuthService.signInWithGoogle();
 
       // Tenta fazer login no backend com o token do Google
-      const backendResult = await userService.googleAuth(userData.email, userData.idToken);
+      const backendResult = await userService.googleAuth(
+        userData.email,
+        userData.idToken,
+      );
 
       if (backendResult.success) {
         // Usuário já existe no backend, faz login e redireciona
         const userDataToSave = {
           ...backendResult.data.user,
-          avatar_url: backendResult.data.user.avatar_url || userData.photoURL
+          avatar_url: backendResult.data.user.avatar_url || userData.photoURL,
         };
 
         // Salva token e dados do usuário
@@ -166,7 +194,7 @@ const Register = () => {
         }, 500);
       } else {
         // Usuário não existe no backend, preenche formulário
-        setFormData(prev => ({
+        setFormData((prev) => ({
           ...prev,
           name: userData.name.split(" ")[0] || "",
           lastname: userData.name.split(" ").slice(1).join(" ") || "",
@@ -175,7 +203,7 @@ const Register = () => {
         }));
 
         // Limpa erros dos campos preenchidos
-        setErrors(prev => ({
+        setErrors((prev) => ({
           ...prev,
           name: "",
           lastname: "",
@@ -189,11 +217,12 @@ const Register = () => {
     } finally {
       setGoogleLoading(false);
     }
-  }; const validateCurrentStep = () => {
+  };
+  const validateCurrentStep = () => {
     const fieldsToValidate = {
-      1: ['name', 'lastname', 'email', 'cpf'],
-      2: ['cep', 'numero', 'phone'],
-      3: ['password', 'confirmPassword']
+      1: ["name", "lastname", "email", "cpf"],
+      2: ["cep", "numero", "phone"],
+      3: ["password", "confirmPassword"],
     };
 
     const fields = fieldsToValidate[currentStep];
@@ -209,7 +238,7 @@ const Register = () => {
     });
 
     if (currentStep === 2 && !addressData) {
-      newErrors.cep = 'Busque um CEP válido';
+      newErrors.cep = "Busque um CEP válido";
       isValid = false;
     }
 
@@ -225,7 +254,7 @@ const Register = () => {
   const nextStep = () => {
     if (validateCurrentStep() && currentStep < totalSteps) {
       setCurrentStep(currentStep + 1);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 
@@ -237,9 +266,9 @@ const Register = () => {
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+    if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      
+
       if (currentStep < totalSteps) {
         nextStep();
       } else {
@@ -262,8 +291,10 @@ const Register = () => {
         formData.complemento,
         addressData.bairro,
         addressData.localidade,
-        addressData.uf
-      ].filter(Boolean).join(', ');
+        addressData.uf,
+      ]
+        .filter(Boolean)
+        .join(", ");
 
       const result = await register({
         name: formData.name.trim(),
@@ -274,14 +305,14 @@ const Register = () => {
         phone: formData.phone.trim(),
         address: fullAddress,
         CEP: formData.cep.trim().replace("-", ""),
-        password: formData.password
+        password: formData.password,
       });
 
       if (result.success) {
         toast.success(
           result.autoLogin
             ? "Conta criada com sucesso! Bem-vindo!"
-            : "Conta criada com sucesso!"
+            : "Conta criada com sucesso!",
         );
 
         setTimeout(() => {
@@ -300,7 +331,8 @@ const Register = () => {
           setCurrentStep(1);
         }
       }
-    } catch (error) {
+    } catch (err) {
+      console.error(err);
       toast.error("Erro inesperado. Tente novamente.");
     } finally {
       setLoading(false);
@@ -320,12 +352,13 @@ const Register = () => {
       <div
         className={`
         flex items-center justify-center w-10 h-10 rounded-full transition-all duration-200
-        ${isCompleted
+        ${
+          isCompleted
             ? "bg-green-600 text-white"
             : isActive
               ? "bg-slate-900 text-white"
               : "bg-gray-200 text-gray-500"
-          }
+        }
       `}
       >
         {isCompleted ? (
@@ -347,10 +380,12 @@ const Register = () => {
             isCompleted={step < currentStep}
           />
           {index < 2 && (
-            <div className={`
+            <div
+              className={`
               w-10 sm:w-12 h-0.5 mx-2 transition-colors duration-200
-              ${step < currentStep ? 'bg-green-600' : 'bg-gray-200'}
-            `} />
+              ${step < currentStep ? "bg-green-600" : "bg-gray-200"}
+            `}
+            />
           )}
         </div>
       ))}
@@ -365,7 +400,9 @@ const Register = () => {
             <div className="text-center mb-2">
               <div className="flex items-center justify-center gap-2 mb-4 mt-6">
                 <User className="h-5 w-5 text-slate-900" />
-                <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">Informações Pessoais</h2>
+                <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">
+                  Informações Pessoais
+                </h2>
               </div>
               {/* <p className="text-xs text-gray-600">Preencha os dados para criar sua conta</p> */}
             </div>
@@ -380,14 +417,26 @@ const Register = () => {
                     className="h-7 w-7 rounded-full flex-shrink-0 border-2 border-blue-300"
                   />
                 ) : (
-                  <svg className="h-4 w-4 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                  <svg
+                    className="h-4 w-4 text-blue-600 flex-shrink-0 mt-0.5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                      clipRule="evenodd"
+                    />
                   </svg>
                 )}
                 <div className="flex-1">
-                  <p className="text-xs font-medium text-blue-900">Dados carregados do Google</p>
+                  <p className="text-xs font-medium text-blue-900">
+                    Dados carregados do Google
+                  </p>
                   <p className="text-xs text-blue-700 mt-0.5">
-                    Seus dados foram preenchidos automaticamente{formData.avatar_url && ' (incluindo foto de perfil)'}. Complete as informações restantes.
+                    Seus dados foram preenchidos automaticamente
+                    {formData.avatar_url && " (incluindo foto de perfil)"}.
+                    Complete as informações restantes.
                   </p>
                 </div>
               </div>
@@ -409,7 +458,9 @@ const Register = () => {
                       <div className="w-full border-t border-gray-200"></div>
                     </div>
                     <div className="relative flex justify-center text-xs">
-                      <span className="px-3 bg-white dark:bg-gray-900 text-gray-500 dark:text-gray-400 text-xs">ou preencha manualmente</span>
+                      <span className="px-3 bg-white dark:bg-gray-900 text-gray-500 dark:text-gray-400 text-xs">
+                        ou preencha manualmente
+                      </span>
                     </div>
                   </div>
                 </>
@@ -470,7 +521,12 @@ const Register = () => {
             </div>
 
             <div className="flex justify-end mt-6">
-              <Button onClick={nextStep} variant="primary" size="sm" className="hover:scale-[1.02] transition-all duration-300 cursor-pointer">
+              <Button
+                onClick={nextStep}
+                variant="primary"
+                size="sm"
+                className="hover:scale-[1.02] transition-all duration-300 cursor-pointer"
+              >
                 Próximo
                 <ChevronRight className="h-4 w-4" />
               </Button>
@@ -484,7 +540,9 @@ const Register = () => {
             <div className="text-center mb-2">
               <div className="flex items-center justify-center gap-2 mb-14 mt-6">
                 <Home className="h-5 w-5 text-slate-900" />
-                <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">Contato e Endereço</h2>
+                <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">
+                  Contato e Endereço
+                </h2>
               </div>
             </div>
 
@@ -525,7 +583,9 @@ const Register = () => {
                   <div className="flex items-start gap-2">
                     <MapPin className="h-4 w-4 text-slate-900 mt-0.5 flex-shrink-0" />
                     <div className="flex-1">
-                      <p className="text-xs font-medium text-gray-900">Endereço encontrado:</p>
+                      <p className="text-xs font-medium text-gray-900">
+                        Endereço encontrado:
+                      </p>
                       <p className="text-xs text-gray-600 mt-0.5">
                         {addressData.logradouro}, {addressData.bairro}
                         <br />
@@ -537,9 +597,12 @@ const Register = () => {
                   <div className="flex items-start gap-2 py-2">
                     <MapPin className="h-4 w-4 text-gray-400 mt-0.5 flex-shrink-0" />
                     <div className="flex-1">
-                      <p className="text-xs font-medium text-gray-500">Aguardando CEP</p>
+                      <p className="text-xs font-medium text-gray-500">
+                        Aguardando CEP
+                      </p>
                       <p className="text-xs text-gray-400 mt-0.5">
-                        Digite um CEP válido para buscar o endereço automaticamente
+                        Digite um CEP válido para buscar o endereço
+                        automaticamente
                       </p>
                     </div>
                   </div>
@@ -570,11 +633,21 @@ const Register = () => {
             </div>
 
             <div className="flex justify-between mt-6">
-              <Button onClick={prevStep} variant="outline" size="sm" className="hover:scale-[1.02] transition-all duration-300 cursor-pointer">
+              <Button
+                onClick={prevStep}
+                variant="outline"
+                size="sm"
+                className="hover:scale-[1.02] transition-all duration-300 cursor-pointer"
+              >
                 <ChevronLeft className="h-4 w-4" />
                 Anterior
               </Button>
-              <Button onClick={nextStep} variant="primary" size="sm" className="hover:scale-[1.02] transition-all duration-300 cursor-pointer">
+              <Button
+                onClick={nextStep}
+                variant="primary"
+                size="sm"
+                className="hover:scale-[1.02] transition-all duration-300 cursor-pointer"
+              >
                 Próximo
                 <ChevronRight className="h-4 w-4" />
               </Button>
@@ -588,14 +661,19 @@ const Register = () => {
             <div className="text-center mb-2">
               <div className="flex items-center justify-center gap-2 mb-14 mt-6">
                 <Lock className="h-5 w-5 text-slate-900" />
-                <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">Defina sua Senha</h2>
+                <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">
+                  Defina sua Senha
+                </h2>
               </div>
             </div>
 
             {/* Dica de senha */}
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-3">
               <p className="text-sm text-gray-700">
-                <span className="font-medium text-slate-900">💡 Aviso:</span> Escolha uma senha com pelo menos <span className="font-medium text-slate-900">6 caracteres</span> para proteger sua conta!
+                <span className="font-medium text-slate-900">💡 Aviso:</span>{" "}
+                Escolha uma senha com pelo menos{" "}
+                <span className="font-medium text-slate-900">6 caracteres</span>{" "}
+                para proteger sua conta!
               </p>
             </div>
 
@@ -623,11 +701,15 @@ const Register = () => {
                 autoComplete="new-password"
                 required
               />
-
             </div>
 
             <div className="flex justify-between mt-6">
-              <Button onClick={prevStep} variant="outline" size="sm" className="hover:scale-[1.02] transition-all duration-300 cursor-pointer">
+              <Button
+                onClick={prevStep}
+                variant="outline"
+                size="sm"
+                className="hover:scale-[1.02] transition-all duration-300 cursor-pointer"
+              >
                 <ChevronLeft className="h-4 w-4" />
                 Anterior
               </Button>
@@ -677,13 +759,11 @@ const Register = () => {
 
             <StepProgress />
 
-            <div className="min-h-[430px]">
-              {renderStep()}
-            </div>
+            <div className="min-h-[430px]">{renderStep()}</div>
 
             <div className="text-center mt-5">
               <p className="text-gray-600 dark:text-gray-400 text-sm">
-                Já tem uma conta?{' '}
+                Já tem uma conta?{" "}
                 <Link
                   to="/login"
                   className="text-slate-900 dark:text-slate-300 hover:text-slate-700 dark:hover:text-slate-400 font-medium transition-colors"
@@ -697,7 +777,10 @@ const Register = () => {
           {/* Painel de imagem (direita) */}
           <div className="relative h-full w-full min-h-[600px] md:min-h-0">
             <img
-              src={new URL("../../assets/images/banner_login.png", import.meta.url).href}
+              src={
+                new URL("../../assets/images/banner_login.png", import.meta.url)
+                  .href
+              }
               alt="Register Hero"
               className="absolute inset-0 h-full w-full object-cover"
             />

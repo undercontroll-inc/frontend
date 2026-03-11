@@ -46,7 +46,7 @@ const Dashboard = () => {
       console.error("Error loading components:", error);
       showAlert(
         "error",
-        "Erro ao carregar componentes. Verifique se o json-server está rodando."
+        "Erro ao carregar componentes. Verifique se o json-server está rodando.",
       );
     } finally {
       setLoading(false);
@@ -64,14 +64,14 @@ const Dashboard = () => {
           component.name.toLowerCase().includes(searchLower) ||
           component.description.toLowerCase().includes(searchLower) ||
           component.brand.toLowerCase().includes(searchLower) ||
-          component.supplier.toLowerCase().includes(searchLower)
+          component.supplier.toLowerCase().includes(searchLower),
       );
     }
 
     // Filter by category
     if (selectedCategory) {
       filtered = filtered.filter(
-        (component) => component.category === selectedCategory
+        (component) => component.category === selectedCategory,
       );
     }
 

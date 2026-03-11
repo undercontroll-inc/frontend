@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useState, useEffect } from "react";
 import { userService } from "../services/UserService";
 import {
@@ -36,8 +37,8 @@ export const AuthProvider = ({ children }) => {
             // Se tem token mas não tem dados do usuário, limpa tudo
             clearAuth();
           }
-        } catch (error) {
-          console.error("Auth initialization failed:", error);
+        } catch (err) {
+          console.error("Auth initialization failed:", err);
           clearAuth();
         }
       }
@@ -51,7 +52,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const result = await userService.auth(
         credentials.name,
-        credentials.password
+        credentials.password,
       );
 
       if (result.success) {
@@ -68,7 +69,8 @@ export const AuthProvider = ({ children }) => {
           error: result.error || "Credenciais inválidas",
         };
       }
-    } catch (error) {
+    } catch (err) {
+      console.error("Login error:", err);
       return {
         success: false,
         error: "Erro inesperado ao fazer login",
@@ -114,7 +116,8 @@ export const AuthProvider = ({ children }) => {
           error: result.error || "Erro ao criar conta",
         };
       }
-    } catch (error) {
+    } catch (err) {
+      console.error("Register error:", err);
       return {
         success: false,
         error: "Erro inesperado ao criar conta",

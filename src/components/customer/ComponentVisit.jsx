@@ -1,16 +1,18 @@
 import SideBar from "../shared/SideBar";
 import Loading from "../shared/Loading";
-import { useState, useEffect, useCallback, useMemo, memo } from "react";
-import { MessageCircle, Phone, MapPin, Clock, Wrench } from "lucide-react";
+import { useState, useEffect, useCallback } from "react";
+import { Phone, MapPin, Clock } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const ComponentVisit = () => {
   const [loading, setLoading] = useState(true);
-  const { user } = useMemo(() => useAuth());
+  const navigate = useNavigate();
+  const { user } = useAuth();
 
   useEffect(() => {
     // Validacao do primeiro login
-    if(user.inFirstLogin) {
+    if (user.inFirstLogin) {
       navigate("/nova-senha");
     }
   }, [user]);
@@ -25,7 +27,7 @@ const ComponentVisit = () => {
   const handleWhatsAppClick = useCallback(() => {
     const phoneNumber = "5511964007420";
     const message = encodeURIComponent(
-      "Olá! Gostaria de agendar uma visita técnica."
+      "Olá! Gostaria de agendar uma visita técnica.",
     );
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
     window.open(whatsappUrl, "_blank");
@@ -35,21 +37,6 @@ const ComponentVisit = () => {
     const phoneNumber = "+551123417100";
     window.open(`tel:${phoneNumber}`);
   }, []);
-
-  const services = useMemo(
-    () => [
-      "Aspirador",
-      "Secador de Cabelo",
-      "Ferro de Passar",
-      "Liquidificador",
-      "Chapinha",
-      "Micro-ondas",
-      "Máquina de Café (Dolce Gusto)",
-      "Ventilador",
-      "Batedeira",
-    ],
-    []
-  );
 
   if (loading) return <Loading text="Carregando visita técnica..." />;
 
@@ -64,7 +51,8 @@ const ComponentVisit = () => {
               Visita Técnica
             </h1>
             <p className="text-gray-600 dark:text-gray-400">
-              Agende sua visita ou entre em contato para solicitar um orçamento personalizado
+              Agende sua visita ou entre em contato para solicitar um orçamento
+              personalizado
             </p>
           </div>
 
@@ -145,7 +133,8 @@ const ComponentVisit = () => {
                 Pronto para agendar?
               </h2>
               <p className="text-gray-600 dark:text-gray-400 mb-14">
-                Entre em contato pelo WhatsApp ou telefone e receba seu orçamento personalizado
+                Entre em contato pelo WhatsApp ou telefone e receba seu
+                orçamento personalizado
               </p>
             </div>
 

@@ -77,6 +77,7 @@ export const Settings = ({ isOpen, onClose }) => {
     };
   }, [isOpen]);
 
+  // eslint-disable-next-line no-unused-vars
   const toggleEdit = (section) => {
     setEditableFields((prev) => ({
       ...prev,
@@ -92,6 +93,7 @@ export const Settings = ({ isOpen, onClose }) => {
     }));
   };
 
+  // eslint-disable-next-line no-unused-vars
   const cancelEditSection = (section) => {
     // Restaura os valores originais do usuário
     if (user) {
@@ -129,7 +131,8 @@ export const Settings = ({ isOpen, onClose }) => {
       const preview = await avatarService.fileToBase64(file);
       setAvatarPreview(preview);
       setAvatarFile(file);
-    } catch (error) {
+    } catch (err) {
+      console.error(err);
       toast.error("Erro ao processar a imagem");
     }
   };
@@ -240,7 +243,7 @@ export const Settings = ({ isOpen, onClose }) => {
 
         const uploadResult = await avatarService.uploadAvatar(
           avatarFile,
-          userId
+          userId,
         );
 
         if (uploadResult.success) {
@@ -249,7 +252,7 @@ export const Settings = ({ isOpen, onClose }) => {
           // Se o upload falhar, usa o preview local (base64) como fallback
           console.warn(
             "Upload falhou, usando preview local:",
-            uploadResult.error
+            uploadResult.error,
           );
           avatarUrl = avatarPreview;
         }

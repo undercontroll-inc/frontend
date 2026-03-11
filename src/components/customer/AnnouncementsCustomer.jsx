@@ -14,18 +14,14 @@ const AnnouncementsCustomer = () => {
   const [announcements, setAnnouncements] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("Todos");
-  const [loading, setLoading] = useState(false);
 
   // Carregar anúncios do backend
   const loadAnnouncements = async () => {
     try {
-      setLoading(true);
       const data = await announcementService.getAllAnnouncements(0, 100);
       setAnnouncements(data || []);
     } catch (error) {
       console.error("Erro ao carregar anúncios:", error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -43,8 +39,6 @@ const AnnouncementsCustomer = () => {
       return matchesSearch && matchesCategory;
     });
   }, [announcements, searchTerm, categoryFilter]);
-
-
 
   return (
     <div className="flex h-screen bg-gray-50 dark:bg-gray-900 overflow-hidden">
@@ -132,9 +126,9 @@ const AnnouncementsCustomer = () => {
                             {getAnnouncementLabel(announcement.type)}
                           </span>
                           <span className="text-gray-500 text-sm">
-                            {new Date(announcement.publishedAt).toLocaleDateString(
-                              "pt-BR"
-                            )}
+                            {new Date(
+                              announcement.publishedAt,
+                            ).toLocaleDateString("pt-BR")}
                           </span>
                         </div>
                       </div>

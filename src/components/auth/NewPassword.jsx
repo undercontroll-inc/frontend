@@ -11,7 +11,7 @@ import { userService } from "../../services/UserService";
 export default function NewPassword() {
   const navigate = useNavigate();
   const toast = useToast();
-  
+
   const [formData, setFormData] = useState({
     password: "",
     confirmPassword: "",
@@ -35,15 +35,23 @@ export default function NewPassword() {
       uppercase: /[A-Z]/.test(password),
       lowercase: /[a-z]/.test(password),
       number: /[0-9]/.test(password),
-      special: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password),
+      // Match any punctuation/symbol (avoids unnecessary escaping in the regex literal)
+      special: /[^\w\s]/.test(password),
     };
   };
 
   const getPasswordStrengthLevel = () => {
     const checks = Object.values(passwordStrength).filter(Boolean).length;
-    if (checks <= 2) return { level: "Fraca", color: "text-red-500", bgColor: "bg-red-500" };
-    if (checks <= 3) return { level: "Média", color: "text-yellow-500", bgColor: "bg-yellow-500" };
-    if (checks <= 4) return { level: "Boa", color: "text-blue-500", bgColor: "bg-blue-500" };
+    if (checks <= 2)
+      return { level: "Fraca", color: "text-red-500", bgColor: "bg-red-500" };
+    if (checks <= 3)
+      return {
+        level: "Média",
+        color: "text-yellow-500",
+        bgColor: "bg-yellow-500",
+      };
+    if (checks <= 4)
+      return { level: "Boa", color: "text-blue-500", bgColor: "bg-blue-500" };
     return { level: "Forte", color: "text-green-500", bgColor: "bg-green-500" };
   };
 
@@ -76,18 +84,19 @@ export default function NewPassword() {
       ...prev,
       [name]: value,
     }));
-    
+
     if (name === "password") {
       setPasswordStrength(checkPasswordStrength(value));
     }
-    
+
     if (errors[name]) {
       setErrors((prev) => ({
         ...prev,
         [name]: "",
       }));
     }
-  };  const handleSubmit = async (e) => {
+  };
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!validateForm()) {
@@ -97,12 +106,15 @@ export default function NewPassword() {
     setIsLoading(true);
 
     try {
-      const response = await userService.resetPassword(formData.password, user.id)
+      const response = await userService.resetPassword(
+        formData.password,
+        user.id,
+      );
 
-      if(!response.success) {
-        
+      if (!response.success) {
         toast.error(
-        response.data || "Erro ao redefinir senha. Tente novamente.");
+          response.data || "Erro ao redefinir senha. Tente novamente.",
+        );
 
         throw new Error(response.error);
       }
@@ -117,7 +129,8 @@ export default function NewPassword() {
     } catch (error) {
       console.error("Erro ao redefinir senha:", error);
       toast.error(
-        error.response?.data?.message || "Erro ao redefinir senha. Tente novamente."
+        error.response?.data?.message ||
+          "Erro ao redefinir senha. Tente novamente.",
       );
     } finally {
       setIsLoading(false);
@@ -159,7 +172,7 @@ export default function NewPassword() {
           {errors.password && (
             <p className="mt-1 text-sm text-red-500">{errors.password}</p>
           )}
-          
+
           {/* Indicador de força da senha */}
           {formData.password && (
             <div className="mt-3 space-y-2">
@@ -167,17 +180,20 @@ export default function NewPassword() {
                 <span className="text-sm text-gray-600 dark:text-gray-400">
                   Força da senha:
                 </span>
-                <span className={`text-sm font-semibold ${getPasswordStrengthLevel().color}`}>
+                <span
+                  className={`text-sm font-semibold ${getPasswordStrengthLevel().color}`}
+                >
                   {getPasswordStrengthLevel().level}
                 </span>
               </div>
-              
+
               <div className="flex gap-1">
                 {[1, 2, 3, 4, 5].map((index) => (
                   <div
                     key={index}
                     className={`h-1 flex-1 rounded ${
-                      Object.values(passwordStrength).filter(Boolean).length >= index
+                      Object.values(passwordStrength).filter(Boolean).length >=
+                      index
                         ? getPasswordStrengthLevel().bgColor
                         : "bg-gray-200 dark:bg-gray-700"
                     }`}
@@ -186,24 +202,54 @@ export default function NewPassword() {
               </div>
 
               <div className="space-y-1 text-xs">
-                <div className={`flex items-center gap-1 ${passwordStrength.length ? "text-green-600 dark:text-green-400" : "text-gray-500 dark:text-gray-400"}`}>
-                  {passwordStrength.length ? <Check className="w-3 h-3" /> : <X className="w-3 h-3" />}
+                <div
+                  className={`flex items-center gap-1 ${passwordStrength.length ? "text-green-600 dark:text-green-400" : "text-gray-500 dark:text-gray-400"}`}
+                >
+                  {passwordStrength.length ? (
+                    <Check className="w-3 h-3" />
+                  ) : (
+                    <X className="w-3 h-3" />
+                  )}
                   <span>Mínimo 8 caracteres</span>
                 </div>
-                <div className={`flex items-center gap-1 ${passwordStrength.uppercase ? "text-green-600 dark:text-green-400" : "text-gray-500 dark:text-gray-400"}`}>
-                  {passwordStrength.uppercase ? <Check className="w-3 h-3" /> : <X className="w-3 h-3" />}
+                <div
+                  className={`flex items-center gap-1 ${passwordStrength.uppercase ? "text-green-600 dark:text-green-400" : "text-gray-500 dark:text-gray-400"}`}
+                >
+                  {passwordStrength.uppercase ? (
+                    <Check className="w-3 h-3" />
+                  ) : (
+                    <X className="w-3 h-3" />
+                  )}
                   <span>Letra maiúscula</span>
                 </div>
-                <div className={`flex items-center gap-1 ${passwordStrength.lowercase ? "text-green-600 dark:text-green-400" : "text-gray-500 dark:text-gray-400"}`}>
-                  {passwordStrength.lowercase ? <Check className="w-3 h-3" /> : <X className="w-3 h-3" />}
+                <div
+                  className={`flex items-center gap-1 ${passwordStrength.lowercase ? "text-green-600 dark:text-green-400" : "text-gray-500 dark:text-gray-400"}`}
+                >
+                  {passwordStrength.lowercase ? (
+                    <Check className="w-3 h-3" />
+                  ) : (
+                    <X className="w-3 h-3" />
+                  )}
                   <span>Letra minúscula</span>
                 </div>
-                <div className={`flex items-center gap-1 ${passwordStrength.number ? "text-green-600 dark:text-green-400" : "text-gray-500 dark:text-gray-400"}`}>
-                  {passwordStrength.number ? <Check className="w-3 h-3" /> : <X className="w-3 h-3" />}
+                <div
+                  className={`flex items-center gap-1 ${passwordStrength.number ? "text-green-600 dark:text-green-400" : "text-gray-500 dark:text-gray-400"}`}
+                >
+                  {passwordStrength.number ? (
+                    <Check className="w-3 h-3" />
+                  ) : (
+                    <X className="w-3 h-3" />
+                  )}
                   <span>Número</span>
                 </div>
-                <div className={`flex items-center gap-1 ${passwordStrength.special ? "text-green-600 dark:text-green-400" : "text-gray-500 dark:text-gray-400"}`}>
-                  {passwordStrength.special ? <Check className="w-3 h-3" /> : <X className="w-3 h-3" />}
+                <div
+                  className={`flex items-center gap-1 ${passwordStrength.special ? "text-green-600 dark:text-green-400" : "text-gray-500 dark:text-gray-400"}`}
+                >
+                  {passwordStrength.special ? (
+                    <Check className="w-3 h-3" />
+                  ) : (
+                    <X className="w-3 h-3" />
+                  )}
                   <span>Caractere especial (!@#$%^&*...)</span>
                 </div>
               </div>
@@ -236,7 +282,9 @@ export default function NewPassword() {
             </button>
           </div>
           {errors.confirmPassword && (
-            <p className="mt-1 text-sm text-red-500">{errors.confirmPassword}</p>
+            <p className="mt-1 text-sm text-red-500">
+              {errors.confirmPassword}
+            </p>
           )}
         </div>
 

@@ -130,11 +130,12 @@ export const SettingsPage = () => {
         const preview = await avatarService.fileToBase64(file);
         setAvatarPreview(preview);
         setAvatarFile(file);
-      } catch (error) {
+      } catch (err) {
+        console.error(err);
         toast.error("Erro ao processar a imagem");
       }
     },
-    [toast]
+    [toast],
   );
 
   const handleRemoveAvatar = useCallback(() => {
@@ -173,7 +174,7 @@ export const SettingsPage = () => {
         setErrors((prev) => ({ ...prev, [name]: "" }));
       }
     },
-    [errors]
+    [errors],
   );
 
   const handleCepChange = useCallback(
@@ -200,7 +201,7 @@ export const SettingsPage = () => {
         }
       }
     },
-    [handleChange, toast]
+    [handleChange, toast],
   );
 
   const validateForm = useCallback(() => {
@@ -255,7 +256,7 @@ export const SettingsPage = () => {
 
         const uploadResult = await avatarService.uploadAvatar(
           avatarFile,
-          userId
+          userId,
         );
 
         if (uploadResult.success) {
@@ -263,7 +264,7 @@ export const SettingsPage = () => {
         } else {
           console.warn(
             "Upload falhou, usando preview local:",
-            uploadResult.error
+            uploadResult.error,
           );
           avatarUrl = avatarPreview;
         }
@@ -328,7 +329,7 @@ export const SettingsPage = () => {
         icon: Palette,
       },
     ],
-    []
+    [],
   );
 
   // Valores formatados para exibição
@@ -337,7 +338,7 @@ export const SettingsPage = () => {
       cpf: formatCPF(formData.cpf),
       phone: formatPhone(formData.phone),
     }),
-    [formData.cpf, formData.phone]
+    [formData.cpf, formData.phone],
   );
 
   return (
@@ -345,7 +346,13 @@ export const SettingsPage = () => {
       <SideBar />
 
       {/* Conteúdo Principal - com padding-left para compensar a sidebar fixa */}
-      <div className="flex-1 p-6 md:p-8" style={{ marginLeft: 'var(--sidebar-offset, 280px)', transition: 'margin-left 300ms ease-in-out' }}>
+      <div
+        className="flex-1 p-6 md:p-8"
+        style={{
+          marginLeft: "var(--sidebar-offset, 280px)",
+          transition: "margin-left 300ms ease-in-out",
+        }}
+      >
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="mb-6">
@@ -639,7 +646,8 @@ export const SettingsPage = () => {
                   Aparência do Sistema
                 </h2>
                 <p className="text-gray-600 dark:text-gray-400 mb-6">
-                  Escolha entre modo claro ou escuro para personalizar sua experiência
+                  Escolha entre modo claro ou escuro para personalizar sua
+                  experiência
                 </p>
 
                 <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-zinc-800 rounded-lg">
@@ -648,18 +656,18 @@ export const SettingsPage = () => {
                       Tema Atual
                     </h3>
                     <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                      {theme === 'light' ? 'Modo Claro' : 'Modo Escuro'}
+                      {theme === "light" ? "Modo Claro" : "Modo Escuro"}
                     </p>
                   </div>
                   <div className="flex items-center gap-2">
                     <button
-                      onClick={() => setTheme('light')}
+                      onClick={() => setTheme("light")}
                       className={`
                         px-4 py-2 rounded-lg border transition-all duration-200 flex items-center gap-2
                         ${
-                          theme === 'light'
-                            ? 'bg-white border-[#0B4BCC] text-[#0B4BCC] shadow-sm'
-                            : 'bg-gray-100 dark:bg-zinc-700 border-gray-300 dark:border-zinc-600 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-zinc-600'
+                          theme === "light"
+                            ? "bg-white border-[#0B4BCC] text-[#0B4BCC] shadow-sm"
+                            : "bg-gray-100 dark:bg-zinc-700 border-gray-300 dark:border-zinc-600 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-zinc-600"
                         }
                       `}
                     >
@@ -667,13 +675,13 @@ export const SettingsPage = () => {
                       <span className="text-sm font-medium">Claro</span>
                     </button>
                     <button
-                      onClick={() => setTheme('dark')}
+                      onClick={() => setTheme("dark")}
                       className={`
                         px-4 py-2 rounded-lg border transition-all duration-200 flex items-center gap-2
                         ${
-                          theme === 'dark'
-                            ? 'bg-zinc-800 border-[#0B4BCC] text-[#0B4BCC] shadow-sm'
-                            : 'bg-gray-100 dark:bg-zinc-700 border-gray-300 dark:border-zinc-600 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-zinc-600'
+                          theme === "dark"
+                            ? "bg-zinc-800 border-[#0B4BCC] text-[#0B4BCC] shadow-sm"
+                            : "bg-gray-100 dark:bg-zinc-700 border-gray-300 dark:border-zinc-600 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-zinc-600"
                         }
                       `}
                     >
@@ -693,7 +701,9 @@ export const SettingsPage = () => {
                       Preferências visuais
                     </h4>
                     <p className="text-sm text-blue-700 dark:text-blue-300 mt-1">
-                      O tema selecionado será aplicado em todas as páginas do sistema para proporcionar uma experiência visual consistente.
+                      O tema selecionado será aplicado em todas as páginas do
+                      sistema para proporcionar uma experiência visual
+                      consistente.
                     </p>
                   </div>
                 </div>

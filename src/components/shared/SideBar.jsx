@@ -17,7 +17,7 @@ import { useState, useEffect, useCallback, useMemo, memo } from "react";
 import Foto from "../../assets/images/logo_pelluci.jpg";
 
 const SideBar = memo(({ active = "repairs" }) => {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(() => {
     const saved = localStorage.getItem("sidebarOpen");
@@ -86,7 +86,7 @@ const SideBar = memo(({ active = "repairs" }) => {
               path: "/visit",
             },
           ],
-    [isAdmin]
+    [isAdmin],
   );
 
   const handleToggleSidebar = useCallback(() => {
@@ -116,7 +116,7 @@ const SideBar = memo(({ active = "repairs" }) => {
     const buttonWidth = 56; // largura aproximada do botão + padding
     document.documentElement.style.setProperty(
       "--sidebar-offset",
-      `${sidebarWidth + buttonWidth}px`
+      `${sidebarWidth + buttonWidth}px`,
     );
   }, [isOpen]);
 

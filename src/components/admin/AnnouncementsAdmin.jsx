@@ -50,7 +50,7 @@ const AnnouncementsAdmin = () => {
 
   useEffect(() => {
     loadAnnouncements();
-  }, []);
+  });
 
   const filteredAnnouncements = useMemo(() => {
     return announcements.filter((ann) => {
@@ -144,7 +144,7 @@ const AnnouncementsAdmin = () => {
           editingAnnouncement.id,
           formData.title,
           formData.content,
-          formData.type
+          formData.type,
         );
         toast.success("Recado atualizado com sucesso!");
       } else {
@@ -152,7 +152,7 @@ const AnnouncementsAdmin = () => {
         await announcementService.publishAnnouncement(
           formData.title,
           formData.content,
-          formData.type
+          formData.type,
         );
         toast.success("Recado criado com sucesso!");
       }
@@ -185,8 +185,6 @@ const AnnouncementsAdmin = () => {
       }
     }
   };
-
-
 
   return (
     <>
@@ -262,9 +260,9 @@ const AnnouncementsAdmin = () => {
                               {getAnnouncementLabel(announcement.type)}
                             </span>
                             <span className="text-gray-500 text-sm">
-                              {new Date(announcement.publishedAt).toLocaleDateString(
-                                "pt-BR"
-                              )}
+                              {new Date(
+                                announcement.publishedAt,
+                              ).toLocaleDateString("pt-BR")}
                             </span>
                           </div>
                           <div className="flex items-center gap-2">
@@ -366,10 +364,11 @@ const AnnouncementsAdmin = () => {
                         value={formData.title}
                         onChange={handleInputChange}
                         placeholder="Ex: Funcionamento no Feriado"
-                        className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#0B4BCC] focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 ${errors.title
-                          ? "border-red-500 dark:border-red-500"
-                          : "border-gray-300 dark:border-gray-600"
-                          }`}
+                        className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#0B4BCC] focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 ${
+                          errors.title
+                            ? "border-red-500 dark:border-red-500"
+                            : "border-gray-300 dark:border-gray-600"
+                        }`}
                         required
                       />
                       {errors.title && (
@@ -389,10 +388,11 @@ const AnnouncementsAdmin = () => {
                         onChange={handleInputChange}
                         placeholder="Descreva o recado..."
                         rows={5}
-                        className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#0B4BCC] focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 resize-none ${errors.content
-                          ? "border-red-500 dark:border-red-500"
-                          : "border-gray-300 dark:border-gray-600"
-                          }`}
+                        className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#0B4BCC] focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 resize-none ${
+                          errors.content
+                            ? "border-red-500 dark:border-red-500"
+                            : "border-gray-300 dark:border-gray-600"
+                        }`}
                         required
                       />
                       {errors.content && (
@@ -420,7 +420,11 @@ const AnnouncementsAdmin = () => {
                     onClick={handleSubmit}
                     disabled={loading}
                   >
-                    {loading ? "Salvando..." : editingAnnouncement ? "Salvar Alterações" : "Criar Recado"}
+                    {loading
+                      ? "Salvando..."
+                      : editingAnnouncement
+                        ? "Salvar Alterações"
+                        : "Criar Recado"}
                   </Button>
                 </div>
               </div>

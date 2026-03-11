@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback, memo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { Search, Clock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
@@ -12,7 +12,7 @@ import Alert from "../shared/Alert";
 import RepairCard from "./RepairCard";
 
 const ComponentRepair = () => {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
   const [repairs, setRepairs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -22,7 +22,7 @@ const ComponentRepair = () => {
 
   useEffect(() => {
     // Validacao do primeiro login
-    if(user.inFirstLogin) {
+    if (user.inFirstLogin) {
       navigate("/nova-senha");
     }
   }, [user]);
@@ -48,8 +48,8 @@ const ComponentRepair = () => {
 
       if (!Array.isArray(data)) data = [];
       setRepairs(data.reverse());
-    } catch (error) {
-      console.error("Erro ao carregar consertos:", error);
+    } catch (err) {
+      console.error("Erro ao carregar consertos:", err);
       setAlert({
         type: "error",
         message: "Erro ao carregar consertos. Tente novamente.",
@@ -64,11 +64,6 @@ const ComponentRepair = () => {
     loadRepairs();
   }, [loadRepairs]);
 
-  const handleLogout = useCallback(() => {
-    logout();
-    navigate("/login");
-  }, [logout, navigate]);
-
   const filtered = useMemo(() => {
     return repairs.filter((r) => {
       const term = searchTerm.trim().toLowerCase();
@@ -81,7 +76,7 @@ const ComponentRepair = () => {
           (a.type || "").toLowerCase().includes(term) ||
           (a.brand || "").toLowerCase().includes(term) ||
           (a.model || "").toLowerCase().includes(term) ||
-          (a.serial || "").toLowerCase().includes(term)
+          (a.serial || "").toLowerCase().includes(term),
       );
 
       // Busca na descrição do serviço
@@ -105,7 +100,7 @@ const ComponentRepair = () => {
         <div className="py-8 px-20 overflow-y-auto">
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-6">Consertos</h1>
-            
+
             {/* Filters Section */}
             <div className="rounded-lg shadow-sm p-4 mb-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -157,14 +152,17 @@ const ComponentRepair = () => {
                 em nossa assistência técnica. Aqui é possível acompanhar seus
                 pedidos e verificar o status de cada atendimento.
               </p>
-              
+
               <div className="border-t border-gray-200 dark:border-zinc-700 pt-4">
                 <p className="text-sm leading-relaxed text-center text-gray-700 dark:text-gray-300">
-                  <span className="font-bold text-[#BA4A00]">OBSERVAÇÃO:</span> O prazo para
-                  retirada dos produtos é de <span className="font-bold">30 dias</span>. Após esta data será cobrado
-                  <span className="font-bold"> R$ 1,00 por dia</span> de permanência. <br/> Produto não retirado no prazo
-                  máximo de <span className="font-bold">60 dias</span> será desmontado para recuperação das peças
-                  aplicadas.
+                  <span className="font-bold text-[#BA4A00]">OBSERVAÇÃO:</span>{" "}
+                  O prazo para retirada dos produtos é de{" "}
+                  <span className="font-bold">30 dias</span>. Após esta data
+                  será cobrado
+                  <span className="font-bold"> R$ 1,00 por dia</span> de
+                  permanência. <br /> Produto não retirado no prazo máximo de{" "}
+                  <span className="font-bold">60 dias</span> será desmontado
+                  para recuperação das peças aplicadas.
                 </p>
               </div>
             </div>

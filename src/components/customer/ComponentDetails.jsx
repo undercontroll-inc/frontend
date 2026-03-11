@@ -29,14 +29,13 @@ const ComponentDetails = () => {
 
   useEffect(() => {
     // Validacao do primeiro login
-    if(user.inFirstLogin) {
+    if (user.inFirstLogin) {
       navigate("/nova-senha");
     }
   }, [user]);
 
   useEffect(() => {
     loadRepairDetails();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
   useEffect(() => {
     document.title = "Dashboard - Detalhes";
@@ -60,25 +59,25 @@ const ComponentDetails = () => {
   const handleExportPDF = async () => {
     try {
       const response = await RepairService.exportOrder(id);
-      
-      if(response.success && response.data) {
+
+      if (response.success && response.data) {
         // Create a blob from the response data
-        const blob = new Blob([response.data], { type: 'application/pdf' });
-        
+        const blob = new Blob([response.data], { type: "application/pdf" });
+
         // Create a download link
         const url = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
+        const link = document.createElement("a");
         link.href = url;
         link.download = `OS-A${id}.pdf`;
-        
+
         // Trigger download
         document.body.appendChild(link);
         link.click();
-        
+
         // Cleanup
         document.body.removeChild(link);
         window.URL.revokeObjectURL(url);
-        
+
         toast.success("PDF exportado com sucesso!");
         return;
       }
@@ -190,7 +189,8 @@ const ComponentDetails = () => {
             </div>
 
             {/* Conteúdo */}
-            <div className="p-6 bg-gray-50 dark:bg-zinc-900">{/* Seção: Eletrodomésticos + caixas de informações ao lado */}
+            <div className="p-6 bg-gray-50 dark:bg-zinc-900">
+              {/* Seção: Eletrodomésticos + caixas de informações ao lado */}
               <div className="mb-6">
                 <h3 className="text-base font-bold text-gray-900 dark:text-gray-100 mb-4 uppercase tracking-wide">
                   Eletrodomésticos
@@ -203,11 +203,17 @@ const ComponentDetails = () => {
                         <table className="w-full">
                           <thead className="bg-[#041A2D] text-white text-sm font-semibold">
                             <tr>
-                              <th className="text-left px-4 py-3">Eletrodoméstico</th>
-                              <th className="text-left px-4 py-3">Marca / Modelo</th>
+                              <th className="text-left px-4 py-3">
+                                Eletrodoméstico
+                              </th>
+                              <th className="text-left px-4 py-3">
+                                Marca / Modelo
+                              </th>
                               <th className="text-left px-4 py-3">Voltagem</th>
                               <th className="text-left px-4 py-3">Nº Série</th>
-                              <th className="text-left px-4 py-3">Mão de Obra</th>
+                              <th className="text-left px-4 py-3">
+                                Mão de Obra
+                              </th>
                             </tr>
                           </thead>
                           <tbody>
@@ -269,7 +275,8 @@ const ComponentDetails = () => {
                             Retirada
                           </div>
                           <div className="bg-white dark:bg-zinc-800 rounded-md border border-gray-200 dark:border-zinc-700 px-3 py-2.5 text-gray-900 dark:text-gray-100 text-sm text-center shadow-sm">
-                            {repair.status === "COMPLETED" || repair.status === "DELIVERED"
+                            {repair.status === "COMPLETED" ||
+                            repair.status === "DELIVERED"
                               ? repair.deadline || "-"
                               : "-"}
                           </div>
@@ -327,8 +334,12 @@ const ComponentDetails = () => {
                           <tr>
                             <th className="text-left px-4 py-3">Peças</th>
                             <th className="text-left px-4 py-3">Quantidade</th>
-                            <th className="text-left px-4 py-3">Valor Unitário</th>
-                            <th className="text-left px-4 py-3">Valor Somado</th>
+                            <th className="text-left px-4 py-3">
+                              Valor Unitário
+                            </th>
+                            <th className="text-left px-4 py-3">
+                              Valor Somado
+                            </th>
                           </tr>
                         </thead>
                         <tbody>
@@ -347,7 +358,9 @@ const ComponentDetails = () => {
                                 {formatCurrency(part.price)}
                               </td>
                               <td className="px-4 py-3 text-gray-900 dark:text-gray-100 font-medium">
-                                {formatCurrency(((part.price || 0) * (part.quantity || 0)) || 0)}
+                                {formatCurrency(
+                                  (part.price || 0) * (part.quantity || 0) || 0,
+                                )}
                               </td>
                             </tr>
                           ))}
@@ -358,7 +371,7 @@ const ComponentDetails = () => {
                             <td className="px-4 py-3">
                               {repair.parts.reduce(
                                 (sum, p) => sum + (p.quantity || 0),
-                                0
+                                0,
                               )}
                             </td>
                             <td className="px-4 py-3">-</td>
@@ -376,13 +389,16 @@ const ComponentDetails = () => {
                       </div>
                       {repair.appliances && repair.appliances.length > 0 ? (
                         repair.appliances.map((ap, idx) => (
-                          <div key={idx} className="bg-white dark:bg-zinc-800 rounded-md border border-gray-200 dark:border-zinc-700 p-4 shadow-sm">
+                          <div
+                            key={idx}
+                            className="bg-white dark:bg-zinc-800 rounded-md border border-gray-200 dark:border-zinc-700 p-4 shadow-sm"
+                          >
                             <div className="text-sm font-bold text-gray-900 dark:text-gray-100 mb-2">
                               {`Item ${idx + 1} - ${ap.type || "Aparelho"}`}
                             </div>
                             <div className="text-gray-700 dark:text-gray-300 text-sm whitespace-pre-wrap">
                               {ap.customerNote &&
-                                ap.customerNote.trim().length > 0
+                              ap.customerNote.trim().length > 0
                                 ? ap.customerNote
                                 : "-"}
                             </div>
@@ -404,7 +420,7 @@ const ComponentDetails = () => {
 
               {/* Observações do Cliente (global) - mostrar apenas se não houver notas por eletrodoméstico */}
               {!repair.appliances?.some(
-                (a) => a.customerNote && a.customerNote.trim().length > 0
+                (a) => a.customerNote && a.customerNote.trim().length > 0,
               ) &&
                 repair.notes && (
                   <div className="mb-6">
