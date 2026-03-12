@@ -48,11 +48,10 @@ const ComponentVisit = () => {
         <div className="py-8 px-20 overflow-y-auto">
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-              Visita Técnica
+              Avaliação Técnica na Loja
             </h1>
             <p className="text-gray-600 dark:text-gray-400">
-              Agende sua visita ou entre em contato para solicitar um orçamento
-              personalizado
+              Traga seu equipamento até nossa loja para que o técnico realize a análise e prepare um orçamento personalizado.
             </p>
           </div>
 
@@ -133,8 +132,7 @@ const ComponentVisit = () => {
                 Pronto para agendar?
               </h2>
               <p className="text-gray-600 dark:text-gray-400 mb-14">
-                Entre em contato pelo WhatsApp ou telefone e receba seu
-                orçamento personalizado
+                Entre em contato pelo WhatsApp ou telefone e agende sua avaliação técnica conosco!
               </p>
             </div>
 
