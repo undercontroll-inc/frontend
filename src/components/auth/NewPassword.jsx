@@ -27,7 +27,7 @@ export default function NewPassword() {
     number: false,
     special: false,
   });
-  const { user, logout, updateUser } = useAuth();
+  const { user, updateUser } = useAuth();
 
   const checkPasswordStrength = (password) => {
     return {
@@ -137,16 +137,19 @@ export default function NewPassword() {
     }
   };
 
-  const heroImage = new URL("../../assets/images/banner_login.png", import.meta.url).href;
+  const heroImage = new URL(
+    "../../assets/images/banner_login.png",
+    import.meta.url,
+  ).href;
 
   return (
     <div className="min-h-screen w-full bg-[#041a2dec] flex items-center justify-center p-4">
       {/* Botão Voltar */}
       <div className="absolute top-8 left-8 z-10">
-        <ComeBack 
-          variant="light" 
-          className="bg-white hover:bg-gray-100 hover:scale-105 transition-all duration-300 cursor-pointer" 
-          to="/" 
+        <ComeBack
+          variant="light"
+          className="bg-white hover:bg-gray-100 hover:scale-105 transition-all duration-300 cursor-pointer"
+          to="/"
         />
       </div>
 
@@ -217,8 +220,8 @@ export default function NewPassword() {
                         <div
                           key={index}
                           className={`h-1 flex-1 rounded ${
-                            Object.values(passwordStrength).filter(Boolean).length >=
-                            index
+                            Object.values(passwordStrength).filter(Boolean)
+                              .length >= index
                               ? getPasswordStrengthLevel().bgColor
                               : "bg-gray-200 dark:bg-gray-700"
                           }`}

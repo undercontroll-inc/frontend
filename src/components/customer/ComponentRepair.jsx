@@ -25,7 +25,7 @@ const ComponentRepair = () => {
     if (user.inFirstLogin) {
       navigate("/nova-senha");
     }
-  }, [user]);
+  }, [user, navigate]);
 
   useEffect(() => {
     document.title = "Reparos";
