@@ -817,7 +817,6 @@ export const LandingPage = () => {
         >
           <i className="fa-brands fa-whatsapp text-4xl drop-shadow-md"></i>
           
-          {/* Tooltip opcional que aparece ao passar o mouse */}
           <span className="absolute right-20 bg-white text-gray-800 px-3 py-1 rounded-lg text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-lg whitespace-nowrap pointer-events-none">
             Precisa de ajuda?
           </span>
