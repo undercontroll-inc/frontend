@@ -8,6 +8,7 @@ import {
   ChartBar,
   BarChart3,
   Megaphone,
+  Home,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
@@ -29,6 +30,12 @@ const SideBar = memo(({ active = "repairs" }) => {
     () =>
       isAdmin
         ? [
+            {
+              id: "home",
+              label: "Home",
+              icon: Home,
+              path: "/",
+            },
             {
               id: "repairs",
               label: "Consertos",
@@ -67,6 +74,12 @@ const SideBar = memo(({ active = "repairs" }) => {
             },
           ]
         : [
+            {
+              id: "home",
+              label: "Home",
+              icon: Home,
+              path: "/",
+            },
             {
               id: "repairs",
               label: "Consertos",
