@@ -810,6 +810,17 @@ export const LandingPage = () => {
             </div>
           </div>
         </footer>
+        <button
+          onClick={handleWhatsAppClick}
+          className="fixed bottom-6 right-6 bg-gradient-to-r from-green-400 to-green-500 hover:from-green-500 hover:to-green-600 text-white w-16 h-16 rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-all duration-300 z-[100] group cursor-pointer"
+          aria-label="Fale conosco no WhatsApp"
+        >
+          <i className="fa-brands fa-whatsapp text-4xl drop-shadow-md"></i>
+          
+          <span className="absolute right-20 bg-white text-gray-800 px-3 py-1 rounded-lg text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-lg whitespace-nowrap pointer-events-none">
+            Precisa de ajuda?
+          </span>
+        </button>
       </main>
     </div>
   );
