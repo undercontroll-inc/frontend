@@ -97,11 +97,27 @@ jobs:
             mkdir -p "$RELEASE_DIR"
             cp -a /tmp/frontend-release/dist/. "$RELEASE_DIR/"
             ln -sfn "$RELEASE_DIR" "$CURRENT_LINK"
+
+            if [ -d /usr/share/nginx/html ]; then
+              rm -rf /usr/share/nginx/html/*
+              cp -a "$RELEASE_DIR"/. /usr/share/nginx/html/
+            fi
+
+            if [ -d /var/www/html ]; then
+              rm -rf /var/www/html/*
+              cp -a "$RELEASE_DIR"/. /var/www/html/
+            fi
+
             rm -rf /tmp/frontend-release
 
       - name: Health check
         run: |
           sleep 5
-          curl --fail --silent --max-time 10 "http://${{ vars.EC2_HOST != '' && vars.EC2_HOST || secrets.EC2_HOST }}" \
-            && echo "Site is up" \
-            || (echo "Health check failed" && exit 1)
+          RESPONSE=$(curl --fail --silent --max-time 10 "http://${{ vars.EC2_HOST != '' && vars.EC2_HOST || secrets.EC2_HOST }}")
+
+          if echo "$RESPONSE" | grep -q "Welcome to nginx"; then
+            echo "Health check failed: default nginx page is still being served." >&2
+            exit 1
+          fi
+
+          echo "Site is up"
