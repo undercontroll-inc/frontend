@@ -2,6 +2,17 @@ name: CI - Frontend
 
 on:
   push:
+    branches:
+      - main
+    paths:
+      - "src/**"
+      - "public/**"
+      - "index.html"
+      - "package.json"
+      - "package-lock.json"
+      - "vite.config.js"
+      - "vite.config.ts"
+      - ".github/workflows/ci.yml"
   pull_request:
     branches:
       - main
@@ -11,9 +22,17 @@ on:
       - "index.html"
       - "package.json"
       - "package-lock.json"
+      - "vite.config.js"
       - "vite.config.ts"
-      - "nginx.conf.template"
+      - ".github/workflows/ci.yml"
   workflow_dispatch:
+
+concurrency:
+  group: frontend-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
 
 jobs:
   build:

@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Plus, Edit2, Trash2, Search, X } from "lucide-react";
 import SideBar from "../shared/SideBar";
-import PageContainer from "../shared/PageContainer";
 import Button from "../shared/Button";
 import Input from "../shared/Input";
 import Select from "../shared/Select";
@@ -39,6 +38,7 @@ const AnnouncementsAdmin = () => {
     try {
       setLoading(true);
       const data = await announcementService.getAllAnnouncements(0, 100);
+      console.log(data);
       setAnnouncements(data || []);
     } catch (error) {
       console.error("Erro ao carregar anúncios:", error);
@@ -50,7 +50,7 @@ const AnnouncementsAdmin = () => {
 
   useEffect(() => {
     loadAnnouncements();
-  });
+  }, []);
 
   const filteredAnnouncements = useMemo(() => {
     return announcements.filter((ann) => {

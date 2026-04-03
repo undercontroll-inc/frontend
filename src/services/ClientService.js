@@ -51,8 +51,6 @@ class ClientService {
   }
 
   async createClient(clientData) {
-    const token = localStorage.getItem("authToken");
-
     try {
       const response = await apiClient.post(
         "/users",
@@ -60,11 +58,6 @@ class ClientService {
           ...clientData,
           inFirstLogin: true,
           userType: "CUSTOMER",
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
         }
       );
       return response.data;
