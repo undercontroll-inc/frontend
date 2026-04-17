@@ -27,10 +27,7 @@ apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response) {
-      console.error(
-        `[API Error ${error.response.status}]:`,
-        getAxiosErrorMessage(error),
-      );
+      console.error(`[API Error ${error.response.status}]:`, getAxiosErrorMessage(error));
 
       // Se receber 401 (não autorizado), redirecionar para login
       if (error.response.status === 401) {

@@ -307,7 +307,7 @@ export function RepairPage() {
       {/* Sheet de Detalhes */}
       <RepairDetailSheet
         isOpen={isSheetOpen}
-        onClose={() => handleCloseSheet}
+        onClose={handleCloseSheet}
         repair={selectedRepair}
         onUpdate={loadRepairs}
       />

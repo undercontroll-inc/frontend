@@ -50,7 +50,7 @@ export const OrderDetailModal = ({
           ? repair.appliances.map((a) => ({ ...a }))
           : [],
         parts: Array.isArray(repair.parts)
-          ? repair.parts.map((p) => ({ ...p }))
+          ? repair.parts.map((p) => ({ ...p, componentId: p.componentId ?? p.id }))
           : [],
         serviceDescription: repair.serviceDescription || repair.notes || "",
       });
@@ -224,9 +224,9 @@ export const OrderDetailModal = ({
           laborValue: Number(app.laborValue) || 0,
         })),
         parts: editedRepair.parts
-          .filter((part) => part.id || part.componentId) // Remove partes sem ID válido
+          .filter((part) => part.componentId)
           .map((part) => ({
-            id: part.id || part.componentId || null,
+            componentId: part.componentId,
             quantity: part._removed ? 0 : Number(part.quantity) || 1,
           })),
         serviceDescription: editedRepair.serviceDescription,
@@ -270,7 +270,7 @@ export const OrderDetailModal = ({
         ? repair.appliances.map((a) => ({ ...a }))
         : [],
       parts: Array.isArray(repair.parts)
-        ? repair.parts.map((p) => ({ ...p }))
+        ? repair.parts.map((p) => ({ ...p, componentId: p.componentId ?? p.id }))
         : [],
       serviceDescription: repair.serviceDescription || repair.notes || "",
     });
