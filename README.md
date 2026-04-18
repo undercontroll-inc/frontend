@@ -172,8 +172,8 @@ Variáveis principais:
 
 ### Frontend
 
-- Node.js 20+
-- npm 10+
+- Node.js >= 20.0.0
+- npm >= 10.0.0
 
 ### Backend (Undercontroll Core API)
 
