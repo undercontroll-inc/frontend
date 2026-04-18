@@ -172,7 +172,7 @@ Variáveis principais:
 
 #### Frontend
 
-- Node.js >= 20.11.0 (LTS)
+- Node.js >= 20.11.0 (LTS recomendado; versões superiores compatíveis)
 - npm >= 10.0.0
 
 #### Backend (Undercontroll Core API)
@@ -338,7 +338,8 @@ docker compose up -d
 ## Solução de problemas
 
 - **Frontend não inicia (`vite: not found`)**
-  - Execute `npm ci` para instalar dependências
+  - Verifique se a pasta `node_modules` existe
+  - Execute `npm ci` (ou `npm install`, se você precisar manter alterações locais de dependências)
 - **Erro de conexão com API**
   - Verifique se backend está ativo em `localhost:8080`
   - Verifique `VITE_API_URL` no `.env`
