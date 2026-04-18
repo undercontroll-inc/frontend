@@ -168,7 +168,7 @@ Variáveis principais:
 
 ## Manual de Instalação
 
-## 1) Requisitos
+### 1) Requisitos
 
 ### Frontend
 
@@ -183,7 +183,7 @@ Variáveis principais:
 
 > Use sempre os comandos a partir da raiz de cada repositório.
 
-## 2) Instalação e execução do Frontend
+### 2) Instalação e execução do Frontend
 
 1. Acesse a pasta do frontend:
 
@@ -232,7 +232,7 @@ npm run dev:full
 
 > `dev:full` sobe Vite + json-server local (mock). O sistema principal utiliza a API do backend em `VITE_API_URL`.
 
-## 3) Instalação e execução do Backend (referência operacional)
+### 3) Instalação e execução do Backend (referência operacional)
 
 Abaixo, os cenários recomendados do **Undercontroll Core API**.
 
@@ -297,7 +297,7 @@ Build da imagem:
 docker build -t undercontroll-core .
 ```
 
-Execução:
+Execução (com arquivo `.env` na raiz do repositório do backend):
 
 ```powershell
 docker run --rm -p 8080:8080 --env-file .env undercontroll-core
@@ -311,7 +311,7 @@ Para subir dependências auxiliares (MySQL/RabbitMQ) no backend:
 docker compose up -d
 ```
 
-## 4) Ordem recomendada de subida (ambiente local completo)
+### 4) Ordem recomendada de subida (ambiente local completo)
 
 1. Subir dependências do backend (RabbitMQ e/ou banco, se aplicável)
 2. Subir backend em `localhost:8080`
@@ -319,7 +319,7 @@ docker compose up -d
 4. Subir frontend em `localhost:5173`
 5. Acessar e autenticar
 
-## 5) URLs úteis
+### 5) URLs úteis
 
 ### Frontend
 
