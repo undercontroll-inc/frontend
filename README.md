@@ -76,7 +76,7 @@ Variáveis principais:
 
 > Se Firebase não estiver configurado corretamente, o sistema mantém o funcionamento por e-mail/senha.
 
-### 5) Tecnologias do frontend
+### 5) Tecnologias e stack do frontend
 
 - React 19
 - Vite 7
@@ -170,12 +170,12 @@ Variáveis principais:
 
 ### 1) Requisitos
 
-### Frontend
+#### Frontend
 
 - Node.js >= 20.0.0
 - npm >= 10.0.0
 
-### Backend (Undercontroll Core API)
+#### Backend (Undercontroll Core API)
 
 - Java 21
 - Docker e Docker Compose (para dependências locais, quando necessário)
@@ -321,11 +321,11 @@ docker compose up -d
 
 ### 5) URLs úteis
 
-### Frontend
+#### Frontend
 
 - Aplicação local: `http://localhost:5173`
 
-### Backend (com API em `localhost:8080`)
+#### Backend (com API em `localhost:8080`)
 
 - Swagger UI: `http://localhost:8080/swagger-ui.html`
 - OpenAPI JSON: `http://localhost:8080/v3/api-docs`
