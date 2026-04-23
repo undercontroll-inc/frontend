@@ -148,7 +148,7 @@ const AnalyticsDashboard = () => {
       } else {
         setTopItemsData([]);
       }
-    } catch (error) {
+    } catch {
       showAlert("error", "Erro ao carregar dados do dashboard. Verifique se o backend está rodando.");
     } finally {
       setLoading(false);
@@ -253,9 +253,7 @@ const AnalyticsDashboard = () => {
       <PageContainer>
         {/* Header */}
         <div className="mb-6">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-            Dashboard
-          </h1>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">Dashboard</h1>
 
           {/* Filtros */}
           <div className="flex flex-wrap gap-4 mt-4">
@@ -281,17 +279,13 @@ const AnalyticsDashboard = () => {
         </div>
 
         {/* Alert */}
-        {alert && (
-          <Alert type={alert.type} message={alert.message} onClose={() => setAlert(null)} />
-        )}
+        {alert && <Alert type={alert.type} message={alert.message} onClose={() => setAlert(null)} />}
 
         {/* Cards de Métricas */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
           <Card className="p-6">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                Faturamento Total
-              </h3>
+              <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">Faturamento Total</h3>
               <DollarSign className="w-5 h-5 text-green-600" />
             </div>
             <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">
@@ -301,9 +295,7 @@ const AnalyticsDashboard = () => {
 
           <Card className="p-6">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                Margem de Lucro
-              </h3>
+              <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">Margem de Lucro</h3>
               <TrendingUp className="w-5 h-5 text-blue-600" />
             </div>
             <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">
@@ -313,9 +305,7 @@ const AnalyticsDashboard = () => {
 
           <Card className="p-6">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                Ticket Médio
-              </h3>
+              <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">Ticket Médio</h3>
               <DollarSign className="w-5 h-5 text-purple-600" />
             </div>
             <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">
@@ -325,21 +315,15 @@ const AnalyticsDashboard = () => {
 
           <Card className="p-6">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                Ordens de Serviço em Andamento
-              </h3>
+              <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">Ordens de Serviço em Andamento</h3>
               <Package className="w-5 h-5 text-orange-600" />
             </div>
-            <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-              {Math.round(metrics.ongoingOrders)}
-            </p>
+            <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{Math.round(metrics.ongoingOrders)}</p>
           </Card>
 
           <Card className="p-6">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                Tempo Médio de Reparo
-              </h3>
+              <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">Tempo Médio de Reparo</h3>
               <Clock className="w-5 h-5 text-blue-600" />
             </div>
             <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">
@@ -445,9 +429,7 @@ const AnalyticsDashboard = () => {
                 </LineChart>
               </ResponsiveContainer>
             ) : (
-              <div className="flex items-center justify-center h-[250px] text-gray-500">
-                Nenhum dado disponível
-              </div>
+              <div className="flex items-center justify-center h-[250px] text-gray-500">Nenhum dado disponível</div>
             )}
           </Card>
 
@@ -477,9 +459,7 @@ const AnalyticsDashboard = () => {
                 </BarChart>
               </ResponsiveContainer>
             ) : (
-              <div className="flex items-center justify-center h-[250px] text-gray-500">
-                Nenhum dado disponível
-              </div>
+              <div className="flex items-center justify-center h-[250px] text-gray-500">Nenhum dado disponível</div>
             )}
           </Card>
         </div>
@@ -488,9 +468,7 @@ const AnalyticsDashboard = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Eletrodomésticos Mais Consertados */}
           <Card className="p-6">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
-              🔧 Aparelhos Mais Reparados
-            </h3>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">🔧 Aparelhos Mais Reparados</h3>
             {topAppliancesData.length > 0 ? (
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={topAppliancesData}>
@@ -508,9 +486,7 @@ const AnalyticsDashboard = () => {
                 </BarChart>
               </ResponsiveContainer>
             ) : (
-              <div className="flex items-center justify-center h-[300px] text-gray-500">
-                Nenhum dado disponível
-              </div>
+              <div className="flex items-center justify-center h-[300px] text-gray-500">Nenhum dado disponível</div>
             )}
           </Card>
 
@@ -536,9 +512,7 @@ const AnalyticsDashboard = () => {
                 </BarChart>
               </ResponsiveContainer>
             ) : (
-              <div className="flex items-center justify-center h-[300px] text-gray-500">
-                Nenhum dado disponível
-              </div>
+              <div className="flex items-center justify-center h-[300px] text-gray-500">Nenhum dado disponível</div>
             )}
           </Card>
         </div>
