@@ -39,7 +39,7 @@ const AnnouncementsAdmin = () => {
       setLoading(true);
       const data = await announcementService.getAllAnnouncements(0, 100);
       console.log(data);
-      setAnnouncements(data || []);
+      setAnnouncements(data.announcements || []);
     } catch (error) {
       console.error("Erro ao carregar anúncios:", error);
       toast.error("Erro ao carregar anúncios");
@@ -57,8 +57,7 @@ const AnnouncementsAdmin = () => {
       const matchesSearch =
         ann.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         ann.content.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesCategory =
-        categoryFilter === "Todos" || ann.type === categoryFilter;
+      const matchesCategory = categoryFilter === "Todos" || ann.type === categoryFilter;
       return matchesSearch && matchesCategory;
     });
   }, [announcements, searchTerm, categoryFilter]);
@@ -149,11 +148,7 @@ const AnnouncementsAdmin = () => {
         toast.success("Recado atualizado com sucesso!");
       } else {
         // Criar novo anúncio
-        await announcementService.publishAnnouncement(
-          formData.title,
-          formData.content,
-          formData.type,
-        );
+        await announcementService.publishAnnouncement(formData.title, formData.content, formData.type);
         toast.success("Recado criado com sucesso!");
       }
 
@@ -195,12 +190,8 @@ const AnnouncementsAdmin = () => {
             {/* Header */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
               <div>
-                <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
-                  Gerenciar Recados
-                </h1>
-                <p className="text-gray-600 dark:text-gray-400 mt-1">
-                  Crie e gerencie recados para a central
-                </p>
+                <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Gerenciar Recados</h1>
+                <p className="text-gray-600 dark:text-gray-400 mt-1">Crie e gerencie recados para a central</p>
               </div>
               <Button
                 onClick={() => handleOpenModal()}
@@ -227,10 +218,7 @@ const AnnouncementsAdmin = () => {
                 </div>
 
                 {/* Category Filter */}
-                <Select
-                  value={categoryFilter}
-                  onChange={(e) => setCategoryFilter(e.target.value)}
-                >
+                <Select value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)}>
                   <option value="Todos">Todos os tipos</option>
                   {getAnnouncementTypeOptions().map((option) => (
                     <option key={option.value} value={option.value}>
@@ -254,15 +242,11 @@ const AnnouncementsAdmin = () => {
                       <div className="p-6">
                         <div className="flex items-start justify-between mb-4">
                           <div className="flex items-center gap-3">
-                            <span
-                              className={`${styles.badge} px-3 py-1 rounded-full text-sm font-semibold`}
-                            >
+                            <span className={`${styles.badge} px-3 py-1 rounded-full text-sm font-semibold`}>
                               {getAnnouncementLabel(announcement.type)}
                             </span>
                             <span className="text-gray-500 text-sm">
-                              {new Date(
-                                announcement.publishedAt,
-                              ).toLocaleDateString("pt-BR")}
+                              {new Date(announcement.publishedAt).toLocaleDateString("pt-BR")}
                             </span>
                           </div>
                           <div className="flex items-center gap-2">
@@ -282,21 +266,15 @@ const AnnouncementsAdmin = () => {
                             </button>
                           </div>
                         </div>
-                        <h2 className="text-xl font-bold text-gray-800 mb-2">
-                          {announcement.title}
-                        </h2>
-                        <p className="text-gray-700 leading-relaxed">
-                          {announcement.content}
-                        </p>
+                        <h2 className="text-xl font-bold text-gray-800 mb-2">{announcement.title}</h2>
+                        <p className="text-gray-700 leading-relaxed">{announcement.content}</p>
                       </div>
                     </div>
                   );
                 })
               ) : (
                 <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-12 text-center border border-gray-200 dark:border-gray-700">
-                  <p className="text-gray-500 dark:text-gray-400 text-lg">
-                    Nenhum recado encontrado
-                  </p>
+                  <p className="text-gray-500 dark:text-gray-400 text-lg">Nenhum recado encontrado</p>
                 </div>
               )}
             </div>
@@ -365,17 +343,11 @@ const AnnouncementsAdmin = () => {
                         onChange={handleInputChange}
                         placeholder="Ex: Funcionamento no Feriado"
                         className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#0B4BCC] focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 ${
-                          errors.title
-                            ? "border-red-500 dark:border-red-500"
-                            : "border-gray-300 dark:border-gray-600"
+                          errors.title ? "border-red-500 dark:border-red-500" : "border-gray-300 dark:border-gray-600"
                         }`}
                         required
                       />
-                      {errors.title && (
-                        <p className="text-red-500 text-sm mt-1">
-                          {errors.title}
-                        </p>
-                      )}
+                      {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title}</p>}
                     </div>
 
                     <div>
@@ -389,42 +361,22 @@ const AnnouncementsAdmin = () => {
                         placeholder="Descreva o recado..."
                         rows={5}
                         className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#0B4BCC] focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 resize-none ${
-                          errors.content
-                            ? "border-red-500 dark:border-red-500"
-                            : "border-gray-300 dark:border-gray-600"
+                          errors.content ? "border-red-500 dark:border-red-500" : "border-gray-300 dark:border-gray-600"
                         }`}
                         required
                       />
-                      {errors.content && (
-                        <p className="text-red-500 text-sm mt-1">
-                          {errors.content}
-                        </p>
-                      )}
+                      {errors.content && <p className="text-red-500 text-sm mt-1">{errors.content}</p>}
                     </div>
                   </form>
                 </div>
 
                 {/* Footer */}
                 <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-200 dark:border-zinc-700 bg-gray-50 dark:bg-zinc-900">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={handleCloseModal}
-                    disabled={loading}
-                  >
+                  <Button type="button" variant="outline" onClick={handleCloseModal} disabled={loading}>
                     Cancelar
                   </Button>
-                  <Button
-                    type="button"
-                    variant="primary"
-                    onClick={handleSubmit}
-                    disabled={loading}
-                  >
-                    {loading
-                      ? "Salvando..."
-                      : editingAnnouncement
-                        ? "Salvar Alterações"
-                        : "Criar Recado"}
+                  <Button type="button" variant="primary" onClick={handleSubmit} disabled={loading}>
+                    {loading ? "Salvando..." : editingAnnouncement ? "Salvar Alterações" : "Criar Recado"}
                   </Button>
                 </div>
               </div>
