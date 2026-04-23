@@ -48,25 +48,14 @@ const AnalyticsDashboard = () => {
     loadDashboardData();
   }, [period, status]);
 
-  useEffect(() => {
-    console.log("Metrics updated:", metrics);
-  }, [metrics]);
-
   const loadDashboardData = async () => {
     try {
       setLoading(true);
       setAlert(null);
 
-      // Converter os valores dos filtros para o formato da API
       const apiPeriod = DashboardService.convertPeriodToAPI(period);
       const apiStatus = DashboardService.convertStatusToAPI(status);
 
-      console.log("Loading dashboard data with:", {
-        period: apiPeriod,
-        status: apiStatus,
-      });
-
-      // Buscar todas as métricas em paralelo com tratamento individual de erros
       const results = await Promise.allSettled([
         DashboardService.getMetrics(apiPeriod, apiStatus),
         DashboardService.getProfitMargin(apiPeriod, apiStatus),
@@ -80,7 +69,6 @@ const AnalyticsDashboard = () => {
         DashboardService.getTopComponents(apiPeriod, apiStatus),
       ]);
 
-      // Extrair dados ou usar valores padrão
       const [
         metricsData,
         profitMarginData,
@@ -92,147 +80,76 @@ const AnalyticsDashboard = () => {
         ordersByStatusData,
         topAppliancesData,
         topComponentsData,
-      ] = results.map((result, index) => {
-        if (result.status === "rejected") {
-          console.error(`Dashboard API call ${index} failed:`, result.reason);
-          return {};
-        }
+      ] = results.map((result) => {
+        if (result.status === "rejected") return {};
         return result.value || {};
       });
 
-      console.log("Dashboard data loaded:", {
-        metricsData,
-        profitMarginData,
-        averageOrderPriceData,
-        ongoingOrdersData,
-        averageRepairTimeData,
-        revenueEvolutionData,
-        customerTypeData,
-        ordersByStatusData,
-        topAppliancesData,
-        topComponentsData,
-      });
-
-      // Atualizar métricas
-      console.log("Setting metrics:", {
-        totalRevenue: metricsData?.totalRevenue,
-        profitMargin: profitMarginData?.totalRevenue,
-        averageOrderPrice: averageOrderPriceData?.totalRevenue,
-        ongoingOrders: ongoingOrdersData?.totalRevenue,
-        averageRepairTime: averageRepairTimeData?.totalRevenue,
-      });
-
       setMetrics({
-        totalRevenue: metricsData?.totalRevenue ?? 0,
-        profitMargin: profitMarginData?.totalRevenue ?? 0,
-        averageOrderPrice: averageOrderPriceData?.totalRevenue ?? 0,
-        ongoingOrders: ongoingOrdersData?.totalRevenue ?? 0,
-        averageRepairTime: averageRepairTimeData?.totalRevenue ?? 0,
+        totalRevenue: metricsData?.value ?? 0,
+        profitMargin: profitMarginData?.value ?? 0,
+        averageOrderPrice: averageOrderPriceData?.value ?? 0,
+        ongoingOrders: ongoingOrdersData?.value ?? 0,
+        averageRepairTime: averageRepairTimeData?.value ?? 0,
       });
 
-      // Processar dados de evolução de receita
-      if (
-        revenueEvolutionData?.dataPoints &&
-        Array.isArray(revenueEvolutionData.dataPoints)
-      ) {
-        console.log(
-          "Revenue Evolution Data Points:",
-          revenueEvolutionData.dataPoints.length,
-          revenueEvolutionData.dataPoints,
-        );
-        const formattedEvolution = revenueEvolutionData.dataPoints.map(
-          (point) => ({
-            mes: formatDateToMonth(point.date),
-            data_completa: point.date,
-            faturamento: point.revenue || 0,
-            lucro: point.profit || 0,
-            ordensServico: point.orderCount || 0,
-          }),
-        );
-        console.log("Formatted Evolution:", formattedEvolution);
+      if (revenueEvolutionData?.dataPoints && Array.isArray(revenueEvolutionData.dataPoints)) {
+        const formattedEvolution = revenueEvolutionData.dataPoints.map((point) => ({
+          mes: formatDateToMonth(point.date),
+          data_completa: point.date,
+          faturamento: point.revenue || 0,
+          lucro: point.profit || 0,
+          ordensServico: point.orderCount || 0,
+        }));
         setEvolutionData(formattedEvolution);
       } else {
-        console.log("No revenue evolution data");
         setEvolutionData([]);
       }
 
-      // Processar dados de tipo de cliente
-      if (
-        customerTypeData?.dataPoints &&
-        Array.isArray(customerTypeData.dataPoints)
-      ) {
-        console.log(
-          "Customer Type Data Points:",
-          customerTypeData.dataPoints.length,
-          customerTypeData.dataPoints,
-        );
+      if (customerTypeData?.dataPoints && Array.isArray(customerTypeData.dataPoints)) {
         const formattedClients = customerTypeData.dataPoints.map((point) => ({
           mes: formatDateToMonth(point.date),
           data_completa: point.date,
           novos: point.newCustomers || 0,
           recorrentes: point.recurrentCustomers || 0,
         }));
-        console.log("Formatted Clients:", formattedClients);
         setClientsData(formattedClients);
       } else {
-        console.log("No customer type data");
         setClientsData([]);
       }
 
-      // Processar dados de pedidos por status
-      if (
-        ordersByStatusData?.statusCounts &&
-        Array.isArray(ordersByStatusData.statusCounts)
-      ) {
-        const formattedStatus = ordersByStatusData.statusCounts.map(
-          (statusItem) => ({
-            status: translateStatus(statusItem.status),
-            quantidade: statusItem.count || 0,
-            cor: getStatusColor(statusItem.status),
-          }),
-        );
+      if (ordersByStatusData?.statusCounts && Array.isArray(ordersByStatusData.statusCounts)) {
+        const formattedStatus = ordersByStatusData.statusCounts.map((statusItem) => ({
+          status: translateStatus(statusItem.status),
+          quantidade: statusItem.count || 0,
+          cor: getStatusColor(statusItem.status),
+        }));
         setOrdersStatusData(formattedStatus);
       } else {
         setOrdersStatusData([]);
       }
 
-      // Processar top aparelhos
-      if (
-        topAppliancesData?.appliances &&
-        Array.isArray(topAppliancesData.appliances)
-      ) {
-        const formattedAppliances = topAppliancesData.appliances.map(
-          (appliance) => ({
-            nome: `${appliance.type || ""} ${appliance.brand || ""}`.trim(),
-            quantidade: appliance.count || 0,
-          }),
-        );
+      if (topAppliancesData?.appliances && Array.isArray(topAppliancesData.appliances)) {
+        const formattedAppliances = topAppliancesData.appliances.map((appliance) => ({
+          nome: `${appliance.type || ""} ${appliance.brand || ""}`.trim(),
+          quantidade: appliance.count || 0,
+        }));
         setTopAppliancesData(formattedAppliances);
       } else {
         setTopAppliancesData([]);
       }
 
-      // Processar top componentes
-      if (
-        topComponentsData?.components &&
-        Array.isArray(topComponentsData.components)
-      ) {
-        const formattedComponents = topComponentsData.components.map(
-          (component) => ({
-            item: `${component.name || ""} - ${component.brand || ""}`.trim(),
-            quantidade: component.totalQuantityUsed || 0,
-          }),
-        );
+      if (topComponentsData?.components && Array.isArray(topComponentsData.components)) {
+        const formattedComponents = topComponentsData.components.map((component) => ({
+          item: `${component.name || ""} - ${component.brand || ""}`.trim(),
+          quantidade: component.totalQuantityUsed || 0,
+        }));
         setTopItemsData(formattedComponents);
       } else {
         setTopItemsData([]);
       }
     } catch (error) {
-      console.error("Error loading dashboard data:", error);
-      showAlert(
-        "error",
-        "Erro ao carregar dados do dashboard. Verifique se o backend está rodando.",
-      );
+      showAlert("error", "Erro ao carregar dados do dashboard. Verifique se o backend está rodando.");
     } finally {
       setLoading(false);
     }
@@ -246,39 +163,19 @@ const AnalyticsDashboard = () => {
 
       const day = date.getDate().toString().padStart(2, "0");
       const month = (date.getMonth() + 1).toString().padStart(2, "0");
-      const months = [
-        "Jan",
-        "Fev",
-        "Mar",
-        "Abr",
-        "Mai",
-        "Jun",
-        "Jul",
-        "Ago",
-        "Set",
-        "Out",
-        "Nov",
-        "Dez",
-      ];
+      const months = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
       const monthName = months[date.getMonth()];
 
-      // Para períodos curtos, mostrar dia/mês
       if (periodType === "ultimos-7-dias") {
         return `${day}/${month}`;
       }
 
-      // Para períodos médios, mostrar dia + nome do mês abreviado
-      if (
-        periodType === "ultimos-30-dias" ||
-        periodType === "ultimos-90-dias"
-      ) {
+      if (periodType === "ultimos-30-dias" || periodType === "ultimos-90-dias") {
         return `${day} ${monthName}`;
       }
 
-      // Para períodos longos, mostrar apenas mês/ano
       return `${monthName}/${date.getFullYear().toString().slice(-2)}`;
-    } catch (error) {
-      console.error("Error formatting date:", error);
+    } catch {
       return "";
     }
   };
@@ -330,15 +227,12 @@ const AnalyticsDashboard = () => {
       return (
         <div className="bg-white dark:bg-gray-800 p-3 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg">
           <p className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">
-            {data.data_completa
-              ? new Date(data.data_completa).toLocaleDateString("pt-BR")
-              : label}
+            {data.data_completa ? new Date(data.data_completa).toLocaleDateString("pt-BR") : label}
           </p>
           {payload.map((entry, index) => (
             <p key={index} className="text-sm" style={{ color: entry.color }}>
               {entry.name}:{" "}
-              {typeof entry.value === "number" &&
-              entry.name !== "Ordens de Serviço"
+              {typeof entry.value === "number" && entry.name !== "Ordens de Serviço"
                 ? formatCurrency(entry.value)
                 : entry.value}
             </p>
@@ -365,22 +259,14 @@ const AnalyticsDashboard = () => {
 
           {/* Filtros */}
           <div className="flex flex-wrap gap-4 mt-4">
-            <Select
-              value={period}
-              onChange={(e) => setPeriod(e.target.value)}
-              className="w-48"
-            >
+            <Select value={period} onChange={(e) => setPeriod(e.target.value)} className="w-48">
               <option value="ultimos-7-dias">Últimos 7 dias</option>
               <option value="ultimos-30-dias">Últimos 30 dias</option>
               <option value="ultimos-90-dias">Últimos 90 dias</option>
               <option value="este-ano">Este ano</option>
             </Select>
 
-            <Select
-              value={status}
-              onChange={(e) => setStatus(e.target.value)}
-              className="w-48"
-            >
+            <Select value={status} onChange={(e) => setStatus(e.target.value)} className="w-48">
               <option value="todos">Status: Todos</option>
               <option value="em-andamento">Em andamento</option>
               <option value="finalizadas">Finalizadas</option>
@@ -396,11 +282,7 @@ const AnalyticsDashboard = () => {
 
         {/* Alert */}
         {alert && (
-          <Alert
-            type={alert.type}
-            message={alert.message}
-            onClose={() => setAlert(null)}
-          />
+          <Alert type={alert.type} message={alert.message} onClose={() => setAlert(null)} />
         )}
 
         {/* Cards de Métricas */}
@@ -412,13 +294,9 @@ const AnalyticsDashboard = () => {
               </h3>
               <DollarSign className="w-5 h-5 text-green-600" />
             </div>
-            <p
-              className="text-2xl font-bold text-gray-900 dark:text-gray-100"
-              title={`Valor: ${metrics.totalRevenue}`}
-            >
+            <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">
               {formatCurrency(metrics.totalRevenue)}
             </p>
-            <p className="text-xs text-gray-500 mt-1">{metrics.totalRevenue}</p>
           </Card>
 
           <Card className="p-6">
@@ -428,13 +306,9 @@ const AnalyticsDashboard = () => {
               </h3>
               <TrendingUp className="w-5 h-5 text-blue-600" />
             </div>
-            <p
-              className="text-2xl font-bold text-gray-900 dark:text-gray-100"
-              title={`Valor: ${metrics.profitMargin}`}
-            >
+            <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">
               {formatCurrency(metrics.profitMargin)}
             </p>
-            <p className="text-xs text-gray-500 mt-1">{metrics.profitMargin}</p>
           </Card>
 
           <Card className="p-6">
@@ -444,14 +318,8 @@ const AnalyticsDashboard = () => {
               </h3>
               <DollarSign className="w-5 h-5 text-purple-600" />
             </div>
-            <p
-              className="text-2xl font-bold text-gray-900 dark:text-gray-100"
-              title={`Valor: ${metrics.averageOrderPrice}`}
-            >
+            <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">
               {formatCurrency(metrics.averageOrderPrice)}
-            </p>
-            <p className="text-xs text-gray-500 mt-1">
-              {metrics.averageOrderPrice}
             </p>
           </Card>
 
@@ -462,14 +330,8 @@ const AnalyticsDashboard = () => {
               </h3>
               <Package className="w-5 h-5 text-orange-600" />
             </div>
-            <p
-              className="text-2xl font-bold text-gray-900 dark:text-gray-100"
-              title={`Valor: ${metrics.ongoingOrders}`}
-            >
+            <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">
               {Math.round(metrics.ongoingOrders)}
-            </p>
-            <p className="text-xs text-gray-500 mt-1">
-              {metrics.ongoingOrders}
             </p>
           </Card>
 
@@ -480,16 +342,8 @@ const AnalyticsDashboard = () => {
               </h3>
               <Clock className="w-5 h-5 text-blue-600" />
             </div>
-            <p
-              className="text-2xl font-bold text-gray-900 dark:text-gray-100"
-              title={`Valor: ${metrics.averageRepairTime} horas`}
-            >
-              {DashboardService.formatAverageRepairTime(
-                metrics.averageRepairTime,
-              )}
-            </p>
-            <p className="text-xs text-gray-500 mt-1">
-              {metrics.averageRepairTime}h
+            <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+              {DashboardService.formatAverageRepairTime(metrics.averageRepairTime)}
             </p>
           </Card>
         </div>
@@ -503,13 +357,7 @@ const AnalyticsDashboard = () => {
             <ResponsiveContainer width="100%" height={300}>
               <AreaChart data={evolutionData}>
                 <defs>
-                  <linearGradient
-                    id="colorFaturamento"
-                    x1="0"
-                    y1="0"
-                    x2="0"
-                    y2="1"
-                  >
+                  <linearGradient id="colorFaturamento" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3} />
                     <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
                   </linearGradient>
@@ -523,13 +371,7 @@ const AnalyticsDashboard = () => {
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                <XAxis
-                  dataKey="mes"
-                  stroke="#6b7280"
-                  angle={-45}
-                  textAnchor="end"
-                  height={80}
-                />
+                <XAxis dataKey="mes" stroke="#6b7280" angle={-45} textAnchor="end" height={80} />
                 <YAxis stroke="#6b7280" />
                 <Tooltip content={<CustomTooltip />} />
                 <Legend />
@@ -580,13 +422,7 @@ const AnalyticsDashboard = () => {
               <ResponsiveContainer width="100%" height={250}>
                 <LineChart data={clientsData}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                  <XAxis
-                    dataKey="mes"
-                    stroke="#6b7280"
-                    angle={-45}
-                    textAnchor="end"
-                    height={80}
-                  />
+                  <XAxis dataKey="mes" stroke="#6b7280" angle={-45} textAnchor="end" height={80} />
                   <YAxis stroke="#6b7280" />
                   <Tooltip content={<CustomTooltip />} />
                   <Legend />
@@ -625,12 +461,7 @@ const AnalyticsDashboard = () => {
                 <BarChart data={ordersStatusData} layout="vertical">
                   <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                   <XAxis type="number" stroke="#6b7280" />
-                  <YAxis
-                    dataKey="status"
-                    type="category"
-                    stroke="#6b7280"
-                    width={120}
-                  />
+                  <YAxis dataKey="status" type="category" stroke="#6b7280" width={120} />
                   <Tooltip
                     contentStyle={{
                       backgroundColor: "#fff",
@@ -664,13 +495,7 @@ const AnalyticsDashboard = () => {
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={topAppliancesData}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                  <XAxis
-                    dataKey="nome"
-                    stroke="#6b7280"
-                    angle={-20}
-                    textAnchor="end"
-                    height={80}
-                  />
+                  <XAxis dataKey="nome" stroke="#6b7280" angle={-20} textAnchor="end" height={80} />
                   <YAxis stroke="#6b7280" />
                   <Tooltip
                     contentStyle={{
@@ -679,11 +504,7 @@ const AnalyticsDashboard = () => {
                       borderRadius: "8px",
                     }}
                   />
-                  <Bar
-                    dataKey="quantidade"
-                    fill="#06b6d4"
-                    radius={[8, 8, 0, 0]}
-                  />
+                  <Bar dataKey="quantidade" fill="#06b6d4" radius={[8, 8, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             ) : (
@@ -702,13 +523,7 @@ const AnalyticsDashboard = () => {
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={topItemsData} layout="horizontal">
                   <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                  <XAxis
-                    dataKey="item"
-                    stroke="#6b7280"
-                    angle={-20}
-                    textAnchor="end"
-                    height={100}
-                  />
+                  <XAxis dataKey="item" stroke="#6b7280" angle={-20} textAnchor="end" height={100} />
                   <YAxis stroke="#6b7280" />
                   <Tooltip
                     contentStyle={{
@@ -717,11 +532,7 @@ const AnalyticsDashboard = () => {
                       borderRadius: "8px",
                     }}
                   />
-                  <Bar
-                    dataKey="quantidade"
-                    fill="#6366f1"
-                    radius={[8, 8, 0, 0]}
-                  />
+                  <Bar dataKey="quantidade" fill="#6366f1" radius={[8, 8, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             ) : (

@@ -36,10 +36,10 @@ class DashboardService {
       const response = await apiClient.get("/dashboard/metrics", {
         params: { period, status },
       });
-      return response.data || { totalRevenue: 0 };
+      return response.data || { value: 0 };
     } catch (error) {
       console.error("Error fetching metrics:", error);
-      return { totalRevenue: 0 };
+      return { value: 0 };
     }
   }
 
@@ -51,10 +51,10 @@ class DashboardService {
       const response = await apiClient.get("/dashboard/profit-margin", {
         params: { period, status },
       });
-      return response.data || { totalRevenue: 0 };
+      return response.data || { value: 0 };
     } catch (error) {
       console.error("Error fetching profit margin:", error);
-      return { totalRevenue: 0 };
+      return { value: 0 };
     }
   }
 
@@ -66,10 +66,10 @@ class DashboardService {
       const response = await apiClient.get("/dashboard/average-order-price", {
         params: { period, status },
       });
-      return response.data || { totalRevenue: 0 };
+      return response.data || { value: 0 };
     } catch (error) {
       console.error("Error fetching average order price:", error);
-      return { totalRevenue: 0 };
+      return { value: 0 };
     }
   }
 
@@ -81,10 +81,10 @@ class DashboardService {
       const response = await apiClient.get("/dashboard/ongoing-orders", {
         params: { period, status },
       });
-      return response.data || { totalRevenue: 0 };
+      return response.data || { value: 0 };
     } catch (error) {
       console.error("Error fetching ongoing orders:", error);
-      return { totalRevenue: 0 };
+      return { value: 0 };
     }
   }
 
@@ -96,10 +96,10 @@ class DashboardService {
       const response = await apiClient.get("/dashboard/average-repair-time", {
         params: { period, status },
       });
-      return response.data || { totalRevenue: 0 };
+      return response.data || { value: 0 };
     } catch (error) {
       console.error("Error fetching average repair time:", error);
-      return { totalRevenue: 0 };
+      return { value: 0 };
     }
   }
 
