@@ -1,16 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import {
-  User,
-  Home,
-  Lock,
-  CheckCircle,
-  ChevronRight,
-  ChevronLeft,
-  UserPlus,
-  MapPin,
-  Mail,
-} from "lucide-react";
+import { User, Home, Lock, CheckCircle, ChevronRight, ChevronLeft, UserPlus, MapPin } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
 import { useToast } from "../../contexts/ToastContext";
 import Input from "../shared/Input";
@@ -19,7 +9,7 @@ import GoogleButton from "../shared/GoogleButton";
 import ComeBack from "../shared/ComeBack";
 import GoogleAuthService from "../../services/GoogleAuthService";
 import { userService } from "../../services/UserService";
-import { saveToken, saveUserData } from "../../utils/auth";
+import { saveUserData } from "../../utils/auth";
 import {
   validateCPF,
   formatCPF,
@@ -70,10 +60,8 @@ const Register = () => {
     switch (name) {
       case "name":
       case "lastname":
-        if (!value.trim())
-          return `${name === "name" ? "Nome" : "Sobrenome"} é obrigatório`;
-        if (value.length < 2)
-          return `${name === "name" ? "Nome" : "Sobrenome"} deve ter pelo menos 2 caracteres`;
+        if (!value.trim()) return `${name === "name" ? "Nome" : "Sobrenome"} é obrigatório`;
+        if (value.length < 2) return `${name === "name" ? "Nome" : "Sobrenome"} deve ter pelo menos 2 caracteres`;
         if (!/^[a-zA-ZÀ-ÿ\s]+$/.test(value))
           return `${name === "name" ? "Nome" : "Sobrenome"} deve conter apenas letras`;
         return "";
@@ -128,10 +116,7 @@ const Register = () => {
     }
 
     if (name === "password" && formData.confirmPassword) {
-      const confirmError = validateField(
-        "confirmPassword",
-        formData.confirmPassword,
-      );
+      const confirmError = validateField("confirmPassword", formData.confirmPassword);
       setErrors((prev) => ({ ...prev, confirmPassword: confirmError }));
     }
   };
@@ -169,10 +154,7 @@ const Register = () => {
       const userData = await GoogleAuthService.signInWithGoogle();
 
       // Tenta fazer login no backend com o token do Google
-      const backendResult = await userService.googleAuth(
-        userData.email,
-        userData.idToken,
-      );
+      const backendResult = await userService.googleAuth(userData.email, userData.idToken);
 
       if (backendResult.success) {
         // Usuário já existe no backend, faz login e redireciona
@@ -182,7 +164,8 @@ const Register = () => {
         };
 
         // Salva token e dados do usuário
-        saveToken(backendResult.data.token);
+        localStorage.setItem("token", backendResult.data.token);
+        localStorage.setItem("refreshToken", backendResult.data.refreshToken);
         saveUserData(userDataToSave);
 
         // Atualiza o contexto de autenticação
@@ -309,11 +292,7 @@ const Register = () => {
       });
 
       if (result.success) {
-        toast.success(
-          result.autoLogin
-            ? "Conta criada com sucesso! Bem-vindo!"
-            : "Conta criada com sucesso!",
-        );
+        toast.success(result.autoLogin ? "Conta criada com sucesso! Bem-vindo!" : "Conta criada com sucesso!");
 
         setTimeout(() => {
           if (result.autoLogin) {
@@ -352,20 +331,10 @@ const Register = () => {
       <div
         className={`
         flex items-center justify-center w-10 h-10 rounded-full transition-all duration-200
-        ${
-          isCompleted
-            ? "bg-green-600 text-white"
-            : isActive
-              ? "bg-slate-900 text-white"
-              : "bg-gray-200 text-gray-500"
-        }
+        ${isCompleted ? "bg-green-600 text-white" : isActive ? "bg-slate-900 text-white" : "bg-gray-200 text-gray-500"}
       `}
       >
-        {isCompleted ? (
-          <CheckCircle className="h-5 w-5" />
-        ) : (
-          <Icon className="h-5 w-5" />
-        )}
+        {isCompleted ? <CheckCircle className="h-5 w-5" /> : <Icon className="h-5 w-5" />}
       </div>
     );
   };
@@ -374,11 +343,7 @@ const Register = () => {
     <div className="flex items-center justify-center mb-2.5">
       {[1, 2, 3].map((step, index) => (
         <div key={step} className="flex items-center">
-          <StepIndicator
-            step={step}
-            isActive={step === currentStep}
-            isCompleted={step < currentStep}
-          />
+          <StepIndicator step={step} isActive={step === currentStep} isCompleted={step < currentStep} />
           {index < 2 && (
             <div
               className={`
@@ -400,9 +365,7 @@ const Register = () => {
             <div className="text-center mb-2">
               <div className="flex items-center justify-center gap-2 mb-4 mt-6">
                 <User className="h-5 w-5 text-slate-900" />
-                <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">
-                  Informações Pessoais
-                </h2>
+                <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">Informações Pessoais</h2>
               </div>
               {/* <p className="text-xs text-gray-600">Preencha os dados para criar sua conta</p> */}
             </div>
@@ -417,11 +380,7 @@ const Register = () => {
                     className="h-7 w-7 rounded-full flex-shrink-0 border-2 border-blue-300"
                   />
                 ) : (
-                  <svg
-                    className="h-4 w-4 text-blue-600 flex-shrink-0 mt-0.5"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
+                  <svg className="h-4 w-4 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                     <path
                       fillRule="evenodd"
                       d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
@@ -430,13 +389,10 @@ const Register = () => {
                   </svg>
                 )}
                 <div className="flex-1">
-                  <p className="text-xs font-medium text-blue-900">
-                    Dados carregados do Google
-                  </p>
+                  <p className="text-xs font-medium text-blue-900">Dados carregados do Google</p>
                   <p className="text-xs text-blue-700 mt-0.5">
                     Seus dados foram preenchidos automaticamente
-                    {formData.avatar_url && " (incluindo foto de perfil)"}.
-                    Complete as informações restantes.
+                    {formData.avatar_url && " (incluindo foto de perfil)"}. Complete as informações restantes.
                   </p>
                 </div>
               </div>
@@ -540,9 +496,7 @@ const Register = () => {
             <div className="text-center mb-2">
               <div className="flex items-center justify-center gap-2 mb-14 mt-6">
                 <Home className="h-5 w-5 text-slate-900" />
-                <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">
-                  Contato e Endereço
-                </h2>
+                <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">Contato e Endereço</h2>
               </div>
             </div>
 
@@ -583,9 +537,7 @@ const Register = () => {
                   <div className="flex items-start gap-2">
                     <MapPin className="h-4 w-4 text-slate-900 mt-0.5 flex-shrink-0" />
                     <div className="flex-1">
-                      <p className="text-xs font-medium text-gray-900">
-                        Endereço encontrado:
-                      </p>
+                      <p className="text-xs font-medium text-gray-900">Endereço encontrado:</p>
                       <p className="text-xs text-gray-600 mt-0.5">
                         {addressData.logradouro}, {addressData.bairro}
                         <br />
@@ -597,12 +549,9 @@ const Register = () => {
                   <div className="flex items-start gap-2 py-2">
                     <MapPin className="h-4 w-4 text-gray-400 mt-0.5 flex-shrink-0" />
                     <div className="flex-1">
-                      <p className="text-xs font-medium text-gray-500">
-                        Aguardando CEP
-                      </p>
+                      <p className="text-xs font-medium text-gray-500">Aguardando CEP</p>
                       <p className="text-xs text-gray-400 mt-0.5">
-                        Digite um CEP válido para buscar o endereço
-                        automaticamente
+                        Digite um CEP válido para buscar o endereço automaticamente
                       </p>
                     </div>
                   </div>
@@ -661,19 +610,15 @@ const Register = () => {
             <div className="text-center mb-2">
               <div className="flex items-center justify-center gap-2 mb-14 mt-6">
                 <Lock className="h-5 w-5 text-slate-900" />
-                <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">
-                  Defina sua Senha
-                </h2>
+                <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">Defina sua Senha</h2>
               </div>
             </div>
 
             {/* Dica de senha */}
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-3">
               <p className="text-sm text-gray-700">
-                <span className="font-medium text-slate-900">💡 Aviso:</span>{" "}
-                Escolha uma senha com pelo menos{" "}
-                <span className="font-medium text-slate-900">6 caracteres</span>{" "}
-                para proteger sua conta!
+                <span className="font-medium text-slate-900">💡 Aviso:</span> Escolha uma senha com pelo menos{" "}
+                <span className="font-medium text-slate-900">6 caracteres</span> para proteger sua conta!
               </p>
             </div>
 
@@ -752,9 +697,7 @@ const Register = () => {
                 <UserPlus className="h-7 w-7" />
                 <span>Criar Conta</span>
               </h1>
-              <p className="text-gray-600 dark:text-gray-400 mt-1 text-sm">
-                Preencha os dados para criar sua conta
-              </p>
+              <p className="text-gray-600 dark:text-gray-400 mt-1 text-sm">Preencha os dados para criar sua conta</p>
             </div>
 
             <StepProgress />
@@ -777,10 +720,7 @@ const Register = () => {
           {/* Painel de imagem (direita) */}
           <div className="relative h-full w-full min-h-[600px] md:min-h-0">
             <img
-              src={
-                new URL("../../assets/images/banner_login.png", import.meta.url)
-                  .href
-              }
+              src={new URL("../../assets/images/banner_login.png", import.meta.url).href}
               alt="Register Hero"
               className="absolute inset-0 h-full w-full object-cover"
             />

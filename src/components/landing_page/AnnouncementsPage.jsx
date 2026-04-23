@@ -1,60 +1,48 @@
-import React, { useState, useMemo, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import LogoNavbar from "../../assets/images/logo_pelluci_navbar.png";
 import { announcementService } from "../../services/AnnouncementService";
+import { getAnnouncementLabel, getAnnouncementStyles, getAnnouncementTypeOptions } from "../../utils/announcementUtils";
 import {
-  getAnnouncementLabel,
-  getAnnouncementStyles,
-  getAnnouncementTypeOptions,
-} from "../../utils/announcementUtils";
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "../shared/pagination";
 
 export const AnnouncementsPage = () => {
   const navigate = useNavigate();
+
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const [categoryFilter, setCategoryFilter] = useState("Todos");
+
   const [announcements, setAnnouncements] = useState([]);
+  const [totalElements, setTotalElements] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Carregar anúncios
   useEffect(() => {
-    getAllAnnouncements();
-  }, []);
+    const fetchAnnouncements = async () => {
+      setIsLoading(true);
+      try {
+        const type = categoryFilter !== "Todos" ? categoryFilter : null;
+        const response = await announcementService.getAllAnnouncements(currentPage - 1, itemsPerPage, type);
+        setAnnouncements(response?.announcements ?? []);
+        setTotalElements(response?.totalElements ?? 0);
+        setTotalPages(response?.totalPages ?? 0);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  // Filtrar anúncios por tipo e apenas os marcados para visitantes
-  const filteredAnnouncements = useMemo(() => {
-    // Filtrar apenas anúncios marcados para visitantes
-    const visitorAnnouncements = (announcements ?? []).filter(
-      (ann) => ann.forVisitors !== false
-    );
+    fetchAnnouncements();
+  }, [currentPage, itemsPerPage, categoryFilter]);
 
-    if (categoryFilter === "Todos") {
-      return visitorAnnouncements;
-    }
-    return visitorAnnouncements.filter(
-      (ann) => ann.type === categoryFilter
-    );
-  }, [categoryFilter, announcements]);
-
-  // Calcular paginação
-  const totalPages = Math.ceil(filteredAnnouncements.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentAnnouncements = filteredAnnouncements.slice(
-    startIndex,
-    endIndex
-  );
-
-  const getAllAnnouncements = async () => {
-    // Buscar todos os anúncios (limite de 40 para evitar sobrecarga)
-    const response = await announcementService.getAllAnnouncements(
-      0,
-      40
-    );
-    setAnnouncements(response);
-  }
-
-  // Resetar para página 1 quando mudar filtro ou itens por página
   const handleCategoryChange = (category) => {
     setCategoryFilter(category);
     setCurrentPage(1);
@@ -65,21 +53,28 @@ export const AnnouncementsPage = () => {
     setCurrentPage(1);
   };
 
-  const handlePrevPage = () => {
-    setCurrentPage((prev) => Math.max(prev - 1, 1));
+  const startIndex = totalElements === 0 ? 0 : (currentPage - 1) * itemsPerPage + 1;
+  const endIndex = Math.min(currentPage * itemsPerPage, totalElements);
+
+  const getPageNumbers = () => {
+    if (totalPages <= 7) {
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
+    }
+    const pages = [1];
+    if (currentPage > 3) pages.push("ellipsis-left");
+    const rangeStart = Math.max(2, currentPage - 1);
+    const rangeEnd = Math.min(totalPages - 1, currentPage + 1);
+    for (let i = rangeStart; i <= rangeEnd; i++) pages.push(i);
+    if (currentPage < totalPages - 2) pages.push("ellipsis-right");
+    pages.push(totalPages);
+    return pages;
   };
-
-  const handleNextPage = () => {
-    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
-  };
-
-
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-orange-50/20">
       {/* Header/Navbar */}
       <header className="header flex items-center justify-around p-2 bg-[#041A2D] fixed w-full top-0 z-50 shadow-lg backdrop-blur-md border-b border-white/10">
-        <a href="#">
+        <a href="/">
           <img
             src={LogoNavbar}
             alt="Logo da irmãos pelluci"
@@ -89,34 +84,22 @@ export const AnnouncementsPage = () => {
         <nav className="nav text-white hidden lg:block">
           <ul className="flex items-center gap-12">
             <li>
-              <a
-                href="/#services"
-                className="link-underline-animation transition-colors duration-3000 font-medium"
-              >
+              <a href="/#services" className="link-underline-animation transition-colors duration-3000 font-medium">
                 Nossos Serviços
               </a>
             </li>
             <li>
-              <a
-                href="/#faq"
-                className="link-underline-animation transition-colors duration-3000 font-medium"
-              >
+              <a href="/#faq" className="link-underline-animation transition-colors duration-3000 font-medium">
                 Perguntas Frequentes
               </a>
             </li>
             <li>
-              <a
-                href="/#about"
-                className="link-underline-animation transition-colors duration-3000 font-medium"
-              >
+              <a href="/#about" className="link-underline-animation transition-colors duration-3000 font-medium">
                 Quem Somos
               </a>
             </li>
             <li>
-              <a
-                href="/#contact"
-                className="link-underline-animation transition-colors duration-3000 font-medium"
-              >
+              <a href="/#contact" className="link-underline-animation transition-colors duration-3000 font-medium">
                 Fale Conosco
               </a>
             </li>
@@ -132,12 +115,14 @@ export const AnnouncementsPage = () => {
         </nav>
         <div className="auth-buttons flex gap-3">
           <button
+            type="button"
             onClick={() => navigate("/login")}
             className="bg-transparent border-2 border-white text-white px-3 py-1 rounded-lg hover:scale-105 transition-all duration-300 cursor-pointer font-medium shadow-md"
           >
             Entrar
           </button>
           <button
+            type="button"
             onClick={() => navigate("/register")}
             className="bg-gradient-to-r from-[#ba5c00] to-[#d45012] text-white px-3 py-1 rounded-lg hover:scale-105 transition-all duration-300 cursor-pointer font-medium shadow-lg"
           >
@@ -150,18 +135,19 @@ export const AnnouncementsPage = () => {
       <main className="pt-20 pb-20 px-4 sm:px-8">
         {/* Botão Voltar */}
         <button
+          type="button"
           onClick={() => {
             navigate("/");
             setTimeout(() => {
-              const announcementsSection = document.querySelector('.announcements-section');
+              const announcementsSection = document.querySelector(".announcements-section");
               if (announcementsSection) {
-                announcementsSection.scrollIntoView({ behavior: 'smooth' });
+                announcementsSection.scrollIntoView({ behavior: "smooth" });
               }
             }, 100);
           }}
           className="mb-8 bg-[#041A2D] text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer border border-white/20 flex items-center gap-2 mt-10"
         >
-          <ArrowLeft className="h-5 w-5 group-hover:-translate-x-1 transition-transform duration-300" />
+          <ArrowLeft className="h-5 w-5 transition-transform duration-300" />
           Voltar para página inicial
         </button>
 
@@ -171,9 +157,7 @@ export const AnnouncementsPage = () => {
             <h1 className="text-4xl sm:text-5xl font-bold bg-[#041A2D] bg-clip-text text-transparent mb-2 leading-tight pb-1">
               Central de Recados
             </h1>
-            <p className="text-gray-600 text-lg">
-              Acompanhe todas as novidades, feriados e promoções
-            </p>
+            <p className="text-gray-600 text-lg">Acompanhe todas as novidades, feriados e promoções</p>
           </div>
 
           {/* Filtros e Controles */}
@@ -181,18 +165,19 @@ export const AnnouncementsPage = () => {
             <div className="grid sm:grid-cols-2 gap-6">
               {/* Filtro de Tipo */}
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label htmlFor="category-filter" className="block text-sm font-semibold text-gray-700 mb-2">
                   Filtrar por tipo:
                 </label>
                 <select
+                  id="category-filter"
                   value={categoryFilter}
                   onChange={(e) => handleCategoryChange(e.target.value)}
                   className="w-full pl-4 pr-12 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0B4BCC] focus:border-transparent outline-none transition-all cursor-pointer appearance-none bg-white"
                   style={{
                     backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23374151' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")`,
-                    backgroundRepeat: 'no-repeat',
-                    backgroundPosition: 'right 0.75rem center',
-                    backgroundSize: '1.5rem'
+                    backgroundRepeat: "no-repeat",
+                    backgroundPosition: "right 0.75rem center",
+                    backgroundSize: "1.5rem",
                   }}
                 >
                   <option value="Todos">Todos</option>
@@ -206,20 +191,19 @@ export const AnnouncementsPage = () => {
 
               {/* Itens por Página */}
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label htmlFor="items-per-page" className="block text-sm font-semibold text-gray-700 mb-2">
                   Recados por página:
                 </label>
                 <select
+                  id="items-per-page"
                   value={itemsPerPage}
-                  onChange={(e) =>
-                    handleItemsPerPageChange(Number(e.target.value))
-                  }
+                  onChange={(e) => handleItemsPerPageChange(Number(e.target.value))}
                   className="w-full pl-4 pr-12 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0B4BCC] focus:border-transparent outline-none transition-all cursor-pointer appearance-none bg-white"
                   style={{
                     backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23374151' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")`,
-                    backgroundRepeat: 'no-repeat',
-                    backgroundPosition: 'right 0.75rem center',
-                    backgroundSize: '1.5rem'
+                    backgroundRepeat: "no-repeat",
+                    backgroundPosition: "right 0.75rem center",
+                    backgroundSize: "1.5rem",
                   }}
                 >
                   <option value={3}>3</option>
@@ -233,24 +217,27 @@ export const AnnouncementsPage = () => {
             {/* Informações */}
             <div className="mt-4 pt-4 border-t border-gray-200">
               <p className="text-sm text-gray-600">
-                Mostrando{" "}
-                <span className="font-semibold">{startIndex + 1}</span> a{" "}
-                <span className="font-semibold">
-                  {Math.min(endIndex, filteredAnnouncements.length)}
-                </span>{" "}
-                de{" "}
-                <span className="font-semibold">
-                  {filteredAnnouncements.length}
-                </span>{" "}
-                recado(s)
+                {totalElements === 0 ? (
+                  <span>Nenhum recado encontrado</span>
+                ) : (
+                  <>
+                    Mostrando <span className="font-semibold">{startIndex}</span> a{" "}
+                    <span className="font-semibold">{endIndex}</span> de{" "}
+                    <span className="font-semibold">{totalElements}</span> recado(s)
+                  </>
+                )}
               </p>
             </div>
           </div>
 
           {/* Lista de Anúncios */}
           <div className="space-y-6">
-            {currentAnnouncements.length > 0 ? (
-              currentAnnouncements.map((announcement) => {
+            {isLoading ? (
+              <div className="bg-white rounded-xl shadow-md p-12 text-center border border-gray-200">
+                <p className="text-gray-500 text-lg">Carregando recados...</p>
+              </div>
+            ) : announcements.length > 0 ? (
+              announcements.map((announcement) => {
                 const styles = getAnnouncementStyles(announcement.type);
                 return (
                   <div
@@ -260,75 +247,77 @@ export const AnnouncementsPage = () => {
                     <div className="p-6">
                       <div className="flex items-start justify-between mb-4">
                         <div className="flex items-center gap-3">
-                          <span
-                            className={`${styles.badge} px-3 py-1 rounded-full text-sm font-semibold`}
-                          >
+                          <span className={`${styles.badge} px-3 py-1 rounded-full text-sm font-semibold`}>
                             {getAnnouncementLabel(announcement.type)}
                           </span>
                           <span className="text-gray-500 text-sm">
-                            {new Date(announcement.publishedAt).toLocaleDateString(
-                              "pt-BR"
-                            )}
+                            {new Date(announcement.publishedAt).toLocaleDateString("pt-BR")}
                           </span>
                         </div>
                       </div>
-                      <h2 className="text-xl font-bold text-gray-800 mb-2">
-                        {announcement.title}
-                      </h2>
-                      <p className="text-gray-700 leading-relaxed">
-                        {announcement.content}
-                      </p>
+                      <h2 className="text-xl font-bold text-gray-800 mb-2">{announcement.title}</h2>
+                      <p className="text-gray-700 leading-relaxed">{announcement.content}</p>
                     </div>
                   </div>
                 );
               })
             ) : (
               <div className="bg-white rounded-xl shadow-md p-12 text-center border border-gray-200">
-                <p className="text-gray-500 text-lg">
-                  Nenhum recado encontrado para os filtros selecionados.
-                </p>
+                <p className="text-gray-500 text-lg">Nenhum recado encontrado para os filtros selecionados.</p>
               </div>
             )}
           </div>
 
           {/* Paginação */}
           {totalPages > 1 && (
-            <div className="mt-8 flex items-center justify-center gap-4">
-              <button
-                onClick={handlePrevPage}
-                disabled={currentPage === 1}
-                className="flex items-center gap-2 px-4 py-2 bg-[#0B4BCC] text-white rounded-lg hover:bg-[#0a3fa0] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed font-medium shadow-lg hover:scale-105 cursor-pointer"
-              >
-                <ChevronLeft className="h-5 w-5" />
-                Anterior
-              </button>
+            <div className="mt-8">
+              <Pagination>
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        if (currentPage > 1) setCurrentPage((p) => p - 1);
+                      }}
+                      className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                    />
+                  </PaginationItem>
 
-              <div className="flex items-center gap-2">
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                  (page) => (
-                    <button
-                      key={page}
-                      onClick={() => setCurrentPage(page)}
-                      className={`w-10 h-10 rounded-lg font-semibold transition-all duration-300 shadow-md ${
-                        currentPage === page
-                          ? "bg-[#041A2D] text-white hover:scale-105"
-                          : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 hover:scale-105"
-                      }`}
-                    >
-                      {page}
-                    </button>
-                  )
-                )}
-              </div>
+                  {getPageNumbers().map((page) =>
+                    page === "ellipsis-left" || page === "ellipsis-right" ? (
+                      <PaginationItem key={page}>
+                        <PaginationEllipsis />
+                      </PaginationItem>
+                    ) : (
+                      <PaginationItem key={page}>
+                        <PaginationLink
+                          href="#"
+                          isActive={page === currentPage}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setCurrentPage(page);
+                          }}
+                          className="cursor-pointer"
+                        >
+                          {page}
+                        </PaginationLink>
+                      </PaginationItem>
+                    ),
+                  )}
 
-              <button
-                onClick={handleNextPage}
-                disabled={currentPage === totalPages}
-                className="flex items-center gap-2 px-4 py-2 bg-[#0B4BCC] text-white rounded-lg hover:bg-[#0a3fa0] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed font-medium shadow-lg hover:scale-105 cursor-pointer"
-              >
-                Próxima
-                <ChevronRight className="h-5 w-5" />
-              </button>
+                  <PaginationItem>
+                    <PaginationNext
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        if (currentPage < totalPages) setCurrentPage((p) => p + 1);
+                      }}
+                      className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
             </div>
           )}
         </div>

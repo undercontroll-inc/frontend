@@ -9,7 +9,7 @@ import GoogleButton from "../shared/GoogleButton";
 import ComeBack from "../shared/ComeBack";
 import GoogleAuthService from "../../services/GoogleAuthService";
 import { userService } from "../../services/UserService";
-import { saveToken, saveUserData } from "../../utils/auth";
+import { saveUserData } from "../../utils/auth";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -69,10 +69,7 @@ const Login = () => {
       const userData = await GoogleAuthService.signInWithGoogle();
 
       // Tenta fazer login no backend com o token do Google
-      const backendResult = await userService.googleAuth(
-        userData.email,
-        userData.idToken
-      );
+      const backendResult = await userService.googleAuth(userData.email, userData.idToken);
 
       if (backendResult.success) {
         // Usuário já existe no backend, faz login usando o contexto
@@ -82,7 +79,8 @@ const Login = () => {
         };
 
         // Salva token e dados do usuário
-        saveToken(backendResult.data.token);
+        localStorage.setItem("token", backendResult.data.token);
+        localStorage.setItem("refreshToken", backendResult.data.refreshToken);
         saveUserData(userDataToSave);
 
         // Atualiza o contexto de autenticação
@@ -140,13 +138,11 @@ const Login = () => {
 
       if (result.success) {
         toast.success(`Bem-vindo, ${result.user.name}!`);
-        
-        
+
         const isAdmin = result.user?.userType === "ADMIN";
 
         setTimeout(() => {
-          const dest =
-             isAdmin ? "/dashboard" : "/repairs";
+          const dest = isAdmin ? "/dashboard" : "/repairs";
           navigate(dest);
         }, 500);
       } else {
@@ -166,10 +162,10 @@ const Login = () => {
     <div className="min-h-screen w-full bg-[#041a2dec] flex items-center justify-center p-4">
       {/* Botão Voltar */}
       <div className="absolute top-8 left-8 z-10">
-        <ComeBack 
-          variant="light" 
-          className="bg-white hover:bg-gray-100 hover:scale-105 transition-all duration-300 cursor-pointer" 
-          to="/" 
+        <ComeBack
+          variant="light"
+          className="bg-white hover:bg-gray-100 hover:scale-105 transition-all duration-300 cursor-pointer"
+          to="/"
         />
       </div>
 
@@ -177,11 +173,7 @@ const Login = () => {
         <div className="grid grid-cols-1 md:grid-cols-2">
           {/* Painel de imagem (esquerda) */}
           <div className="relative h-full w-full">
-            <img
-              src={heroImage}
-              alt="Login Hero"
-              className="absolute inset-0 h-full w-full object-cover"
-            />
+            <img src={heroImage} alt="Login Hero" className="absolute inset-0 h-full w-full object-cover" />
             {/* Overlay suave */}
             {/* <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent" /> */}
           </div>
@@ -195,18 +187,14 @@ const Login = () => {
                   👋
                 </span>
               </h1>
-              <p className="text-gray-600 dark:text-gray-400 mt-2 text-center">
-                Insira seus dados para entrar
-              </p>
+              <p className="text-gray-600 dark:text-gray-400 mt-2 text-center">Insira seus dados para entrar</p>
             </div>
 
             <form className="space-y-5" onSubmit={handleSubmit}>
               <div>
                 <div className="flex items-center gap-2 mb-2">
                   <User className="text-gray-700 dark:text-gray-300 mb-2" />
-                  <span className="block text-md font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    E-mail
-                  </span>
+                  <span className="block text-md font-medium text-gray-700 dark:text-gray-300 mb-1">E-mail</span>
                 </div>
                 <Input
                   name="name"
@@ -223,9 +211,7 @@ const Login = () => {
               <div>
                 <div className="flex items-center gap-2 mb-2">
                   <Lock className="w-auto h-5 text-gray-700 dark:text-gray-300 mb-2" />
-                  <span className="block text-md font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Senha
-                  </span>
+                  <span className="block text-md font-medium text-gray-700 dark:text-gray-300 mb-1">Senha</span>
                 </div>
                 <Input
                   name="password"

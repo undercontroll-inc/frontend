@@ -25,7 +25,7 @@ apiClient.interceptors.request.use(
 // Interceptor para tratamento de erros
 apiClient.interceptors.response.use(
   (response) => response,
-  (error) => {
+  async (error) => {
     if (error.response) {
       console.error(`[API Error ${error.response.status}]:`, getAxiosErrorMessage(error));
 
@@ -34,6 +34,16 @@ apiClient.interceptors.response.use(
         localStorage.removeItem("authToken");
         localStorage.removeItem("userData");
         window.location.href = "/login";
+      }
+
+      if (error.response.status === 403) {
+        localStorage.removeItem("authToken");
+        localStorage.removeItem("userData");
+
+        const data = await refreshToken(localStorage.getItem("refreshToken"));
+
+        localStorage.setItem("authToken", data.token);
+        localStorage.setItem("refreshToken", data.refreshToken);
       }
     } else if (error.request) {
       console.error("[Network Error]: Sem resposta do servidor");
@@ -67,4 +77,31 @@ export function getAxiosErrorMessage(error) {
   }
 
   return error.message || "Erro desconhecido";
+}
+
+async function refreshToken(refreshToken) {
+  try {
+    if (!refreshToken) {
+      console.warn("Refresh token not present");
+      return;
+    }
+
+    const response = await apiClient.post(`/v1/api/auth/refresh`, {
+      refreshToken,
+    });
+
+    const data = response.data;
+
+    return {
+      success: true,
+      data,
+    };
+  } catch (err) {
+    console.error(`Error while refreshing the token: ${err}`);
+
+    return {
+      success: false,
+      error: getAxiosErrorMessage(err),
+    };
+  }
 }

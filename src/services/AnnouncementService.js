@@ -1,7 +1,6 @@
 import { apiClient } from "../providers/api";
 
 class AnnouncementService {
-
   async getLastAnnouncement() {
     try {
       const response = await apiClient.get("/announcements/last");
@@ -18,24 +17,23 @@ class AnnouncementService {
     }
   }
 
-  async publishAnnouncement(
-    title,
-    content,
-    type,
-
-  ) {
+  async publishAnnouncement(title, content, type) {
     try {
       const token = localStorage.getItem("authToken");
 
-      const response = await apiClient.post("/announcements", {
-        title,
-        description: content,
-        type,
-      }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const response = await apiClient.post(
+        "/announcements",
+        {
+          title,
+          description: content,
+          type,
         },
-      });
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
 
       return response.data;
     } catch (err) {
@@ -45,46 +43,44 @@ class AnnouncementService {
     }
   }
 
-  async getAllAnnouncements(
-    page,
-    size,
-  ) {
+  async getAllAnnouncements(page = 0, size = 10, type = null) {
     try {
-      const url = `/announcements?page=${Number(page)}&size=${Number(size)}`;
-      console.log(url);
+      const params = new URLSearchParams({ page: Number(page), size: Number(size) });
+      if (type && type !== "Todos") {
+        params.append("type", type);
+      }
 
-      const response = await apiClient.get(url);
+      const response = await apiClient.get(`/announcements?${params}`);
 
       return response.data;
     } catch (error) {
       console.error("Erro ao buscar anúncios:", error);
 
-      if (error.response.status === 404) {
-        return [];
+      if (error.response?.status === 404 || error.response?.status === 204) {
+        return { announcements: [], totalElements: 0, totalPages: 0, page: Number(page), size: Number(size) };
       }
 
       throw error;
     }
   }
 
-  async updateAnnouncement(
-    id,
-    title,
-    content,
-    type,
-  ) {
+  async updateAnnouncement(id, title, content, type) {
     try {
       const token = localStorage.getItem("authToken");
 
-      const response = await apiClient.put(`/announcements/${id}`, {
-        title,
-        content,
-        type,
-      }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const response = await apiClient.put(
+        `/announcements/${id}`,
+        {
+          title,
+          content,
+          type,
         },
-      });
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
 
       return response.data;
     } catch (err) {

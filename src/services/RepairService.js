@@ -2,12 +2,10 @@ import { jsonServer } from "../providers/json-server";
 import { apiClient } from "../providers/api";
 
 class RepairService {
-  async getAllRepairs(userId = null) {
+  async getAllRepairs(page = 0, size = 10) {
     const token = localStorage.getItem("authToken");
-
     try {
-      const url = userId ? `/orders?userId=${userId}` : "/orders";
-      const response = await apiClient.get(url, {
+      const response = await apiClient.get(`/orders?page=${page}&size=${size}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -152,9 +150,9 @@ class RepairService {
     try {
       const response = await apiClient.get(`orders/export/${id}`, {
         headers: {
-          "Authorization": `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
-        responseType: 'blob', // Important for binary data
+        responseType: "blob", // Important for binary data
       });
 
       return {
@@ -162,7 +160,7 @@ class RepairService {
         data: response.data,
       };
     } catch (error) {
-      console.error('Erro ao exportar orders:', error);
+      console.error("Erro ao exportar orders:", error);
       throw error;
     }
   }
