@@ -309,7 +309,7 @@ export function RepairPage() {
                   : `Página ${currentPage} de ${totalPages} — ${totalElements} ordens no total`}
               </p>
 
-              {totalPages > 1 && (
+              {totalPages > 0 && (
                 <Pagination className="mx-0 w-auto">
                   <PaginationContent>
                     <PaginationItem>
