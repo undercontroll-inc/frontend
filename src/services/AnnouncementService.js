@@ -106,22 +106,52 @@ class AnnouncementService {
       const data = response?.data;
 
       if (Array.isArray(data)) {
-        return data;
+        return {
+          announcements: data,
+          totalElements: data.length,
+          totalPages: 1,
+          page: Number(page),
+          size: Number(size),
+        };
       }
 
       if (Array.isArray(data?.announcements)) {
-        return data.announcements;
+        return {
+          announcements: data.announcements,
+          totalElements: data.totalElements ?? data.announcements.length,
+          totalPages: data.totalPages ?? 1,
+          page: data.page ?? Number(page),
+          size: data.size ?? Number(size),
+        };
       }
 
       if (Array.isArray(data?.content)) {
-        return data.content;
+        return {
+          announcements: data.content,
+          totalElements: data.totalElements ?? data.content.length,
+          totalPages: data.totalPages ?? 1,
+          page: data.page ?? Number(page),
+          size: data.size ?? Number(size),
+        };
       }
 
       if (Array.isArray(data?.data)) {
-        return data.data;
+        return {
+          announcements: data.data,
+          totalElements: data.totalElements ?? data.data.length,
+          totalPages: data.totalPages ?? 1,
+          page: data.page ?? Number(page),
+          size: data.size ?? Number(size),
+        };
       }
 
-      return [];
+      return {
+        announcements: [],
+        totalElements: 0,
+        totalPages: 0,
+        page: Number(page),
+        size: Number(size),
+      };
     } catch (error) {
       console.error("Erro ao buscar anúncios:", error);
 
