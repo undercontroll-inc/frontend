@@ -121,9 +121,7 @@ class UserService {
 
     try {
       // Remove caracteres não numéricos do CEP (hífen, pontos, etc)
-      const cleanCEP = userData.CEP
-        ? userData.CEP.replace(/\D/g, "")
-        : userData.CEP;
+      const cleanCEP = userData.CEP ? userData.CEP.replace(/\D/g, "") : userData.CEP;
 
       const response = await apiClient.put(
         `${BASE_URI}/${id}`,
@@ -140,7 +138,7 @@ class UserService {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
 
       return {
@@ -156,15 +154,19 @@ class UserService {
   }
   async resetPassword(newPassword, userId) {
     const token = localStorage.getItem("authToken");
-    
+
     try {
-      const response = await apiClient.patch(`${BASE_URI}/reset-password/${userId}`, {
-        newPassword,
-      }, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      const response = await apiClient.patch(
+        `${BASE_URI}/reset-password/${userId}`,
+        {
+          newPassword,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
 
       return {
         success: true,

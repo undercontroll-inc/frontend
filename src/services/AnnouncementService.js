@@ -94,15 +94,14 @@ class AnnouncementService {
     }
   }
 
-  async getAllAnnouncements(
-    page,
-    size,
-  ) {
+  async getAllAnnouncements(page = 0, size = 10, type = null) {
     try {
-      const url = `/announcements?page=${Number(page)}&size=${Number(size)}`;
-      console.log(url);
+      const params = new URLSearchParams({ page: Number(page), size: Number(size) });
+      if (type && type !== "Todos") {
+        params.append("type", type);
+      }
 
-      const response = await apiClient.get(url);
+      const response = await apiClient.get(`/announcements?${params}`);
 
       const data = response?.data;
 
@@ -126,8 +125,8 @@ class AnnouncementService {
     } catch (error) {
       console.error("Erro ao buscar anúncios:", error);
 
-      if (error.response.status === 404) {
-        return [];
+      if (error.response?.status === 404 || error.response?.status === 204) {
+        return { announcements: [], totalElements: 0, totalPages: 0, page: Number(page), size: Number(size) };
       }
 
       throw error;

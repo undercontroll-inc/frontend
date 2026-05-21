@@ -2,16 +2,8 @@ import { forwardRef } from "react";
 
 const Button = forwardRef(
   (
-    {
-      children,
-      variant = "primary",
-      size = "md",
-      disabled = false,
-      loading = false,
-      className = "",
-      ...props
-    },
-    ref
+    { children, variant = "primary", size = "md", disabled = false, loading = false, className = "", ...props },
+    ref,
   ) => {
     const baseClasses =
       "inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 cursor-pointer";
@@ -35,8 +27,7 @@ const Button = forwardRef(
       icon: "h-10 w-10 p-0",
     };
 
-    const disabledClasses =
-      disabled || loading ? "opacity-50 cursor-not-allowed" : "";
+    const disabledClasses = disabled || loading ? "opacity-50 cursor-not-allowed" : "";
 
     return (
       <button
@@ -45,13 +36,11 @@ const Button = forwardRef(
         className={`${baseClasses} ${variants[variant]} ${sizes[size]} ${disabledClasses} ${className}`}
         {...props}
       >
-        {loading && (
-          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current"></div>
-        )}
+        {loading && <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current"></div>}
         {children}
       </button>
     );
-  }
+  },
 );
 
 Button.displayName = "Button";

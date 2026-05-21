@@ -1,14 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useState, useEffect } from "react";
 import { userService } from "../services/UserService";
-import {
-  getToken,
-  saveToken,
-  saveUserData,
-  getUserData,
-  clearAuth,
-  isLoggedIn,
-} from "../utils/auth";
+import { getToken, saveTokens, saveUserData, getUserData, clearAuth, isLoggedIn } from "../utils/auth";
 
 const AuthContext = createContext(null);
 
@@ -50,15 +43,12 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (credentials) => {
     try {
-      const result = await userService.auth(
-        credentials.name,
-        credentials.password,
-      );
+      const result = await userService.auth(credentials.name, credentials.password);
 
       if (result.success) {
         if (result.data?.token) {
           // O backend retorna duas chaves, uma sendo o token de autenticação e outra os dados basicos do usuario.
-          saveToken(result.data.token);
+          saveTokens(result.data.token, result.data.refreshToken);
           saveUserData(result.data.user);
           setUser(result.data.user);
         }
