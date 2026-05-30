@@ -146,8 +146,20 @@ const AnnouncementsCustomer = () => {
                           </span>
                         </div>
                       </div>
-                      <h2 className="text-xl font-bold text-gray-800 mb-2">{announcement.title}</h2>
-                      <p className="text-gray-700 leading-relaxed">{announcement.content}</p>
+                      <h2 className="text-xl font-bold text-gray-800 mb-2">
+                        {announcement.title}
+                      </h2>
+                      {announcement.imageUrl && (
+                        <img
+                          src={announcement.imageUrl}
+                          alt={`Imagem do recado ${announcement.title}`}
+                          className="w-full max-h-72 object-cover rounded-lg mb-3"
+                          loading="lazy"
+                        />
+                      )}
+                      <p className="text-gray-700 leading-relaxed">
+                        {announcement.content}
+                      </p>
                     </div>
                   </div>
                 );

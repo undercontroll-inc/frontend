@@ -5,6 +5,7 @@ import Button from "../shared/Button";
 import Input from "../shared/Input";
 import Select from "../shared/Select";
 import { useToast } from "../../contexts/ToastContext";
+import { getAxiosErrorMessage } from "../../providers/api";
 import { announcementService } from "../../services/AnnouncementService";
 import {
   ANNOUNCEMENT_TYPES,
@@ -24,6 +25,9 @@ import {
 
 const PAGE_SIZE = 5;
 
+const MAX_IMAGE_SIZE_BYTES = 5 * 1024 * 1024;
+const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
+
 const AnnouncementsAdmin = () => {
   const toast = useToast();
   const [announcements, setAnnouncements] = useState([]);
@@ -32,6 +36,9 @@ const AnnouncementsAdmin = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("Todos");
   const [loading, setLoading] = useState(false);
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState("");
+  const [removeImage, setRemoveImage] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -43,7 +50,11 @@ const AnnouncementsAdmin = () => {
     content: "",
   });
 
-  const [errors, setErrors] = useState({ title: "", content: "" });
+  const [errors, setErrors] = useState({
+    title: "",
+    content: "",
+    image: "",
+  });
 
   const loadAnnouncements = useCallback(async () => {
     try {
@@ -95,10 +106,24 @@ const AnnouncementsAdmin = () => {
   const handleOpenModal = (announcement = null) => {
     if (announcement) {
       setEditingAnnouncement(announcement);
-      setFormData({ type: announcement.type, title: announcement.title, content: announcement.content });
+      setFormData({
+        type: announcement.type,
+        title: announcement.title,
+        content: announcement.content,
+      });
+      setImagePreviewUrl(announcement.imageUrl || "");
+      setImageFile(null);
+      setRemoveImage(false);
     } else {
       setEditingAnnouncement(null);
-      setFormData({ type: ANNOUNCEMENT_TYPES.PROMOTIONS, title: "", content: "" });
+      setFormData({
+        type: ANNOUNCEMENT_TYPES.PROMOTIONS,
+        title: "",
+        content: "",
+      });
+      setImagePreviewUrl("");
+      setImageFile(null);
+      setRemoveImage(false);
     }
     setIsModalOpen(true);
   };
@@ -106,7 +131,19 @@ const AnnouncementsAdmin = () => {
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setEditingAnnouncement(null);
-    setFormData({ type: ANNOUNCEMENT_TYPES.PROMOTIONS, title: "", content: "" });
+    setFormData({
+      type: ANNOUNCEMENT_TYPES.PROMOTIONS,
+      title: "",
+      content: "",
+    });
+    setErrors({
+      title: "",
+      content: "",
+      image: "",
+    });
+    setImageFile(null);
+    setImagePreviewUrl("");
+    setRemoveImage(false);
   };
 
   const handleInputChange = (e) => {
@@ -116,12 +153,70 @@ const AnnouncementsAdmin = () => {
     if (type === "checkbox" && errors.destination) setErrors((prev) => ({ ...prev, destination: "" }));
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+      setErrors((prev) => ({
+        ...prev,
+        image: "Formato inválido. Use JPG, PNG ou WEBP.",
+      }));
+      e.target.value = "";
+      return;
+    }
+
+    if (file.size > MAX_IMAGE_SIZE_BYTES) {
+      setErrors((prev) => ({
+        ...prev,
+        image: "A imagem deve ter no máximo 5MB.",
+      }));
+      e.target.value = "";
+      return;
+    }
+
+    setImageFile(file);
+    setImagePreviewUrl(URL.createObjectURL(file));
+    setRemoveImage(false);
+    setErrors((prev) => ({ ...prev, image: "" }));
+  };
+
+  const handleRemoveImageToggle = (checked) => {
+    setRemoveImage(checked);
+
+    if (checked) {
+      setImageFile(null);
+      setImagePreviewUrl("");
+    } else if (editingAnnouncement?.imageUrl) {
+      setImagePreviewUrl(editingAnnouncement.imageUrl);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const newErrors = { title: "", content: "", destination: "" };
-    if (!formData.title.trim()) newErrors.title = "Título é obrigatório";
-    if (!formData.content.trim()) newErrors.content = "Descrição é obrigatória";
-    if (newErrors.title || newErrors.content) {
+
+    // Resetar erros
+    const newErrors = {
+      title: "",
+      content: "",
+      destination: "",
+      image: "",
+    };
+
+    // Validar campos
+    if (!formData.title.trim()) {
+      newErrors.title = "Título é obrigatório";
+    }
+
+    if (!formData.content.trim()) {
+      newErrors.content = "Descrição é obrigatória";
+    }
+
+    // Se houver erros, mostrar e não prosseguir
+    if (newErrors.title || newErrors.content || newErrors.image) {
       setErrors(newErrors);
       toast.error("Preencha todos os campos obrigatórios");
       return;
@@ -135,17 +230,27 @@ const AnnouncementsAdmin = () => {
           formData.title,
           formData.content,
           formData.type,
+          imageFile,
+          removeImage,
         );
         toast.success("Recado atualizado com sucesso!");
       } else {
-        await announcementService.publishAnnouncement(formData.title, formData.content, formData.type);
+        // Criar novo anúncio
+        await announcementService.publishAnnouncement(
+          formData.title,
+          formData.content,
+          formData.type,
+          imageFile,
+        );
         toast.success("Recado criado com sucesso!");
       }
       await loadAnnouncements();
       handleCloseModal();
     } catch (error) {
       console.error("Erro ao salvar anúncio:", error);
-      toast.error("Erro ao salvar anúncio. Tente novamente.");
+      toast.error(
+        `Erro ao salvar anúncio: ${getAxiosErrorMessage(error)}`,
+      );
     } finally {
       setLoading(false);
     }
@@ -254,8 +359,20 @@ const AnnouncementsAdmin = () => {
                             </button>
                           </div>
                         </div>
-                        <h2 className="text-xl font-bold text-gray-800 mb-2">{announcement.title}</h2>
-                        <p className="text-gray-700 leading-relaxed">{announcement.content}</p>
+                        <h2 className="text-xl font-bold text-gray-800 mb-2">
+                          {announcement.title}
+                        </h2>
+                        {announcement.imageUrl && (
+                          <img
+                            src={announcement.imageUrl}
+                            alt={`Imagem do recado ${announcement.title}`}
+                            className="w-full max-h-72 object-cover rounded-lg mb-3"
+                            loading="lazy"
+                          />
+                        )}
+                        <p className="text-gray-700 leading-relaxed">
+                          {announcement.content}
+                        </p>
                       </div>
                     </div>
                   );
@@ -403,6 +520,50 @@ const AnnouncementsAdmin = () => {
                       />
                       {errors.content && <p className="text-red-500 text-sm mt-1">{errors.content}</p>}
                     </div>
+
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                        Imagem do recado
+                      </label>
+                      <input
+                        type="file"
+                        accept="image/png,image/jpeg,image/webp"
+                        onChange={handleImageChange}
+                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                      />
+                      <p className="text-xs text-gray-500 mt-1">
+                        Formatos permitidos: JPG, PNG e WEBP. Tamanho máximo: 5MB.
+                      </p>
+                      {errors.image && (
+                        <p className="text-red-500 text-sm mt-1">{errors.image}</p>
+                      )}
+                    </div>
+
+                    {imagePreviewUrl && !removeImage && (
+                      <div>
+                        <p className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                          Pré-visualização
+                        </p>
+                        <img
+                          src={imagePreviewUrl}
+                          alt="Pré-visualização da imagem do recado"
+                          className="w-full max-h-72 object-cover rounded-lg border border-gray-200"
+                        />
+                      </div>
+                    )}
+
+                    {editingAnnouncement && (
+                      <label className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+                        <input
+                          type="checkbox"
+                          checked={removeImage}
+                          onChange={(e) =>
+                            handleRemoveImageToggle(e.target.checked)
+                          }
+                        />
+                        Remover imagem atual
+                      </label>
+                    )}
                   </form>
                 </div>
 
