@@ -42,8 +42,8 @@ export const LandingPage = () => {
   }, []);
 
   const getLatestAnnouncements = async () => {
-    const announcements = await announcementService.getAllAnnouncements(0, 3);
-    setLatestAnnouncements(announcements || []);
+    const data = await announcementService.getAllAnnouncements(0, 3);
+    setLatestAnnouncements(data?.announcements || []);
   }
 
   const handleWhatsAppClick = () => {
