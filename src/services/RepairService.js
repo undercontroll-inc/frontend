@@ -3,12 +3,9 @@ import { apiClient } from "../providers/api";
 
 class RepairService {
   async getAllRepairs(page = 0, size = 10) {
-    const token = localStorage.getItem("authToken");
     try {
-      const response = await apiClient.get(`/orders?page=${page}&size=${size}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+      const response = await apiClient.get("/orders", {
+        params: { page, size },
       });
       return response.data;
     } catch (error) {
@@ -18,17 +15,9 @@ class RepairService {
   }
 
   async getRepairById(id) {
-    const token = localStorage.getItem("authToken");
-
     try {
-      const response = await apiClient.get(`/orders/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await apiClient.get(`/orders/${id}`);
       const { data } = response.data;
-
-      console.log(data);
 
       return data;
     } catch (error) {
@@ -38,14 +27,8 @@ class RepairService {
   }
 
   async createRepair(repairData) {
-    const token = localStorage.getItem("authToken");
-
     try {
-      const response = await apiClient.post("/orders", repairData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await apiClient.post("/orders", repairData);
       return response.data;
     } catch (error) {
       console.error("Erro ao criar repair:", error);
@@ -54,14 +37,8 @@ class RepairService {
   }
 
   async updateRepair(id, repairData) {
-    const token = localStorage.getItem("authToken");
-
     try {
-      const response = await apiClient.patch(`/repairs/${id}`, repairData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await apiClient.patch(`/repairs/${id}`, repairData);
       return response.data;
     } catch (error) {
       console.error(`Erro ao atualizar repair ${id}:`, error);
@@ -70,14 +47,8 @@ class RepairService {
   }
 
   async patchRepair(id, partialData) {
-    const token = localStorage.getItem("authToken");
-
     try {
-      const response = await apiClient.patch(`/orders/${id}`, partialData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await apiClient.patch(`/orders/${id}`, partialData);
       return response.data;
     } catch (error) {
       console.error(`Erro ao atualizar parcialmente repair ${id}:`, error);
@@ -94,15 +65,9 @@ class RepairService {
     }
   }
 
-  async deleteOrderItem(id) {
-    const token = localStorage.getItem("authToken");
-
+  async deleteOrderItem(orderId, id) {
     try {
-      await apiClient.delete(`/order-items/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await apiClient.delete(`/orders/${orderId}/items/${id}`);
     } catch (error) {
       console.error(`Erro ao deletar order-item ${id}:`, error);
       throw error;
@@ -110,14 +75,8 @@ class RepairService {
   }
 
   async getRepairsByStatus(status) {
-    const token = localStorage.getItem("authToken");
-
     try {
-      const response = await jsonServer.get(`/repairs?status=${status}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await jsonServer.get(`/repairs?status=${status}`);
       return response.data;
     } catch (error) {
       console.error(`Erro ao buscar repairs por status ${status}:`, error);
@@ -126,18 +85,11 @@ class RepairService {
   }
 
   async getUserRepairs(userId) {
-    const token = localStorage.getItem("authToken");
     try {
-      const response = await apiClient.get(`orders/filter?userId=${userId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+      const response = await apiClient.get("/orders", {
+        params: { userId },
       });
-      const { data } = response.data;
-
-      console.log(data);
-
-      return data;
+      return response.data?.data ?? [];
     } catch (error) {
       console.error(`Erro ao buscar repairs do usuário ${userId}:`, error);
       throw error;
@@ -145,14 +97,9 @@ class RepairService {
   }
 
   async exportOrder(id) {
-    const token = localStorage.getItem("authToken");
-
     try {
-      const response = await apiClient.get(`orders/export/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        responseType: "blob", // Important for binary data
+      const response = await apiClient.get(`/orders/${id}/export`, {
+        responseType: "blob",
       });
 
       return {

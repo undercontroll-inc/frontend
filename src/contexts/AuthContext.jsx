@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const initializeAuth = async () => {
+    const initializeAuth = () => {
       if (isLoggedIn()) {
         try {
           const token = getToken();
@@ -46,9 +46,8 @@ export const AuthProvider = ({ children }) => {
       const result = await userService.auth(credentials.name, credentials.password);
 
       if (result.success) {
-        if (result.data?.token) {
-          // O backend retorna duas chaves, uma sendo o token de autenticação e outra os dados basicos do usuario.
-          saveTokens(result.data.token, result.data.refreshToken);
+        if (result.data?.accessToken) {
+          saveTokens(result.data.accessToken, result.data.refreshToken);
           saveUserData(result.data.user);
           setUser(result.data.user);
         }

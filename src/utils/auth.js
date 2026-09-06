@@ -2,17 +2,22 @@ export const getToken = () => {
   return localStorage.getItem("authToken");
 };
 
+export const getRefreshToken = () => {
+  return localStorage.getItem("refreshToken");
+};
+
 export const isLoggedIn = () => {
   return !!getToken();
 };
 
-export const saveTokens = (token, refreshToken) => {
-  localStorage.setItem("authToken", token);
+export const saveTokens = (accessToken, refreshToken) => {
+  localStorage.setItem("authToken", accessToken);
   localStorage.setItem("refreshToken", refreshToken);
 };
 
 export const removeToken = () => {
   localStorage.removeItem("authToken");
+  localStorage.removeItem("refreshToken");
 };
 
 export const getAuthHeaders = () => {
@@ -23,7 +28,6 @@ export const getAuthHeaders = () => {
   };
 };
 
-// User data management
 const USER_STORAGE_KEY = "userData";
 
 export const saveUserData = (userData) => {
