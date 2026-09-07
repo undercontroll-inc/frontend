@@ -320,96 +320,65 @@ const ComponentDetails = () => {
                 )}
               </div>
 
-              {/* Seção: Peças + Observações do Cliente ao lado */}
+              {/* Seção: Peças */}
               <div className="mb-6">
                 <h3 className="text-base font-bold text-gray-900 dark:text-gray-100 mb-4 uppercase tracking-wide">
                   Peças
                 </h3>
                 {repair.parts && repair.parts.length > 0 ? (
-                  <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6">
-                    {/* Tabela de peças (esquerda) */}
-                    <div className="overflow-x-auto rounded-lg border border-gray-300 dark:border-zinc-700 shadow-sm">
-                      <table className="w-full">
-                        <thead className="bg-[#041A2D] text-white text-sm font-semibold">
-                          <tr>
-                            <th className="text-left px-4 py-3">Peças</th>
-                            <th className="text-left px-4 py-3">Quantidade</th>
-                            <th className="text-left px-4 py-3">
-                              Valor Unitário
-                            </th>
-                            <th className="text-left px-4 py-3">
-                              Valor Somado
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {repair.parts.map((part, idx) => (
-                            <tr
-                              key={idx}
-                              className="bg-white dark:bg-zinc-800 border-b border-gray-200 dark:border-zinc-700 text-sm hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors"
-                            >
-                              <td className="px-4 py-3 text-gray-900 dark:text-gray-100">
-                                {part.item || part.name || "-"}
-                              </td>
-                              <td className="px-4 py-3 text-gray-900 dark:text-gray-100">
-                                {part.quantity || 0}
-                              </td>
-                              <td className="px-4 py-3 text-gray-900 dark:text-gray-100">
-                                {formatCurrency(part.price)}
-                              </td>
-                              <td className="px-4 py-3 text-gray-900 dark:text-gray-100 font-medium">
-                                {formatCurrency(
-                                  (part.price || 0) * (part.quantity || 0) || 0,
-                                )}
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                        <tfoot>
-                          <tr className="bg-[#041A2D] text-white font-bold text-sm">
-                            <td className="px-4 py-3">Total</td>
-                            <td className="px-4 py-3">
-                              {repair.parts.reduce(
-                                (sum, p) => sum + (p.quantity || 0),
-                                0,
+                  <div className="overflow-x-auto rounded-lg border border-gray-300 dark:border-zinc-700 shadow-sm">
+                    <table className="w-full">
+                      <thead className="bg-[#041A2D] text-white text-sm font-semibold">
+                        <tr>
+                          <th className="text-left px-4 py-3">Peças</th>
+                          <th className="text-left px-4 py-3">Quantidade</th>
+                          <th className="text-left px-4 py-3">
+                            Valor Unitário
+                          </th>
+                          <th className="text-left px-4 py-3">
+                            Valor Somado
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {repair.parts.map((part, idx) => (
+                          <tr
+                            key={idx}
+                            className="bg-white dark:bg-zinc-800 border-b border-gray-200 dark:border-zinc-700 text-sm hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors"
+                          >
+                            <td className="px-4 py-3 text-gray-900 dark:text-gray-100">
+                              {part.item || part.name || "-"}
+                            </td>
+                            <td className="px-4 py-3 text-gray-900 dark:text-gray-100">
+                              {part.quantity || 0}
+                            </td>
+                            <td className="px-4 py-3 text-gray-900 dark:text-gray-100">
+                              {formatCurrency(part.price)}
+                            </td>
+                            <td className="px-4 py-3 text-gray-900 dark:text-gray-100 font-medium">
+                              {formatCurrency(
+                                (part.price || 0) * (part.quantity || 0) || 0,
                               )}
                             </td>
-                            <td className="px-4 py-3">-</td>
-                            <td className="px-4 py-3">
-                              {formatCurrency(repair.partsTotal)}
-                            </td>
                           </tr>
-                        </tfoot>
-                      </table>
-                    </div>
-                    {/* Observações do Cliente (direita) */}
-                    <div className="space-y-3">
-                      <div className="text-base font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wide">
-                        Observações do Cliente
-                      </div>
-                      {repair.appliances && repair.appliances.length > 0 ? (
-                        repair.appliances.map((ap, idx) => (
-                          <div
-                            key={idx}
-                            className="bg-white dark:bg-zinc-800 rounded-md border border-gray-200 dark:border-zinc-700 p-4 shadow-sm"
-                          >
-                            <div className="text-sm font-bold text-gray-900 dark:text-gray-100 mb-2">
-                              {`Item ${idx + 1} - ${ap.type || "Aparelho"}`}
-                            </div>
-                            <div className="text-gray-700 dark:text-gray-300 text-sm whitespace-pre-wrap">
-                              {ap.customerNote &&
-                              ap.customerNote.trim().length > 0
-                                ? ap.customerNote
-                                : "-"}
-                            </div>
-                          </div>
-                        ))
-                      ) : (
-                        <div className="bg-white dark:bg-zinc-800 rounded-md border border-gray-200 dark:border-zinc-700 p-4 text-sm text-gray-700 dark:text-gray-300 shadow-sm">
-                          Nenhuma observação cadastrada
-                        </div>
-                      )}
-                    </div>
+                        ))}
+                      </tbody>
+                      <tfoot>
+                        <tr className="bg-[#041A2D] text-white font-bold text-sm">
+                          <td className="px-4 py-3">Total</td>
+                          <td className="px-4 py-3">
+                            {repair.parts.reduce(
+                              (sum, p) => sum + (p.quantity || 0),
+                              0,
+                            )}
+                          </td>
+                          <td className="px-4 py-3">-</td>
+                          <td className="px-4 py-3">
+                            {formatCurrency(repair.partsTotal)}
+                          </td>
+                        </tr>
+                      </tfoot>
+                    </table>
                   </div>
                 ) : (
                   <p className="text-gray-700 dark:text-gray-300 text-sm">
@@ -418,36 +387,19 @@ const ComponentDetails = () => {
                 )}
               </div>
 
-              {/* Observações do Cliente (global) - mostrar apenas se não houver notas por eletrodoméstico */}
-              {!repair.appliances?.some(
-                (a) => a.customerNote && a.customerNote.trim().length > 0,
-              ) &&
-                repair.notes && (
-                  <div className="mb-6">
-                    <div className="bg-white dark:bg-zinc-800 rounded-md border border-gray-200 dark:border-zinc-700 p-5 shadow-sm">
-                      <div className="text-sm font-bold text-gray-900 dark:text-gray-100 mb-3 uppercase tracking-wide">
-                        Observações do Cliente
-                      </div>
-                      <div className="text-gray-700 dark:text-gray-300 text-sm whitespace-pre-wrap">
-                        {repair.notes}
-                      </div>
-                    </div>
+              <div className="mb-6">
+                <div className="bg-white dark:bg-zinc-800 rounded-md border border-gray-200 dark:border-zinc-700 p-5 shadow-sm">
+                  <div className="text-sm font-bold text-gray-900 dark:text-gray-100 mb-3 uppercase tracking-wide">
+                    Observações do Cliente
                   </div>
-                )}
-
-              {/* Observações Técnicas (se houver serviceDescription) */}
-              {repair.serviceDescription && (
-                <div className="mb-6">
-                  <div className="bg-white dark:bg-zinc-800 rounded-md border border-gray-200 dark:border-zinc-700 p-5 shadow-sm">
-                    <div className="text-sm font-bold text-gray-900 dark:text-gray-100 mb-3 uppercase tracking-wide">
-                      Observações Técnicas
-                    </div>
-                    <div className="text-gray-700 dark:text-gray-300 text-sm whitespace-pre-wrap">
-                      {repair.serviceDescription}
-                    </div>
+                  <div className="text-gray-700 dark:text-gray-300 text-sm whitespace-pre-wrap">
+                    {repair.customerDescription &&
+                    repair.customerDescription.trim().length > 0
+                      ? repair.customerDescription
+                      : "Nenhuma observação cadastrada"}
                   </div>
                 </div>
-              )}
+              </div>
             </div>
           </div>
         </div>
