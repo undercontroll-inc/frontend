@@ -34,7 +34,6 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
       model: "",
       voltage: "127 V",
       serial: "",
-      customerNote: "",
     },
   ]);
 
@@ -179,7 +178,6 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
         model: "",
         voltage: "127 V",
         serial: "",
-        customerNote: "",
       },
     ]);
   };
@@ -310,7 +308,6 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
           model: app.model || "",
           voltage: app.voltage,
           serial: app.serial || "",
-          customerNote: app.customerNote || "",
           // laborValue é opcional - só inclui se preenchido
           ...(app.laborValue ? { laborValue: parseFloat(app.laborValue) } : {}),
         })),
@@ -323,8 +320,8 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
       discount: totals.discount || 0,
       receivedAt: formData.receivedAt || new Date().toLocaleDateString("pt-BR"),
       ...(formData.deadline ? { deadline: formData.deadline } : {}),
-      serviceDescription: formData.clientObservation,
-      notes: formData.technicalObservation,
+      customerDescription: formData.clientObservation,
+      technicalDescription: formData.technicalObservation,
       // optional fiscal note
       ...(formData.nf ? { nf: formData.nf } : {}),
       // guarantees
@@ -356,7 +353,6 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
         model: "",
         voltage: "127 V",
         serial: "",
-        customerNote: "",
       },
     ]);
     setParts([
@@ -688,24 +684,6 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
                         </div>
                       </div>
 
-                      {/* Terceira linha: Observação do cliente */}
-                      <div>
-                        <label className="block text-xs font-medium text-gray-600 dark:text-zinc-300 mb-1">
-                          Observação do Cliente
-                        </label>
-                        <Input
-                          type="text"
-                          placeholder="Descreva o problema relatado pelo cliente"
-                          value={appliance.customerNote || ""}
-                          onChange={(e) =>
-                            handleApplianceChange(
-                              index,
-                              "customerNote",
-                              e.target.value,
-                            )
-                          }
-                        />
-                      </div>
                     </div>
                   ))}
                 </div>
@@ -940,7 +918,7 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
                     value={formData.clientObservation}
                     onChange={handleInputChange}
                     rows={4}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                    className="w-full px-5 py-4 border rounded-lg bg-white dark:bg-zinc-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:border-slate-500 focus:ring-slate-200 border-gray-300 dark:border-gray-600 transition-all duration-200 text-base resize-none"
                   />
                 </div>
 
@@ -954,7 +932,7 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
                     value={formData.technicalObservation}
                     onChange={handleInputChange}
                     rows={4}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                    className="w-full px-5 py-4 border rounded-lg bg-white dark:bg-zinc-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:border-slate-500 focus:ring-slate-200 border-gray-300 dark:border-gray-600 transition-all duration-200 text-base resize-none"
                   />
                 </div>
               </div>

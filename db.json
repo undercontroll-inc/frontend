@@ -349,16 +349,14 @@
           "brand": "Electrolux",
           "model": "MEO44",
           "voltage": "127 V",
-          "serial": "ELMO4425BR127",
-          "customerNote": "O aparelho caiu no chão e não está mais funcionando."
+          "serial": "ELMO4425BR127"
         },
         {
           "type": "Cafeteira",
           "brand": "Dolce Gusto",
           "model": "Genio S Plus",
           "voltage": "127 V",
-          "serial": "DGNI27BR459",
-          "customerNote": "A cafeteira não está aquecendo o café."
+          "serial": "DGNI27BR459"
         }
       ],
       "parts": [
@@ -394,8 +392,8 @@
       "receivedAt": "09/10/2025",
       "deadline": "12/10/2025",
       "warranty": "90 dias",
-      "serviceDescription": "Reparo em micro-ondas sem aquecimento — substituição de fusível, diodo e magnetron.\nReparo em cafeteira Dolce Gusto que não bombeava água — substituição de bomba e termostato, além de limpeza interna.",
-      "notes": "Ambos os aparelhos foram testados e apresentam funcionamento normal.\nCliente orientado sobre limpeza periódica da cafeteira e uso de tomada exclusiva para o micro-ondas.",
+      "customerDescription": "O aparelho caiu no chão e não está mais funcionando.\nA cafeteira não está aquecendo o café.",
+      "technicalDescription": "Ambos os aparelhos foram testados e apresentam funcionamento normal.\nCliente orientado sobre limpeza periódica da cafeteira e uso de tomada exclusiva para o micro-ondas.",
       "status": "FINALIZADO",
       "updatedAt": "2025-10-10T13:37:00"
     },
@@ -408,8 +406,7 @@
           "brand": "Dolce Gusto",
           "model": "Genio S Plus",
           "voltage": "127 V",
-          "serial": "D15-2025-5544",
-          "customerNote": "A cafeteira não está aquecendo."
+          "serial": "D15-2025-5544"
         }
       ],
       "parts": [
@@ -427,8 +424,8 @@
       "receivedAt": "07/07/2025",
       "deadline": "10/07/2025",
       "warranty": "90 dias",
-      "serviceDescription": "Troca da resistência",
-      "notes": "Testado e funcionando",
+      "customerDescription": "A cafeteira não está aquecendo.",
+      "technicalDescription": "Testado e funcionando",
       "status": "FINALIZADO",
       "updatedAt": "2025-07-07T13:37:00"
     },
@@ -441,8 +438,7 @@
           "brand": "Walita",
           "model": "Perfect Care",
           "voltage": "127 V",
-          "serial": "WA-PC-2024",
-          "customerNote": "Não aquece mais."
+          "serial": "WA-PC-2024"
         }
       ],
       "parts": [
@@ -460,8 +456,8 @@
       "receivedAt": "21/01/2025",
       "deadline": "25/01/2025",
       "warranty": "90 dias",
-      "serviceDescription": "Substituição do termostato",
-      "notes": "Ferro funcionando perfeitamente",
+      "customerDescription": "Não aquece mais.",
+      "technicalDescription": "Ferro funcionando perfeitamente",
       "status": "FINALIZADO",
       "updatedAt": "2025-01-21T13:37:00"
     },
@@ -474,8 +470,7 @@
           "brand": "Brastemp",
           "model": "BRM44",
           "voltage": "127 V",
-          "serial": "BRM44-127-ABCD",
-          "customerNote": "Cliente relatou ruído intermitente ao ligar."
+          "serial": "BRM44-127-ABCD"
         }
       ],
       "parts": [
@@ -499,8 +494,8 @@
       "receivedAt": "14/10/2025",
       "deadline": "21/10/2025",
       "warranty": "90 dias",
-      "serviceDescription": "Diagnóstico inicial de geladeira sem resfriamento. Aguardando aprovação do orçamento para troca de relé de partida e termostato.",
-      "notes": "Cliente relatou ruído intermitente ao ligar.",
+      "customerDescription": "Cliente relatou ruído intermitente ao ligar.",
+      "technicalDescription": "Diagnóstico inicial de geladeira sem resfriamento. Aguardando aprovação do orçamento para troca de relé de partida e termostato.",
       "status": "NAO_INICIADO",
       "updatedAt": "2025-10-15T16:30:00"
     },
@@ -513,7 +508,6 @@
           "model": "",
           "voltage": "Bivolt",
           "serial": "123",
-          "customerNote": "",
           "laborValue": "11,10"
         }
       ],
@@ -525,8 +519,8 @@
       "receivedAt": "2025-10-16",
       "deadline": "2025-11-01",
       "warranty": "12",
-      "serviceDescription": "",
-      "notes": "",
+      "customerDescription": "",
+      "technicalDescription": "",
       "status": "NAO_INICIADO",
       "updatedAt": "2025-10-28T18:55:38.728Z",
       "id": "1936"

@@ -52,7 +52,8 @@ export const OrderDetailModal = ({
         parts: Array.isArray(repair.parts)
           ? repair.parts.map((p) => ({ ...p, componentId: p.componentId ?? p.id }))
           : [],
-        serviceDescription: repair.serviceDescription || repair.notes || "",
+        customerDescription: repair.customerDescription || "",
+        technicalDescription: repair.technicalDescription || "",
       });
     }
   }, [repair]);
@@ -149,7 +150,6 @@ export const OrderDetailModal = ({
           model: "",
           volt: "",
           series: "",
-          customerNote: "",
           laborValue: 0,
         },
       ],
@@ -189,8 +189,12 @@ export const OrderDetailModal = ({
     toast.success("Peça adicionada ao pedido");
   };
 
-  const handleServiceDescriptionChange = (value) => {
-    setEditedRepair((prev) => ({ ...prev, serviceDescription: value }));
+  const handleCustomerDescriptionChange = (value) => {
+    setEditedRepair((prev) => ({ ...prev, customerDescription: value }));
+  };
+
+  const handleTechnicalDescriptionChange = (value) => {
+    setEditedRepair((prev) => ({ ...prev, technicalDescription: value }));
   };
 
   const handleSave = async () => {
@@ -220,7 +224,6 @@ export const OrderDetailModal = ({
           model: app.model,
           volt: app.volt,
           series: app.series,
-          customerNote: app.customerNote,
           laborValue: Number(app.laborValue) || 0,
         })),
         parts: editedRepair.parts
@@ -229,7 +232,8 @@ export const OrderDetailModal = ({
             componentId: part.componentId,
             quantity: part._removed ? 0 : Number(part.quantity) || 1,
           })),
-        serviceDescription: editedRepair.serviceDescription,
+        customerDescription: editedRepair.customerDescription ?? "",
+        technicalDescription: editedRepair.technicalDescription ?? "",
       };
 
       console.log(
@@ -272,7 +276,8 @@ export const OrderDetailModal = ({
       parts: Array.isArray(repair.parts)
         ? repair.parts.map((p) => ({ ...p, componentId: p.componentId ?? p.id }))
         : [],
-      serviceDescription: repair.serviceDescription || repair.notes || "",
+      customerDescription: repair.customerDescription || "",
+      technicalDescription: repair.technicalDescription || "",
     });
     setIsEditing(false);
   };
@@ -905,47 +910,24 @@ export const OrderDetailModal = ({
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-white dark:bg-zinc-900 rounded-lg p-4">
                 <h4 className="text-sm font-semibold text-gray-700 dark:text-zinc-300 mb-2">
-                  Observações do Cliente por Item
+                  Observações do Cliente
                 </h4>
-                <div className="space-y-2 text-sm">
-                  {editedRepair.appliances &&
-                  Array.isArray(editedRepair.appliances) &&
-                  editedRepair.appliances.length > 0 ? (
-                    editedRepair.appliances.map((appliance, index) => (
-                      <div
-                        key={index}
-                        className="bg-gray-50 dark:bg-zinc-800 p-2 rounded"
-                      >
-                        <p className="font-medium text-gray-900 dark:text-zinc-100 mb-1">
-                          Item {index + 1} - {appliance.type || "Sem tipo"}
-                        </p>
-                        {isEditing ? (
-                          <textarea
-                            value={appliance.customerNote || ""}
-                            onChange={(e) =>
-                              handleApplianceChange(
-                                index,
-                                "customerNote",
-                                e.target.value,
-                              )
-                            }
-                            className="w-full px-3 py-2 border border-gray-300 dark:border-zinc-700 rounded text-sm resize-none bg-white dark:bg-zinc-800 text-gray-900 dark:text-zinc-100"
-                            rows="2"
-                            placeholder="Observação do cliente..."
-                          />
-                        ) : (
-                          <p className="text-gray-700 dark:text-zinc-300">
-                            {appliance.observation || "Sem observação"}
-                          </p>
-                        )}
-                      </div>
-                    ))
-                  ) : (
-                    <p className="text-gray-500 italic">
-                      Nenhum item com observação
-                    </p>
-                  )}
-                </div>
+                {isEditing ? (
+                  <textarea
+                    value={editedRepair.customerDescription || ""}
+                    onChange={(e) =>
+                      handleCustomerDescriptionChange(e.target.value)
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-zinc-700 rounded text-sm resize-none bg-white dark:bg-zinc-800 text-gray-900 dark:text-zinc-100"
+                    rows="6"
+                    placeholder="Digite as observações do cliente aqui..."
+                  />
+                ) : (
+                  <div className="bg-gray-50 dark:bg-zinc-800 p-3 rounded text-sm text-gray-700 dark:text-zinc-300 min-h-[100px]">
+                    {editedRepair.customerDescription ||
+                      "Nenhuma observação do cliente registrada"}
+                  </div>
+                )}
               </div>
 
               <div className="bg-white dark:bg-zinc-900 rounded-lg p-4">
@@ -954,9 +936,9 @@ export const OrderDetailModal = ({
                 </h4>
                 {isEditing ? (
                   <textarea
-                    value={editedRepair.serviceDescription || ""}
+                    value={editedRepair.technicalDescription || ""}
                     onChange={(e) =>
-                      handleServiceDescriptionChange(e.target.value)
+                      handleTechnicalDescriptionChange(e.target.value)
                     }
                     className="w-full px-3 py-2 border border-gray-300 dark:border-zinc-700 rounded text-sm resize-none bg-white dark:bg-zinc-800 text-gray-900 dark:text-zinc-100"
                     rows="6"
@@ -964,7 +946,7 @@ export const OrderDetailModal = ({
                   />
                 ) : (
                   <div className="bg-gray-50 dark:bg-zinc-800 p-3 rounded text-sm text-gray-700 dark:text-zinc-300 min-h-[100px]">
-                    {editedRepair.serviceDescription ||
+                    {editedRepair.technicalDescription ||
                       "Nenhuma observação técnica registrada"}
                   </div>
                 )}

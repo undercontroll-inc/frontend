@@ -80,7 +80,7 @@ const ComponentRepair = () => {
       );
 
       // Busca na descrição do serviço
-      const serviceMatch = (r.serviceDescription || "")
+      const serviceMatch = (r.customerDescription || "")
         .toLowerCase()
         .includes(term);
 
