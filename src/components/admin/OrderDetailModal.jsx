@@ -204,7 +204,7 @@ export const OrderDetailModal = ({
       if (validRemovedIds.length > 0) {
         console.log("Deletando items:", validRemovedIds);
         const deletePromises = validRemovedIds.map((itemId) =>
-          RepairService.deleteOrderItem(itemId),
+          RepairService.deleteOrderItem(repair.id, itemId),
         );
         await Promise.all(deletePromises);
         console.log("Items deletados com sucesso");

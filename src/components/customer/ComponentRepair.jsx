@@ -38,7 +38,7 @@ const ComponentRepair = () => {
 
       if (user?.id) {
         try {
-          data = { data } = await RepairService.getUserRepairs(user.id);
+          data = await RepairService.getUserRepairs(user.id);
         } catch (err) {
           console.error("Erro ao buscar reparos do usuário:", err);
         }

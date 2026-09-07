@@ -3,17 +3,9 @@ import { apiClient } from "../providers/api";
 
 class ComponentService {
   async getAllComponents() {
-    const token = localStorage.getItem("authToken");
-
     try {
-      const response = await apiClient.get("/components", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      // Se a API responder 204 No Content, retornar array vazio para seguir o padrão REST
-      if (response.status === 204 || !response.data) return [];
-      return response.data;
+      const response = await apiClient.get("/components");
+      return response.data ?? [];
     } catch (error) {
       console.error("Erro ao buscar componentes:", error);
       throw error;
@@ -101,14 +93,11 @@ class ComponentService {
   }
 
   async getComponentsByCategory(category) {
-    const token = localStorage.getItem("authToken");
-
     try {
-      const response = await apiClient.get(`/components/category/${category}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+      const response = await apiClient.get("/components", {
+        params: { category },
       });
+      if (!response.data) return [];
       return response.data;
     } catch (error) {
       console.error(

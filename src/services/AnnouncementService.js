@@ -37,13 +37,13 @@ class AnnouncementService {
 
   async getLastAnnouncement() {
     try {
-      const response = await apiClient.get("/announcements/last");
+      const response = await apiClient.get("/announcements/latest");
 
       return response.data;
     } catch (error) {
       console.error("Erro ao buscar anúncios:", error);
 
-      if (error.response.status === 404) {
+      if (error.response?.status === 404) {
         return null;
       }
 

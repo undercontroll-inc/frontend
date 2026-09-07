@@ -9,7 +9,7 @@ import GoogleButton from "../shared/GoogleButton";
 import ComeBack from "../shared/ComeBack";
 import GoogleAuthService from "../../services/GoogleAuthService";
 import { userService } from "../../services/UserService";
-import { saveUserData } from "../../utils/auth";
+import { saveUserData, saveTokens } from "../../utils/auth";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -79,8 +79,7 @@ const Login = () => {
         };
 
         // Salva token e dados do usuário
-        localStorage.setItem("token", backendResult.data.token);
-        localStorage.setItem("refreshToken", backendResult.data.refreshToken);
+        saveTokens(backendResult.data.accessToken, backendResult.data.refreshToken);
         saveUserData(userDataToSave);
 
         // Atualiza o contexto de autenticação

@@ -1,55 +1,92 @@
 import axios from "axios";
+import { clearAuth, getRefreshToken, getToken, saveTokens } from "../utils/auth";
+
+const baseURL = import.meta.env.VITE_API_URL || "http://localhost:8080/v1/api";
 
 export const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "http://localhost:8080/v1/api",
+  baseURL,
   timeout: 10000,
 });
 
-// Interceptor para adicionar token JWT nas requisições
-apiClient.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem("authToken");
+const refreshClient = axios.create({
+  baseURL,
+  timeout: 10000,
+});
+
+let refreshPromise = null;
+
+function isPublicAuthRequest(url = "") {
+  const path = String(url).split("?")[0];
+  return /\/auth$/.test(path) || /\/auth\/refresh$/.test(path);
+}
+
+apiClient.interceptors.request.use((config) => {
+  if (!isPublicAuthRequest(config.url)) {
+    const token = getToken();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  },
-);
+  }
+  return config;
+});
 
-// Interceptor para tratamento de erros
 apiClient.interceptors.response.use(
   (response) => response,
   async (error) => {
     if (error.response) {
       console.error(`[API Error ${error.response.status}]:`, getAxiosErrorMessage(error));
-
-      // Se receber 401 (não autorizado), redirecionar para login
-      if (error.response.status === 401) {
-        localStorage.removeItem("authToken");
-        localStorage.removeItem("userData");
-        window.location.href = "/login";
-      }
-
-      if (error.response.status === 403) {
-        localStorage.removeItem("authToken");
-        localStorage.removeItem("userData");
-
-        const data = await refreshToken(localStorage.getItem("refreshToken"));
-
-        localStorage.setItem("authToken", data.token);
-        localStorage.setItem("refreshToken", data.refreshToken);
-      }
     } else if (error.request) {
       console.error("[Network Error]: Sem resposta do servidor");
     } else {
       console.error("[Request Error]:", error.message);
     }
+
+    const original = error.config;
+    if (
+      error.response?.status === 401 &&
+      original &&
+      !original._retry &&
+      !isPublicAuthRequest(original.url)
+    ) {
+      original._retry = true;
+      try {
+        await refreshAccessToken();
+        original.headers = original.headers || {};
+        original.headers.Authorization = `Bearer ${getToken()}`;
+        return apiClient(original);
+      } catch {
+        clearAuth();
+        if (window.location.pathname !== "/login") {
+          window.location.href = "/login";
+        }
+      }
+    }
+
     return Promise.reject(error);
   },
 );
+
+async function refreshAccessToken() {
+  if (!refreshPromise) {
+    refreshPromise = doRefresh().finally(() => {
+      refreshPromise = null;
+    });
+  }
+  return refreshPromise;
+}
+
+async function doRefresh() {
+  const refreshToken = getRefreshToken();
+  if (!refreshToken) {
+    throw new Error("Refresh token not present");
+  }
+  const response = await refreshClient.post("/auth/refresh", { refreshToken });
+  const { accessToken, refreshToken: nextRefresh } = response.data || {};
+  if (!accessToken || !nextRefresh) {
+    throw new Error("Invalid refresh payload");
+  }
+  saveTokens(accessToken, nextRefresh);
+}
 
 export function getAxiosErrorMessage(error) {
   if (error.response?.data) {
@@ -74,31 +111,4 @@ export function getAxiosErrorMessage(error) {
   }
 
   return error.message || "Erro desconhecido";
-}
-
-async function refreshToken(refreshToken) {
-  try {
-    if (!refreshToken) {
-      console.warn("Refresh token not present");
-      return;
-    }
-
-    const response = await apiClient.post(`/v1/api/auth/refresh`, {
-      refreshToken,
-    });
-
-    const data = response.data;
-
-    return {
-      success: true,
-      data,
-    };
-  } catch (err) {
-    console.error(`Error while refreshing the token: ${err}`);
-
-    return {
-      success: false,
-      error: getAxiosErrorMessage(err),
-    };
-  }
 }
