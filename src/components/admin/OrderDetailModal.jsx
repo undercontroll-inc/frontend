@@ -6,6 +6,7 @@ import Input from "../shared/Input";
 import RepairService from "../../services/RepairService";
 import ComponentService from "../../services/ComponentService";
 import { useToast } from "../../contexts/ToastContext";
+import OrderStatusActions from "./OrderStatusActions";
 
 export const OrderDetailModal = ({
   isOpen,
@@ -80,10 +81,6 @@ export const OrderDetailModal = ({
     }
   };
 
-  const handleStatusChange = (newStatus) => {
-    setEditedRepair((prev) => ({ ...prev, status: newStatus }));
-  };
-
   const handleApplianceChange = (index, field, value) => {
     setEditedRepair((prev) => ({
       ...prev,
@@ -148,8 +145,8 @@ export const OrderDetailModal = ({
           type: "",
           brand: "",
           model: "",
-          volt: "",
-          series: "",
+          voltage: "",
+          serial: "",
           laborValue: 0,
         },
       ],
@@ -216,14 +213,13 @@ export const OrderDetailModal = ({
 
       // Prepara os dados para envio com IDs
       const dataToUpdate = {
-        status: editedRepair.status,
         appliances: editedRepair.appliances.map((app) => ({
           id: app.id || null,
           type: app.type,
           brand: app.brand,
           model: app.model,
-          volt: app.volt,
-          series: app.series,
+          voltage: app.voltage,
+          serial: app.serial,
           laborValue: Number(app.laborValue) || 0,
         })),
         parts: editedRepair.parts
@@ -370,40 +366,19 @@ export const OrderDetailModal = ({
               <h3 className="text-lg font-semibold text-gray-900 dark:text-zinc-100 mb-3">
                 Status da Ordem
               </h3>
-              {isEditing ? (
-                <Select
-                  value={editedRepair.status}
-                  onChange={(e) => handleStatusChange(e.target.value)}
-                  className="max-w-xs"
-                >
-                  <option value="PENDING">Pendente</option>
-                  <option value="COMPLETED">Concluído</option>
-                </Select>
-              ) : (
-                <span
-                  className={`inline-flex items-center px-3 py-2 rounded-lg font-medium ${
-                    editedRepair.status === "COMPLETED"
-                      ? "bg-green-100 text-green-800"
-                      : editedRepair.status === "IN_ANALYSIS"
-                        ? "bg-blue-100 text-blue-800"
-                        : editedRepair.status === "DELIVERED"
-                          ? "bg-purple-100 text-purple-800"
-                          : editedRepair.status === "PENDING"
-                            ? "bg-yellow-100 text-yellow-800"
-                            : "bg-gray-100 text-gray-800"
-                  }`}
-                >
-                  {editedRepair.status === "PENDING"
-                    ? "Pendente"
-                    : editedRepair.status === "COMPLETED"
-                      ? "Concluído"
-                      : editedRepair.status === "IN_ANALYSIS"
-                        ? "Em Análise"
-                        : editedRepair.status === "DELIVERED"
-                          ? "Entregue"
-                          : editedRepair.status}
-                </span>
-              )}
+              <OrderStatusActions
+                repair={editedRepair}
+                phone={client?.phone || repair?.user?.phone}
+                disabled={isEditing}
+                onChanged={async (order) => {
+                  if (order) {
+                    setEditedRepair((prev) => ({ ...prev, ...order, appliances: prev.appliances, parts: prev.parts }));
+                  }
+                  if (onUpdate) {
+                    await onUpdate();
+                  }
+                }}
+              />
             </div>
 
             {/* Dados do Cliente */}
@@ -597,11 +572,11 @@ export const OrderDetailModal = ({
                               {isEditing ? (
                                 <Input
                                   type="text"
-                                  value={appliance.volt || ""}
+                                  value={appliance.voltage || ""}
                                   onChange={(e) =>
                                     handleApplianceChange(
                                       index,
-                                      "volt",
+                                      "voltage",
                                       e.target.value,
                                     )
                                   }
@@ -609,18 +584,18 @@ export const OrderDetailModal = ({
                                   placeholder="Voltagem"
                                 />
                               ) : (
-                                appliance.volt || "N/A"
+                                appliance.voltage || "N/A"
                               )}
                             </td>
                             <td className="px-2 py-2">
                               {isEditing ? (
                                 <Input
                                   type="text"
-                                  value={appliance.series || ""}
+                                  value={appliance.serial || ""}
                                   onChange={(e) =>
                                     handleApplianceChange(
                                       index,
-                                      "series",
+                                      "serial",
                                       e.target.value,
                                     )
                                   }
@@ -628,7 +603,7 @@ export const OrderDetailModal = ({
                                   placeholder="Nº Série"
                                 />
                               ) : (
-                                appliance.series || "N/A"
+                                appliance.serial || "N/A"
                               )}
                             </td>
                             <td className="px-2 py-2">

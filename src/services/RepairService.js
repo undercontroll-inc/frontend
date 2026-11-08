@@ -56,6 +56,26 @@ class RepairService {
     }
   }
 
+  async transitionOrder(id, { to, outcome = null, note = null }) {
+    const response = await apiClient.post(`/orders/${id}/transitions`, { to, outcome, note });
+    return response.data;
+  }
+
+  async sendBudget(id) {
+    const response = await apiClient.post(`/orders/${id}/budget/send`);
+    return response.data;
+  }
+
+  async decideBudget(id, decision, note = null) {
+    const response = await apiClient.post(`/orders/${id}/budget/decision`, { decision, note });
+    return response.data;
+  }
+
+  async trackingLink(id) {
+    const response = await apiClient.post(`/orders/${id}/tracking-link`);
+    return response.data;
+  }
+
   async deleteRepair(id) {
     try {
       await jsonServer.delete(`/repairs/${id}`);

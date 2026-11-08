@@ -13,7 +13,7 @@ export const PeriodFilter = {
 
 export const StatusFilter = {
   ONGOING: "ONGOING",
-  COMPLETED: "COMPLETED",
+  READY: "READY",
   DELIVERED: "DELIVERED",
   ALL: "ALL",
 };
@@ -257,7 +257,7 @@ class DashboardService {
   convertStatusToAPI(statusValue) {
     const statusMap = {
       "em-andamento": StatusFilter.ONGOING,
-      "finalizadas": StatusFilter.COMPLETED,
+      "finalizadas": StatusFilter.READY,
       "entregues": StatusFilter.DELIVERED,
       "todos": StatusFilter.ALL,
     };

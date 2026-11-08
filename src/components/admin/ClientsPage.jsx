@@ -10,6 +10,7 @@ import Loading from "../shared/Loading";
 import SideBar from "../shared/SideBar";
 import ClientModal from "./ClientModal";
 import { useToast } from "../../contexts/ToastContext";
+import { getStatusInfo } from "../../utils/orderStatus";
 
 export function ClientsPage() {
   const { user } = useAuth();
@@ -117,20 +118,7 @@ export function ClientsPage() {
     return date.toLocaleDateString("pt-BR");
   };
 
-  const getStatusBadge = (status) => {
-    const statusConfig = {
-      PENDING: { label: "Pendente", color: "bg-yellow-100 text-yellow-700" },
-      IN_ANALYSIS: { label: "Em Análise", color: "bg-blue-100 text-blue-700" },
-      COMPLETED: { label: "Concluído", color: "bg-green-100 text-green-700" },
-      DELIVERED: { label: "Entregue", color: "bg-purple-100 text-purple-700" },
-    };
-    return (
-      statusConfig[status] || {
-        label: status,
-        color: "bg-gray-100 text-gray-700",
-      }
-    );
-  };
+  const getStatusBadge = (status, outcome) => getStatusInfo(status, outcome);
 
   const renderAppliance = (appliance) => {
     if (typeof appliance === "string") return appliance;

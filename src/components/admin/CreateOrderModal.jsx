@@ -327,7 +327,6 @@ export const CreateOrderModal = ({ isOpen, onClose, onSave }) => {
       // guarantees
       returnGuarantee: !!formData.returnGuarantee,
       fabricGuarantee: !!formData.fabricGuarantee,
-      status: "NAO_INICIADO",
     };
 
     onSave(orderData);
