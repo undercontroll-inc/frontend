@@ -2,37 +2,10 @@ import { FileText, CheckCircle, Clock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { memo, useCallback, useMemo } from "react";
 import Button from "../shared/Button";
+import { getStatusInfo, isFinished } from "../../utils/orderStatus";
 
-const statusStyles = {
-  PENDING: {
-    bg: "bg-transparent",
-    text: "text-yellow-400",
-    border: "border border-yellow-400",
-    label: "Pendente",
-    icon: <Clock className="h-4 w-4" />,
-  },
-  IN_ANALYSIS: {
-    bg: "bg-transparent",
-    text: "text-blue-400",
-    border: "border border-blue-400",
-    label: "Em Análise",
-    icon: <Clock className="h-4 w-4" />,
-  },
-  COMPLETED: {
-    bg: "bg-transparent",
-    text: "text-green-400",
-    border: "border border-green-400",
-    label: "Concluído",
-    icon: <CheckCircle className="h-4 w-4" />,
-  },
-  DELIVERED: {
-    bg: "bg-transparent",
-    text: "text-green-600",
-    border: "border border-green-600",
-    label: "Entregue",
-    icon: <CheckCircle className="h-4 w-4" />,
-  },
-};
+const statusIcon = (status) =>
+  isFinished(status) ? <CheckCircle className="h-4 w-4" /> : <Clock className="h-4 w-4" />;
 
 const formatCurrency = (v) => {
   if (v == null) return "-";
@@ -47,10 +20,16 @@ const formatUpdatedAt = (s) => {
 
 const RepairCard = memo(({ repair }) => {
   const navigate = useNavigate();
-  const status = useMemo(
-    () => statusStyles[repair.status] || statusStyles["PENDING"],
-    [repair.status]
-  );
+  const status = useMemo(() => {
+    const info = getStatusInfo(repair.status, repair.outcome);
+    return {
+      bg: "bg-transparent",
+      text: info.color.split(" ").find((c) => c.startsWith("text-")) || "text-gray-500",
+      border: "border border-current",
+      label: info.label,
+      icon: statusIcon(repair.status),
+    };
+  }, [repair.status, repair.outcome]);
 
   const handleViewDetails = useCallback(() => {
     navigate(`/repairs/${repair.id}`);
@@ -101,7 +80,7 @@ const RepairCard = memo(({ repair }) => {
       <div className="p-4">
         <div
           className={`grid ${
-            repair.status === "COMPLETED" || repair.status === "DELIVERED"
+            isFinished(repair.status)
               ? "grid-cols-4"
               : "grid-cols-3"
           } gap-4 text-sm mb-4`}
@@ -130,13 +109,13 @@ const RepairCard = memo(({ repair }) => {
               {repair.receivedAt || "-"}
             </div>
           </div>
-          {(repair.status === "COMPLETED" || repair.status === "DELIVERED") && (
+          {(isFinished(repair.status)) && (
             <div>
               <div className="text-xs text-gray-500 dark:text-gray-400 font-semibold mb-1.5 uppercase tracking-wide">
                 Retirada
               </div>
               <div className="text-gray-900 dark:text-gray-100 text-sm">
-                {repair.deadline || "-"}
+                {repair.completedAt ? new Date(repair.completedAt).toLocaleDateString("pt-BR") : repair.deadline || "-"}
               </div>
             </div>
           )}

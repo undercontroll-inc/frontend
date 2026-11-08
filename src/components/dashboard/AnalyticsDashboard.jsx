@@ -1,3 +1,4 @@
+import { getStatusInfo } from "../../utils/orderStatus";
 import { useState, useEffect } from "react";
 import { TrendingUp, DollarSign, Clock, Package, Filter } from "lucide-react";
 import PageContainer from "../shared/PageContainer";
@@ -184,25 +185,9 @@ const AnalyticsDashboard = () => {
     return formatDateLabel(dateString, period);
   };
 
-  const translateStatus = (status) => {
-    const statusMap = {
-      PENDING: "Pendente",
-      IN_ANALYSIS: "Em Análise",
-      COMPLETED: "Concluído",
-      DELIVERED: "Entregue",
-    };
-    return statusMap[status] || status;
-  };
+  const translateStatus = (status) => getStatusInfo(status).label;
 
-  const getStatusColor = (status) => {
-    const colorMap = {
-      PENDING: "#f59e0b",
-      IN_ANALYSIS: "#3b82f6",
-      COMPLETED: "#10b981",
-      DELIVERED: "#059669",
-    };
-    return colorMap[status] || "#6b7280";
-  };
+  const getStatusColor = (status) => getStatusInfo(status).chart;
 
   const showAlert = (type, message) => {
     setAlert({ type, message });
@@ -267,7 +252,7 @@ const AnalyticsDashboard = () => {
             <Select value={status} onChange={(e) => setStatus(e.target.value)} className="w-48">
               <option value="todos">Status: Todos</option>
               <option value="em-andamento">Em andamento</option>
-              <option value="finalizadas">Finalizadas</option>
+              <option value="finalizadas">Prontas para retirada</option>
               <option value="entregues">Entregues</option>
             </Select>
 

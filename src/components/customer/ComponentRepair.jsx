@@ -10,6 +10,7 @@ import Button from "../shared/Button";
 import Select from "../shared/Select";
 import Alert from "../shared/Alert";
 import RepairCard from "./RepairCard";
+import { STATUS_FILTER_OPTIONS } from "../../utils/orderStatus";
 
 const ComponentRepair = () => {
   const { user } = useAuth();
@@ -121,10 +122,9 @@ const ComponentRepair = () => {
                   onChange={(e) => setStatusFilter(e.target.value)}
                 >
                   <option value="">Todos os status</option>
-                  <option value="PENDING">Pendente</option>
-                  <option value="IN_ANALYSIS">Em Análise</option>
-                  <option value="COMPLETED">Concluído</option>
-                  <option value="DELIVERED">Entregue</option>
+                  {STATUS_FILTER_OPTIONS.map((option) => (
+                    <option key={option.value} value={option.value}>{option.label}</option>
+                  ))}
                 </Select>
               </div>
 

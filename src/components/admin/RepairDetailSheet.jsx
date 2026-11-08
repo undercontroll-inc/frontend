@@ -3,6 +3,7 @@ import { Sheet, SheetContent, SheetSection, SheetItem } from '../shared/Sheet';
 import Button from '../shared/Button';
 import { Edit } from 'lucide-react';
 import OrderDetailModal from './OrderDetailModal';
+import { getStatusInfo } from '../../utils/orderStatus';
 
 export const RepairDetailSheet = ({ isOpen, onClose, repair, onUpdate }) => {
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
@@ -27,21 +28,8 @@ export const RepairDetailSheet = ({ isOpen, onClose, repair, onUpdate }) => {
     return phone.replace(/(\d{2})(\d{3})(\d{3})(\d{2})/, '($1) $2.$3-$4');
   };
 
-  const getStatusBadge = (status) => {
-    const statusConfig = {
-      'PENDING': { label: 'Pendente' },
-      'COMPLETED': { label: 'Concluído' },
-      'EM_ANDAMENTO': { label: 'Em Andamento' },
-      'NAO_INICIADO': { label: 'Não Iniciado' },
-      'FINALIZADO': { label: 'Finalizado' },
-      'CANCELADO': { label: 'Cancelado' },
-      'Em Andamento': { label: 'Em Andamento' },
-      'Pendente': { label: 'Pendente' },
-      'Concluído': { label: 'Concluído' },
-      'Cancelado': { label: 'Cancelado' }
-    };
-    return statusConfig[status] || { label: status };
-  };
+  const getStatusBadge = (status) => getStatusInfo(status, repair?.outcome);
+
 
   const renderAppliances = () => {
     if (!repair.appliances) return [];
@@ -97,13 +85,7 @@ export const RepairDetailSheet = ({ isOpen, onClose, repair, onUpdate }) => {
       <SheetContent className='dark:bg-zinc-950'>
         {/* Status Badge */}
         <div className="mb-6">
-          <div className={`inline-flex items-center gap-2 px-3 py-2 rounded-lg font-medium ${
-            repair.status === 'COMPLETED' ? 'bg-green-100 text-green-800' :
-            repair.status === 'IN_ANALYSIS' ? 'bg-blue-100 text-blue-800' :
-            repair.status === 'DELIVERED' ? 'bg-purple-100 text-purple-800' :
-            repair.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' :
-            'bg-gray-100 text-gray-800'
-          }`}>
+          <div className={`inline-flex items-center gap-2 px-3 py-2 rounded-lg font-medium ${statusBadge.color}`}>
             <span>{statusBadge.label}</span>
           </div>
         </div>

@@ -1,12 +1,23 @@
 import { apiClient } from "../providers/api";
 
 class AnnouncementService {
-  async uploadFileToPresignedUrl(presignedUrl, file) {
+  signedHeaders(headers, file) {
+    const result = {};
+    Object.entries(headers || {}).forEach(([name, value]) => {
+      if (name.toLowerCase() !== "content-length") {
+        result[name] = value;
+      }
+    });
+    if (!Object.keys(result).some((name) => name.toLowerCase() === "content-type")) {
+      result["Content-Type"] = file.type;
+    }
+    return result;
+  }
+
+  async uploadFileToPresignedUrl(presignedUrl, file, headers, method = "PUT") {
     const uploadResponse = await fetch(presignedUrl, {
-      method: "PUT",
-      headers: {
-        "Content-Type": file.type,
-      },
+      method,
+      headers: this.signedHeaders(headers, file),
       body: file,
     });
 
@@ -32,7 +43,7 @@ class AnnouncementService {
       throw new Error("URL de upload nao fornecida pelo backend");
     }
 
-    await this.uploadFileToPresignedUrl(presignedUrl, imageFile);
+    await this.uploadFileToPresignedUrl(presignedUrl, imageFile, imageUpload.headers, imageUpload.method || "PUT");
   }
 
   async getLastAnnouncement() {

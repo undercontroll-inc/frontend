@@ -7,6 +7,7 @@ import Button from "../shared/Button";
 import RepairService from "../../services/RepairService";
 import { useAuth } from "../../contexts/AuthContext";
 import { useToast } from "../../contexts/ToastContext";
+import { getStatusInfo, isFinished } from "../../utils/orderStatus";
 
 const formatCurrency = (v) => {
   if (v == null) return "-";
@@ -110,35 +111,12 @@ const ComponentDetails = () => {
     );
   }
 
-  const getStatusColor = () => {
-    switch (repair.status) {
-      case "PENDING":
-        return "text-yellow-400 border-yellow-400";
-      case "IN_ANALYSIS":
-        return "text-blue-400 border-blue-400";
-      case "COMPLETED":
-        return "text-green-400 border-green-400";
-      case "DELIVERED":
-        return "text-green-600 border-green-600";
-      default:
-        return "text-gray-400 border-gray-400";
-    }
-  };
+  const statusInfo = getStatusInfo(repair.status, repair.outcome);
 
-  const getStatusLabel = () => {
-    switch (repair.status) {
-      case "PENDING":
-        return "Pendente";
-      case "IN_ANALYSIS":
-        return "Em Análise";
-      case "COMPLETED":
-        return "Concluído";
-      case "DELIVERED":
-        return "Entregue";
-      default:
-        return "Desconhecido";
-    }
-  };
+  const getStatusColor = () => statusInfo.color;
+
+  const getStatusLabel = () => statusInfo.label;
+
 
   return (
     <div className="flex min-h-screen bg-gray-50 dark:bg-zinc-950">
@@ -231,10 +209,10 @@ const ComponentDetails = () => {
                                     : "-"}
                                 </td>
                                 <td className="px-4 py-3 text-gray-900 dark:text-gray-100">
-                                  {appliance.volt || "-"}
+                                  {appliance.voltage || "-"}
                                 </td>
                                 <td className="px-4 py-3 text-gray-900 dark:text-gray-100">
-                                  {appliance.series || "-"}
+                                  {appliance.serial || "-"}
                                 </td>
                                 <td className="px-4 py-3 text-gray-900 dark:text-gray-100 font-medium">
                                   {idx === 0
@@ -275,8 +253,7 @@ const ComponentDetails = () => {
                             Retirada
                           </div>
                           <div className="bg-white dark:bg-zinc-800 rounded-md border border-gray-200 dark:border-zinc-700 px-3 py-2.5 text-gray-900 dark:text-gray-100 text-sm text-center shadow-sm">
-                            {repair.status === "COMPLETED" ||
-                            repair.status === "DELIVERED"
+                            {isFinished(repair.status)
                               ? repair.deadline || "-"
                               : "-"}
                           </div>

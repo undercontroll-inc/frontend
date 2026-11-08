@@ -1,3 +1,4 @@
+import { STATUS_FILTER_OPTIONS, getStatusLabel as getOrderStatusLabel } from "../../utils/orderStatus";
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Search, Plus } from "lucide-react";
@@ -109,15 +110,7 @@ export function RepairPage() {
     return date.toLocaleDateString("pt-BR");
   };
 
-  const getStatusLabel = (status) => {
-    const statusMap = {
-      PENDING: "Pendente",
-      IN_ANALYSIS: "Em Análise",
-      COMPLETED: "Concluído",
-      DELIVERED: "Entregue",
-    };
-    return statusMap[status] || status;
-  };
+  const getStatusLabel = (status, outcome) => getOrderStatusLabel(status, outcome);
 
   const handleRowClick = (repair) => {
     setSelectedRepair(repair);
@@ -198,10 +191,9 @@ export function RepairPage() {
                 </div>
                 <Select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
                   <option value="Todos">Status: Todos</option>
-                  <option value="PENDING">Pendente</option>
-                  <option value="IN_ANALYSIS">Em Análise</option>
-                  <option value="COMPLETED">Concluído</option>
-                  <option value="DELIVERED">Entregue</option>
+                  {STATUS_FILTER_OPTIONS.map((option) => (
+                    <option key={option.value} value={option.value}>{option.label}</option>
+                  ))}
                 </Select>
               </div>
 
